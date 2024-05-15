@@ -9,5 +9,6 @@ package model;
  * @author Admin
  */
 public class TestPrivate {
-        public String test;
+   public String aaa;
+   public String ll;
 }
