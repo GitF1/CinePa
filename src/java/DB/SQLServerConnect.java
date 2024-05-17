@@ -29,7 +29,7 @@ public class SQLServerConnect {
     public Connection connect(ServletContext context) throws Exception {
 
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/dbconfig.properties"))) {
+        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/config/private/dbconfig.properties"))) {
             props.load(fis);
         } catch (IOException e) {
             e.printStackTrace();
