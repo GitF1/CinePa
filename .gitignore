@@ -1,14 +1,4 @@
-
-
-
-/build/
-/nbproject/private/
-
-
-#
-
 ### NetBeans ###
-
 
 nbproject/private/
 build/
@@ -18,15 +8,9 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 .nb-gradle/
-web/WEB-INF/dbconfig.properties
-
-
+web/WEB-INF/config/private/
 
 # Package Files #
 *.jar
 *.war
 *.ear
-
-
-
-
