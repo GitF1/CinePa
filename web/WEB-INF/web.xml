@@ -12,10 +12,7 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>TestConnection</servlet-name>
-        <servlet-class>controller.TestConnection</servlet-class>
-    </servlet>
+    
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern/>
@@ -28,8 +25,5 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TestConnection</servlet-name>
-        <url-pattern>/testConnect</url-pattern>
-    </servlet-mapping>
+   
 </web-app>
