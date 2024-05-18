@@ -9,9 +9,13 @@ package util;
  * @author Admin
  */
 public class Router {
+    public String HOMEPAGE = "page/auth/home.jsp";
+    
+    
+    public String REGISTER = "page/auth/register.jsp";
+    public String LOGIN = "page/auth/login.jsp";
+    public String VERIFY = "page/auth/verify.jsp";
 
-    public static String REGISTER_URL = "page/auth/register";
-    public static String REGISTER = "page/auth/register";
     
     
 }

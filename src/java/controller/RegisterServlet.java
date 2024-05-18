@@ -19,21 +19,23 @@ import service.SendEmail;
 import model.User;
 import service.UserServiceInteface;
 import service.UserServiceImpl;
+import util.Router;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "HomeRegister", urlPatterns = {"/homeRegister", "/login", "/register", "/forgotpass", "/waiting", "/VerifyCode"})
-public class HomeRegister extends HttpServlet {
-    
-    UserServiceInteface userService ;
-    
+@WebServlet(name = "HomeRegister", urlPatterns = {"/register", "/VerifyCode"})
+public class RegisterServlet extends HttpServlet {
+
+    UserServiceInteface userService;
+    Router route = new Router();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
         }
     }
 
@@ -53,14 +55,8 @@ public class HomeRegister extends HttpServlet {
 
         if (url.contains("register")) {
             getRegister(request, response);
-        } else if (url.contains("login")) {
-            getLogin(request, response);
-        } else if (url.contains("forgotpass")) {
-            request.getRequestDispatcher("forgotpassword.jsp").forward(request, response);
-        } else if (url.contains("waiting")) {
-             getWaiting(request, response);
         } else if (url.contains("VerifyCode")) {
-            request.getRequestDispatcher("page/auth/verify.jsp").forward(request, response);
+            request.getRequestDispatcher(route.VERIFY).forward(request, response);
         } else {
             homePage(request, response);
         }
@@ -71,10 +67,10 @@ public class HomeRegister extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            
+
             String url = request.getRequestURL().toString();
             userService = new UserServiceImpl(getServletContext());
-            
+
             if (url.contains("register")) {
                 postRegister(request, response);
             } else if (url.contains("login")) {
@@ -85,16 +81,16 @@ public class HomeRegister extends HttpServlet {
                 postVerifyCode(request, response);
             }
         } catch (Exception ex) {
-            Logger.getLogger(HomeRegister.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     protected void homePage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("home.jsp").forward(req, resp);
+        req.getRequestDispatcher(route.HOMEPAGE).forward(req, resp);
     }
 
     protected void getRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("page/auth/register.jsp").forward(req, resp);
+        req.getRequestDispatcher(route.REGISTER).forward(req, resp);
     }
 
     protected void postRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -113,11 +109,11 @@ public class HomeRegister extends HttpServlet {
         if (userService.checkExistEmail(email)) {
             alertMsg = "Email đã tồn tại!";
             req.setAttribute("error", alertMsg);
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            req.getRequestDispatcher(route.REGISTER).forward(req, resp);
         } else if (userService.checkExistUsername(username)) {
             alertMsg = "Tài khoản đã tồn tại!";
             req.setAttribute("error", alertMsg);
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            req.getRequestDispatcher(route.REGISTER).forward(req, resp);
         } else {
             SendEmail sm = new SendEmail();
             // Lấy mã 6 chữ số
@@ -136,7 +132,7 @@ public class HomeRegister extends HttpServlet {
                 } else {
                     alertMsg = "Lỗi hệ thống!";
                     req.setAttribute("error", alertMsg);
-                    req.getRequestDispatcher("page/auth/register.jsp").forward(req, resp);
+                    req.getRequestDispatcher(route.REGISTER).forward(req, resp);
                 }
             } else {
                 PrintWriter out = resp.getWriter();
@@ -190,86 +186,83 @@ public class HomeRegister extends HttpServlet {
         }
 
         // Forward to login page if no session or cookie is found
-        req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
+        req.getRequestDispatcher(route.LOGIN).forward(req, resp);
     }
-    
+
     //
     protected void postLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    resp.setContentType("text/html");
-    resp.setCharacterEncoding("UTF-8");
-    req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
 
-    String username = req.getParameter("username");
-    String password = req.getParameter("password");
-    boolean isRememberMe = false;
-    String remember = req.getParameter("remember");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        boolean isRememberMe = false;
+        String remember = req.getParameter("remember");
 
-    if ("on".equals(remember)) {
-        isRememberMe = true;
-    }
+        if ("on".equals(remember)) {
+            isRememberMe = true;
+        }
 
-    String alertMsg = "";
-    if (username.isEmpty() || password.isEmpty()) {
-        alertMsg = "Tài khoản hoặc mật khẩu không đúng";
-        req.setAttribute("error", alertMsg);
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
-        return;
-    }
+        String alertMsg = "";
+        if (username.isEmpty() || password.isEmpty()) {
+            alertMsg = "Tài khoản hoặc mật khẩu không đúng";
+            req.setAttribute("error", alertMsg);
+            req.getRequestDispatcher(route.LOGIN).forward(req, resp);
+            return;
+        }
 
-    User user = userService.login(username, password);
+        User user = userService.login(username, password);
 
-    if (user != null) {
-        if (user.getStatus() == 1) {
-            // Tạo session
-            HttpSession session = req.getSession(true);
-            session.setAttribute("account", user);
+        if (user != null) {
+            if (user.getStatus() == 1) {
+                // Tạo session
+                HttpSession session = req.getSession(true);
+                session.setAttribute("account", user);
 
-            if (isRememberMe) {
-                saveRememberMe(resp, username);
+                if (isRememberMe) {
+                    saveRememberMe(resp, username);
+                }
+
+                resp.sendRedirect(req.getContextPath() + "/waiting");
+            } else {
+                alertMsg = "Tài khoản đã bị khóa, liên hệ Admin nhé";
+                req.setAttribute("message", alertMsg);
+                req.getRequestDispatcher(route.LOGIN).forward(req, resp);
             }
-
-            resp.sendRedirect(req.getContextPath() + "/waiting");
         } else {
-            alertMsg = "Tài khoản đã bị khóa, liên hệ Admin nhé";
-            req.setAttribute("message", alertMsg);
-            req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
+            alertMsg = "Tài khoản hoặc mật khẩu không đúng";
+            req.setAttribute("error", alertMsg);
+            req.getRequestDispatcher(route.LOGIN).forward(req, resp);
         }
-    } else {
-        alertMsg = "Tài khoản hoặc mật khẩu không đúng";
-        req.setAttribute("error", alertMsg);
-        req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
     }
-}
-    
+
     protected void getWaiting(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    HttpSession session = req.getSession();
-    if (session != null && session.getAttribute("account") != null) {
-        User user = (User) session.getAttribute("account");
-        req.setAttribute("username", user.getUsername());
+        HttpSession session = req.getSession();
+        if (session != null && session.getAttribute("account") != null) {
+            User user = (User) session.getAttribute("account");
+            req.setAttribute("username", user.getUsername());
 
-        String roleId = user.getRole();
-        if ("1".equals(roleId)) {
-            resp.sendRedirect(req.getContextPath() + "/home");
-        } else if ("2".equals(roleId)) {
-            resp.sendRedirect(req.getContextPath() + "/manager/home");
-        } else if ("3".equals(roleId)) {
-            resp.sendRedirect(req.getContextPath() + "/seller/home");
+            String roleId = user.getRole();
+            if ("1".equals(roleId)) {
+                resp.sendRedirect(req.getContextPath() + "/home");
+            } else if ("2".equals(roleId)) {
+                resp.sendRedirect(req.getContextPath() + "/manager/home");
+            } else if ("3".equals(roleId)) {
+                resp.sendRedirect(req.getContextPath() + "/seller/home");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/home");
+            }
         } else {
-            resp.sendRedirect(req.getContextPath() + "/home");
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
-    } else {
-        resp.sendRedirect(req.getContextPath() + "/login");
     }
-}
 
-
-
-private void saveRememberMe(HttpServletResponse resp, String username) {
-    Cookie usernameCookie = new Cookie("username", username);
-    usernameCookie.setMaxAge(24 * 60 * 60); // 1 ngày
-    resp.addCookie(usernameCookie);
-}
-
+    private void saveRememberMe(HttpServletResponse resp, String username) {
+        Cookie usernameCookie = new Cookie("username", username);
+        usernameCookie.setMaxAge(24 * 60 * 60*60); // 1 ngày
+        resp.addCookie(usernameCookie);
+    }
 
     @Override
     public String getServletInfo() {
