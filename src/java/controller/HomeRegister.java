@@ -13,9 +13,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.SendEmail;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import service.SendEmail;
 import model.User;
-import service.UserService;
+import service.UserServiceInteface;
 import service.UserServiceImpl;
 
 /**
@@ -24,23 +26,14 @@ import service.UserServiceImpl;
  */
 @WebServlet(name = "HomeRegister", urlPatterns = {"/homeRegister", "/login", "/register", "/forgotpass", "/waiting", "/VerifyCode"})
 public class HomeRegister extends HttpServlet {
-
-    UserService userService = new UserServiceImpl();
-
+    
+    UserServiceInteface userService ;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HomeRegister</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HomeRegister at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
         }
     }
 
@@ -67,7 +60,7 @@ public class HomeRegister extends HttpServlet {
         } else if (url.contains("waiting")) {
              getWaiting(request, response);
         } else if (url.contains("VerifyCode")) {
-            request.getRequestDispatcher("verify.jsp").forward(request, response);
+            request.getRequestDispatcher("page/auth/verify.jsp").forward(request, response);
         } else {
             homePage(request, response);
         }
@@ -77,16 +70,22 @@ public class HomeRegister extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = request.getRequestURL().toString();
-
-        if (url.contains("register")) {
-            postRegister(request, response);
-        } else if (url.contains("login")) {
-            postLogin(request, response);
-        } else if (url.contains("forgotpass")) {
-            //   postForgotPassWord(request, response);
-        } else if (url.contains("VerifyCode")) {
-            postVerifyCode(request, response);
+        try {
+            
+            String url = request.getRequestURL().toString();
+            userService = new UserServiceImpl(getServletContext());
+            
+            if (url.contains("register")) {
+                postRegister(request, response);
+            } else if (url.contains("login")) {
+                postLogin(request, response);
+            } else if (url.contains("forgotpass")) {
+                //   postForgotPassWord(request, response);
+            } else if (url.contains("VerifyCode")) {
+                postVerifyCode(request, response);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(HomeRegister.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -95,7 +94,7 @@ public class HomeRegister extends HttpServlet {
     }
 
     protected void getRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("register.jsp").forward(req, resp);
+        req.getRequestDispatcher("page/auth/register.jsp").forward(req, resp);
     }
 
     protected void postRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -137,7 +136,7 @@ public class HomeRegister extends HttpServlet {
                 } else {
                     alertMsg = "Lỗi hệ thống!";
                     req.setAttribute("error", alertMsg);
-                    req.getRequestDispatcher("register.jsp").forward(req, resp);
+                    req.getRequestDispatcher("page/auth/register.jsp").forward(req, resp);
                 }
             } else {
                 PrintWriter out = resp.getWriter();
@@ -191,7 +190,7 @@ public class HomeRegister extends HttpServlet {
         }
 
         // Forward to login page if no session or cookie is found
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+        req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
     }
     
     //
@@ -233,12 +232,12 @@ public class HomeRegister extends HttpServlet {
         } else {
             alertMsg = "Tài khoản đã bị khóa, liên hệ Admin nhé";
             req.setAttribute("message", alertMsg);
-            req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
         }
     } else {
         alertMsg = "Tài khoản hoặc mật khẩu không đúng";
         req.setAttribute("error", alertMsg);
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+        req.getRequestDispatcher("page/authenticate/login.jsp").forward(req, resp);
     }
 }
     

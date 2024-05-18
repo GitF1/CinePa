@@ -2,20 +2,31 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dal;
+package DAO;
 
+import DB.SQLServerConnect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.User;
+import jakarta.servlet.ServletContext;
 
 /**
  *
  * @author VINHNQ
  */
-public class UserDAOImpl extends DBContext {
+public class UserDAOImpl extends SQLServerConnect {
+
+//    public UserDAOImpl() {
+//
+//    }
+
+    public UserDAOImpl(ServletContext context) throws Exception {
+        super();
+        connect(context);
+    }
 
     public List<User> getAll() {
         List<User> list = new ArrayList<>();
@@ -33,8 +44,6 @@ public class UserDAOImpl extends DBContext {
         }
         return list;
     }
-    
-    
 
     public void insert(User c) {
         String sql = "INSERT INTO [dbo].[User]\n"
@@ -93,41 +102,41 @@ public class UserDAOImpl extends DBContext {
     }
 
     public User findOne(String username) {
-    String sql = "SELECT * FROM [User] WHERE Username = ?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setString(1, username);
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            User c  = new User(
-                rs.getInt("UserID"),
-                rs.getString("AvatarLink"),
-                rs.getString("Role"),
-                rs.getString("Username"),
-                rs.getString("Password"),
-                rs.getString("Bio"),
-                rs.getString("Email"),
-                rs.getString("Fullname"), // Lấy giá trị của cột Fullname
-                rs.getDate("Birthday"),
-                rs.getString("Address"),
-                rs.getBoolean("IsBanned"),
-                rs.getInt("LevelPremiumID"),
-                rs.getDouble("AccountBalance"),
-                rs.getInt("BonusPoint"),
-                rs.getString("Province"),
-                rs.getString("District"),
-                rs.getString("Commune"),
-                rs.getString("Code"),
-                rs.getInt("Status")
-            );
-            
-            return c;
+        String sql = "SELECT * FROM [User] WHERE Username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User c = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("AvatarLink"),
+                        rs.getString("Role"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Bio"),
+                        rs.getString("Email"),
+                        rs.getString("Fullname"), // Lấy giá trị của cột Fullname
+                        rs.getDate("Birthday"),
+                        rs.getString("Address"),
+                        rs.getBoolean("IsBanned"),
+                        rs.getInt("LevelPremiumID"),
+                        rs.getDouble("AccountBalance"),
+                        rs.getInt("BonusPoint"),
+                        rs.getString("Province"),
+                        rs.getString("District"),
+                        rs.getString("Commune"),
+                        rs.getString("Code"),
+                        rs.getInt("Status")
+                );
+
+                return c;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
     public boolean checkExistUsername(String username) {
         boolean duplicate = false;
@@ -150,8 +159,6 @@ public class UserDAOImpl extends DBContext {
 
         return duplicate;
     }
-
-   
 
     public boolean checkExistEmail(String email) {
         boolean duplicate = false;

@@ -1,4 +1,4 @@
-package model;
+package service;
 
 import com.sun.mail.smtp.SMTPSendFailedException;
 import java.util.Properties;
@@ -11,6 +11,7 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import model.User;
 
 /**
  * Sends an email to the user.

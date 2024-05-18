@@ -3,7 +3,6 @@ package DB;
 import jakarta.servlet.ServletContext;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -29,22 +28,12 @@ public class SQLServerConnect {
 
     public Connection connect(ServletContext context) throws Exception {
 
-//        Properties props = new Properties();
-//        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/config/private/dbconfig.properties"))) {
-//            props.load(fis);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new Exception("Error loading database configuration", e);
-//        }
         Properties props = new Properties();
-
-        try (InputStream input = new FileInputStream("web/WEB-INF/config/private/dbconfig.properties")) {
-            if (input == null) {
-                throw new IOException("Mail properties file not found");
-            }
-            props.load(input);
-        } catch (IOException ex) {
-            throw new RuntimeException("Failed to load mail properties", ex);
+        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/config/private/dbconfig.properties"))) {
+            props.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new Exception("Error loading database configuration", e);
         }
 
         String serverName = props.getProperty("db.serverName");
@@ -53,6 +42,7 @@ public class SQLServerConnect {
         String password = props.getProperty("db.password");
 
         try {
+            
             String URLConnect = "jdbc:sqlserver://" + serverName + ";databaseName=" + databaseName + ";user=" + username + ";password=" + password + ";encrypt=false";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(URLConnect);
@@ -73,6 +63,6 @@ public class SQLServerConnect {
     }
 
     public static void main(String[] args) {
-
+        
     }
 }

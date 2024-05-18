@@ -4,17 +4,22 @@
  */
 package service;
 
-import dal.UserDAOImpl;
+import DAO.UserDAOImpl;
 import java.util.List;
 import model.User;
+import jakarta.servlet.ServletContext;
 
 /**
  *
  * @author VINHNQ
  */
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserServiceInteface {
 
-    UserDAOImpl userDAO = new UserDAOImpl();
+    UserDAOImpl userDAO;
+
+    public UserServiceImpl(ServletContext context) throws Exception {
+        userDAO = new UserDAOImpl(context);
+    }
 
     @Override
     public List<User> getAll() {
@@ -62,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public boolean checkExistEmail(String email) {
         return userDAO.checkExistEmail(email);
     }
-    
+
     @Override
     public User login(String username, String password) {
         User user = this.findOne(username); // Find the user by username

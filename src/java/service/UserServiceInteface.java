@@ -11,7 +11,7 @@ import model.User;
  *
  * @author VINHNQ
  */
-public interface UserService {
+public interface UserServiceInteface {
 
     List<User> getAll();
 
