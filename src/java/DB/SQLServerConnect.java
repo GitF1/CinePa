@@ -3,6 +3,7 @@ package DB;
 import jakarta.servlet.ServletContext;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -28,12 +29,22 @@ public class SQLServerConnect {
 
     public Connection connect(ServletContext context) throws Exception {
 
+//        Properties props = new Properties();
+//        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/config/private/dbconfig.properties"))) {
+//            props.load(fis);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new Exception("Error loading database configuration", e);
+//        }
         Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream(context.getRealPath("/WEB-INF/config/private/dbconfig.properties"))) {
-            props.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception("Error loading database configuration", e);
+
+        try (InputStream input = new FileInputStream("web/WEB-INF/config/private/dbconfig.properties")) {
+            if (input == null) {
+                throw new IOException("Mail properties file not found");
+            }
+            props.load(input);
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load mail properties", ex);
         }
 
         String serverName = props.getProperty("db.serverName");
@@ -62,6 +73,6 @@ public class SQLServerConnect {
     }
 
     public static void main(String[] args) {
-     
+
     }
 }
