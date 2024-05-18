@@ -16,6 +16,31 @@
         <servlet-name>TestConnection</servlet-name>
         <servlet-class>controller.TestConnection</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>k</servlet-name>
+        <servlet-class>controller.k</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>handleDisplayUserInfo</servlet-name>
+        <servlet-class>kahitest.handleDisplayUserInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserInfo</servlet-name>
+        <servlet-class>kahitest.UpdateUserInfo</servlet-class>
+        <multipart-config>
+        <max-file-size>20848820</max-file-size>
+        <max-request-size>418018841</max-request-size>
+        <file-size-threshold>1048576</file-size-threshold>
+    </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>kahitest.logoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changPasswordServlet</servlet-name>
+        <servlet-class>kahitest.changPasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern/>
@@ -32,4 +57,27 @@
         <servlet-name>TestConnection</servlet-name>
         <url-pattern>/testConnect</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>k</servlet-name>
+        <url-pattern>/k</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>handleDisplayUserInfo</servlet-name>
+        <url-pattern>/handleDisplayUserInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserInfo</servlet-name>
+        <url-pattern>/UpdateUserInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changPasswordServlet</servlet-name>
+        <url-pattern>/changPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

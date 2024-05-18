@@ -27,6 +27,11 @@ public class User {
     private int status;
 
     // Constructor
+
+    public User() {
+    }
+    
+    
     public User(int userID, String avatarLink, String role, String username, String password, String bio, String email, String fullname, Date birthday, String address, boolean isBanned, int levelPremiumID, float accountBalance, int bonusPoint, String province, String district, String commune, String code, int status) {
         this.userID = userID;
         this.avatarLink = avatarLink;
