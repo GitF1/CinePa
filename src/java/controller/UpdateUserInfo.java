@@ -1,5 +1,6 @@
-package kahitest;
+package controller;
 
+import controller.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import jakarta.servlet.annotation.MultipartConfig;
 import java.util.Map;
+
 /**
  *
  * @author FPTSHOP
@@ -40,21 +42,11 @@ public class UpdateUserInfo extends HttpServlet {
         String province = request.getParameter("province");
         String district = request.getParameter("district");
         String commune = request.getParameter("commune");
-        
-        
-        
-       
-         Part filePart = request.getPart("avatarUrl");
-        
-        String avatarUrl = null;
-        if (filePart != null && filePart.getSize() > 0) {
-            Cloudinary cloudinary = CloudinaryUtil.getCloudinary();
-            Map uploadResult = cloudinary.uploader().upload(filePart.getInputStream(), ObjectUtils.emptyMap());
-            avatarUrl = (String) uploadResult.get("url");
-        }
-        
-        
+
+        String avatarUrl = request.getParameter("avatarUrl");
+
         User user = new User();
+        
         user.setUserID(Integer.parseInt(userId)); // 
         user.setUsername(username);
         user.setPassword(password);
@@ -75,13 +67,13 @@ public class UpdateUserInfo extends HttpServlet {
         user.setDistrict(district);
         user.setCommune(commune);
         user.setAvatarLink(avatarUrl);
-        
+
         // tao Context Servlet : 
-        ServletContext context = getServletContext() ; 
-        
+        ServletContext context = getServletContext();
+
         // update user : 
-        try { 
-            UserDAO.getInstance().updateUser(user, context) ;
+        try {
+            UserDAO.getInstance().updateUser(user, context);
         } catch (Exception ex) {
             Logger.getLogger(UpdateUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }

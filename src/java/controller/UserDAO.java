@@ -1,4 +1,4 @@
-package kahitest;
+package controller;
 
 import DB.SQLServerConnect;
 import java.sql.Connection;

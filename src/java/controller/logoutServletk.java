@@ -1,4 +1,4 @@
-package kahitest;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author FPTSHOP
  */
-public class logoutServlet extends HttpServlet {
+public class logoutServletk extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

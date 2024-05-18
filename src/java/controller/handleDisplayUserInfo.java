@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package kahitest;
+package controller;
 
+import controller.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,6 +30,7 @@ public class handleDisplayUserInfo extends HttpServlet {
 
         // lay userID tu session : 
         String id = "3";
+        
         User user = null;
         try {
             user = UserDAO.getInstance().getUserById(id, context);

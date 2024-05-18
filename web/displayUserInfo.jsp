@@ -56,7 +56,7 @@
 
 
                     <label for="avatar">chon anh dai dien :</label>
-                    <input type="file" id="avatar" name="avatarUrl" accept="image/*">
+                    <input type="text" id="avatar" name="avatarUrl" ">
 
 
                 </div>
