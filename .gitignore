@@ -1,11 +1,6 @@
-/build/
-/nbproject/private/
-
-#
-
 ### NetBeans ###
 
-nbproject/private/
+nbproject
 build/
 nbbuild/
 dist/
