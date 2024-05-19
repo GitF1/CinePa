@@ -2,12 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package login;
+package controller_login;
 
 import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import model.SendEmail;
  *
  * @author ACER
  */
+@WebServlet("/forgetpassword")
 public class ForgetPasswordServlet extends HttpServlet {
 
     /**
@@ -59,7 +61,7 @@ public class ForgetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +80,7 @@ public class ForgetPasswordServlet extends HttpServlet {
         
         String startAgain = request.getParameter("start-again");
         if(startAgain != null) {
-            request.getRequestDispatcher("ForgetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
             return;
         }
         
@@ -98,7 +100,7 @@ public class ForgetPasswordServlet extends HttpServlet {
                 request.setAttribute("changePasswordOk", changePasswordOk);
                 System.out.println("changePasswordOk = " + changePasswordOk);
                 
-                request.getRequestDispatcher("ForgetPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
             } catch (Exception ex) {
                 Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -114,7 +116,7 @@ public class ForgetPasswordServlet extends HttpServlet {
                 request.setAttribute("verifyOTPOk", verifyOTPOk);
                 System.out.println("VerifyOTPOK = " + verifyOTPOk);
                 
-                request.getRequestDispatcher("ForgetPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
             } catch (Exception ex) {
                 Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -132,7 +134,7 @@ public class ForgetPasswordServlet extends HttpServlet {
 
             System.out.println("isExistedEmail = " + isExistedEmail);
             if (!isExistedEmail) {
-                request.getRequestDispatcher("ForgetPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
                 return;
             }
             SendEmail sendEmail = new SendEmail();
@@ -149,7 +151,7 @@ public class ForgetPasswordServlet extends HttpServlet {
 
             System.out.println("sendEmailOk = " + sendEmailOk);
 
-            request.getRequestDispatcher("ForgetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
