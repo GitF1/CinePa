@@ -38,15 +38,7 @@
         <url-pattern>/testConnect</url-pattern>
     </servlet-mapping>
     <!-- KA modify -->
-    <servlet-mapping>
-        <servlet-name>ForgetPasswordServlet</servlet-name>
-        <url-pattern>/ForgetPasswordServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>VerifyOTPServlet</servlet-name>
-        <url-pattern>/VerifyOTPServlet</url-pattern>
-    </servlet-mapping>
-    <!-- KA modify -->
+
     
     
 </web-app>

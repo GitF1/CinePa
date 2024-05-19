@@ -9,11 +9,17 @@ package util;
  * @author Admin
  */
 public class Router {
-    public String HOMEPAGE = "page/home/home.jsp";
-    public String REGISTER = "page/auth/register.jsp";
-    public String LOGIN = "page/auth/login.jsp";
-    public String VERIFY = "page/auth/verify.jsp";
-
+    
+    
+    public String HOMEPAGE = "page/home/Home.jsp";
+    
+    public String REGISTER = "page/auth/Register.jsp";
+    
+    public String LOGIN = "page/auth/Login.jsp";
+    
+    public String VERIFY = "page/auth/Verify.jsp";
+    
+    public String FORGET_PASSWORD = "page/auth/ForgetPassword.jsp";
     
     
 }

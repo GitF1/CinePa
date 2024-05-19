@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import util.Router;
 
 /**
  *
@@ -48,7 +49,7 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/page/home/home.jsp").forward(request, response);
+        request.getRequestDispatcher(new Router().HOMEPAGE).forward(request, response);
     }
 
     /**

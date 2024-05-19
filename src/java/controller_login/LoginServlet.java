@@ -22,10 +22,23 @@ import util.Router;
  *
  * @author ACER
  */
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     Router route = new Router();
+    UserDAO userDAO;
+
+    @Override
+    public void init() throws ServletException {
+        try {
+            super.init();
+            this.userDAO = new UserDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +69,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login/Login.jsp").forward(request, response);
+        request.getRequestDispatcher(route.LOGIN).forward(request, response);
     }
 
     /**
@@ -70,18 +83,15 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
-
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         Boolean ok = null;
 
         try {
 
-            ServletContext context = getServletContext();
-            UserDAO ud = new UserDAO(context);
-            ok = ud.checkLogin(username_email, hash);
+            ok = userDAO.checkLogin(username_email, hash);
 
         } catch (SQLException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +103,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/movie");
         } else {
             request.setAttribute("ok", ok);
-            request.getRequestDispatcher("login/Login.jsp").forward(request, response);
+            request.getRequestDispatcher(route.LOGIN).forward(request, response);
         }
 
     }

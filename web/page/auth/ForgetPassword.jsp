@@ -33,7 +33,7 @@
                                     <h2 class="fs-6 fw-normal text-center text-secondary m-0 px-md-5">Provide the email address associated with your account to recover your password.</h2>
                                 </div>
                             </div>
-                            <form action="ForgetPasswordServlet" method="post">
+                            <form action="forgetpassword" method="post">
                                 <div class="row gy-3 gy-md-4 overflow-hidden">
                                     <div class="col-12">
                                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>

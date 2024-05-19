@@ -44,7 +44,7 @@
                if (message != null) { %>
                 <div class="success-message"><%= message %></div>
                 <% } %>
-                <form id="verifyForm" action="VerifyCode" method="post" class="mt-4">
+                <form id="verifyForm" action="verifycode" method="post" class="mt-4">
                     <div class="form-group">
                         <label for="authcode">Mã kích hoạt:</label>
                         <input type="text" id="authcode" name="authcode" class="form-control" required>
