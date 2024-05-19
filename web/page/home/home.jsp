@@ -1,7 +1,7 @@
 <%-- 
-    Document   : khai.jsp.tét
-    Created on : May 11, 2024, 9:49:46 PM
-    Author     : FPTSHOP
+    Document   : home
+    Created on : May 19, 2024, 2:50:39 PM
+    Author     : Admin
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Home Page</h1>
     </body>
 </html>

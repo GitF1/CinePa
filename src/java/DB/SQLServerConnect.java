@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
+import model.User;
 
 public class SQLServerConnect {
 
@@ -42,6 +44,7 @@ public class SQLServerConnect {
         String password = props.getProperty("db.password");
 
         try {
+            
             String URLConnect = "jdbc:sqlserver://" + serverName + ";databaseName=" + databaseName + ";user=" + username + ";password=" + password + ";encrypt=false";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(URLConnect);
@@ -60,8 +63,8 @@ public class SQLServerConnect {
         }
         return null;
     }
-
+    
     public static void main(String[] args) {
-     
+        
     }
 }
