@@ -47,6 +47,26 @@ public class User {
     }
     
     
+    public User(String email, String code) {
+        this.email = email;
+        this.code = code;
+    }
+
+    public User(String username, String password, String email, String fullName, String code, int status) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.fullName = fullName;
+        this.code = code;
+        this.status = status;
+    }
+
+    public User(String username, String email, String fullName, String code) {
+        this.username = username;
+        this.email = email;
+        this.fullName = fullName;
+        this.code = code;
+    }
     
 
     public User(int userID, String avatarLink, String role, String fullName, String username, String password, String bio, String email, Date birthday, String address, boolean isBanned, int levelPremiumID, double accountBalance, int bonusPoint, String province, String district, String commune, String code, int status) {
