@@ -47,21 +47,21 @@
                          class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form action="LoginServlet" method="post">
+                    <form action="login" method="post">
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="text" id="form3Example3" class="form-control form-control-lg" name="username-email"
                                    placeholder="Enter username or email" />
-<!--                            <label class="form-label" for="form3Example3">Email address</label>-->
+                            <!--                            <label class="form-label" for="form3Example3">Email address</label>-->
                         </div>
-                        
+
                         <!-- Password input -->
                         <div data-mdb-input-init class="form-outline mb-3">
                             <input type="password" id="form3Example4" class="form-control form-control-lg" name="password"
                                    placeholder="Enter password" />
                             <!--<label class="form-label" for="form3Example4">Password</label>-->
                         </div>
-                        
+
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Checkbox -->
                             <div class="form-check mb-0">
@@ -75,15 +75,15 @@
 
                         <div class="text-center text-lg-start mt-4 pt-2">
                             <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                                     style="padding-left: 2.5rem; padding-right: 2.5rem;">Login
-                                <!--<span style="position: absolute; left: calc(100% + 10px); top: 50%; transform: translateY(-50%); white-space: nowrap;">Hello, World!</span>-->
+                                     style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                                Login
                             </button>
-                                                        
+
                             <c:if test="${not empty ok && !ok}">
                                 <p class="small fw-bold mt-2 pt-1 mb-0" style="color: red">Wrong username (or email) or password!</p>
                             </c:if>
 
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+                            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/movie/register"
                                                                                               class="link-primary">Register</a></p>
                         </div>
 

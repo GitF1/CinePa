@@ -16,13 +16,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Router;
 
 /**
  *
  * @author ACER
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    Router route = new Router();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,16 +40,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
         }
     }
 
@@ -62,7 +56,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("login/Login.jsp").forward(request, response);
     }
 
     /**
@@ -76,29 +70,32 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
-        
-        PrintWriter out = response.getWriter();
-        
+
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         Boolean ok = null;
+
         try {
+
             ServletContext context = getServletContext();
             UserDAO ud = new UserDAO(context);
             ok = ud.checkLogin(username_email, hash);
+
         } catch (SQLException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if(ok) {
-            request.getRequestDispatcher("index.html").forward(request, response);
+
+        if (ok) {
+            response.sendRedirect("/movie");
+        } else {
+            request.setAttribute("ok", ok);
+            request.getRequestDispatcher("login/Login.jsp").forward(request, response);
         }
-        
-        request.setAttribute("ok", ok);
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
+
     }
 
     /**

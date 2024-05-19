@@ -34,4 +34,6 @@ public interface UserServiceInteface {
     boolean checkExistEmail(String email); // hàm kiểm tra sự tồn tại của email
 
     boolean checkExistUsername(String username);
+
+    String hashPassword(String password);
 }

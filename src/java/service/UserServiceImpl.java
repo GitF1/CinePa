@@ -87,4 +87,10 @@ public class UserServiceImpl implements UserServiceInteface {
         userDAO.updatestatus(user);
     }
 
+    @Override
+    public String hashPassword(String password) {
+        String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
+        return hash;
+    }
+
 }

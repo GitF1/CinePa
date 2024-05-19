@@ -19,10 +19,6 @@ import jakarta.servlet.ServletContext;
  */
 public class UserDAOImpl extends SQLServerConnect {
 
-//    public UserDAOImpl() {
-//
-//    }
-
     public UserDAOImpl(ServletContext context) throws Exception {
         super();
         connect(context);
