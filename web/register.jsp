@@ -23,33 +23,43 @@
                         <div class="signup-form">
                             <h2 class="form-title">Sign up</h2>
                             <form method="POST" class="register-form" id="register-form" action="register">
+                                
                                 <div class="form-group">
-                                    <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                    <input type="text" name="username" id="username" placeholder="Username" />
+                                    <label for="fullName"><i class="zmdi zmdi-account-box"></i></label>
+                                    <input type="text" name="fullName" id="fullName" placeholder="Full Name" required />
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                    <input type="password" name="password" id="password" placeholder="Password" />
+                                    <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="username" id="username" placeholder="Username" required />
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                    <input type="email" name="email" id="email" placeholder="Your Email" />
+                                    <input type="email" name="email" id="email" placeholder="Your Email" required />
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label for="fullName"><i class="zmdi zmdi-lock"></i></label>
-                                    <input type="text" name="fullName" id="fullName" placeholder="Full Name" />
+                                    <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                    <input type="password" name="password" id="password" placeholder="Password" required />
                                 </div>
+                                
                                 <div class="form-group">
-                                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                    <label for="confirmPassword"><i class="zmdi zmdi-lock-outline"></i></label>
+                                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" checked />
                                     <label for="agree-term" class="label-agree-term">
-                                        <span><span></span></span>I agree all statements in
+                                        <span><span></span></span>I agree to all statements in
                                         <a href="#" class="term-service">Terms of service</a>
                                     </label>
                                 </div>
                                 <% 
                             String error = (String)request.getAttribute("error");
                             if (error != null) {
-                                out.println("<p>" + error + "</p>");
+                                out.println("<p style='color:red;'>" + error + "</p>");
                             }
                                 %>
                                 <div class="form-group form-button">
@@ -58,9 +68,9 @@
                             </form>
                         </div>
                         <div class="signup-image">
-                            <a href="#" class="signup-image-link">Welcom to CinePa</a>
+                            <a href="#" class="signup-image-link">Welcome to CinePa</a>
                             <figure>
-                                <img src="images/signup-image.jpg" alt="sing up image" />
+                                <img src="images/signup-image.jpg" alt="sign up image" />
                             </figure>
                         </div>
                     </div>

@@ -47,14 +47,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(String username, String password, String email, String fullName, String code) {
+    public boolean register(String fullName, String username, String email, String password, String code) {
         if (userDAO.checkExistEmail(email)) {
             return false;
         }
         if (userDAO.checkExistUsername(username)) {
             return false;
         }
-        userDAO.insertregister(new User(username, password, email, fullName, code, 0));
+        userDAO.insertregister(new User(fullName, username, email, password, code, 0, "user"));
         return true;
     }
 

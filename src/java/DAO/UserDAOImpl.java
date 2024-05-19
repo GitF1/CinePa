@@ -26,7 +26,7 @@ public class UserDAOImpl extends DBContext {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                User c = new User(rs.getString("username"), rs.getString("fullName"), rs.getString("password"), rs.getString("email"));
+                User c = new User(rs.getString("fullName"), rs.getString("username"), rs.getString("password"), rs.getString("email"));
                 list.add(c);
             }
         } catch (SQLException e) {
@@ -34,8 +34,6 @@ public class UserDAOImpl extends DBContext {
         }
         return list;
     }
-    
-    
 
     public void insert(User c) {
         String sql = "INSERT INTO [dbo].[User]\n"
@@ -66,7 +64,7 @@ public class UserDAOImpl extends DBContext {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                User c = new User(rs.getString("username"), rs.getString("name"), rs.getString("password"), rs.getString("email"));
+                User c = new User(rs.getString("fullName"), rs.getString("username"), rs.getString("password"), rs.getString("email"));
                 return c;
             }
         } catch (SQLException e) {
@@ -94,41 +92,41 @@ public class UserDAOImpl extends DBContext {
     }
 
     public User findOne(String username) {
-    String sql = "SELECT * FROM [User] WHERE Username = ?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setString(1, username);
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            User c  = new User(
-                rs.getInt("UserID"),
-                rs.getString("AvatarLink"),
-                rs.getString("Role"),
-                rs.getString("Username"),
-                rs.getString("Password"),
-                rs.getString("Bio"),
-                rs.getString("Email"),
-                rs.getString("Fullname"), // Lấy giá trị của cột Fullname
-                rs.getDate("Birthday"),
-                rs.getString("Address"),
-                rs.getBoolean("IsBanned"),
-                rs.getInt("LevelPremiumID"),
-                rs.getDouble("AccountBalance"),
-                rs.getInt("BonusPoint"),
-                rs.getString("Province"),
-                rs.getString("District"),
-                rs.getString("Commune"),
-                rs.getString("Code"),
-                rs.getInt("Status")
-            );
-            
-            return c;
+        String sql = "SELECT * FROM [User] WHERE Username = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User c = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("AvatarLink"),
+                        rs.getString("Role"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Bio"),
+                        rs.getString("Email"),
+                        rs.getString("Fullname"), // Lấy giá trị của cột Fullname
+                        rs.getDate("Birthday"),
+                        rs.getString("Address"),
+                        rs.getBoolean("IsBanned"),
+                        rs.getInt("LevelPremiumID"),
+                        rs.getDouble("AccountBalance"),
+                        rs.getInt("BonusPoint"),
+                        rs.getString("Province"),
+                        rs.getString("District"),
+                        rs.getString("Commune"),
+                        rs.getString("Code"),
+                        rs.getInt("Status")
+                );
+
+                return c;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
 
     public boolean checkExistUsername(String username) {
         boolean duplicate = false;
@@ -151,8 +149,6 @@ public class UserDAOImpl extends DBContext {
 
         return duplicate;
     }
-
-   
 
     public boolean checkExistEmail(String email) {
         boolean duplicate = false;
@@ -178,23 +174,25 @@ public class UserDAOImpl extends DBContext {
 
     public void insertregister(User user) {
         String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([Username]\n"
-                + "           ,[Password]\n"
+                + "           ([Fullname]\n"
+                + "           ,[Username]\n"
                 + "           ,[Email]\n"
-                + "           ,[Fullname]\n"
+                + "           ,[Password]\n"
                 + "           ,[Code]\n"
-                + "           ,[Status])\n"
-                + "     VALUES  (?,?,?,?,?,?)";
+                + "           ,[Status]\n"
+                + "           ,[Role])\n"
+                + "     VALUES  (?,?,?,?,?,?,?)";
         // Use try-with-resources for automatic resource management
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setString(1, user.getUsername());
-            st.setString(2, user.getPassword());
+            st.setString(1, user.getFullName());
+            st.setString(2, user.getUsername());
             st.setString(3, user.getEmail());
-            st.setString(4, user.getFullName());
+            st.setString(4, user.getPassword());
             st.setString(5, user.getCode());
             st.setInt(6, user.getStatus());
+            st.setString(7, user.getRole());
 
             st.executeUpdate();
         } catch (SQLException e) {

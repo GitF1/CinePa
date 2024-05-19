@@ -73,17 +73,22 @@ public class RegisterServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
 
-        // Lấy tham số từ form
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
 
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$";
-
         String alertMsg = " ";
 
         if (password.matches(passwordPattern)) {
+            if (!password.equals(confirmPassword)) {
+                alertMsg = "Mật khẩu và xác nhận mật khẩu không khớp!";
+                request.setAttribute("error", alertMsg);
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+                return;
+            }
 
             if (userService.checkExistEmail(email)) {
                 alertMsg = "Email đã tồn tại!";
@@ -95,17 +100,13 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 SendEmail sm = new SendEmail();
-                // Lấy mã 6 chữ số
                 String code = sm.getRanDom();
-                // Tạo người dùng mới
-                User user = new User(username, email, fullName, code);
-                // Gửi email
+                User user = new User(fullName, username, email, code);
                 boolean test = sm.sendEmail(user);
                 if (test) {
                     HttpSession session = request.getSession();
                     session.setAttribute("account", user);
-                    // Thực hiện đăng ký
-                    boolean isSuccess = userService.register(username, password, email, fullName, code);
+                    boolean isSuccess = userService.register(fullName, username, email, password, code);
                     if (isSuccess) {
                         response.sendRedirect(request.getContextPath() + "/VerifyCode");
                     } else {
@@ -119,12 +120,9 @@ public class RegisterServlet extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
             }
-
         } else {
-            // Mật khẩu không hợp lệ, thông báo lỗi và yêu cầu nhập lại
             request.setAttribute("error", "Mật khẩu phải chứa ít nhất một số và một kí tự chữ cái, và có ít nhất 8 kí tự.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-            return;
         }
 
     }

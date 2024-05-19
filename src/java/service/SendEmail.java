@@ -32,8 +32,8 @@ public class SendEmail {
         boolean test = false;
 
         String toEmail = user.getEmail();
-        String fromEmail = "vinhnqde170404@gmail.com";  // your email
-        String password = "nghwdeyzqrqgcyki";  // your app password
+        String fromEmail = "cinepa.org@gmail.com";  // your email
+        String password = "yknrqglbmlqumpwt";  // your app password
 
         try {
             Properties pr = new Properties();

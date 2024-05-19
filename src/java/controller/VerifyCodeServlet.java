@@ -76,7 +76,7 @@ public class VerifyCodeServlet extends HttpServlet {
         }
 
         // Kiểm tra thời gian 30 giây
-        Instant endTime = startTime.plusSeconds(30);
+        Instant endTime = startTime.plusSeconds(60);
         if (Instant.now().isAfter(endTime)) {
             request.setAttribute("error", "Thời gian nhập mã kích hoạt đã hết.");
             user.setStatus(0);

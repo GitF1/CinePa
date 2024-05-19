@@ -63,7 +63,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script>
             // Timer script
-            var timeLeft = 30;
+            var timeLeft = 60;
             var timer = document.getElementById('timer');
             var countdown = setInterval(function () {
                 if (timeLeft <= 0) {
