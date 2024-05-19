@@ -16,6 +16,20 @@
         <servlet-name>TestConnection</servlet-name>
         <servlet-class>controller.TestConnection</servlet-class>
     </servlet>
+    <!-- KA modify -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>login.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgetPasswordServlet</servlet-name>
+        <servlet-class>login.ForgetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <servlet-class>login.VerifyOTPServlet</servlet-class>
+    </servlet>
+    <!-- KA modify -->
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern/>
@@ -32,4 +46,18 @@
         <servlet-name>TestConnection</servlet-name>
         <url-pattern>/testConnect</url-pattern>
     </servlet-mapping>
+    <!-- KA modify -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgetPasswordServlet</servlet-name>
+        <url-pattern>/ForgetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <url-pattern>/VerifyOTPServlet</url-pattern>
+    </servlet-mapping>
+    <!-- KA modify -->
 </web-app>
