@@ -5,6 +5,7 @@
 package DAO;
 
 import DB.DBContext;
+import jakarta.servlet.ServletContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,9 @@ import model.User;
  */
 public class UserDAOImpl extends DBContext {
 
-    public List<User> getAll() {
+ 
+
+  public List<User> getAll() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM [User]";
         try {
@@ -34,45 +37,7 @@ public class UserDAOImpl extends DBContext {
         }
         return list;
     }
-
-    public void insert(User c) {
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + " ([Username]\n"
-                + " ,[Password]\n"
-                + " ,[Email])\n"
-                + " ,[Code])\n"
-                + " VALUES (?,?,?,?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, c.getUsername());
-            st.setString(2, c.getPassword());
-            st.setString(3, c.getEmail());
-            st.setString(3, c.getCode());
-
-            st.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-
-    public User getUsertByID(String userName) {
-
-        String sql = "select*from dbo.[User] where userName=?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, userName);
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                User c = new User(rs.getString("fullName"), rs.getString("username"), rs.getString("password"), rs.getString("email"));
-                return c;
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-
+   
     public void updatestatus(User user) {
         String sql = "UPDATE [User] SET status = ?, code = ? WHERE email = ?";
 
@@ -89,43 +54,6 @@ public class UserDAOImpl extends DBContext {
             // Properly handle the exception, log it, or rethrow as a custom exception
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
-    }
-
-    public User findOne(String username) {
-        String sql = "SELECT * FROM [User] WHERE Username = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                User c = new User(
-                        rs.getInt("UserID"),
-                        rs.getString("AvatarLink"),
-                        rs.getString("Role"),
-                        rs.getString("Username"),
-                        rs.getString("Password"),
-                        rs.getString("Bio"),
-                        rs.getString("Email"),
-                        rs.getString("Fullname"), // Lấy giá trị của cột Fullname
-                        rs.getDate("Birthday"),
-                        rs.getString("Address"),
-                        rs.getBoolean("IsBanned"),
-                        rs.getInt("LevelPremiumID"),
-                        rs.getDouble("AccountBalance"),
-                        rs.getInt("BonusPoint"),
-                        rs.getString("Province"),
-                        rs.getString("District"),
-                        rs.getString("Commune"),
-                        rs.getString("Code"),
-                        rs.getInt("Status")
-                );
-
-                return c;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public boolean checkExistUsername(String username) {
@@ -200,5 +128,7 @@ public class UserDAOImpl extends DBContext {
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
     }
+    
+    
 
 }
