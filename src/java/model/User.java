@@ -9,12 +9,11 @@ import java.util.Date;
 public class User {
     private int userID;
     private String avatarLink;
-    private String role;
+    private String fullName;  // Updated field
     private String username;
+    private String email;
     private String password;
     private String bio;
-    private String email;
-    private String fullName;  // Updated field
     private Date birthday;
     private String address;
     private boolean isBanned;
@@ -26,6 +25,7 @@ public class User {
     private String commune;  // Updated field
     private String code;
     private int status;  // Updated field
+    private String role;
 
     public User() {
     }
@@ -52,6 +52,36 @@ public class User {
         this.code = code;
     }
 
+
+//    public User(String fullName, String username, String email, String password, String code, int status) {
+//        this.fullName = fullName;
+//        this.username = username;
+//        this.email = email;
+//        this.password = password;
+//        this.code = code;
+//        this.status = status;
+//    }
+//
+    public User(String fullName, String username, String email, String code) {
+        this.fullName = fullName;
+        this.username = username;
+        this.email = email;
+        this.code = code;
+    }
+
+    public User(String fullName, String username, String email, String password, String code, int status, String role) {
+        this.fullName = fullName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.code = code;
+        this.status = status;
+        this.role = role;
+    }
+
+ 
+    
+    
     
 
     public User(int userID, String avatarLink, String role, String fullName, String username, String password, String bio, String email, Date birthday, String address, boolean isBanned, int levelPremiumID, double accountBalance, int bonusPoint, String province, String district, String commune, String code, int status) {

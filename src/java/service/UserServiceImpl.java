@@ -52,14 +52,14 @@ public class UserServiceImpl implements UserServiceInteface {
     }
 
     @Override
-    public boolean register(String username, String password, String email, String fullName, String code) {
+    public boolean register(String fullName, String username, String email, String password, String code) {
         if (userDAO.checkExistEmail(email)) {
             return false;
         }
         if (userDAO.checkExistUsername(username)) {
             return false;
         }
-        userDAO.insertregister(new User(username, password, email, fullName, code, 0));
+        userDAO.insertregister(new User(fullName, username, email, password, code, 0, "USER"));
         return true;
     }
 
@@ -67,7 +67,6 @@ public class UserServiceImpl implements UserServiceInteface {
     public boolean checkExistEmail(String email) {
         return userDAO.checkExistEmail(email);
     }
-
     @Override
     public User login(String username, String password) {
         User user = this.findOne(username); // Find the user by username

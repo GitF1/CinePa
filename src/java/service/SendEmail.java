@@ -45,6 +45,7 @@ public class SendEmail {
             pr.setProperty("mail.smtp.port", "587");
             pr.setProperty("mail.smtp.auth", "true");
             pr.setProperty("mail.smtp.starttls.enable", "true");
+          
 
             // SSL properties should not be used when using STARTTLS
             pr.remove("mail.smtp.ssl.enable");

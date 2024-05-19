@@ -79,6 +79,7 @@ public class UserDAOImpl extends SQLServerConnect {
         return null;
     }
 
+   
     public void updatestatus(User user) {
         String sql = "UPDATE [User] SET status = ?, code = ? WHERE email = ?";
 
@@ -180,23 +181,25 @@ public class UserDAOImpl extends SQLServerConnect {
 
     public void insertregister(User user) {
         String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([Username]\n"
-                + "           ,[Password]\n"
+                + "           ([Fullname]\n"
+                + "           ,[Username]\n"
                 + "           ,[Email]\n"
-                + "           ,[Fullname]\n"
+                + "           ,[Password]\n"
                 + "           ,[Code]\n"
-                + "           ,[Status])\n"
-                + "     VALUES  (?,?,?,?,?,?)";
+                + "           ,[Status]\n"
+                + "           ,[Role])\n"
+                + "     VALUES  (?,?,?,?,?,?,?)";
         // Use try-with-resources for automatic resource management
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setString(1, user.getUsername());
-            st.setString(2, user.getPassword());
+            st.setString(1, user.getFullName());
+            st.setString(2, user.getUsername());
             st.setString(3, user.getEmail());
-            st.setString(4, user.getFullName());
+            st.setString(4, user.getPassword());
             st.setString(5, user.getCode());
             st.setInt(6, user.getStatus());
+            st.setString(7, user.getRole());
 
             st.executeUpdate();
         } catch (SQLException e) {
