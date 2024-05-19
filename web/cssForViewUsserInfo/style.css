@@ -155,7 +155,6 @@ h2 {
 
 .user-avatar img {
     border-radius: 50%;
-    width : 80px ; 
 }
 
 .user-avatar {
@@ -163,17 +162,4 @@ h2 {
 }
 .hide {
   display: none;
-}
-
-button.btn.px-5.btn-primary.cpw {
-    width: 24%;
-        background-color: #53982b;
-}
-button.btn.px-5.btn-primary.lob {
-    background-color: #c82e2e;
-}
-
-.cpw , .lob {
-    margin-top:  30px; 
-    
 }
