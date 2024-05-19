@@ -2,19 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller_login;
 
+import DAO.UserDAO;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author Admin
+ * @author ACER
  */
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -34,10 +41,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet Login</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +62,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        request.getRequestDispatcher("login/Login.jsp").forward(request, response);
     }
 
     /**
@@ -69,7 +77,29 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String username_email = request.getParameter("username-email");
+        String password = request.getParameter("password");
+        
+        PrintWriter out = response.getWriter();
+        
+        String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
+        Boolean ok = null;
+        try {
+            ServletContext context = getServletContext();
+            UserDAO ud = new UserDAO(context);
+            ok = ud.checkLogin(username_email, hash);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(ok) {
+            request.getRequestDispatcher("index.html").forward(request, response);
+        }
+        
+        request.setAttribute("ok", ok);
+        request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
 
     /**
