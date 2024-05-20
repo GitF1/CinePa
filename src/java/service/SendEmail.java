@@ -45,7 +45,9 @@ public class SendEmail {
         int number = rnd.nextInt(999999);
         return String.format("%06d", number);
     }
-
+    public boolean sendEmail(String email, String code) {
+        return sendEmail(new User(email, code));
+    }
     public boolean sendEmail(User user) {
         boolean test = false;
 
