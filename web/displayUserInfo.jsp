@@ -34,7 +34,7 @@
                                 <h3>View User's Information</h3>
                             </div>
 
-                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                            <p class="mb-4"></p>
                             <form action="${pageContext.request.contextPath}/UpdateUserInfo" method="post">
 
                                 <div class="hide">
@@ -45,13 +45,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="fname">Username</label>
-                                            <input type="text" class="form-control" id="fname"  name="username"  value="${user.username}" >
+                                            <input type="text" class="form-control" id="fname"  name="username" readonly  value="${user.username}" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Email</label>
-                                            <input type="text" class="form-control" id="lname" name="email" value="${user.email}" >
+                                            <input type="text" class="form-control" id="lname" name="email" readonly  value="${user.email}" >
                                         </div>
                                     </div>
                                 </div>
@@ -111,12 +111,7 @@
 
                                 <div class="d-flex mb-5 mt-4 align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <label class="control control--checkbox mb-0"><span class="caption">Creating an account means you're
-                                                okay
-                                                with our <a href="#">Terms and Conditions</a> and our <a href="#">Privacy Policy</a>.</span>
-                                            <input type="checkbox" checked="checked" />
-                                            <div class="control__indicator"></div>
-                                        </label>
+                                      
                                     </div>
                                 </div>
 
