@@ -52,7 +52,7 @@
                     <button type="submit" class="btn btn-primary">Kích hoạt</button>
                 </form>
                 <div id="timer" class="mt-3"></div>
-                <a href="register.jsp" class="btn btn-primary mt-3">Trở lại trang đăng ký</a>
+                <a href="register" class="btn btn-primary mt-3">Trở lại trang đăng ký</a>
 
             </div>
         </div>

@@ -38,7 +38,7 @@ public class VerifyCodeServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-        
+
         }
     }
 
@@ -47,10 +47,15 @@ public class VerifyCodeServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Boolean timeExpired = (Boolean) session.getAttribute("timeExpired");
+        User user = (User) session.getAttribute("account");
         if (timeExpired == null || !timeExpired) {
             session.setAttribute("startTime", Instant.now());
             session.setAttribute("attempts", 0);
             session.setAttribute("timeExpired", false);
+        }
+        if (user == null) {
+            response.sendRedirect("/movie/register");
+            return;
         }
         request.getRequestDispatcher(new Router().VERIFY).forward(request, response);
     }
@@ -130,8 +135,8 @@ public class VerifyCodeServlet extends HttpServlet {
 
         session.setAttribute("timeExpired", true);
         session.invalidate();
-
-        request.getRequestDispatcher(route.VERIFY).forward(request, response);
+        
+        request.getRequestDispatcher(route.REGISTER).forward(request, response);
     }
 
     private boolean isCodeValid(String code, User user) {
@@ -140,6 +145,7 @@ public class VerifyCodeServlet extends HttpServlet {
 
     private void handleSuccess(HttpServletRequest request, HttpServletResponse response, User user, HttpSession session)
             throws ServletException, IOException {
+
         user.setStatus(1);
         userService.updatestatus(user);
         session.invalidate();
@@ -150,22 +156,28 @@ public class VerifyCodeServlet extends HttpServlet {
 
     private void handleInvalidCode(HttpServletRequest request, HttpServletResponse response, User user, HttpSession session, int attempts)
             throws ServletException, IOException {
-        if (attempts < 2) {
+        int maxTimeTry = 3;
+
+        if (attempts < maxTimeTry - 1) {
             attempts++;
             session.setAttribute("attempts", attempts);
         } else {
-            lockAccount(user, request,response);
+            lockAccount(user, request, response);
             return;
         }
-        request.setAttribute("error", "Sai mã kích hoạt, vui lòng kiểm tra lại");
-        request.getRequestDispatcher(route.VERIFY).forward(request, response);
+
+        int remain = maxTimeTry - attempts;
+        request.setAttribute("error", remain > 0 ? "Sai mã kích hoạt, vui lòng kiểm tra lại(còn " + remain + " lần)" : "Nhập quá 3 lần, vui lòng đăng ký lại");
+
+        request.getRequestDispatcher(remain > 0 ? route.VERIFY : route.REGISTER).forward(request, response);
+
     }
 
-    private void lockAccount(User user, HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+    private void lockAccount(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         user.setStatus(0);
         userService.updatestatus(user);
         request.setAttribute("error", "Bạn đã nhập sai quá 3 lần. Tài khoản của bạn đã bị khóa.");
-        request.getRequestDispatcher(route.VERIFY).forward(request, response);
+        request.getRequestDispatcher(route.REGISTER).forward(request, response);
     }
 
     @Override

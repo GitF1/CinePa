@@ -79,9 +79,8 @@ public class UserDAOImpl extends SQLServerConnect {
         return null;
     }
 
-   
     public void updatestatus(User user) {
-        
+
         String sql = "UPDATE [User] SET status = ?, code = ? WHERE email = ?";
 
         // Use try-with-resources for automatic resource management
@@ -94,8 +93,8 @@ public class UserDAOImpl extends SQLServerConnect {
 
             st.executeUpdate();
         } catch (SQLException e) {
-          
-            e.printStackTrace(); 
+
+            e.printStackTrace();
         }
     }
 
@@ -160,7 +159,7 @@ public class UserDAOImpl extends SQLServerConnect {
 
     public boolean checkExistEmail(String email) {
         boolean duplicate = false;
-        String sql = "SELECT 1 FROM [User] WHERE email = ?";
+        String sql = "SELECT 1 FROM [User] WHERE email = ? AND status = 1";
 
         // Use try-with-resources for automatic resource management
         try {
@@ -192,7 +191,7 @@ public class UserDAOImpl extends SQLServerConnect {
                 + "     VALUES  (?,?,?,?,?,?,?)";
         // Use try-with-resources for automatic resource management
         try {
-            
+
             PreparedStatement st = connection.prepareStatement(sql);
 
             st.setString(1, user.getFullName());
@@ -204,7 +203,7 @@ public class UserDAOImpl extends SQLServerConnect {
             st.setString(7, user.getRole());
 
             st.executeUpdate();
-            
+
         } catch (SQLException e) {
             // Properly handle the exception, log it, or rethrow as a custom exception
             e.printStackTrace(); // Replace with appropriate logging in production code

@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.User;
 import service.SendEmail;
 import util.Router;
 
@@ -24,9 +23,7 @@ import util.Router;
  */
 @WebServlet("/forgetpassword")
 public class ForgetPasswordServlet extends HttpServlet {
-
     Router route = new Router();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -85,12 +82,12 @@ public class ForgetPasswordServlet extends HttpServlet {
         System.out.println("\n\n");
         
         String backToLogin = request.getParameter("back-to-login");
-
+        
         if(backToLogin != null) {
-            request.getRequestDispatcher("login/Login.jsp").forward(request, response);
+            request.getRequestDispatcher(route.LOGIN).forward(request, response);
             return;
         }
-
+        
         String email = request.getParameter("email");
         String OTP = request.getParameter("OTP");
         String newPassword = request.getParameter("new-password");
@@ -119,7 +116,7 @@ public class ForgetPasswordServlet extends HttpServlet {
             
             System.out.println("isValidPassword = " + isValidPassword + ", confirmPasswordOk = " + confirmPasswordOk + ", changePasswordOk = " + changePasswordOk);
                 
-            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
             return;
         }
 
@@ -127,13 +124,11 @@ public class ForgetPasswordServlet extends HttpServlet {
             boolean verifyOTPOk = false;
             try {
                 ud = new UserDAO(request.getServletContext());
-                if (OTP.equals(ud.getUserCode(email))) {
-                    verifyOTPOk = true;
-                }
+                if(OTP.equals(ud.getUserCode(email))) verifyOTPOk = true;
                 request.setAttribute("email", email);
                 request.setAttribute("verifyOTPOk", verifyOTPOk);
                 System.out.println("VerifyOTPOK = " + verifyOTPOk);
-
+                
                 request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
             } catch (Exception ex) {
                 Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,24 +136,20 @@ public class ForgetPasswordServlet extends HttpServlet {
             return;
         }
 
+
         boolean isExistedEmail = false;
 
         try {
-            
             ud = new UserDAO(request.getServletContext());
-
-            if (ud.checkExistEmail(email)) {
-                isExistedEmail = true;
-            }
+//            ud.closeConnection();
+            if (ud.checkExistEmail(email)) isExistedEmail = true;
             request.setAttribute("isExistedEmail", isExistedEmail);
 
             System.out.println("isExistedEmail = " + isExistedEmail);
-            
             if (!isExistedEmail) {
                 request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
                 return;
             }
-            
             SendEmail sendEmail = new SendEmail();
             String code = sendEmail.getRanDom();
             
@@ -177,7 +168,6 @@ public class ForgetPasswordServlet extends HttpServlet {
             System.out.println("sendEmailOk = " + sendEmailOk);
 
             request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
-            
         } catch (Exception ex) {
             Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
