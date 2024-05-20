@@ -171,7 +171,7 @@ public class VerifyCodeServlet extends HttpServlet {
 
         request.getRequestDispatcher(remain > 0 ? route.VERIFY : route.REGISTER).forward(request, response);
 
-    }
+    }   
 
     private void lockAccount(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         user.setStatus(0);
