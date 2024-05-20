@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Login</title>");            
+            out.println("<title>Servlet Login</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
@@ -79,25 +79,39 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
-        
+
         PrintWriter out = response.getWriter();
-        
+
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         Boolean ok = null;
+        String role = "guest";//for switch case
         try {
             ServletContext context = getServletContext();
             UserDAO ud = new UserDAO(context);
             ok = ud.checkLogin(username_email, hash);
+            role = ud.getUserRole(username_email);
         } catch (SQLException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        if(ok) {
+
+        if (ok) {
+            switch (role) {
+                case "user":
+                    request.getRequestDispatcher("User.jsp").forward(request, response);
+                    break;
+                case "admin":
+                    request.getRequestDispatcher("Admin.html").forward(request, response);
+                    break;
+                case "owner":
+                    request.getRequestDispatcher("Owner.html").forward(request, response);
+                    break;
+
+            }
             request.getRequestDispatcher("index.html").forward(request, response);
         }
-        
+
         request.setAttribute("ok", ok);
         request.getRequestDispatcher("Login.jsp").forward(request, response);
     }

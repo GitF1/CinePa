@@ -85,7 +85,7 @@ public class UserDAO extends SQLServerConnect {
                     "WHERE (Username = '" + username_email + "' " +  "OR Email = '" + username_email + "'" + ")";
         System.out.println(sqlQuery);
         ResultSet rs = getResultSet(sqlQuery);
-        if(rs.next()) return rs.getString("Code");
+        if(rs.next()) return rs.getString("Role");
         return null;
     }
     
