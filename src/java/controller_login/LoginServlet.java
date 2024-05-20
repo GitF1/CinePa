@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author ACER
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("login/Login.jsp").forward(request, response);
     }
 
     /**
@@ -98,7 +98,7 @@ public class LoginServlet extends HttpServlet {
         }
         
         request.setAttribute("ok", ok);
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
+        request.getRequestDispatcher("login/Login.jsp").forward(request, response);
     }
 
     /**

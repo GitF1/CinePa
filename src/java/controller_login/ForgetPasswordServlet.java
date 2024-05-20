@@ -78,32 +78,41 @@ public class ForgetPasswordServlet extends HttpServlet {
         PrintWriter out = response.getWriter();       
         System.out.println("\n\n");
         
-        String startAgain = request.getParameter("start-again");
-        if(startAgain != null) {
-            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+        String backToLogin = request.getParameter("back-to-login");
+        if(backToLogin != null) {
+            request.getRequestDispatcher("login/Login.jsp").forward(request, response);
             return;
         }
         
         String email = request.getParameter("email");
         String OTP = request.getParameter("OTP");
         String newPassword = request.getParameter("new-password");
+        String confirmPassword = request.getParameter("confirm-password");
         UserDAO ud;
         
-        System.out.println("newPassword = " + newPassword);
-        if(newPassword != null) {
-            boolean changePasswordOk = false;
-            try {
-                ud = new UserDAO(request.getServletContext());
-                ud.updateUserPassword(email, newPassword);
-                changePasswordOk = true;
-                request.setAttribute("email", email);
-                request.setAttribute("changePasswordOk", changePasswordOk);
-                System.out.println("changePasswordOk = " + changePasswordOk);
-                
-                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
-            } catch (Exception ex) {
-                Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println("newPassword = " + newPassword + ", confirmPassword = " + confirmPassword);
+        if(newPassword != null && confirmPassword != null) {
+            boolean isValidPassword, confirmPasswordOk, changePasswordOk;
+            isValidPassword = confirmPasswordOk = changePasswordOk = false;
+            isValidPassword = true; // bo sung
+            confirmPasswordOk = newPassword.equals(confirmPassword);
+            if(isValidPassword && confirmPasswordOk) {
+                try {
+                    ud = new UserDAO(request.getServletContext());
+                    ud.updateUserPassword(email, newPassword);
+                    changePasswordOk = true;
+                } catch (Exception ex) {
+                    Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            request.setAttribute("email", email);
+            request.setAttribute("isValidPassword", isValidPassword);
+            request.setAttribute("confirmPasswordOk", confirmPasswordOk);
+            request.setAttribute("changePasswordOk", changePasswordOk);
+            
+            System.out.println("isValidPassword = " + isValidPassword + ", confirmPasswordOk = " + confirmPasswordOk + ", changePasswordOk = " + changePasswordOk);
+                
+            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
             return;
         }
 
@@ -139,14 +148,17 @@ public class ForgetPasswordServlet extends HttpServlet {
             }
             SendEmail sendEmail = new SendEmail();
             String code = sendEmail.getRanDom();
-
-            boolean sendEmailOk = sendEmail.sendEmail(email, code);
-
-            if (sendEmailOk) {
-                ud.updateUserCode(email, code);
-                request.setAttribute("email", email);
+            
+            boolean updateCodeUserOk = ud.updateUserCode(email, code);
+            boolean sendEmailOk = false;
+            if(updateCodeUserOk) {
+                sendEmailOk = sendEmail.sendEmail(email, code);
+                if(sendEmailOk) {
+                    ud.updateUserCode(email, code);
+                    request.setAttribute("email", email);
+                }
             }
-
+            
             request.setAttribute("sendEmailOk", sendEmailOk);
 
             System.out.println("sendEmailOk = " + sendEmailOk);
