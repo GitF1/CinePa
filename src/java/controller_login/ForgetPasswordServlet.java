@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.SendEmail;
+import model.User;
+import service.SendEmail;
+import util.Router;
 
 /**
  *
@@ -23,14 +25,16 @@ import model.SendEmail;
 @WebServlet("/forgetpassword")
 public class ForgetPasswordServlet extends HttpServlet {
 
+    Router route = new Router();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,19 +53,20 @@ public class ForgetPasswordServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+        request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
     }
 
     /**
@@ -75,15 +80,17 @@ public class ForgetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         PrintWriter out = response.getWriter();       
         System.out.println("\n\n");
         
         String backToLogin = request.getParameter("back-to-login");
+
         if(backToLogin != null) {
             request.getRequestDispatcher("login/Login.jsp").forward(request, response);
             return;
         }
-        
+
         String email = request.getParameter("email");
         String OTP = request.getParameter("OTP");
         String newPassword = request.getParameter("new-password");
@@ -120,32 +127,38 @@ public class ForgetPasswordServlet extends HttpServlet {
             boolean verifyOTPOk = false;
             try {
                 ud = new UserDAO(request.getServletContext());
-                if(OTP.equals(ud.getUserCode(email))) verifyOTPOk = true;
+                if (OTP.equals(ud.getUserCode(email))) {
+                    verifyOTPOk = true;
+                }
                 request.setAttribute("email", email);
                 request.setAttribute("verifyOTPOk", verifyOTPOk);
                 System.out.println("VerifyOTPOK = " + verifyOTPOk);
-                
-                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+
+                request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
             } catch (Exception ex) {
                 Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             return;
         }
 
-
         boolean isExistedEmail = false;
 
         try {
+            
             ud = new UserDAO(request.getServletContext());
-//            ud.closeConnection();
-            if (ud.checkExistEmail(email)) isExistedEmail = true;
+
+            if (ud.checkExistEmail(email)) {
+                isExistedEmail = true;
+            }
             request.setAttribute("isExistedEmail", isExistedEmail);
 
             System.out.println("isExistedEmail = " + isExistedEmail);
+            
             if (!isExistedEmail) {
-                request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+                request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
                 return;
             }
+            
             SendEmail sendEmail = new SendEmail();
             String code = sendEmail.getRanDom();
             
@@ -163,7 +176,8 @@ public class ForgetPasswordServlet extends HttpServlet {
 
             System.out.println("sendEmailOk = " + sendEmailOk);
 
-            request.getRequestDispatcher("login/ForgetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
+            
         } catch (Exception ex) {
             Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,4 +1,4 @@
-package model;
+package service;
 
 import com.sun.mail.smtp.SMTPSendFailedException;
 import java.util.Properties;
@@ -14,14 +14,31 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import model.User;
 
 /**
  * Sends an email to the user.
  */
 public class SendEmail {
 
+    private final String logo_url = "";
+
     public SendEmail() {
     }
+//    private String EMAIL_PATTERN
+//            = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+//
+//    private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+//
+//    public static boolean isValid(final String email) {
+//        if (email == null) {
+//            return false;
+//        }
+//        Matcher matcher = pattern.matcher(email);
+//        return matcher.matches();
+//    }
 
     public String getRanDom() {
         Random rnd = new Random();
@@ -34,9 +51,10 @@ public class SendEmail {
 
         String toEmail = user.getEmail();
         String fromEmail = "cinepa.org@gmail.com";  // your email
-        String password = "yknr qglb mlqu mpwt";  // your app password
+        String password = "yknrqglbmlqumpwt";  // your app password
 
         try {
+
             Properties pr = new Properties();
             pr.setProperty("mail.smtp.host", "smtp.gmail.com");
             pr.setProperty("mail.smtp.port", "587");
@@ -46,7 +64,8 @@ public class SendEmail {
             // SSL properties should not be used when using STARTTLS
             pr.remove("mail.smtp.ssl.enable");
             pr.remove("mail.smtp.socketFactory.port");
-            pr.remove("mail.smtp.socketFactory.class");
+            pr.remove("mail.smtp.socketFactory");
+
             // Get session
             Session session = Session.getInstance(pr, new Authenticator() {
                 @Override
@@ -58,9 +77,7 @@ public class SendEmail {
             Message mess = new MimeMessage(session);
             mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             mess.setFrom(new InternetAddress(fromEmail));
-            mess.setSubject(" Email Verification");
-            
-            String logo_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVqxhPEELyjns9Y2bSwjNGuYluuIcm7XdrQW0BO8cf8w&s";
+            mess.setSubject("Email Verification");
 
             // Create HTML content
             String htmlContent = "<html>"
@@ -68,12 +85,12 @@ public class SendEmail {
                     + "<table align='center' width='600' style='border-collapse: collapse; margin: 20px auto; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>"
                     + "    <tr>"
                     + "        <td align='center' style='padding: 20px 0;'>"
-                    + "            \"<img src='\" + logo_url + \"' alt='Your Company Logo' style='height: 50px;'>\""
+                    + "            <img src='" + logo_url + "' alt='Your Company Logo' style='height: 50px;'>"
                     + "        </td>"
                     + "    </tr>"
                     + "    <tr>"
                     + "        <td style='padding: 20px;'>"
-                    + "            <h2 style='color: #333; text-align: center;'>Registere Confirm</h2>"
+                    + "            <h2 style='color: #333; text-align: center;'>Register Confirmation</h2>"
                     + "            <p style='color: #666; text-align: center;'>Thank you for registering. Please verify your account using the code below:</p>"
                     + "            <div style='text-align: center; margin: 20px 0;'>"
                     + "                <a href='#' style='background-color: #0066cc; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 18px;'>"
@@ -111,10 +128,5 @@ public class SendEmail {
             e.printStackTrace();  // Any other exception
         }
         return test;
-    }
-
-    public boolean sendEmail(String email, String code) {
-        User user = new User(email, code);
-        return sendEmail(user);
     }
 }

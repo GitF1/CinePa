@@ -25,11 +25,10 @@
         <servlet-name>VerifyOTPServlet</servlet-name>
         <servlet-class>controller_login.VerifyOTPServlet</servlet-class>
     </servlet>
+    
+    
     <!-- KA modify -->
-    <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern/>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
@@ -43,13 +42,16 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>-->
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>ForgetPasswordServlet</servlet-name>
         <url-pattern>/ForgetPasswordServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VerifyOTPServlet</servlet-name>
         <url-pattern>/VerifyOTPServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     <!-- KA modify -->
+
+    
+    
 </web-app>
