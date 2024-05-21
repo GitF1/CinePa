@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.auth;
 
+import controller.auth.VerifyCodeServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.UserServiceInteface;
-import util.Router;
+import util.RouterJSP;
 import model.User;
 import service.SendEmail;
 import service.UserServiceImpl;
@@ -28,7 +29,7 @@ import service.UserServiceImpl;
 public class RegisterServlet extends HttpServlet {
 
     UserServiceInteface userService;
-    Router route = new Router();
+    RouterJSP route = new RouterJSP();
 
     @Override
     public void init() throws ServletException {

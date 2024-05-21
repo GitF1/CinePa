@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller_login;
+package controller.auth;
 
 import DAO.UserDAO;
 import jakarta.servlet.ServletContext;
@@ -16,17 +16,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.Router;
+import util.RouterJSP;
 
 /**
  *
  * @author ACER
  */
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    Router route = new Router();
+    RouterJSP route = new RouterJSP();
     UserDAO userDAO;
 
     @Override
@@ -105,7 +104,6 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);
         }
-
     }
 
     /**

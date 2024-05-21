@@ -1,44 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>controller.HomeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TestConnection</servlet-name>
-        <servlet-class>controller.TestConnection</servlet-class>
-    </servlet>
-    <!-- KA modify -->
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller_login.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ForgetPasswordServlet</servlet-name>
-        <servlet-class>controller_login.ForgetPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>VerifyOTPServlet</servlet-name>
-        <servlet-class>controller_login.VerifyOTPServlet</servlet-class>
-    </servlet>
-    
-    
-    <!-- KA modify -->
 
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TestConnection</servlet-name>
-        <url-pattern>/testConnect</url-pattern>
-    </servlet-mapping>
-    <!-- KA modify -->
-
-    
-    
 </web-app>
