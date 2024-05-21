@@ -133,7 +133,7 @@ public class RegisterServlet extends HttpServlet {
         // Send Mail Handler 
         SendEmail sm = new SendEmail();
         String code = sm.getRanDom();
-        User user = new User(username, email, fullName, code);
+        User user = new User(fullName, username, email, code);
         boolean isSuccessSendMail = sm.sendEmail(user);
 
         // If Send Mail Failed 

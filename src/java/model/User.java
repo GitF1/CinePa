@@ -30,28 +30,36 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, String fullName, String code, int status) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.fullName = fullName;
-        this.code = code;
-        this.status = status;
-    }
+//    public User(String username, String password, String email, String fullName, String code, int status) {
+//        this.username = username;
+//        this.password = password;
+//        this.email = email;
+//        this.fullName = fullName;
+//        this.code = code;
+//        this.status = status;
+//    }
 
-    public User(String username, String email, String fullName, String code) {
+//    public User(String username, String email, String fullName, String code) {
+//        this.username = username;
+//        this.email = email;
+//        this.fullName = fullName;
+//        this.code = code;
+//    }
+//    
+//    
+//    public User(String email, String code) {
+//        this.email = email;
+//        this.code = code;
+//    }
+
+    public User(String fullName, String username, String email, String code) {
+        this.fullName = fullName;
         this.username = username;
         this.email = email;
-        this.fullName = fullName;
         this.code = code;
     }
     
     
-    public User(String email, String code) {
-        this.email = email;
-        this.code = code;
-    }
-
 
 
 
