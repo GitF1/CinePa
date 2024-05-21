@@ -5,10 +5,6 @@
         <servlet-class>controller.HomeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>TestConnection</servlet-name>
         <servlet-class>controller.TestConnection</servlet-class>
     </servlet>
@@ -18,17 +14,32 @@
         <servlet-class>controller_login.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ForgetPasswordServlet</servlet-name>
-        <servlet-class>controller_login.ForgetPasswordServlet</servlet-class>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>VerifyOTPServlet</servlet-name>
         <servlet-class>controller_login.VerifyOTPServlet</servlet-class>
     </servlet>
-    
-    
     <!-- KA modify -->
-
+    
+    <!-- Khai modify -->
+    <servlet>
+        <servlet-name>HandleDisplayUserInfo</servlet-name>
+        <servlet-class>controller.HandleDisplayUserInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserInfo</servlet-name>
+        <servlet-class>controller.UpdateUserInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>controller.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
@@ -37,8 +48,17 @@
         <servlet-name>TestConnection</servlet-name>
         <url-pattern>/testConnect</url-pattern>
     </servlet-mapping>
-    <!-- KA modify -->
-
-    
-    
+    <servlet-mapping>
+        <servlet-name>HandleDisplayUserInfo</servlet-name>
+        <url-pattern>/handleDisplayUserInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserInfo</servlet-name>
+        <url-pattern>/UpdateUserInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/changePasswordServlet</url-pattern>
+    </servlet-mapping>
+    <!-- Khai modify -->
 </web-app>

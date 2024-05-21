@@ -21,5 +21,7 @@ public class RouterJSP {
     
     public String FORGET_PASSWORD = "page/auth/ForgetPassword.jsp";
     
+    public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
+    
     
 }

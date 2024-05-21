@@ -181,7 +181,7 @@ public class VerifyCodeServlet extends HttpServlet {
 
         }
 
-    }
+    }   
 
     private void lockAccount(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         user.setStatus(0);

@@ -52,9 +52,6 @@ public class User {
         this.code = code;
     }
 
-
-
-
     public User(String fullName, String username, String email, String password, String code, int status, String role) {
         this.fullName = fullName;
         this.username = username;
@@ -242,6 +239,8 @@ public class User {
     public void setStatus(int status) {  // New setter
         this.status = status;
     }
+    
+    
 
     @Override
     public String toString() {

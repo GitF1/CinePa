@@ -22,7 +22,6 @@ import util.RouterJSP;
  *
  * @author ACER
  */
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -105,7 +104,6 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);
         }
-
     }
 
     /**
