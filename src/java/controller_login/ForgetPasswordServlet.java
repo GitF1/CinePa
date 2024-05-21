@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.SendEmail;
-import util.Router;
+import util.RouterJSP;
 
 /**
  *
@@ -23,7 +23,7 @@ import util.Router;
  */
 @WebServlet("/forgetpassword")
 public class ForgetPasswordServlet extends HttpServlet {
-    Router route = new Router();
+    RouterJSP route = new RouterJSP();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

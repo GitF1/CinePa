@@ -14,12 +14,14 @@ import java.util.logging.Logger;
 import model.User;
 import service.UserServiceImpl;
 import service.UserServiceInteface;
-import util.Router;
+import util.RouterJSP;
+import util.RouterURL;
 
 @WebServlet(name = "VerifyCodeServlet", urlPatterns = {"/verifycode"})
 public class VerifyCodeServlet extends HttpServlet {
 
-    Router route = new Router();
+    RouterJSP routeJSP = new RouterJSP();
+    RouterURL routeURL = new RouterURL();
 
     UserServiceInteface userService;
 
@@ -57,7 +59,7 @@ public class VerifyCodeServlet extends HttpServlet {
             response.sendRedirect("/movie/register");
             return;
         }
-        request.getRequestDispatcher(new Router().VERIFY).forward(request, response);
+        request.getRequestDispatcher(new RouterJSP().VERIFY).forward(request, response);
     }
 
     @Override
@@ -101,7 +103,8 @@ public class VerifyCodeServlet extends HttpServlet {
     private void handleUserNotFound(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("error", "Tài khoản đăng ký không thành công. Vui lòng đăng ký lại.");
-        request.getRequestDispatcher(route.REGISTER).forward(request, response);
+        //request.getRequestDispatcher(routeJSP.REGISTER).forward(request, response);
+        response.sendRedirect(routeURL.REGISTER);
     }
 
     private Instant getStartTime(HttpSession session) {
@@ -135,8 +138,8 @@ public class VerifyCodeServlet extends HttpServlet {
 
         session.setAttribute("timeExpired", true);
         session.invalidate();
-        
-        request.getRequestDispatcher(route.REGISTER).forward(request, response);
+
+        request.getRequestDispatcher(routeJSP.REGISTER).forward(request, response);
     }
 
     private boolean isCodeValid(String code, User user) {
@@ -151,7 +154,7 @@ public class VerifyCodeServlet extends HttpServlet {
         session.invalidate();
 
         request.setAttribute("message", "Kích hoạt tài khoản thành công!");
-        request.getRequestDispatcher(route.LOGIN).forward(request, response);
+        request.getRequestDispatcher(routeJSP.LOGIN).forward(request, response);
     }
 
     private void handleInvalidCode(HttpServletRequest request, HttpServletResponse response, User user, HttpSession session, int attempts)
@@ -167,9 +170,16 @@ public class VerifyCodeServlet extends HttpServlet {
         }
 
         int remain = maxTimeTry - attempts;
-        request.setAttribute("error", remain > 0 ? "Sai mã kích hoạt, vui lòng kiểm tra lại(còn " + remain + " lần)" : "Nhập quá 3 lần, vui lòng đăng ký lại");
+        if (remain > 0) {
+            request.setAttribute("error", "Sai mã kích hoạt, vui lòng kiểm tra lại(còn " + remain + " lần)");
+            request.getRequestDispatcher(routeJSP.VERIFY).forward(request, response);
+        } else {
 
-        request.getRequestDispatcher(remain > 0 ? route.VERIFY : route.REGISTER).forward(request, response);
+            request.setAttribute("error", "Nhập quá 3 lần, vui lòng đăng ký lại");
+            request.getRequestDispatcher(routeJSP.VERIFY).forward(request, response);
+            response.sendRedirect(routeURL.REGISTER);
+
+        }
 
     }
 
@@ -177,7 +187,7 @@ public class VerifyCodeServlet extends HttpServlet {
         user.setStatus(0);
         userService.updatestatus(user);
         request.setAttribute("error", "Bạn đã nhập sai quá 3 lần. Tài khoản của bạn đã bị khóa.");
-        request.getRequestDispatcher(route.REGISTER).forward(request, response);
+        request.getRequestDispatcher(routeJSP.REGISTER).forward(request, response);
     }
 
     @Override

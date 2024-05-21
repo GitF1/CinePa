@@ -8,7 +8,7 @@ package util;
  *
  * @author Admin
  */
-public class Router {
+public class RouterJSP {
     
     
     public String HOMEPAGE = "page/home/Home.jsp";

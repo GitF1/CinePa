@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.Router;
+import util.RouterJSP;
 
 /**
  *
@@ -26,7 +26,7 @@ import util.Router;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    Router route = new Router();
+    RouterJSP route = new RouterJSP();
     UserDAO userDAO;
 
     @Override

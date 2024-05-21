@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.UserServiceInteface;
-import util.Router;
+import util.RouterJSP;
 import model.User;
 import service.SendEmail;
 import service.UserServiceImpl;
@@ -28,7 +28,7 @@ import service.UserServiceImpl;
 public class RegisterServlet extends HttpServlet {
 
     UserServiceInteface userService;
-    Router route = new Router();
+    RouterJSP route = new RouterJSP();
 
     @Override
     public void init() throws ServletException {
