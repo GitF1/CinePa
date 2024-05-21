@@ -15,12 +15,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
+import util.Router;
 
 /**
  *
  * @author FPTSHOP
  */
-public class handleDisplayUserInfo extends HttpServlet {
+public class HandleDisplayUserInfo extends HttpServlet {
+    
+    Router router = new Router();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,13 +38,13 @@ public class handleDisplayUserInfo extends HttpServlet {
         try {
             user = UserDAO.getInstance().getUserById(id, context);
         } catch (Exception ex) {
-            Logger.getLogger(handleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // them doi tuong user vao request : 
         request.setAttribute("user", user);
 // chuyen sang display ra bang thong tin user : 
-        request.getRequestDispatcher("displayUserInfo.jsp").forward(request, response);
+        request.getRequestDispatcher(router.DISPLAY_INFO).forward(request, response);
 
     }
 

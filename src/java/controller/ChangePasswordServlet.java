@@ -20,7 +20,7 @@ import model.User;
  *
  * @author FPTSHOP
  */
-public class changPasswordServlet extends HttpServlet {
+public class ChangePasswordServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,7 +41,7 @@ public class changPasswordServlet extends HttpServlet {
 
             user = UserDAO.getInstance().getUserById(id, context);
         } catch (Exception ex) {
-            Logger.getLogger(changPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         // check pass co dung khong , neu dung thi update password :
         if (user.getPassword().equalsIgnoreCase(currentPass)) {

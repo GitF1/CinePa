@@ -1,9 +1,7 @@
 package controller;
 
-import controller.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +12,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
-import jakarta.servlet.http.Part;
-import util.CloudinaryUtil;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import jakarta.servlet.annotation.MultipartConfig;
-import java.util.Map;
 
 /**
  *
@@ -51,7 +44,7 @@ public class UpdateUserInfo extends HttpServlet {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setFullname(fullname);
+        user.setFullName(fullname);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date birthday = null;

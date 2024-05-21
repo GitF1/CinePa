@@ -45,7 +45,7 @@ public class UserDAO {
         user.setUsername(rs.getString("Username"));
         user.setPassword(rs.getString("Password"));
         user.setEmail(rs.getString("Email"));
-        user.setFullname(rs.getString("Fullname"));
+        user.setFullName(rs.getString("Fullname"));
         user.setBirthday(rs.getDate("Birthday"));
         user.setAddress(rs.getString("Address"));
         user.setProvince(rs.getString("Province"));
@@ -66,7 +66,7 @@ public class UserDAO {
                 pstmt.setString(2, user.getUsername());
                 pstmt.setString(3, user.getPassword());
                 pstmt.setString(4, user.getEmail());
-                pstmt.setString(5, user.getFullname());
+                pstmt.setString(5, user.getFullName());
                 if (user.getBirthday() != null) {
                     pstmt.setDate(6, new java.sql.Date(user.getBirthday().getTime()));
                 } else {
