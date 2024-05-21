@@ -1,4 +1,4 @@
-package controller;
+package controller.user;
 
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -11,16 +11,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//import jakarta.servlet.annotation.MultipartConfig;
 import model.User;
-import jakarta.servlet.annotation.MultipartConfig;
-
+import DAO.UserDAO;
+import jakarta.servlet.annotation.WebServlet;
 /**
  *
  * @author FPTSHOP
  */
-@MultipartConfig
+@WebServlet("/updateUserInfo")
 public class UpdateUserInfo extends HttpServlet {
+    UserDAO userDAO;
 
+    @Override
+    public void init() throws ServletException {
+        super.init(); 
+        try {
+            userDAO= new UserDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(UpdateUserInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -66,7 +78,7 @@ public class UpdateUserInfo extends HttpServlet {
 
         // update user : 
         try {
-            UserDAO.getInstance().updateUser(user, context);
+            userDAO.updateUser(user);
         } catch (Exception ex) {
             Logger.getLogger(UpdateUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
