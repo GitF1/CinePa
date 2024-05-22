@@ -8,12 +8,12 @@
 
 
         <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/bootstrap.min.css"/>
-         <!-- Style -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/bootstrap.min.css"/>
+        <!-- Style -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/displayUserInfoCss.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/style.css"/>
 
-    
+
         <title>display user Page</title>
 
     </head>
@@ -43,13 +43,23 @@
                                     <input type="text" id="username" name="userId" value="${user.userID}"  >
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
+                                <div class="row ">
+                                    <div class="col-md-6 hide">
                                         <div class="form-group first">
                                             <label for="fname">Username</label>
                                             <input type="text" class="form-control" id="fname"  name="username" readonly  value="${user.username}" >
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group last mb-3">
+                                            <label for="password">Avatar Link </label>
+                                            <input type="password" class="form-control" id="password" name="avatarUrl"  value="${user.avatarLink}">
+                                        </div>
+                                    </div>
+
+
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Email</label>
@@ -101,19 +111,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
 
-                                        <div class="form-group last mb-3">
-                                            <label for="password">Avatar Link </label>
-                                            <input type="password" class="form-control" id="password" name="avatarUrl"  value="${user.avatarLink} ">
-                                        </div>
-                                    </div>
 
                                 </div>
 
                                 <div class="d-flex mb-5 mt-4 align-items-center">
                                     <div class="d-flex align-items-center">
-                                      
+
                                     </div>
                                 </div>
 
@@ -128,7 +132,7 @@
 
 
 
-                                        <form action="page/user/ChangePassword.jsp"  > 
+                            <form action="page/user/ChangePassword.jsp"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Change Password </button>
                             </form>
