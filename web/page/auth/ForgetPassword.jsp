@@ -33,7 +33,7 @@
                                     <h2 class="fs-6 fw-normal text-center text-secondary m-0 px-md-5">Provide the email address associated with your account to recover your password.</h2>
                                 </div>
                             </div>
-                            <form action="ForgetPasswordServlet" method="post">
+                            <form action="forgetpassword" method="post">
                                 <div class="row gy-3 gy-md-4 overflow-hidden">
                                     <div class="col-12">
                                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
@@ -58,6 +58,8 @@
                                         <c:set var="isExistedEmail" value="${requestScope.isExistedEmail}"></c:set>
                                         <c:set var="sendEmailOk" value="${requestScope.sendEmailOk}"></c:set>
                                         <c:set var="verifyOTPOk" value="${requestScope.verifyOTPOk}"></c:set>
+                                        <c:set var="isValidPassword" value="${requestScope.isValidPassword}"></c:set>
+                                        <c:set var="confirmPasswordOk" value="${requestScope.confirmPasswordOk}"></c:set>                                        
                                         <c:set var="changePasswordOk" value="${requestScope.changePasswordOk}"></c:set>
 
                                         <c:if test="${(isExistedEmail != null && isExistedEmail && sendEmailOk != null && sendEmailOk) || (verifyOTPOk != null && !verifyOTPOk)}">
@@ -73,7 +75,7 @@
                                                 <input style="width: 80%" type="text" class="form-control" name="OTP" id="OTP" required>
                                                 <br>
                                                 
-                                                 <c:if test="${verifyOTPOk != null && !verifyOTPOk}">
+                                                 <c:if test="${verifyOTPOk != null && !verifyOTPOk}">                                            
                                                      <div style="color: red">The OTP you entered is incorrect. Please try again.                                                                                  </div>
                                                 </c:if>
                                                 
@@ -88,12 +90,10 @@
                                             
 
                                         <c:if test="${isExistedEmail != null && !isExistedEmail}">
-                                            <br>
                                             <p style="color: red">Your entered Email does not exist. Please enter Email again.</p>
                                         </c:if>
 
                                         <c:if test="${sendEmailOk != null && !sendEmailOk}">
-                                            <br>
                                             <p style="color: red">We encountered an issue while sending the OTP to you. Please try again.</p>
                                         </c:if>
                                             
@@ -107,8 +107,22 @@
                                                     </svg>
                                                 </span>
                                                 <input type="password" class="form-control" name="new-password" id="new-password" required>
-                                                <c:if test="${changePasswordOk != null && !changePasswordOk}">
+                                                <c:if test="${isValidPassword != null && !isValidPassword}">
                                                     <p style="color: red">Your password must...</p>
+                                                </c:if>
+                                            </div>   
+                                            
+                                            <br>
+                                            <label for="confirm-password" class="form-label"> Confirm password <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                                    </svg>
+                                                </span>
+                                                <input type="password" class="form-control" name="confirm-password" id="confirm-password" required>
+                                                <c:if test="${isValidPassword != null && isValidPassword && confirmPasswordOk != null && !confirmPassword}">
+                                                    <p style="color: red">The confirmation password you entered does not match. Please try again.</p>
                                                 </c:if>
                                             </div>   
                                         </c:if>
@@ -126,7 +140,7 @@
                                             </c:when>
                                                 
                                             <c:when test="${changePasswordOk != null && changePasswordOk}">
-                                                <button class="btn btn-primary btn-lg" type="submit" name="start-again">Start again</button>
+                                                <button class="btn btn-primary btn-lg" type="submit" name="back-to-login">Back to login</button>
                                             </c:when>
                                                 
                                             <c:otherwise>

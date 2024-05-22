@@ -2,22 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller_login;
+package controller;
 
+
+import DB.SQLServerConnect;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
 
 /**
  *
- * @author ACER
+ * @author Admin
  */
-@WebServlet("/verifyotp")
-public class VerifyOTPServlet extends HttpServlet {
+public class TestConnection extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +33,7 @@ public class VerifyOTPServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet VerifyOTPServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet VerifyOTPServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        
         }
     }
 
@@ -57,7 +49,29 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        SQLServerConnect dbConnect = new SQLServerConnect();
+
+        try {
+            PrintWriter out = response.getWriter();
+            Connection conn = dbConnect.connect(getServletContext());
+            if (conn != null) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet TestConnection</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Connection Database Successfully! </h1>");
+                out.println("</body>");
+                out.println("</html>");
+                dbConnect.closeConnection();
+            } else {
+                response.getWriter().println("Failed to connect to the database.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -71,7 +85,7 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
     /**

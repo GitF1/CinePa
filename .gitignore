@@ -1,6 +1,6 @@
-### NetBeans ###
+# Created by https://www.gitignore.io/api/eclipse,netbeans,java,maven,gradle,intellij
 
-####nbproject/private/
+nbproject/private/
 build/
 nbbuild/
 dist/

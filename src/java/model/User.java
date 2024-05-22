@@ -2,15 +2,18 @@ package model;
 
 import java.util.Date;
 
+/**
+ *
+ * @author duyqu
+ */
 public class User {
     private int userID;
     private String avatarLink;
-    private String role;
+    private String fullName;  // Updated field
     private String username;
+    private String email;
     private String password;
     private String bio;
-    private String email;
-    private String fullName;  // Updated field
     private Date birthday;
     private String address;
     private boolean isBanned;
@@ -22,13 +25,9 @@ public class User {
     private String commune;  // Updated field
     private String code;
     private int status;  // Updated field
+    private String role;
 
     public User() {
-    }
-    
-    public User(String email, String code) {
-        this.email = email;
-        this.code = code;
     }
 
     public User(String username, String password, String email, String fullName, String code, int status) {
@@ -47,6 +46,25 @@ public class User {
         this.code = code;
     }
     
+    
+    public User(String email, String code) {
+        this.email = email;
+        this.code = code;
+    }
+
+    public User(String fullName, String username, String email, String password, String code, int status, String role) {
+        this.fullName = fullName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.code = code;
+        this.status = status;
+        this.role = role;
+    }
+
+
+    
+
     public User(int userID, String avatarLink, String role, String fullName, String username, String password, String bio, String email, Date birthday, String address, boolean isBanned, int levelPremiumID, double accountBalance, int bonusPoint, String province, String district, String commune, String code, int status) {
         this.userID = userID;
         this.avatarLink = avatarLink;
@@ -221,6 +239,8 @@ public class User {
     public void setStatus(int status) {  // New setter
         this.status = status;
     }
+    
+    
 
     @Override
     public String toString() {
