@@ -23,5 +23,7 @@ public class Router {
     
     public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
     
+    public String CHANGE_PASSWORD = "page/user/ChangePassword.jsp" ; 
+    
     
 }

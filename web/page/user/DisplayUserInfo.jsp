@@ -1,18 +1,20 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="cssForViewUsserInfo/bootstrap.min.css">
+         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/bootstrap.min.css"/>
+         <!-- Style -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/displayUserInfoCss.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/style.css"/>
 
-        <!-- Style -->
-        <link rel="stylesheet" href="cssForViewUsserInfo/style.css">
-        <title>JSP Page</title>
-        <link rel="stylesheet" href="displayUserInfoCss.css"/>
+    
+        <title>display user Page</title>
 
     </head>
 
@@ -21,7 +23,7 @@
 
 
         <div class="d-lg-flex half">
-            <div class="bg order-1 order-md-2" style="background-image: url('ImagesForDisplayUsserInfo/bg_1.jpg');"></div>
+            <div class="bg order-1 order-md-2" style="background-image: url('${pageContext.request.contextPath}/page/user/BackGroundImage/bg_1.jpg');"></div>
             <div class="contents order-2 order-md-1">
 
                 <div class="container">
@@ -126,11 +128,11 @@
 
 
 
-                            <form action="changPassword.jsp"   > 
+                                        <form action="page/user/ChangePassword.jsp"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Change Password </button>
                             </form>
-                            <form action="logoutServlet"  > 
+                            <form action="${pageContext.request.contextPath}/logout"  > 
                                 <button class="btn px-5 btn-primary  lob"  >Logout</button>
                             </form>
                         </div>
