@@ -23,9 +23,11 @@ public class RouterJSP {
     
     public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
     
-    public String USER = "page/user/User.jsp";//templatefor testing login by role
+    public String USER = "test2.jsp";//templatefor testing login by role
     
     public String STAFF = "page/staff/Staff.jsp";//templatefor testing login by role
     
     public String ADMIN = "page/admin/Admin.jsp";//templatefor testing login by role
+    
+    
 }

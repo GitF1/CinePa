@@ -93,6 +93,21 @@ public class UserDAO extends SQLServerConnect {
         }
         return null;
     }
+    
+//    DuyND - get username by username or email:)
+    
+    public String getUsername(String username_email) throws SQLException {
+        String sqlQuery = "SELECT *\n"
+                + "FROM [User]\n"
+                + "WHERE (Username = '" + username_email + "' " + "OR Email = '" + username_email + "'" + ")\n"
+        
+                + "AND Status = 1";
+        ResultSet rs = getResultSet(sqlQuery);
+        if (rs.next()) {
+            return rs.getString("Username");
+        }
+        return null;
+    }
 
     public boolean updateUserPassword(String id, String password) throws SQLException {
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);

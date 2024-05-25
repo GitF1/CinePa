@@ -6,7 +6,13 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<!--jstl import-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!--java import-->
+<%@page import ="DAO.CinemaChainDAO" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="jakarta.servlet.ServletContext" %>
 <!DOCTYPE html>
 
 <html>
@@ -23,6 +29,10 @@
             }
         }
     </style>
+
+    <!--get chains from login servlet-->
+    <c:set var="cinemaNames" value="${sessionScope.chains}" />
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Cinepa</a>
@@ -45,10 +55,13 @@
                             Rạp chiếu
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <c:forEach  var="o" items="${cinemaNames}">
+                                <form action="<!--servlet here-->">
+                                    
+                                    <li><input class="dropdown-item" type="submit" name="chain" value="<c:out value = "${o}"/>"></li>
+                                </form>
+                            </c:forEach>
+                            
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -64,7 +77,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
+                            <c:out value="${sessionScope.username}" />
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Action</a></li>
@@ -78,4 +91,12 @@
             </div>
         </div>
     </nav>
+    <c:if test="${not empty cinemaNames}">
+        <ul>
+            <c:forEach var="name" items="${cinemaNames}">
+                <li><c:out value="${name}" /></li>
+                </c:forEach>
+        </ul>
+    </c:if>
+
 </html>
