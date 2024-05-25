@@ -45,7 +45,7 @@ public class UserDAO {
         user.setUsername(rs.getString("Username"));
         user.setPassword(rs.getString("Password"));
         user.setEmail(rs.getString("Email"));
-        user.setFullName(rs.getString("Fullname"));
+        user.setFullName(rs.getString("FullName"));
         user.setBirthday(rs.getDate("Birthday"));
         user.setAddress(rs.getString("Address"));
         user.setProvince(rs.getString("Province"));

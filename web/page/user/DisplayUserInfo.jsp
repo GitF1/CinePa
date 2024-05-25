@@ -71,7 +71,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="fname">Full Name</label>
-                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.fullname}">
+                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.fullName}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">

@@ -32,12 +32,13 @@ public class HandleDisplayUserInfo extends HttpServlet {
         ServletContext context = getServletContext();
 
         // lay userID tu session : 
-        String id = "3";
+        String id = "4";
         
-        User user = null;
+        User user = new User();
         try {
             user = UserDAO.getInstance().getUserById(id, context);
         } catch (Exception ex) {
+            user.setAddress(ex.getMessage());
             Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
 
