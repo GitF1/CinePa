@@ -1,7 +1,7 @@
 <%-- 
-    Document   : test2
-    Created on : May 15, 2024, 9:47:37 AM
-    Author     : FPTSHOP
+    Document   : Admin
+    Created on : May 19, 2024, 8:49:26 PM
+    Author     : duyqu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,7 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="page/section/Navbar.jsp" />
         <h1>Hello World!</h1>
     </body>
 </html>

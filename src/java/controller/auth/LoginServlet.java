@@ -82,12 +82,17 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         Boolean ok = null;
-
+        String role = "";
+        try {
+            role = userDAO.getUserRole(username_email);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
 
             ok = userDAO.checkLogin(username_email, hash);
@@ -99,7 +104,20 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (ok) {
+//            Switch case for role
+            switch (role) {
+                case "user":
+                    request.getRequestDispatcher(route.USER).forward(request, response);
+                    break;
+                case "staff":
+                    request.getRequestDispatcher(route.STAFF).forward(request, response);
+                    break;
+                case "admin":
+                    request.getRequestDispatcher(route.ADMIN).forward(request, response);
+                    break;
+            }//end of switch
             response.sendRedirect("/movie");
+
         } else {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);
