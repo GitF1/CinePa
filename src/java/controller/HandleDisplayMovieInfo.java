@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Movie;
+import model.MovieKhai;
 import model.Review;
 
 @WebServlet(name = "HandleDisplayMovieInfo", urlPatterns = {"/HandleDisplayMovieInfo"})
@@ -32,14 +32,14 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         ServletContext context = getServletContext();
 
         //lay Movie : 
-        Movie movie = new Movie();
+        MovieKhai movie = new MovieKhai();
         try {
             movie = DAO.MovieDAO.getInstance().getMovieWithGenresByID(Integer.parseInt(movieID), context);
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         // lay list cac phim dang chieu : 
-        ArrayList<Movie> listAvailabelMovies = new ArrayList<>();
+        ArrayList<MovieKhai> listAvailabelMovies = new ArrayList<>();
         try {
             listAvailabelMovies = DAO.MovieDAO.getInstance().getAvailableMovies(context);
         } catch (Exception ex) {

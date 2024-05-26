@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
-<%@ page import="model.Movie" %>
+<%@ page import="model.MovieKhai" %>
 
 <html>
     <head>
@@ -147,10 +147,10 @@
 
 
                     <%
-                        List<Movie> listAvailableMovies = (List<Movie>) request.getAttribute("listAvalableMovies");
+                        List<MovieKhai> listAvailableMovies = (List<MovieKhai>) request.getAttribute("listAvalableMovies");
 
                         if (listAvailableMovies != null) {
-                            for (Movie item : listAvailableMovies) {
+                            for (MovieKhai item : listAvailableMovies) {
                     %>
                     <div class="active-film row">
                         <div class="active-film-img col-4">

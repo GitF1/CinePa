@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import model.Movie;
+import model.MovieKhai;
 import model.Review;
 
 public class MovieDAO {
@@ -15,7 +15,7 @@ public class MovieDAO {
         return new MovieDAO();
     }
 
-    public Movie getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
+    public MovieKhai getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
 
         DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
@@ -23,7 +23,7 @@ public class MovieDAO {
 
         String movieSql = "SELECT * FROM Movie WHERE MovieID = ?";
         String genreSql = "SELECT Genre FROM MovieInGenre WHERE MovieID = ?";
-        Movie movie = null;
+        MovieKhai movie = null;
 
         try {
             // Lấy thông tin cơ bản của bộ phim từ bảng Movie
@@ -46,7 +46,7 @@ public class MovieDAO {
                 String linkTrailer = movieResultSet.getString("LinkTrailer");
 
                 // Khởi tạo đối tượng Movie
-                movie = new Movie(movieID, cinemaID, title, datePublished, rating, imageURL, synopsis, country, year, length, linkTrailer, null);
+                movie = new MovieKhai(movieID, cinemaID, title, datePublished, rating, imageURL, synopsis, country, year, length, linkTrailer, null);
 
                 // Lấy danh sách thể loại của bộ phim từ bảng MovieInGenre
                 PreparedStatement genreStatement = connection.prepareStatement(genreSql);
@@ -69,14 +69,14 @@ public class MovieDAO {
     }
 
     
-    public ArrayList<Movie> getAvailableMovies(ServletContext context) throws Exception {
+    public ArrayList<MovieKhai> getAvailableMovies(ServletContext context) throws Exception {
         
          DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
         
         
-        ArrayList<Movie> availableMovies = new ArrayList<>();
+        ArrayList<MovieKhai> availableMovies = new ArrayList<>();
         String sql = "SELECT * FROM MovieCinema WHERE Status = 'Available'";
 
         try {
@@ -94,7 +94,7 @@ public class MovieDAO {
 
                 // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
                 if (status.trim().equalsIgnoreCase("Available")) {
-                    Movie movie = getMovieWithGenresByID(movieID, context) ; 
+                    MovieKhai movie = getMovieWithGenresByID(movieID, context) ; 
                     if (movie != null) {
                         availableMovies.add(movie);
                     }

@@ -1,59 +1,35 @@
-
 package model;
-import java.util.Date;
-import java.util.List;
 
 public class Movie {
+
     private int movieID;
-    private int cinemaID;
     private String title;
-    private Date datePublished;
-    private float rating;
-    private String imageURL;
     private String synopsis;
-    private String country;
-    private int year;
-    private int length;
-    private String linkTrailer;
-    private List<String> genres;
+    private String datePublished;
+    private String imageURL;
+    private double rating;
 
     // Constructor
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating) {
+        this.movieID = movieID;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.datePublished = datePublished;
+        this.imageURL = imageURL;
+        this.rating = rating;
+    }
 
+    // Default constructor
     public Movie() {
     }
-    
-    
-    public Movie(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL,
-                 String synopsis, String country, int year, int length, String linkTrailer, List<String> genres) {
-        this.movieID = movieID;
-        this.cinemaID = cinemaID;
-        this.title = title;
-        this.datePublished = datePublished;
-        this.rating = rating;
-        this.imageURL = imageURL;
-        this.synopsis = synopsis;
-        this.country = country;
-        this.year = year;
-        this.length = length;
-        this.linkTrailer = linkTrailer;
-        this.genres = genres;
-    }
 
-    // Getters and setters
+    // Getter and Setter methods
     public int getMovieID() {
         return movieID;
     }
 
     public void setMovieID(int movieID) {
         this.movieID = movieID;
-    }
-
-    public int getCinemaID() {
-        return cinemaID;
-    }
-
-    public void setCinemaID(int cinemaID) {
-        this.cinemaID = cinemaID;
     }
 
     public String getTitle() {
@@ -64,20 +40,20 @@ public class Movie {
         this.title = title;
     }
 
-    public Date getDatePublished() {
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
+
+    public String getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(String datePublished) {
         this.datePublished = datePublished;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
     }
 
     public String getImageURL() {
@@ -88,51 +64,23 @@ public class Movie {
         this.imageURL = imageURL;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public double getRating() {
+        return rating;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public String getLinkTrailer() {
-        return linkTrailer;
-    }
-
-    public void setLinkTrailer(String linkTrailer) {
-        this.linkTrailer = linkTrailer;
-    }
-
-    public List<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
+    @Override
+    public String toString() {
+        return "Movie{"
+                + "movieID=" + movieID
+                + ", title='" + title + '\''
+                + ", synopsis='" + synopsis + '\''
+                + ", datePublished='" + datePublished + '\''
+                + ", imageURL='" + imageURL + '\''
+                + ", rating=" + rating
+                + '}';
     }
 }
