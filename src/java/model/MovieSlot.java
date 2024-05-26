@@ -11,6 +11,7 @@ package model;
 import java.time.LocalDateTime;
 
 public class MovieSlot {
+    
     private int movieSlotID;
     private int roomID;
     private int movieID;

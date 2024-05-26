@@ -14,8 +14,6 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import model.User;
 
 /**
@@ -26,29 +24,20 @@ public class SendEmail {
     private final String logo_url = "";
 
     public SendEmail() {
+        
     }
-//    private String EMAIL_PATTERN
-//            = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-//
-//    private Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-//
-//    public static boolean isValid(final String email) {
-//        if (email == null) {
-//            return false;
-//        }
-//        Matcher matcher = pattern.matcher(email);
-//        return matcher.matches();
-//    }
+
 
     public String getRanDom() {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         return String.format("%06d", number);
     }
-    public boolean sendEmail(String email, String code) {
+    public  boolean sendEmail(String email, String code) {
         return sendEmail(new User(email, code));
     }
     public boolean sendEmail(User user) {
+        
         boolean test = false;
 
         String toEmail = user.getEmail();

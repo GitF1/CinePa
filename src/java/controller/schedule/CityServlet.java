@@ -2,10 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.schedule;
 
-
-import DB.SQLServerConnect;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Connection;
 
 /**
  *
- * @author Admin
+ * @author PC
  */
-@WebServlet("/testConnect")
-public class TestConnection extends HttpServlet {
+@WebServlet(name = "CityServlet", urlPatterns = {"/select/city"})
+public class CityServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,7 +32,16 @@ public class TestConnection extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-        
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CityServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CityServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -51,29 +57,7 @@ public class TestConnection extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SQLServerConnect dbConnect = new SQLServerConnect();
-
-        try {
-            PrintWriter out = response.getWriter();
-            Connection conn = dbConnect.connect(getServletContext());
-            if (conn != null) {
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Servlet TestConnection</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>Connection Database Successfully! </h1>");
-                out.println("</body>");
-                out.println("</html>");
-                dbConnect.closeConnection();
-            } else {
-                response.getWriter().println("Failed to connect to the database.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().println("Error: " + e.getMessage());
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -23,5 +23,6 @@ public class RouterJSP {
     
     public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
     
-    
+    //for example, must replace when get real page content schedule component
+    public String SCHEDULE_MOIVE = "components/schedule/Schedule.jsp";
 }
