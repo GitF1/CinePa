@@ -1,31 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
+
 package model;
+import java.util.Date;
+import java.util.Date;
 
-import java.time.LocalDateTime;
-
-/**
- *
- * @author duyqu
- */
 public class Review {
+    private int reviewID;
     private int userID;
     private int movieID;
     private int rating;
-    private LocalDateTime timeCreated;
+    private Date timeCreated;
     private String content;
+    private String userAvatarLink;
+    private String username;
 
+    // Constructor
+    
     public Review() {
     }
 
-    public Review(int userID, int movieID, int rating, LocalDateTime timeCreated, String content) {
+    public Review(int reviewID, int userID, int movieID, int rating, Date timeCreated, String content, String userAvatarLink, String username) {
+        this.reviewID = reviewID;
         this.userID = userID;
         this.movieID = movieID;
         this.rating = rating;
         this.timeCreated = timeCreated;
         this.content = content;
+        this.userAvatarLink = userAvatarLink;
+        this.username = username;
+    }
+
+    // Getters and setters
+    public int getReviewID() {
+        return reviewID;
+    }
+
+    public void setReviewID(int reviewID) {
+        this.reviewID = reviewID;
     }
 
     public int getUserID() {
@@ -56,7 +67,12 @@ public class Review {
         return timeCreated;
     }
 
-    public void setTimeCreated(LocalDateTime timeCreated) {
+   
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(Date timeCreated) {
         this.timeCreated = timeCreated;
     }
 
@@ -67,5 +83,22 @@ public class Review {
     public void setContent(String content) {
         this.content = content;
     }
-    
+
+    public String getUserAvatarLink() {
+        return userAvatarLink;
+    }
+
+    public void setUserAvatarLink(String userAvatarLink) {
+        this.userAvatarLink = userAvatarLink;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
+
+
