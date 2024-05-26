@@ -4,6 +4,7 @@
  */
 package controller.auth;
 
+import DAO.CinemaChainDAO;
 import DAO.UserDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -13,7 +14,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
@@ -82,12 +85,18 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
         Boolean ok = null;
-
+        String role = "";
+        String username = "";
+        try {
+            role = userDAO.getUserRole(username_email);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
 
             ok = userDAO.checkLogin(username_email, hash);
@@ -99,7 +108,39 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (ok) {
+//            Switch case for role
+//          Add user to session attribute
+            try {
+                username = userDAO.getUsername(username_email);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            switch (role) {
+                case "user":
+                    //TEMP CODE FOR GETTING CHAINS & Username
+                    HttpSession session = request.getSession();
+                    session.setAttribute("username", username);
+                    ArrayList<String> cinemaNames = null;
+                    try {
+                        CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
+                        cinemaNames = cc.getCinemaChainList();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                    HttpSession session = request.getSession();
+                    session.setAttribute("chains", cinemaNames);
+                    //END OF TEMP CODE
+                    request.getRequestDispatcher(route.USER).forward(request, response);
+                    break;
+                case "staff":
+                    request.getRequestDispatcher(route.STAFF).forward(request, response);
+                    break;
+                case "admin":
+                    request.getRequestDispatcher(route.ADMIN).forward(request, response);
+                    break;
+            }//end of switch
             response.sendRedirect("/movie");
+
         } else {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);

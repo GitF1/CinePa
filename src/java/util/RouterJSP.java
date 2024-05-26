@@ -25,4 +25,12 @@ public class RouterJSP {
     
     //for example, must replace when get real page content schedule component
     public String SCHEDULE_MOIVE = "components/schedule/Schedule.jsp";
+    
+    public String USER = "test2.jsp";//templatefor testing login by role
+    
+    public String STAFF = "page/staff/Staff.jsp";//templatefor testing login by role
+    
+    public String ADMIN = "page/admin/Admin.jsp";//templatefor testing login by role
+    
+    
 }
