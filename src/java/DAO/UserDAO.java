@@ -79,28 +79,35 @@ public class UserDAO extends SQLServerConnect {
         }
         return null;
     }
-    
+
     //DuyND-Get Role By email or username
     public String getUserRole(String username_email) throws SQLException {
-        String sqlQuery = "SELECT *\n"
-                + "FROM [User]\n"
-                + "WHERE (Username = '" + username_email + "' " + "OR Email = '" + username_email + "'" + ")\n"
         
-                + "AND Status = 1";
-        ResultSet rs = getResultSet(sqlQuery);
-        if (rs.next()) {
-            return rs.getString("Role");
+        String role = "";
+        String sqlQuery = "SELECT Role FROM [User] WHERE (Username = ? OR Email = ?) AND Status = 1";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setString(1, username_email);
+            pstmt.setString(2, username_email);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    role = rs.getString("Role");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
         }
-        return null;
+        return role;
+
     }
-    
+
 //    DuyND - get username by username or email:)
-    
     public String getUsername(String username_email) throws SQLException {
         String sqlQuery = "SELECT *\n"
                 + "FROM [User]\n"
                 + "WHERE (Username = '" + username_email + "' " + "OR Email = '" + username_email + "'" + ")\n"
-        
                 + "AND Status = 1";
         ResultSet rs = getResultSet(sqlQuery);
         if (rs.next()) {

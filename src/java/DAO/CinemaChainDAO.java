@@ -50,7 +50,9 @@ public class CinemaChainDAO extends SQLServerConnect {
     }
 
     public ArrayList<String> getCinemaChainList() throws SQLException {
+        
         ArrayList<String> cinemaNames = new ArrayList<>();
+        
         String sqlQuery = "SELECT Name FROM CinemaChain";
 
         ResultSet rs = getResultSet(sqlQuery);
