@@ -63,7 +63,5 @@ public class SQLServerConnect {
         return null;
     }
     
-    public static void main(String[] args) {
-        
-    }
+    
 }

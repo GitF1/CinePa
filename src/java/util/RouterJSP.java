@@ -9,19 +9,21 @@ package util;
  * @author Admin
  */
 public class RouterJSP {
-    
-    
+
     public String HOMEPAGE = "page/home/Home.jsp";
-    
+
     public String REGISTER = "page/auth/Register.jsp";
-    
+
     public String LOGIN = "page/auth/Login.jsp";
-    
+
     public String VERIFY = "page/auth/Verify.jsp";
-    
+
     public String FORGET_PASSWORD = "page/auth/ForgetPassword.jsp";
-    
+
     public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
-    
-    
+
+    public String MOVIE_LIST= "page/movie/MovieListComponents.jsp";
+
+    public String MOVIE_LISTA = "page/movie/Include.jsp";
+
 }

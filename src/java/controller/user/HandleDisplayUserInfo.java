@@ -44,7 +44,7 @@ public class HandleDisplayUserInfo extends HttpServlet {
         ServletContext context = getServletContext();
 
         // lay userID tu session or cookies : 
-        String id = "3";
+        String id = "10";
 
         User user = null;
         try {
