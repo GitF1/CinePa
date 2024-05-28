@@ -3,6 +3,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
 <%@ page import="model.MovieKhai" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <html>
     <head>
@@ -18,6 +21,12 @@
     </head>
 
     <body>
+        <c:if test="${not empty listAvailableMovies}">
+            <c:forEach var="item" items="${listAvailableMovies}">
+                <span class="mg20 clXam">${movie.year}</span>
+            </c:forEach>
+        </c:if>
+
 
         <!--  phan noi dung phim :  -->
         <div class="content">
@@ -183,7 +192,7 @@
         </div>
 
 
-                            <!-- phan modal :  -->
+        <!-- phan modal :  -->
         <div class="modal-t js-modal">
 
             <div class="trailer-modal-container js-modal-container">
@@ -221,14 +230,14 @@
                     </div>
                 </div>
 
-                        
+
 
             </div>
         </div>
 
-                        <script src="page/movie/DisplayMovieInfoJS.js">
-          
+        <script src="page/movie/DisplayMovieInfoJS.js">
 
-                        </script>
+
+        </script>
     </body>
 </html>
