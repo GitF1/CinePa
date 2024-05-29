@@ -56,7 +56,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
 
         // them vao Request : 
         request.setAttribute("movie", movie);
-        request.setAttribute("listAvalableMovies", listAvailabelMovies);
+        request.setAttribute("listAvailableMovies", listAvailabelMovies);
         request.setAttribute("listReviews", listReviews);
 
         // chuyen qua cho DisplayMovieInfo.jsp : 

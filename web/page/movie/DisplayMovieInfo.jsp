@@ -21,11 +21,7 @@
     </head>
 
     <body>
-        <c:if test="${not empty listAvailableMovies}">
-            <c:forEach var="item" items="${listAvailableMovies}">
-                <span class="mg20 clXam">${movie.year}</span>
-            </c:forEach>
-        </c:if>
+
 
 
         <!--  phan noi dung phim :  -->
@@ -109,36 +105,33 @@
                         <h3 class="review-heading">Binh luan tu nguoi xem</h3>
 
 
-
-                        <%
-    List<Review> listReviews = (List<Review>) request.getAttribute("listReviews");
-
-    if (listReviews != null) {
-        for (Review item : listReviews) {
-                        %>
-                        <div class="review-part">
-                            <div class="review-part-img"   style="background-image:  url('<%= item.getUserAvatarLink()  %>')"  ></div>
-                            <div class="review-part-detail">
-                                <p class="review-part-name"><%= item.getUsername()%></p>
-                                <span class="review-part-time"><%= item.getTimeCreated()%></span>
-                                <span class="review-part-cinepa">
-                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                    Đã mua qua CinePa
-                                </span>
-                            </div>
-                            <p class="review-part-rate">
-                                <i class="fa fa-star pdt0"></i>
-                                <%= item.getRating()%>
-                            </p>
-                            <div class="review-part-content">
-                                <%=item.getContent()%>
-                            </div>
-
-                        </div>    
-                        <%
-                                }
-                            }
-                        %>
+                     <c:choose>
+    <c:when test="${not empty listReviewsdd}">
+        <c:forEach var="item" items="${listReviews}">
+            <div class="review-part">
+                <div class="review-part-img" style="background-image: url('${item.userAvatarLink}')"></div>
+                <div class="review-part-detail">
+                    <p class="review-part-name">${item.username}</p>
+                    <span class="review-part-time">${item.timeCreated}</span>
+                    <span class="review-part-cinepa">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        Đã mua qua CinePa
+                    </span>
+                </div>
+                <p class="review-part-rate">
+                    <i class="fa fa-star pdt0"></i>
+                    ${item.rating}
+                </p>
+                <div class="review-part-content">
+                    ${item.content}
+                </div>
+            </div>
+        </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <p>Không có review nào.</p>
+    </c:otherwise>
+</c:choose>
 
 
                     </div>
@@ -155,35 +148,27 @@
 
 
 
-                    <%
-                        List<MovieKhai> listAvailableMovies = (List<MovieKhai>) request.getAttribute("listAvalableMovies");
+                    <c:if test="${not empty listAvailableMovies}">
 
-                        if (listAvailableMovies != null) {
-                            for (MovieKhai item : listAvailableMovies) {
-                    %>
-                    <div class="active-film row">
-                        <div class="active-film-img col-4">
-                            <a href="HandleDisplayMovieInfo?movieID=<%=item.getMovieID()%>" class="ctive-film-img-a"
-                               style="">
-                                <div class="active-film-img"
-                                     style="background-image:  url('<%= item.getImageURL()%>')"  >
+                        <c:forEach var="item" items="${listAvailableMovies}">
+                            <div class="active-film row">
+                                <div class="active-film-img col-4">
+                                    <a href="HandleDisplayMovieInfo?movieID=${item.movieID}" class="ctive-film-img-a" style="">
+                                        <div class="active-film-img" style="background-image: url('${item.imageURL}')"></div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="active-film-desc col-8">
-                            <p class="active-film-btn"><%= item.getCountry()%></p>
-                            <p class="active-film-desc"><%= item.getTitle()%></p>
-                            <p class="active-film-type"><%= "khinh di"%></p>
-                            <span class="active-film-rate">
-                                <i class="fa fa-star "></i>
-                                <%= item.getRating()%>
-                            </span>
-                        </div>
-                    </div>
-                    <%
-                            }
-                        }
-                    %>
+                                <div class="active-film-desc col-8">
+                                    <p class="active-film-btn">${item.country}</p>
+                                    <p class="active-film-desc">${item.title}</p>
+                                    <p class="active-film-type">khinh di</p>
+                                    <span class="active-film-rate">
+                                        <i class="fa fa-star"></i>
+                                        ${item.rating}
+                                    </span>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:if>
 
 
 
