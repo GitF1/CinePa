@@ -24,6 +24,6 @@ public class RouterJSP {
 
     public String MOVIE_LIST= "page/movie/MovieListComponents.jsp";
 
-    public String MOVIE_LISTA = "page/movie/Include.jsp";
+    public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
 
 }
