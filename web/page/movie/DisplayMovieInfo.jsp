@@ -3,13 +3,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
 <%@ page import="model.MovieKhai" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-
         <link rel="stylesheet" href="page/movie/DisplayMovieInfoCss.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -92,7 +90,10 @@
             <div class="row">
                 <div class="booking-ticket col-8">
                     <!-- Vinh code o day :  -->
-                    <div class="vinh"></div>
+                    
+                    <div class="vinh">
+                         <jsp:include page="../../components/schedule/Schedule.jsp" />
+                    </div>
 
 
                     <!-- Khai code phan review phim :  -->
@@ -183,7 +184,7 @@
         </div>
 
 
-                            <!-- phan modal :  -->
+        <!-- phan modal :  -->
         <div class="modal-t js-modal">
 
             <div class="trailer-modal-container js-modal-container">
@@ -221,14 +222,14 @@
                     </div>
                 </div>
 
-                        
+
 
             </div>
         </div>
 
-                        <script src="page/movie/DisplayMovieInfoJS.js">
-          
+        <script src="page/movie/DisplayMovieInfoJS.js">
 
-                        </script>
+
+        </script>
     </body>
 </html>

@@ -75,7 +75,8 @@
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    window.location.href = "/movie/schedule";
+                    var responseUrl = xhr.responseText;
+                    window.location.href = responseUrl;
                 }
             };
             xhr.send("date=" + encodeURIComponent(date));

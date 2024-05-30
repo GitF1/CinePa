@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 public class Validation {
 
     private final String passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$";
+    
     private final String EMAIL_PATTERN
             = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     private Pattern pattern = Pattern.compile(EMAIL_PATTERN);

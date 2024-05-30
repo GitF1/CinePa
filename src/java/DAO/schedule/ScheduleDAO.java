@@ -251,7 +251,7 @@ public class ScheduleDAO extends SQLServerConnect {
         // Get the necessary data
         List<String> citiesProvinces = getListCites();
         List<DateInfo> listDateOfWeek = new DateInfo().generateWeek();
-        List<CinemaChain> listCinemaChain = getListCinemaChain(10, 0);
+        List<CinemaChain> listCinemaChain = getListCinemaChain(4, 0);
         String selectedCity = getSelectedCity(schedule, citiesProvinces);
         int cinemaChainID = getCinemaChainID(schedule);
         String scheduleForDate = getScheduleForDate(schedule, listDateOfWeek);
@@ -354,6 +354,7 @@ public class ScheduleDAO extends SQLServerConnect {
 
         storeScheduleInSession(session, schedule);
         setAttribute(request, schedule);
+        
 
     }
 
@@ -379,26 +380,26 @@ public class ScheduleDAO extends SQLServerConnect {
         return (Schedule) session.getAttribute("schedule");
     }
 
-    // Implement methods to retrieve cinema, branch, listBranch, and listMovie
-    private CinemaChain getNewCinema(String cinemaID) {
-        // Retrieve cinema by ID from the database or another source
-        return new CinemaChain(); // Placeholder implementation
-    }
-
-    private Cinema getNewBranch(String branchID) {
-        // Retrieve branch by ID from the database or another source
-        return new Cinema(); // Placeholder implementation
-    }
-
-    private List<Cinema> getNewListBranch(String cinemaID) {
-        // Retrieve list of branches by cinema ID from the database or another source
-        return new ArrayList<>(); // Placeholder implementation
-    }
-
-    private List<Movie> getNewListMovie(String cinemaID) {
-        // Retrieve list of movies by cinema ID from the database or another source
-        return new ArrayList<>(); // Placeholder implementation
-    }
+//    // Implement methods to retrieve cinema, branch, listBranch, and listMovie
+//    private CinemaChain getNewCinema(String cinemaID) {
+//        // Retrieve cinema by ID from the database or another source
+//        return new CinemaChain(); // Placeholder implementation
+//    }
+//
+//    private Cinema getNewBranch(String branchID) {
+//        // Retrieve branch by ID from the database or another source
+//        return new Cinema(); // Placeholder implementation
+//    }
+//
+//    private List<Cinema> getNewListBranch(String cinemaID) {
+//        // Retrieve list of branches by cinema ID from the database or another source
+//        return new ArrayList<>(); // Placeholder implementation
+//    }
+//
+//    private List<Movie> getNewListMovie(String cinemaID) {
+//        // Retrieve list of movies by cinema ID from the database or another source
+//        return new ArrayList<>(); // Placeholder implementation
+//    }
 
     private void handleErrorGetDate(HttpServletRequest request) {
     }

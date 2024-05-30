@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.schedule;
+package controller.booking;
 
+import DAO.booking.BookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,41 +12,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import DAO.schedule.ScheduleDAO;
-import com.google.gson.JsonObject;
-import jakarta.servlet.RequestDispatcher;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.RouterJSP;
+import model.Seat;
+import model.CanteenItem;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "ScheduleMovieServlet", urlPatterns = {"/schedule"})
-public class ScheduleMovieServlet extends HttpServlet {
+@WebServlet(name = "BookingSeatServlet", urlPatterns = {"/select/seat"})
+public class BookingSeatServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    ScheduleDAO scheduleDAO;
-    RouterJSP route = new RouterJSP();
+    BookingDAO bookingDAO;
 
     @Override
     public void init()
             throws ServletException {
-        super.init();
+        super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         try {
-            scheduleDAO = new ScheduleDAO(getServletContext());
+            bookingDAO = new BookingDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(ScheduleMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookingSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -68,17 +57,21 @@ public class ScheduleMovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        try {
-            scheduleDAO.handleDoGetComponentSchedule(request, response);
 
-            request.getRequestDispatcher(route.SCHEDULE_MOIVE).forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ScheduleMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        int roomID = Integer.parseInt(request.getParameter("roomID"));
 
+        List<Seat> seats = bookingDAO.getListSeatByRoomID(roomID);
+        List<CanteenItem> canteenItems = bookingDAO.getListAllCanteenItem();
+        System.out.println("list seat: " + seats);
+        request.setAttribute("seats", seats);
+
+//        Gson gson = new GsonBuilder().create();
+//        String jsonSeats = gson.toJson(seats);
+        // Set JSON as a request attribute
+        
+        request.setAttribute("seats", seats);
+        request.setAttribute("canteenItems", canteenItems);
+        request.getRequestDispatcher("/page/booking/Seat.jsp").forward(request, response);
     }
 
     /**
@@ -92,16 +85,17 @@ public class ScheduleMovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        scheduleDAO.handleDoPostComponentSchedule(request, response);
-
-        String redirectUrl = "/movie/schedule";
-        response.setContentType("text/plain");
-        response.getWriter().write(redirectUrl);
-
+        processRequest(request, response);
     }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

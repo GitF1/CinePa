@@ -14,14 +14,14 @@
     </head>
     <body>
 
-        
+
 
         <select name="cityProvince" id="cityProvince" onchange="fetchCityProvinceDetails()">
             <c:forEach var="city" items="${citiesProvinces}">
                 <option value="${city}" ${city == citySelect ? 'selected' : ''}>${city}</option>
             </c:forEach>
         </select>
-        
+
         <script>
 
             function fetchCityProvinceDetails() {
@@ -34,7 +34,8 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // Handle the server response
-                        window.location.href = "/movie/schedule";
+                        var responseUrl = xhr.responseText;
+                        window.location.href = responseUrl;
                     }
                 }
             }

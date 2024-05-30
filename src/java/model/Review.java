@@ -1,7 +1,7 @@
 
 
 package model;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Review {
@@ -61,10 +61,6 @@ public class Review {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public LocalDateTime getTimeCreated() {
-        return timeCreated;
     }
 
    

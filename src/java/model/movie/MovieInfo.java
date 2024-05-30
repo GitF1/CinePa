@@ -1,9 +1,10 @@
 
-package model;
+package model.movie;
 import java.util.Date;
 import java.util.List;
+import model.Movie;
 
-public class MovieKhai {
+public class MovieInfo  {
     private int movieID;
     private int cinemaID;
     private String title;
@@ -18,12 +19,12 @@ public class MovieKhai {
     private List<String> genres;
 
     // Constructor
-
-    public MovieKhai() {
+    public MovieInfo() {
+        
     }
     
     
-    public MovieKhai(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL,
+    public MovieInfo(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL,
                  String synopsis, String country, int year, int length, String linkTrailer, List<String> genres) {
         this.movieID = movieID;
         this.cinemaID = cinemaID;

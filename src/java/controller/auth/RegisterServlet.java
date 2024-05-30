@@ -4,7 +4,6 @@
  */
 package controller.auth;
 
-import controller.auth.VerifyCodeServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -139,7 +138,9 @@ public class RegisterServlet extends HttpServlet {
         SendEmail sm = new SendEmail();
         String code = sm.getRanDom();
         User user = new User(username, email, fullName, code);
-        boolean isSuccessSendMail = sm.sendEmail(user);
+        System.out.println("email" + email + " ,code:" + code);
+        
+        boolean isSuccessSendMail = sm.sendEmail(email, code);
 
         // Handle email sending failure
         if (!isSuccessSendMail) {

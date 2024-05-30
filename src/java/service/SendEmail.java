@@ -24,25 +24,26 @@ public class SendEmail {
     private final String logo_url = "";
 
     public SendEmail() {
-        
-    }
 
+    }
 
     public String getRanDom() {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         return String.format("%06d", number);
     }
-    public  boolean sendEmail(String email, String code) {
+
+    public boolean sendEmail(String email, String code) {
         return sendEmail(new User(email, code));
     }
+
     public boolean sendEmail(User user) {
-        
+
         boolean test = false;
 
         String toEmail = user.getEmail();
         String fromEmail = "cinepa.org@gmail.com";  // your email
-        String password = "yknrqglbmlqumpwt";  // your app password
+        String password = "yknr qglb mlqu mpwt";  // your app password
 
         try {
 
@@ -56,14 +57,14 @@ public class SendEmail {
             pr.remove("mail.smtp.ssl.enable");
             pr.remove("mail.smtp.socketFactory.port");
             pr.remove("mail.smtp.socketFactory");
-
-            // Get session
+            //
             Session session = Session.getInstance(pr, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(fromEmail, password);
                 }
             });
+         
 
             Message mess = new MimeMessage(session);
             mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
