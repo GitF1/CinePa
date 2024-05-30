@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import model.Movie;
 import model.MovieInGenre;
@@ -64,16 +65,32 @@ public class FilterMovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String genre = request.getParameter("genre");
+         String genre = request.getParameter("genre");
+        String country = request.getParameter("country");
+        String yearParam = request.getParameter("year");
+        int year = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt(yearParam) : -1;
         String pageParam = request.getParameter("page");
         int page = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
         int moviesPerPage = 16;
 
-        List<Movie> movies;
+        List<Movie> movies = movieDAO.getAllMovie();
+
         if (genre != null && !genre.trim().isEmpty()) {
-            movies = movieDAO.getMoviesByGenre(genre);
-        } else {
-            movies = movieDAO.getAllMovie();
+            movies = movies.stream().filter(movie -> {
+                List<String> genres = movieDAO.getGenresForMovie(movie.getMovieID());
+                return genres.contains(genre);
+            }).collect(Collectors.toList());
+        }
+
+        if (country != null && !country.trim().isEmpty()) {
+            movies = movies.stream().filter(movie -> movie.getCountry().equals(country)).collect(Collectors.toList());
+        }
+
+        if (year != -1) {
+            movies = movies.stream().filter(movie -> {
+                int movieYear = Integer.parseInt(movie.getDatePublished().split("-")[0]);
+                return movieYear == year;
+            }).collect(Collectors.toList());
         }
 
         int totalMovies = movies.size();
@@ -82,14 +99,22 @@ public class FilterMovieServlet extends HttpServlet {
         List<Movie> moviesPage = movies.subList(start, end);
 
         Map<Integer, List<String>> movieGenresMap = movieDAO.getAllMovieGenres();
+        Set<String> allGenres = movieDAO.getAllGenres();
+        Set<String> allCountries = movieDAO.getAllCountries();
+        Set<Integer> allYears = movieDAO.getAllYears();
 
         request.setAttribute("movies", moviesPage);
         request.setAttribute("movieGenresMap", movieGenresMap);
+        request.setAttribute("allGenres", allGenres);
+        request.setAttribute("allCountries", allCountries);
+        request.setAttribute("allYears", allYears);
         request.setAttribute("genre", genre);
+        request.setAttribute("country", country);
+        request.setAttribute("year", year);
         request.setAttribute("totalPages", (int) Math.ceil((double) totalMovies / moviesPerPage));
         request.setAttribute("currentPage", page);
 
-            request.getRequestDispatcher(router.MOVIE_Genre).forward(request, response);
+        request.getRequestDispatcher(router.MOVIE_Genre).forward(request, response);
     }
 
    

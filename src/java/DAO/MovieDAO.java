@@ -11,8 +11,10 @@ import DB.SQLServerConnect;
 import jakarta.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import model.Movie;
 import model.MovieInGenre;
 
@@ -74,7 +76,7 @@ public class MovieDAO extends SQLServerConnect {
         }
         return list;
     }
-    
+
     //
     public Map<Integer, List<String>> getAllMovieGenres() {
         Map<Integer, List<String>> movieGenresMap = new HashMap<>();
@@ -138,34 +140,151 @@ public class MovieDAO extends SQLServerConnect {
         }
         return list;
     }
-    
+
     //
     public List<Movie> getMoviesByGenre(String genre) {
-    List<Movie> list = new ArrayList<>();
-    String sql = "SELECT m.* FROM Movie m JOIN MovieInGenre mg ON m.MovieID = mg.MovieID WHERE mg.Genre = ?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setString(1, genre);
-        ResultSet rs = st.executeQuery();
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT m.* FROM Movie m JOIN MovieInGenre mg ON m.MovieID = mg.MovieID WHERE mg.Genre = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, genre);
+            ResultSet rs = st.executeQuery();
 
-        while (rs.next()) {
-            Movie movie = new Movie(
-                    rs.getInt("MovieID"),
-                    rs.getString("Title"),
-                    rs.getString("Synopsis"),
-                    rs.getString("DatePublished"),
-                    rs.getString("ImageURL"),
-                    rs.getDouble("Rating"),
-                    rs.getString("Status"),
-                    rs.getString("Country")
-            );
-            list.add(movie);
+            while (rs.next()) {
+                Movie movie = new Movie(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-    } catch (SQLException e) {
-        System.out.println(e);
+        return list;
     }
-    return list;
-}
 
+    public List<String> getAllDistinctGenres() {
+        List<String> genres = new ArrayList<>();
+        String sql = "SELECT DISTINCT Genre FROM MovieInGenre";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                genres.add(rs.getString("Genre"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return genres;
+    }
+    
+    ///
+    // Get all countries
+    public Set<String> getAllCountries() {
+        Set<String> countries = new HashSet<>();
+        String sql = "SELECT DISTINCT Country FROM Movie";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                countries.add(rs.getString("Country"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return countries;
+    }
+
+    // Get all years
+    public Set<Integer> getAllYears() {
+        Set<Integer> years = new HashSet<>();
+        String sql = "SELECT DISTINCT YEAR(DatePublished) as Year FROM Movie";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                years.add(rs.getInt("Year"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return years;
+    }
+
+    // Get movies by country
+    public List<Movie> getMoviesByCountry(String country) {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE Country = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, country);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Movie movie = new Movie(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    // Get movies by year
+    public List<Movie> getMoviesByYear(int year) {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE YEAR(DatePublished) = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, year);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Movie movie = new Movie(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+    
+     // New method to fetch all distinct genres
+    public Set<String> getAllGenres() {
+        Set<String> genres = new HashSet<>();
+        String sql = "SELECT DISTINCT Genre FROM MovieInGenre";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                genres.add(rs.getString("Genre"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return genres;
+    }
 
 }
