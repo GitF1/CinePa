@@ -37,7 +37,7 @@
                             </div>
 
                             <p class="mb-4"></p>
-                            <form action="${pageContext.request.contextPath}/UpdateUserInfo" method="post">
+                            <form action="${pageContext.request.contextPath}/updateUserInfo" method="post">
 
                                 <div class="hide">
                                     <input type="text" id="username" name="userId" value="${user.userID}"  >
@@ -135,6 +135,11 @@
                             <form action="page/user/ChangePassword.jsp"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Change Password </button>
+                            </form>
+                                        <!--button added to return to homepage-DuyND-->
+                            <form action="test2.jsp"  > 
+
+                                <button class="btn px-5 btn-primary cpw"  >Return </button>
                             </form>
                             <form action="${pageContext.request.contextPath}/logout"  > 
                                 <button class="btn px-5 btn-primary  lob"  >Logout</button>

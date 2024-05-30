@@ -4,7 +4,6 @@
  */
 package controller.user;
 
-
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -12,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -42,13 +42,14 @@ public class HandleDisplayUserInfo extends HttpServlet {
             throws ServletException, IOException {
         // tao Servlet Context : 
         ServletContext context = getServletContext();
-
+        HttpSession session = request.getSession();
         // lay userID tu session : 
-        String id = "4";
-        
+        String username = (String)session.getAttribute("username");
+//        String username = "123";//TEMP TESTING DATA, REMOVE LATER - DuyND
+
         User user = new User();
         try {
-            user = userDAO.getUserById(id);
+            user = userDAO.getUserByUsername(username);
         } catch (Exception ex) {
             user.setAddress(ex.getMessage());
             Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);

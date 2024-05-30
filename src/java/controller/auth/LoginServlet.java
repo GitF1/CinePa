@@ -106,20 +106,21 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        HttpSession session = request.getSession();
         if (ok) {
 //            Switch case for role
 //          Add user to session attribute
             try {
                 username = userDAO.getUsername(username_email);
+
+                session.setAttribute("username", username);
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             switch (role) {
                 case "user":
                     //TEMP CODE FOR GETTING CHAINS & Username
-                    HttpSession session = request.getSession();
-                    session.setAttribute("username", username);
+
                     ArrayList<String> cinemaNames = null;
                     try {
                         CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
