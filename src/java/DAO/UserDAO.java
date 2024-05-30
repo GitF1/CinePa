@@ -165,6 +165,29 @@ public class UserDAO extends SQLServerConnect {
 
     }
 
+    //updateAvatarByUsername because I don't like UserID - DuyND
+    public boolean updateAvatarByUsername(String username, String avatarLink) throws Exception {
+        String sql = "UPDATE [User] SET  AvatarLink=? WHERE Username=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+//            pstmt.setString(1, user.getAvatarLink());
+//            pstmt.setString(2, user.getUsername());
+//            pstmt.setString(3, user.getPassword());
+//            pstmt.setString(4, user.getEmail());
+            pstmt.setString(1, avatarLink);
+            pstmt.setString(2, username);
+
+            int updated = pstmt.executeUpdate();
+            return updated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow SQLException for handling in the calling method
+        }
+
+    }
+
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserID(rs.getInt("UserID"));

@@ -24,6 +24,7 @@
 
         <div class="d-lg-flex half">
             <div class="bg order-1 order-md-2" style="background-image: url('${pageContext.request.contextPath}/page/user/BackGroundImage/bg_1.jpg');"></div>
+
             <div class="contents order-2 order-md-1">
 
                 <div class="container">
@@ -32,6 +33,12 @@
                             <div class="user-info">
                                 <div class="user-avatar">
                                     <img src="${user.avatarLink}" alt="User Avatar">
+                                </div>
+                                <div class="container">
+                                    <form method="post" action="avatarUploadServlet" enctype="multipart/form-data">
+                                        <input type="file" name="file" />
+                                        <input type="submit" value="Upload" />
+                                    </form>
                                 </div>
                                 <h3>View User's Information</h3>
                             </div>
@@ -136,14 +143,12 @@
 
                                 <button class="btn px-5 btn-primary cpw"  >Change Password </button>
                             </form>
-                                        <!--button added to return to homepage-DuyND-->
+                            <!--button added to return to homepage-DuyND-->
                             <form action="test2.jsp"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Return </button>
                             </form>
-                            <form action="${pageContext.request.contextPath}/logout"  > 
-                                <button class="btn px-5 btn-primary  lob"  >Logout</button>
-                            </form>
+                            <!--Removed logout from profile, was not working and you don't need to logout from profile - DuyND-->
                         </div>
                     </div>
                 </div>
