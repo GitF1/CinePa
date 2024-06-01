@@ -38,4 +38,9 @@ public class RouterJSP {
     public static String VN_PAY_PAYMENT_HOMEPAGE = "/page/payment/vnpay/vnpay_pay.jsp";
     
     public static String PAYMENT_HOMEPAGE = "/page/payment/payment.index";
+
+    public String MOVIE_LIST= "page/movie/MovieListComponents.jsp";
+
+    public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
+
 }

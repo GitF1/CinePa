@@ -8,18 +8,32 @@ public class Movie {
     private String datePublished;
     private String imageURL;
     private double rating;
+    private String status;
+    private String country;
 
     public Movie() {
     }
 
     // Constructor
-    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating) {
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
         this.movieID = movieID;
         this.title = title;
         this.synopsis = synopsis;
         this.datePublished = datePublished;
         this.imageURL = imageURL;
         this.rating = rating;
+        this.status = status;
+        this.country = country;
+    }
+
+
+
+    
+    
+
+    // Default constructor
+    public Movie() {
     }
 
     // Getter and Setter methods
@@ -71,15 +85,26 @@ public class Movie {
         this.rating = rating;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "Movie{"
-                + "movieID=" + movieID
-                + ", title='" + title + '\''
-                + ", synopsis='" + synopsis + '\''
-                + ", datePublished='" + datePublished + '\''
-                + ", imageURL='" + imageURL + '\''
-                + ", rating=" + rating
-                + '}';
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + '}';
     }
+
+    
 }

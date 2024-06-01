@@ -137,9 +137,9 @@ public class RegisterServlet extends HttpServlet {
         // Send verification email
         SendEmail sm = new SendEmail();
         String code = sm.getRanDom();
-        User user = new User(username, email, fullName, code);
+
+        User user = new User(fullName, username, email, code);
         System.out.println("email" + email + " ,code:" + code);
-        
         boolean isSuccessSendMail = sm.sendEmail(email, code);
 
         // Handle email sending failure
