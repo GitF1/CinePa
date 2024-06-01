@@ -10,9 +10,6 @@ jakarta.activation-2.0.0.jar or lastest
 jakarta.mail-2.0.0.jar or lastest
 
 
-#Library for Cloudinary(Alpha)
-
-=======
 #Library for Login Social Service(Google Or FaceBook)
 
 #Library for hashing and using cloudinary
