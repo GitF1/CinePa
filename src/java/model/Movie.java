@@ -1,20 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author Admin
- */
 public class Movie {
-      private int movieID;
+
+    private int movieID;
     private String title;
     private String synopsis;
     private String datePublished;
     private String imageURL;
     private double rating;
+
+    public Movie() {
+    }
 
     // Constructor
     public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating) {
@@ -24,10 +20,6 @@ public class Movie {
         this.datePublished = datePublished;
         this.imageURL = imageURL;
         this.rating = rating;
-    }
-
-    // Default constructor
-    public Movie() {
     }
 
     // Getter and Setter methods
@@ -81,13 +73,13 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "movieID=" + movieID +
-                ", title='" + title + '\'' +
-                ", synopsis='" + synopsis + '\'' +
-                ", datePublished='" + datePublished + '\'' +
-                ", imageURL='" + imageURL + '\'' +
-                ", rating=" + rating +
-                '}';
+        return "Movie{"
+                + "movieID=" + movieID
+                + ", title='" + title + '\''
+                + ", synopsis='" + synopsis + '\''
+                + ", datePublished='" + datePublished + '\''
+                + ", imageURL='" + imageURL + '\''
+                + ", rating=" + rating
+                + '}';
     }
 }

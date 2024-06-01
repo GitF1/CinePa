@@ -43,13 +43,14 @@ public class HandleDisplayUserInfo extends HttpServlet {
         // tao Servlet Context : 
         ServletContext context = getServletContext();
 
-        // lay userID tu session or cookies : 
-        String id = "3";
-
-        User user = null;
+        // lay userID tu session : 
+        String id = "4";
+        
+        User user = new User();
         try {
             user = userDAO.getUserById(id);
         } catch (Exception ex) {
+            user.setAddress(ex.getMessage());
             Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
 

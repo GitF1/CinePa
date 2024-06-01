@@ -9,6 +9,10 @@ jakarta.servlet.jsp.jstl-api-2.0.0.jar/lastest
 jakarta.activation-2.0.0.jar or lastest
 jakarta.mail-2.0.0.jar or lastest
 
+
+#Library for Cloudinary(Alpha)
+
+=======
 #Library for Login Social Service(Google Or FaceBook)
 
 #Library for hashing and using cloudinary
@@ -26,3 +30,4 @@ httpcore-4.4.jar
 httpmime-4.4.jar
 jsp-api-2.0.jar
 servlet-api-2.4.jar
+

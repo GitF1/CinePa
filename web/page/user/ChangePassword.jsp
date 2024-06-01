@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="changPasswordCss.css"/>
+        <link rel="stylesheet" href="UserInfoCss/changPasswordCss.css"/>
         
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -18,7 +18,7 @@
         
         <h2>Change Password</h2>
         
-        <form action="${pageContext.request.contextPath}/changPasswordServlet" method="post" onsubmit="return validateForm()">
+        <form action="${pageContext.request.contextPath}/changePasswordServlet" method="post" onsubmit="return validateForm()">
            
             
             <div class="form-group">

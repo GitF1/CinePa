@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css" />
 
         <!-- Main css -->
-        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="/movie/styles/auth/register/style.css" />
     </head>
     <body>
         <div class="main">
@@ -70,7 +70,7 @@
                         <div class="signup-image">
                             <a href="#" class="signup-image-link">Welcome to CinePa</a>
                             <figure>
-                                <img src="images/signup-image.jpg" alt="sign up image" />
+                                <img src="assets/images/signup-image.jpg" alt="sign up image" />
                             </figure>
                         </div>
                     </div>

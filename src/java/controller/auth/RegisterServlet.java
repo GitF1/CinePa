@@ -4,7 +4,6 @@
  */
 package controller.auth;
 
-import controller.auth.VerifyCodeServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,6 +19,7 @@ import util.RouterJSP;
 import model.User;
 import service.SendEmail;
 import service.UserServiceImpl;
+import util.Validation;
 
 /**
  *
@@ -30,6 +30,7 @@ public class RegisterServlet extends HttpServlet {
 
     UserServiceInteface userService;
     RouterJSP route = new RouterJSP();
+    Validation validate = new Validation();
 
     @Override
     public void init() throws ServletException {
@@ -90,74 +91,82 @@ public class RegisterServlet extends HttpServlet {
 
     protected void postRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // Set character encoding and content type
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
 
+        // Retrieve form parameters
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
         String email = request.getParameter("email");
         String fullName = request.getParameter("fullName");
 
-        String passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$";
-        String alertMsg = " ";
+        // Regular expression pattern for password validation
+        String alertMsg = "";
 
-        // IF password doesn't match pattern
-        if (!password.matches(passwordPattern)) {
-            request.setAttribute("error", "Mật khẩu phải chứa ít nhất một số và một kí tự chữ cái, và có ít nhất 8 kí tự.");
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+        // Password validation
+        if (!validate.isPasswordPattern(password)) {
+            alertMsg = "Mật khẩu phải chứa ít nhất một số và một kí tự chữ cái, và có ít nhất 8 kí tự.";
+            forwardToRegisterWithError(request, response, alertMsg);
             return;
         }
-        // If  confirm password doesn't match password
+
+        // Confirm password validation
         if (!password.equals(confirmPassword)) {
             alertMsg = "Mật khẩu và xác nhận mật khẩu không khớp!";
-            request.setAttribute("error", alertMsg);
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+            forwardToRegisterWithError(request, response, alertMsg);
             return;
         }
-        // chek exist email 
+
+        // Check if email exists
         if (userService.checkExistEmail(email)) {
             alertMsg = "Email đã tồn tại!";
-            request.setAttribute("error", alertMsg);
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+            forwardToRegisterWithError(request, response, alertMsg);
+            return;
         }
 
-        // check exsit username
+        // Check if username exists
         if (userService.checkExistUsername(username)) {
             alertMsg = "Tài khoản đã tồn tại!";
-            request.setAttribute("error", alertMsg);
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+            forwardToRegisterWithError(request, response, alertMsg);
+            return;
         }
 
-        //--------------------------------------------------------------------//
-        // Send Mail Handler 
+        // Send verification email
         SendEmail sm = new SendEmail();
         String code = sm.getRanDom();
         User user = new User(username, email, fullName, code);
-        boolean isSuccessSendMail = sm.sendEmail(user);
+        System.out.println("email" + email + " ,code:" + code);
+        
+        boolean isSuccessSendMail = sm.sendEmail(email, code);
 
-        // If Send Mail Failed 
+        // Handle email sending failure
         if (!isSuccessSendMail) {
             alertMsg = "Lỗi khi gửi mail!";
-            request.setAttribute("error", alertMsg);
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+            forwardToRegisterWithError(request, response, alertMsg);
+            return;
         }
 
-        // Send Mail Sucessfully
+        // Store user in session and register user
         HttpSession session = request.getSession();
         session.setAttribute("account", user);
         boolean isSuccess = userService.register(fullName, username, email, password, code);
 
-        // handle  verify email code
+        // Redirect or display error message based on registration success
         if (isSuccess) {
             response.sendRedirect(request.getContextPath() + "/verifycode");
         } else {
             alertMsg = "Lỗi hệ thống!";
-            request.setAttribute("error", alertMsg);
-            request.getRequestDispatcher(route.REGISTER).forward(request, response);
+            forwardToRegisterWithError(request, response, alertMsg);
         }
+    }
 
+// Helper method to forward to register page with error message
+    private void forwardToRegisterWithError(HttpServletRequest request, HttpServletResponse response, String errorMsg) throws ServletException, IOException {
+        request.setAttribute("error", errorMsg);
+        request.getRequestDispatcher(route.REGISTER).forward(request, response);
     }
 
     @Override
