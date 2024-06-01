@@ -1,19 +1,17 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page import="model.User" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/bootstrap.min.css"/>
-        <!-- Style -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/displayUserInfoCss.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/page/user/UserInfoCss/style.css"/>
-
-
         <title>display user Page</title>
 
     </head>
@@ -32,10 +30,10 @@
                         <div class="col-md-7 py-5">
                             <div class="user-info">
                                 <div class="user-avatar">
-                                    <img src="${user.avatarLink}" alt="User Avatar">
+                                    <img src="${user.getAvatarLink()}" alt="User Avatar">
                                 </div>
                                 <div class="container">
-                                    <form method="post" action="avatarUploadServlet" enctype="multipart/form-data">
+                                    <form method="post" action="/movie/user/upload/avatar" enctype="multipart/form-data">
                                         <input type="file" name="file" />
                                         <input type="submit" value="Upload" />
                                     </form>
@@ -47,14 +45,14 @@
                             <form action="${pageContext.request.contextPath}/updateUserInfo" method="post">
 
                                 <div class="hide">
-                                    <input type="text" id="username" name="userId" value="${user.userID}"  >
+                                    <input type="text" id="username" name="userId" value="${user.getUserID()}"  >
                                 </div>
 
                                 <div class="row ">
                                     <div class="col-md-6 hide">
                                         <div class="form-group first">
                                             <label for="fname">Username</label>
-                                            <input type="text" class="form-control" id="fname"  name="username" readonly  value="${user.username}" >
+                                            <input type="text" class="form-control" id="fname"  name="username" readonly  value="${user.getUsername()}" >
                                         </div>
                                     </div>
 
@@ -62,7 +60,7 @@
 
                                         <div class="form-group last mb-3">
                                             <label for="password">Avatar Link </label>
-                                            <input type="password" class="form-control" id="password" name="avatarUrl"  value="${user.avatarLink}">
+                                            <input type="password" class="form-control" id="password" name="avatarUrl"  value="${user.getAvatarLink()}">
                                         </div>
                                     </div>
 
@@ -70,7 +68,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Email</label>
-                                            <input type="text" class="form-control" id="lname" name="email" readonly  value="${user.email}" >
+                                            <input type="text" class="form-control" id="lname" name="email" readonly  value="${user.getEmail()}" >
                                         </div>
                                     </div>
                                 </div>
@@ -78,13 +76,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="fname">Full Name</label>
-                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.fullName}">
+                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.getFullName()}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Birthday</label>
-                                            <input type="text" class="form-control" id="lname" name="birthday" value="${user.birthday}">
+                                            <input type="text" class="form-control" id="lname" name="birthday" value="${user.getBirthday()}">
                                         </div>
                                     </div>
                                 </div>
@@ -92,13 +90,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="fname">Address</label>
-                                            <input type="text" class="form-control" id="fname" name="address" value="${user.address}">
+                                            <input type="text" class="form-control" id="fname" name="address" value="${user.getAddress()}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Province</label>
-                                            <input type="text" class="form-control" id="lname" name="province" value="${user.province}">
+                                            <input type="text" class="form-control" id="lname" name="province" value="${user.getProvince()}">
                                         </div>
                                     </div>
                                 </div>
@@ -107,13 +105,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">District</label>
-                                            <input type="text" class="form-control" id="lname" name="district"  value="${user.district} ">
+                                            <input type="text" class="form-control" id="lname" name="district"  value="${user.getDistrict()} ">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Commune</label>
-                                            <input type="text" class="form-control" id="lname" name="commune" value="${user.commune} " >
+                                            <input type="text" class="form-control" id="lname" name="commune" value="${user.getCommune()} " >
                                         </div>
                                     </div>
                                 </div>

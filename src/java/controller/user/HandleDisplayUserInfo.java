@@ -21,7 +21,7 @@ import util.RouterJSP;
  *
  * @author FPTSHOP
  */
-@WebServlet("/handleDisplayUserInfo")
+@WebServlet("/user/information")
 public class HandleDisplayUserInfo extends HttpServlet {
 
     RouterJSP router = new RouterJSP();
@@ -40,24 +40,26 @@ public class HandleDisplayUserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         // tao Servlet Context : 
         ServletContext context = getServletContext();
         HttpSession session = request.getSession();
+        
         // lay userID tu session : 
         String username = (String)session.getAttribute("username");
-//        String username = "123";//TEMP TESTING DATA, REMOVE LATER - DuyND
 
         User user = new User();
+        
         try {
             user = userDAO.getUserByUsername(username);
         } catch (Exception ex) {
             user.setAddress(ex.getMessage());
             Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println("user: "+ user);
         // them doi tuong user vao request : 
         request.setAttribute("user", user);
-// chuyen sang display ra bang thong tin user : 
+
         request.getRequestDispatcher(router.DISPLAY_INFO).forward(request, response);
 
     }

@@ -19,7 +19,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.User;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -88,15 +90,17 @@ public class LoginServlet extends HttpServlet {
 
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
-        String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
-        Boolean ok = null;
-        String role = "";
-        String username = "";
-        try {
-            role = userDAO.getUserRole(username_email);
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        if (username_email == null || password == null) {
+            request.setAttribute("ok", "bạn chưa nhâp tên đăng nhập hoặc password");
+            request.getRequestDispatcher(route.LOGIN).forward(request, response);
+            return;
         }
+        String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
+
+        Boolean ok = null;
+        User user;
+        String role = "";
+
         try {
 
             ok = userDAO.checkLogin(username_email, hash);
@@ -108,17 +112,28 @@ public class LoginServlet extends HttpServlet {
         }
         HttpSession session = request.getSession();
         if (ok) {
-//            Switch case for role
-//          Add user to session attribute
-            try {
-                username = userDAO.getUsername(username_email);
 
-                session.setAttribute("username", username);
+            try {
+                user = userDAO.getUser(username_email);
+
+                if (user == null) {
+                    response.sendRedirect(RouterURL.LOGIN);
+                    return;
+                }
+                
+                System.out.println("user" + user.toString());
+                
+                role = user.getRole();
+                 
+                session.setAttribute("userID", user.getUserID());
+                session.setAttribute("username", user.getUsername());
+                session.setAttribute("role", role);
+
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             switch (role) {
-                case "user":
+                case "USER" -> {
                     //TEMP CODE FOR GETTING CHAINS & Username
 
                     ArrayList<String> cinemaNames = null;
@@ -128,19 +143,18 @@ public class LoginServlet extends HttpServlet {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-//                    HttpSession session = request.getSession();
+
                     session.setAttribute("chains", cinemaNames);
                     //END OF TEMP CODE
-                    request.getRequestDispatcher(route.USER).forward(request, response);
-                    break;
-                case "staff":
+                     response.sendRedirect(RouterURL.HOMEPAGE);
+                }
+                case "STAFF" ->
                     request.getRequestDispatcher(route.STAFF).forward(request, response);
-                    break;
-                case "admin":
+                case "ADMIN" ->
                     request.getRequestDispatcher(route.ADMIN).forward(request, response);
-                    break;
-            }//end of switch
-            response.sendRedirect("/movie");
+            }
+
+            //response.sendRedirect("/movie");
 
         } else {
             request.setAttribute("ok", ok);

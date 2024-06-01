@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import jakarta.servlet.annotation.MultipartConfig;
 import model.User;
 import DAO.UserDAO;
 import jakarta.servlet.annotation.WebServlet;
@@ -47,7 +46,6 @@ public class UpdateUserInfo extends HttpServlet {
         String province = request.getParameter("province");
         String district = request.getParameter("district");
         String commune = request.getParameter("commune");
-
         String avatarUrl = request.getParameter("avatarUrl");
 
         User user = new User();
