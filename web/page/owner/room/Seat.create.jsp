@@ -13,8 +13,9 @@
             .seat {
                 position: absolute;
                 display: inline-block;
-                background-color: #ccc;
-                border: 1px solid #333;
+                background-color: #f5f5f5;
+                border: 1px solid #7ee0fb;
+                opacity: 0.6;
                 text-align: center;
                 line-height: 50px;
                 cursor: pointer;
@@ -23,7 +24,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                transition: all 0.4s linear;
+                transition: all 0.2s linear;
                 -webkit-touch-callout: none; /* iOS Safari */
                 -webkit-user-select: none; /* Safari */
                 -khtml-user-select: none; /* Konqueror HTML */
@@ -33,16 +34,19 @@
                                       supported by Chrome, Edge, Opera and Firefox */
 
             }
-
+            .seat:hover{
+                opacity: 1;
+                transform:scale(1.1);
+            }
             .selected {
-                background-color: #6c6;
+                background-color: #6a0dad;
             }
 
             #seatsContainer {
 
                 position: relative;
                 width: 90vw;
-                height: 80vh;
+                height: 82vh;
                 margin: auto;
                 transition: all 0.1s linear;
                 cursor: grab;
@@ -164,6 +168,16 @@
                 const container = document.getElementById('seatsContainer');
                 const dx = event.clientX - initialX;
                 const dy = event.clientY - initialY;
+
+                console.log("dx: ", xOffset + dx, "dy:  ", yOffset + dy);
+                console.log("inner height: ", innerHeight, "innerWitdth", innerWidth);
+
+
+
+                if (Math.abs(xOffset + dx) > innerWidth - 10 || Math.abs(yOffset + dy) > innerHeight) {
+                    return;
+                }
+
                 function updatePosition() {
                     container.style.transform = 'translate(' + (xOffset + dx) + 'px, ' + (yOffset + dy) + 'px) scale(' + zoomScale + ')';
                 }
@@ -178,15 +192,12 @@
                 isDragging = false;
                 xOffset += event.clientX - initialX;
                 yOffset += event.clientY - initialY;
-                //container.style.cursor = 'grab';
+
             }
 
             window.onload = () => {
-
                 createSeats();
-
                 const container = document.getElementById('seatsContainer');
-
                 container.addEventListener('wheel', zoom);
                 container.addEventListener('mousedown', startDrag);
                 container.addEventListener('mousemove', drag);

@@ -114,27 +114,23 @@ public class BookingDAO extends SQLServerConnect {
         ResultSet rs = null;
 
         try {
-            // Connect to the database
 
             // Disable auto-commit to handle transactions manually
             connection.setAutoCommit(false);
 
-            // Check if the seats are already booked
-            String checkSeatsSQL = "SELECT SeatID FROM Ticket WHERE MovieSlotID = ? AND SeatID IN (";
-            StringBuilder placeholders = new StringBuilder();
-            for (int i = 0; i < seatIDs.size(); i++) {
-                placeholders.append("?");
-                if (i < seatIDs.size() - 1) {
-                    placeholders.append(",");
-                }
-            }
-            checkSeatsSQL += placeholders.toString() + ") FOR UPDATE";
+            // Check if the seats are already booked of this movie slot
+            String checkSeatsSQL = "SELECT SeatID FROM Ticket WHERE MovieSlotID = ? AND SeatID IN ("
+                    + String.join(",", seatIDs.stream().map(id -> "?").toArray(String[]::new))
+                    + ") FOR UPDATE";
             pstmt = connection.prepareStatement(checkSeatsSQL);
             pstmt.setInt(1, movieSlotID);
+            
             for (int i = 0; i < seatIDs.size(); i++) {
                 pstmt.setInt(i + 2, seatIDs.get(i));
             }
+            
             rs = pstmt.executeQuery();
+            
             if (rs.next()) {
                 // If any seat is already booked, return false
                 return false;
@@ -162,9 +158,10 @@ public class BookingDAO extends SQLServerConnect {
                 pstmt.setInt(3, seatID);
                 pstmt.addBatch();
             }
+            
             pstmt.executeBatch();
 
-            // Insert canteen items in order
+            // Insert canteen items in order if user select
             if (canteenOrderItems != null && !canteenOrderItems.isEmpty()) {
                 String insertCanteenItemSQL = "INSERT INTO CanteenItemInOrder (OrderID, CanteenItemID, Amount, Price) VALUES (?, ?, ?, ?)";
                 pstmt = connection.prepareStatement(insertCanteenItemSQL);
@@ -178,7 +175,7 @@ public class BookingDAO extends SQLServerConnect {
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();
-            }
+            }   
 
             // Commit the transaction
             connection.commit();
