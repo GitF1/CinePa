@@ -19,4 +19,6 @@ public class RouterURL {
     public String VERIFY = "/movie/verifycode";
 
     public String FORGET_PASSWORD = "/movie/forgetpassword";
+    
+    public String DISPLAY_PROFILE = "/movie/handleDisplayUserInfo";//For quickly routing to user profile - DuyND
 }

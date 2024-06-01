@@ -82,7 +82,7 @@ public class UserDAO extends SQLServerConnect {
 
     //DuyND-Get Role By email or username
     public String getUserRole(String username_email) throws SQLException {
-        
+
         String role = "";
         String sqlQuery = "SELECT Role FROM [User] WHERE (Username = ? OR Email = ?) AND Status = 1";
 
@@ -144,6 +144,50 @@ public class UserDAO extends SQLServerConnect {
 
     }
 
+//    get user by user name - DuyND
+    public User getUserByUsername(String username) throws Exception {
+
+        User user = null;
+
+        String sql = "SELECT * FROM [User] WHERE Username = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                user = extractUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        }
+        return user;
+
+    }
+
+    //updateAvatarByUsername because I don't like UserID - DuyND
+    public boolean updateAvatarByUsername(String username, String avatarLink) throws Exception {
+        String sql = "UPDATE [User] SET  AvatarLink=? WHERE Username=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+//            pstmt.setString(1, user.getAvatarLink());
+//            pstmt.setString(2, user.getUsername());
+//            pstmt.setString(3, user.getPassword());
+//            pstmt.setString(4, user.getEmail());
+            pstmt.setString(1, avatarLink);
+            pstmt.setString(2, username);
+
+            int updated = pstmt.executeUpdate();
+            return updated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Rethrow SQLException for handling in the calling method
+        }
+
+    }
+
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserID(rs.getInt("UserID"));
@@ -161,27 +205,27 @@ public class UserDAO extends SQLServerConnect {
     }
 
     public boolean updateUser(User user) throws SQLException {
-        String sql = "UPDATE [User] SET AvatarLink=?, Username=?, Password=?, Email=?, Fullname=?, Birthday=?, Address=?, Province=?, District=?, Commune=? WHERE UserID=?";
-
+        String sql = "UPDATE [User] SET  Fullname=?, Birthday=?, Address=?, Province=?, District=?, Commune=? WHERE UserID=?";
+        //remove avatarlink, username, password, email, method only for update profile --DuyND
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
-            pstmt.setString(1, user.getAvatarLink());
-            pstmt.setString(2, user.getUsername());
-            pstmt.setString(3, user.getPassword());
-            pstmt.setString(4, user.getEmail());
-            pstmt.setString(5, user.getFullName());
+//            pstmt.setString(1, user.getAvatarLink());
+//            pstmt.setString(2, user.getUsername());
+//            pstmt.setString(3, user.getPassword());
+//            pstmt.setString(4, user.getEmail());
+            pstmt.setString(1, user.getFullName());
 
             if (user.getBirthday() != null) {
-                pstmt.setDate(6, new java.sql.Date(user.getBirthday().getTime()));
+                pstmt.setDate(2, new java.sql.Date(user.getBirthday().getTime()));
             } else {
-                pstmt.setNull(6, java.sql.Types.DATE);
+                pstmt.setNull(2, java.sql.Types.DATE);
             }
 
-            pstmt.setString(7, user.getAddress());
-            pstmt.setString(8, user.getProvince());
-            pstmt.setString(9, user.getDistrict());
-            pstmt.setString(10, user.getCommune());
-            pstmt.setInt(11, user.getUserID());
+            pstmt.setString(3, user.getAddress());
+            pstmt.setString(4, user.getProvince());
+            pstmt.setString(5, user.getDistrict());
+            pstmt.setString(6, user.getCommune());
+            pstmt.setInt(7, user.getUserID());
 
             int updated = pstmt.executeUpdate();
             return updated > 0;
