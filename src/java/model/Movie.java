@@ -28,14 +28,6 @@ public class Movie {
     }
 
 
-
-    
-    
-
-    // Default constructor
-    public Movie() {
-    }
-
     // Getter and Setter methods
     public int getMovieID() {
         return movieID;

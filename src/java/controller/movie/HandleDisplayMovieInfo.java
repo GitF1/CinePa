@@ -1,5 +1,6 @@
 package controller.movie;
 
+import DAO.MovieDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -20,6 +21,7 @@ import util.RouterJSP;
 public class HandleDisplayMovieInfo extends HttpServlet {
 
     ScheduleDAO scheduleDAO;
+    MovieDAO movieDAO;
     RouterJSP route = new RouterJSP();
 
     @Override
@@ -28,6 +30,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         super.init();
         try {
             scheduleDAO = new ScheduleDAO(getServletContext());
+            movieDAO = new MovieDAO(getServletContext());
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,14 +52,14 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         //lay Movie : 
         MovieInfo movie = new MovieInfo();
         try {
-            movie = DAO.MovieDAO.getInstance().getMovieWithGenresByID(Integer.parseInt(movieID), context);
+            movie =  (MovieInfo) movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID), context);
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         // lay list cac phim dang chieu : 
         ArrayList<MovieInfo> listAvailabelMovies = new ArrayList<>();
         try {
-            listAvailabelMovies = DAO.MovieDAO.getInstance().getAvailableMovies(context);
+            listAvailabelMovies = movieDAO.getAvailableMovies(context);
         } catch (Exception ex) {
 
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,7 +67,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         // lay list cac Reviews : 
         ArrayList<Review> listReviews = new ArrayList<>();
         try {
-            listReviews = DAO.MovieDAO.getInstance().getReviewsByMovieID(Integer.parseInt(movieID), context);
+            listReviews = movieDAO.getReviewsByMovieID(Integer.parseInt(movieID), context);
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }

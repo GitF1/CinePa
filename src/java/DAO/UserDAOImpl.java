@@ -41,25 +41,6 @@ public class UserDAOImpl extends SQLServerConnect {
         return list;
     }
 
-    public void insert(User c) {
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + " ([Username]\n"
-                + " ,[Password]\n"
-                + " ,[Email])\n"
-                + " ,[Code])\n"
-                + " VALUES (?,?,?,?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, c.getUsername());
-            st.setString(2, c.getPassword());
-            st.setString(3, c.getEmail());
-            st.setString(3, c.getCode());
-
-            st.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
 
     public User getUsertByID(String userName) {
 
@@ -98,42 +79,7 @@ public class UserDAOImpl extends SQLServerConnect {
         }
     }
 
-    public User findOne(String username) {
-        String sql = "SELECT * FROM [User] WHERE Username = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, username);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                User c = new User(
-                        rs.getInt("UserID"),
-                        rs.getString("AvatarLink"),
-                        rs.getString("Role"),
-                        rs.getString("Username"),
-                        rs.getString("Password"),
-                        rs.getString("Bio"),
-                        rs.getString("Email"),
-                        rs.getString("Fullname"), // Lấy giá trị của cột Fullname
-                        rs.getDate("Birthday"),
-                        rs.getString("Address"),
-                        rs.getBoolean("IsBanned"),
-                        rs.getInt("LevelPremiumID"),
-                        rs.getDouble("AccountBalance"),
-                        rs.getInt("BonusPoint"),
-                        rs.getString("Province"),
-                        rs.getString("District"),
-                        rs.getString("Commune"),
-                        rs.getString("Code"),
-                        rs.getInt("Status")
-                );
 
-                return c;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public boolean checkExistUsername(String username) {
         boolean duplicate = false;
@@ -209,5 +155,7 @@ public class UserDAOImpl extends SQLServerConnect {
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
     }
+    
+    
 
 }
