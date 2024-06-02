@@ -1,8 +1,4 @@
-<%-- 
-    Document   : navbar
-    Created on : May 23, 2024, 3:59:44 PM
-    Author     : duyqu
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 

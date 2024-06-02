@@ -73,12 +73,14 @@
 
                             </div>
                         </div>
+
                         <!-- phan xem trailer , xem review :  -->
                         <div class="trailer-part">
                             <span class="clWhite trailer-view js-trailer">
                                 <i class="fa fa-youtube-play" aria-hidden="true"></i>
                                 Xem trailer
                             </span>
+
                             <a href="#review" style="display: inline-block; text-decoration: none;">
                                 <span class="clWhite">
                                     <i class="fa fa-comments" aria-hidden="true"></i>
@@ -105,33 +107,33 @@
                         <h3 class="review-heading">Binh luan tu nguoi xem</h3>
 
 
-                     <c:choose>
-    <c:when test="${not empty listReviewsdd}">
-        <c:forEach var="item" items="${listReviews}">
-            <div class="review-part">
-                <div class="review-part-img" style="background-image: url('${item.userAvatarLink}')"></div>
-                <div class="review-part-detail">
-                    <p class="review-part-name">${item.username}</p>
-                    <span class="review-part-time">${item.timeCreated}</span>
-                    <span class="review-part-cinepa">
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
-                        Đã mua qua CinePa
-                    </span>
-                </div>
-                <p class="review-part-rate">
-                    <i class="fa fa-star pdt0"></i>
-                    ${item.rating}
-                </p>
-                <div class="review-part-content">
-                    ${item.content}
-                </div>
-            </div>
-        </c:forEach>
-    </c:when>
-    <c:otherwise>
-        <p>Không có review nào.</p>
-    </c:otherwise>
-</c:choose>
+                        <c:choose>
+                            <c:when test="${not empty listReviewsdd}">
+                                <c:forEach var="item" items="${listReviews}">
+                                    <div class="review-part">
+                                        <div class="review-part-img" style="background-image: url('${item.userAvatarLink}')"></div>
+                                        <div class="review-part-detail">
+                                            <p class="review-part-name">${item.username}</p>
+                                            <span class="review-part-time">${item.timeCreated}</span>
+                                            <span class="review-part-cinepa">
+                                                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                Đã mua qua CinePa
+                                            </span>
+                                        </div>
+                                        <p class="review-part-rate">
+                                            <i class="fa fa-star pdt0"></i>
+                                            ${item.rating}
+                                        </p>
+                                        <div class="review-part-content">
+                                            ${item.content}
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Không có review nào.</p>
+                            </c:otherwise>
+                        </c:choose>
 
 
                     </div>
@@ -190,14 +192,13 @@
                         <i class="fa fa-window-close" aria-hidden="true"></i>
                     </span>
                 </div>
-                <!-- modal link youtube :  -->
-                <a href="${movie.linkTrailer}" style="">
-                    <div class="modal-link"
-                         style="background-image: url('${movie.imageURL}');">
-                        <i class="fa fa-youtube-square" aria-hidden="true"></i>
 
-                    </div>
-                </a>
+
+                <!-- modal link youtube :  -->
+
+                <div>
+                    ${movie.linkTrailer}              
+                </div>
                 <!-- modal desc  -->
                 <div class="modal-desc">
 

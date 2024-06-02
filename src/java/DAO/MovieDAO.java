@@ -68,57 +68,54 @@ public class MovieDAO {
         return movie; // Trả về đối tượng Movie
     }
 
-    
     public ArrayList<MovieKhai> getAvailableMovies(ServletContext context) throws Exception {
-        
-         DB.SQLServerConnect dbConnect = new SQLServerConnect();
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
-        
-        
+
         ArrayList<MovieKhai> availableMovies = new ArrayList<>();
-        String sql = "SELECT * FROM MovieCinema WHERE Status = 'Available'";
 
-        try {
-            // Tạo một PreparedStatement từ kết nối và truy vấn SQL
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
 
-            // Thực thi truy vấn và lấy kết quả
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (
+                PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery();) {
 
-            // Lặp qua các kết quả và tạo đối tượng Movie cho mỗi kết quả
-            while (resultSet.next()) {
-                int movieID = resultSet.getInt("MovieID");
-                int cinemaID = resultSet.getInt("CinemaID");
-                String status = resultSet.getString("Status");
+            while (rs.next()) {
+                MovieKhai movie = new MovieKhai();
+                movie.setMovieID(rs.getInt("MovieID"));
+                movie.setCinemaID(rs.getInt("CinemaID"));
+                movie.setTitle(rs.getString("Title"));
+                movie.setDatePublished(rs.getDate("DatePublished"));
+                movie.setRating(rs.getFloat("Rating"));
+                movie.setImageURL(rs.getString("ImageURL"));
+                movie.setSynopsis(rs.getString("Synopsis"));
+                movie.setCountry(rs.getString("Country"));
+                movie.setYear(rs.getInt("Year"));
+                movie.setLength(rs.getInt("Length"));
+                movie.setLinkTrailer(rs.getString("LinkTrailer"));
+                movie.setStatus(rs.getString("Status"));
 
-                // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
-                if (status.trim().equalsIgnoreCase("Available")) {
-                    MovieKhai movie = getMovieWithGenresByID(movieID, context) ; 
-                    if (movie != null) {
-                        availableMovies.add(movie);
-                    }
-                }
+                availableMovies.add(movie);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return availableMovies; 
+        return availableMovies;
     }
 
-     public ArrayList<Review> getReviewsByMovieID(int movieID , ServletContext context) throws Exception {
-         
-          DB.SQLServerConnect dbConnect = new SQLServerConnect();
+    public ArrayList<Review> getReviewsByMovieID(int movieID, ServletContext context) throws Exception {
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
 
-         
         ArrayList<Review> reviews = new ArrayList<>();
-        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username " +
-                     "FROM Review " +
-                     "JOIN [User] ON Review.UserID = [User].UserID " +
-                     "WHERE Review.MovieID = ?";
+        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username "
+                + "FROM Review "
+                + "JOIN [User] ON Review.UserID = [User].UserID "
+                + "WHERE Review.MovieID = ?";
 
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
@@ -148,5 +145,5 @@ public class MovieDAO {
 
         return reviews; // Trả về danh sách các review của bộ phim có movieID tương ứng dưới dạng ArrayList
     }
-    
+
 }

@@ -16,15 +16,14 @@ public class MovieKhai {
     private int length;
     private String linkTrailer;
     private List<String> genres;
+    private String status ; 
 
     // Constructor
 
     public MovieKhai() {
     }
-    
-    
-    public MovieKhai(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL,
-                 String synopsis, String country, int year, int length, String linkTrailer, List<String> genres) {
+
+    public MovieKhai(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL, String synopsis, String country, int year, int length, String linkTrailer, List<String> genres) {
         this.movieID = movieID;
         this.cinemaID = cinemaID;
         this.title = title;
@@ -37,6 +36,32 @@ public class MovieKhai {
         this.length = length;
         this.linkTrailer = linkTrailer;
         this.genres = genres;
+    }
+    
+    
+    public MovieKhai(int movieID, int cinemaID, String title, Date datePublished, float rating, String imageURL,
+                 String synopsis, String country, int year, int length, String linkTrailer, List<String> genres,String status) {
+        this.movieID = movieID;
+        this.cinemaID = cinemaID;
+        this.title = title;
+        this.datePublished = datePublished;
+        this.rating = rating;
+        this.imageURL = imageURL;
+        this.synopsis = synopsis;
+        this.country = country;
+        this.year = year;
+        this.length = length;
+        this.linkTrailer = linkTrailer;
+        this.genres = genres;
+        this.status = status ;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     // Getters and setters
