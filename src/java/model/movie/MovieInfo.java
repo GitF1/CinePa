@@ -17,6 +17,7 @@ public class MovieInfo  {
     private int length;
     private String linkTrailer;
     private List<String> genres;
+    private String status ; 
 
     // Constructor
     public MovieInfo() {
@@ -38,6 +39,16 @@ public class MovieInfo  {
         this.length = length;
         this.linkTrailer = linkTrailer;
         this.genres = genres;
+    }
+    
+    
+   
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     // Getters and setters

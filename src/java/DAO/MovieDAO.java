@@ -77,7 +77,8 @@ public class MovieDAO {
         
         
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
-        String sql = "SELECT * FROM MovieCinema WHERE Status = 'Available'";
+        String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
+
 
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
@@ -100,25 +101,24 @@ public class MovieDAO {
                     }
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return availableMovies; 
+        return availableMovies;
     }
 
-     public ArrayList<Review> getReviewsByMovieID(int movieID , ServletContext context) throws Exception {
-         
-          DB.SQLServerConnect dbConnect = new SQLServerConnect();
+    public ArrayList<Review> getReviewsByMovieID(int movieID, ServletContext context) throws Exception {
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
 
-         
         ArrayList<Review> reviews = new ArrayList<>();
-        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username " +
-                     "FROM Review " +
-                     "JOIN [User] ON Review.UserID = [User].UserID " +
-                     "WHERE Review.MovieID = ?";
+        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username "
+                + "FROM Review "
+                + "JOIN [User] ON Review.UserID = [User].UserID "
+                + "WHERE Review.MovieID = ?";
 
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
@@ -148,5 +148,5 @@ public class MovieDAO {
 
         return reviews; // Trả về danh sách các review của bộ phim có movieID tương ứng dưới dạng ArrayList
     }
-    
+
 }
