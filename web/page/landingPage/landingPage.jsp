@@ -31,7 +31,7 @@
 
         <jsp:include page="banner.jsp" />
 
-        <%--<jsp:include page="../movie/Index.jsp" />--%>
+        <jsp:include page="../movie/Index.jsp" />
 
         <jsp:include page="mostReview.jsp" />
 

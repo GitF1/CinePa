@@ -1,6 +1,7 @@
+<%@ page import="model.MostReview" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="model.MostReview" %>
+<%@ page import="DAO.MostReviewDAO" %><%@ page import="DAO.MostReviewDAO" %>
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,7 +32,7 @@
 
 
         <%
-        
+
            // tao Servlet Context : 
                 ServletContext context = getServletContext();
 
