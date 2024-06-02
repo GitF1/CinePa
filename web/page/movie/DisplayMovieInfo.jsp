@@ -2,13 +2,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
-<%@ page import="model.MovieKhai" %>
+<%@ page import="model.movie.MovieInfo" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="page/movie/DisplayMovieInfoCss.css"/>
+        <link rel="stylesheet" href="./DisplayMovieInfoCss.css"/>
+        
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -148,10 +149,10 @@
 
 
                     <%
-                        List<MovieKhai> listAvailableMovies = (List<MovieKhai>) request.getAttribute("listAvalableMovies");
+                        List<MovieInfo> listAvailableMovies = (List<MovieInfo>) request.getAttribute("listAvalableMovies");
 
                         if (listAvailableMovies != null) {
-                            for (MovieKhai item : listAvailableMovies) {
+                            for (MovieInfo item : listAvailableMovies) {
                     %>
                     <div class="active-film row">
                         <div class="active-film-img col-4">
