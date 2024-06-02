@@ -23,5 +23,11 @@ public class Router {
     
     public String DISPLAY_INFO = "page/user/DisplayUserInfo.jsp";
     
+    public String SEARCH_MOVIE = "page/search/SearchMovie.jsp";
     
+    public String DISPLAY_CINEMA_CHAINS = "page/cinema/DisplayCinemaChains.jsp";
+    
+    public String DISPLAY_CINEMAS = "page/cinema/DisplayCinemas.jsp";
+    
+    public static String BOOKING_SEAT = "/page/cinema_room/BookingSeat.jsp";
 }

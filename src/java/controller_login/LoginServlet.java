@@ -13,10 +13,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.Router;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import model.User;
 
 /**
  *
@@ -86,24 +91,35 @@ public class LoginServlet extends HttpServlet {
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
-        Boolean ok = null;
+        ResultSet rs;
+        Boolean ok;
 
         try {
-
-            ok = userDAO.checkLogin(username_email, hash);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
+            rs = userDAO.checkLogin(username_email, hash);
+            ok = rs.next();
+            if (ok) {
+                User user = new User(rs.getInt("UserID"), rs.getString("AvatarLink"), rs.getString("Role"), rs.getString("Username"), rs.getString("Bio"), rs.getString("Email"), rs.getString("Fullname"), rs.getDate("Birthday"), rs.getString("Address"), rs.getBoolean("isBanned"), rs.getInt("LevelPremiumID"), rs.getDouble("AccountBalance"), rs.getInt("BonusPoint"), rs.getString("Province"), rs.getString("District"), rs.getString("Commune"));
+                System.out.println(user);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", user);
+                
+//                List<String> locations = new ArrayList<>();
+//                ResultSet rs2 = userDAO.getData("Cinema", "distinct Province", null);
+//                while(rs2.next()) {
+//                    locations.add(rs.getString("Province"));
+//                }
+//                session.setAttribute("locations", locations);
+                
+                response.sendRedirect(route.HOMEPAGE);
+            } else {
+                request.setAttribute("ok", ok);
+                request.getRequestDispatcher(route.LOGIN).forward(request, response);
+            }
+        } catch (SQLException | ServletException | IOException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (ok) {
-            response.sendRedirect("/movie");
-        } else {
-            request.setAttribute("ok", ok);
-            request.getRequestDispatcher(route.LOGIN).forward(request, response);
-        }
+
     }
 
     /**
