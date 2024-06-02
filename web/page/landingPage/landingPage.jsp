@@ -29,11 +29,11 @@
 
         <jsp:include page="header.jsp" />
 
-        <%--<jsp:include page="banner.jsp" />--%>
+        <jsp:include page="banner.jsp" />
 
         <%--<jsp:include page="../movie/Index.jsp" />--%>
 
-        <%--<jsp:include page="mostReview.jsp" />--%>
+        <jsp:include page="mostReview.jsp" />
 
 
         <jsp:include page="question.jsp" />

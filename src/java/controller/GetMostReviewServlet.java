@@ -38,7 +38,7 @@ public class GetMostReviewServlet extends HttpServlet {
         request.setAttribute("listMostReview", listMostReview);
         
     // chuyen sang cho mostReview.jsp : 
-        request.getRequestDispatcher("page/mostReview/mostReview.jsp").forward(request, response);
+        request.getRequestDispatcher("page/landingPage/mostReview.jsp").forward(request, response);
         
     }
 

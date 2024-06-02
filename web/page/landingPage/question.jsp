@@ -15,7 +15,7 @@
     </head>
     <body>
         <!-- phần bạn hỏi Cinepa trả lời :  -->
-        <div class="container mb-5">
+        <div class="container my-5">
             <div class="row justify-content-center">
                 <!-- hoi -->
                 <div class="col-sm-12 col-md-5 mb-sm-3" style=" color: #d82d8b;">

@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="DAO.MovieDAOQV" %>
+<%@ page import="DAO.MovieDAO" %>
 <%@ page import="model.MovieWithStatus" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
