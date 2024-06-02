@@ -6,31 +6,40 @@ package model;
 
 /**
  *
- * @author PC
+ * @author ACER
  */
 public class Seat {
+    
     private int seatID;
-    private String name;
     private int roomID;
-    private int coordinateX;
-    private int coordinateY;
-
+    private String name;
+    private int x;
+    private int y;
+    private String status;
+    
     public Seat() {
+        
     }
-
-    public Seat(String name, int roomID, int coordinateX, int coordinateY) {
-        this.name = name;
-        this.roomID = roomID;
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
-    }
-
-    public Seat(int seatID, String name, int roomID, int coordinateX, int coordinateY) {
+    
+    public Seat(int seatID) {
         this.seatID = seatID;
-        this.name = name;
+    }
+
+    public Seat(int seatID, int roomID, String name, int x, int y) {
+        this.seatID = seatID;
         this.roomID = roomID;
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+        this.name = name;
+        this.x = x;
+        this.y = y;
+    }
+    
+    public Seat(int seatID, int roomID, String name, int x, int y, String status) {
+        this.seatID = seatID;
+        this.roomID = roomID;
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.status = status;
     }
 
     public int getSeatID() {
@@ -49,34 +58,48 @@ public class Seat {
         return roomID;
     }
 
-    public int getCoordinateX() {
-        return coordinateX;
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
 
-    public int getCoordinateY() {
-        return coordinateY;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
+    public int getX() {
+        return x;
     }
 
-    public void setCoordinateX(int coordinateX) {
-        this.coordinateX = coordinateX;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public void setCoordinateY(int coordinateY) {
-        this.coordinateY = coordinateY;
+    public int getY() {
+        return y;
     }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    
 
     @Override
     public String toString() {
-        return "Seat{" + "seatID=" + seatID + ", name=" + name + ", roomID=" + roomID + ", coordinateX=" + coordinateX + ", coordinateY=" + coordinateY + '}';
+        return "Java: Seat{" + "seatID=" + seatID + ", roomID=" + roomID + ", name=" + name + ", x=" + x + ", y=" + y + ", status=" + status + '}';
     }
-    
+
     
 }

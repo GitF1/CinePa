@@ -6,12 +6,12 @@ package model;
 
 /**
  *
- * @author PC
+ * @author ACER
  */
 public class Cinema {
-
     private int cinemaID;
     private int cinemaChainID;
+    private String name;
     private String address;
     private String province;
     private String district;
@@ -41,8 +41,20 @@ public class Cinema {
         this.commune = commune;
         this.avatar = avatar;
     }
+    
+    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune) {
+        this.cinemaID = cinemaID;
+        this.cinemaChainID = cinemaChainID;
+        this.name = name;
+        this.address = address;
+        this.province = province;
+        this.district = district;
+        this.commune = commune;
+      
+    }
 
-    // Getters and setters
+ 
+
     public int getCinemaID() {
         return cinemaID;
     }
@@ -57,6 +69,14 @@ public class Cinema {
 
     public void setCinemaChainID(int cinemaChainID) {
         this.cinemaChainID = cinemaChainID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
