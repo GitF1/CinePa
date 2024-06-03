@@ -1,8 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%--<%@ page import="DAO.MovieDAOQV" %>--%>
-<%--<%@ page import="DAO.MovieDAO" %>--%>
+
 
 
 
@@ -43,15 +42,7 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Movie List</title>
-        <!-- Include necessary CSS and JavaScript files only once -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">
-    </head>
+   
     <body>
         <div class="container">
             <h2 class="text-center"><c:out value="${status}"/></h2>
@@ -94,6 +85,7 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
         <script>
             $(document).ready(function () {
                 $('#movieSlider_${uniqueId}').slick({
