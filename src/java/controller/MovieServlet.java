@@ -1,8 +1,7 @@
-
 package controller;
 
 import DAO.MovieDAO;
-import DAO.MovieDAOQV;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -28,30 +27,20 @@ import util.Router;
 public class MovieServlet extends HttpServlet {
 
     Router router = new Router();
-    MovieDAOQV movieDAO;
-
-    @Override
-    public void init() throws ServletException {
-        try {
-            super.init();
-            this.movieDAO = new MovieDAOQV(getServletContext());
-        } catch (Exception ex) {
-            Logger.getLogger(MovieServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-  
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        lay context : 
+        ServletContext context = getServletContext();
+
         String status = request.getParameter("status");
         if (status == null || (!status.equals("Showing") && !status.equals("Coming"))) {
             status = "Coming"; // Trạng thái mặc định
         }
         try {
-            List<MovieWithStatus> movies = movieDAO.getMoviesByStatus(status);
-            List<MovieInGenre> movieInGenres = movieDAO.getAllMovieInGenre();
+            List<MovieWithStatus> movies = DAO.MovieDAO.getInstance().getMoviesByStatus(status, context);
+            List<MovieInGenre> movieInGenres = DAO.MovieDAO.getInstance().getAllMovieInGenre(context);
 
             // Create a map to store genres by movie ID
             Map<Integer, String> genresMap = new HashMap<>();
@@ -73,7 +62,5 @@ public class MovieServlet extends HttpServlet {
             throws ServletException, IOException {
         doGet(request, response);
     }
-
- 
 
 }
