@@ -10,7 +10,27 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 
-<%
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Movie List</title>
+        <!--Include necessary CSS and JavaScript files only once--> 
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+        <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">-->
+
+    </head>
+    <body class="bodyV">
+        <%
     String status = request.getParameter("status");
     if (status == null || (!status.equals("Showing") && !status.equals("Coming"))) {
         status = "Showing"; // Default status
@@ -39,20 +59,7 @@
     request.setAttribute("movieGenresMap", movieGenresMap);
     request.setAttribute("status", status);
     request.setAttribute("uniqueId", uniqueId);
-%>
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Movie List</title>
-        <!-- Include necessary CSS and JavaScript files only once -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">
-    </head>
-    <body>
+        %>
         <div class="container">
             <h2 class="text-center"><c:out value="${status}"/></h2>
             <div id="movieSlider_${uniqueId}" class="slider">
@@ -62,8 +69,8 @@
                     <a  class="the-a"  href="${pageContext.request.contextPath}/HandleDisplayMovieInfo?movieID=${movie.movieID}">
 
 
-                        <div class="movie-card">
-                            <img src="${movie.imageURL}" alt="${movie.title}" class="card-img-top">
+                        <div class="movie-card movie-cardV">
+                            <img src="${movie.imageURL}" alt="${movie.title}" class="card-img-top card-img-topV">
                             <div class="movie-info">
                                 <div class="movie-title">
                                     <h5>${movie.title}</h5>
@@ -127,5 +134,8 @@
                 });
             });
         </script>
+
+
+
     </body>
 </html>

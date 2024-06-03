@@ -1,4 +1,4 @@
-body {
+bodyV {
     padding-top: 20px; /* Tạo khoảng cách 20px ở đỉnh trang */
 }
 
@@ -9,7 +9,7 @@ h2.text-center {
     display: block ; 
 }
 
-.movie-card {
+.movie-cardV {
     margin-bottom: 20px;
     transition: all 0.3s ease;
     position: relative;
@@ -29,7 +29,7 @@ h2.text-center {
 }
 
 
-.card-img-top {
+.card-img-topV {
     /*    width: 200px !important;
         height: 300px !important;*/
     object-fit: contain;
@@ -59,7 +59,7 @@ h2.text-center {
 }
 
 .movie-card img {
-    width: 100%;
+    width: 81%;
     height: 285px;
     object-fit: cover;
 }
