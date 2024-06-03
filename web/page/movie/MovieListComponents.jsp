@@ -58,16 +58,8 @@
     request.setAttribute("movieGenresMap", movieGenresMap);
     request.setAttribute("status", status);
     request.setAttribute("uniqueId", uniqueId);
-<<<<<<< HEAD
-%>
 
-<!DOCTYPE html>
-<html>
-   
-    <body>
-=======
         %>
->>>>>>> xu-li-gop
         <div class="container">
             <h2 class="text-center"><c:out value="${status}"/></h2>
             <div id="movieSlider_${uniqueId}" class="slider">
