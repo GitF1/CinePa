@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.Router;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import model.Cinema;
 import model.CinemaChain;
+import util.RouterJSP;
 
 
 /**
@@ -32,7 +32,7 @@ import model.CinemaChain;
  */
 @WebServlet(name = "DisplayCinemasServlet", urlPatterns = {"/displaycinemas"})
 public class DisplayCinemasServlet extends HttpServlet {
-    Router router = new Router();
+    RouterJSP router = new RouterJSP();
     UserDAO userDAO;
 
     /**

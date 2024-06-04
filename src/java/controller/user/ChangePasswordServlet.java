@@ -16,6 +16,7 @@ import model.User;
 import DAO.UserDAO;
 import jakarta.servlet.annotation.WebServlet;
 import java.sql.SQLException;
+import util.RouterJSP;
 
 /**
  *
@@ -39,6 +40,7 @@ public class ChangePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RouterJSP router = new RouterJSP();
 
         // lay du lieu tu Request : 
         String currentPass = request.getParameter("current-password");
@@ -66,7 +68,7 @@ public class ChangePasswordServlet extends HttpServlet {
         }
 
         // chuyen qua cho thang display  ra thong tin user : 
-        request.getRequestDispatcher("handleDisplayUserInfo").forward(request, response);
+        request.getRequestDispatcher(router.DISPLAY_INFO).forward(request, response);
 
     }
 

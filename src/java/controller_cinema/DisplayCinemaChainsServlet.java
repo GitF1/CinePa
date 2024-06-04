@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.CinemaChain;
-import util.Router;
+import util.RouterJSP;
 
 /**
  *
@@ -24,7 +24,7 @@ import util.Router;
  */
 @WebServlet(name = "DisplayCinemaChainsServlet", urlPatterns = {"/displaycinemachains"})
 public class DisplayCinemaChainsServlet extends HttpServlet {
-    Router router = new Router();
+    RouterJSP router = new RouterJSP();
     UserDAO ud;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -69,7 +69,7 @@ public class DisplayCinemaChainsServlet extends HttpServlet {
             ud = new UserDAO(request.getServletContext());
             List<CinemaChain> cinemaChains = ud.queryCinemaChains(null);
             request.setAttribute("cinemaChains", cinemaChains);
-            request.getRequestDispatcher(router.DISPLAY_CINEMA_CHAINS).forward(request, response);
+            request.getRequestDispatcher(RouterJSP.DISPLAY_CINEMA_CHAINS).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(DisplayCinemaChainsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

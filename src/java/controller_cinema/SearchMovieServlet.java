@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Movie;
-import util.Router;
+import util.RouterJSP;
 
 /**
  *
@@ -27,7 +27,7 @@ import util.Router;
  */
 @WebServlet("/searchmovie")
 public class SearchMovieServlet extends HttpServlet {
-    Router router = new Router();
+    RouterJSP router = new RouterJSP();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
