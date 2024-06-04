@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller_room;
+package controller_cinema;
 
 import DAO.UserDAO;
 import java.io.IOException;
@@ -12,23 +12,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Movie;
-import model.MovieSlot;
-import model.Room;
-import model.Seat;
+import model.CinemaChain;
 import util.Router;
 
 /**
  *
  * @author ACER
  */
-@WebServlet(name = "BookingSeatServlet", urlPatterns = {"/booking/seat"})
-public class BookingSeatServlet extends HttpServlet {
-
+@WebServlet(name = "DisplayCinemaChainsServlet", urlPatterns = {"/displaycinemachains"})
+public class DisplayCinemaChainsServlet extends HttpServlet {
+    Router router = new Router();
+    UserDAO ud;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,10 +43,10 @@ public class BookingSeatServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BookingSeatServlet</title>");
+            out.println("<title>Servlet DisplayCinemaServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BookingSeatServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DisplayCinemaServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,34 +64,14 @@ public class BookingSeatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int movieSlotID = 1003;
+        System.out.println("GOOO");
         try {
-            UserDAO userDAO = new UserDAO(request.getServletContext());
-            MovieSlot movieSlot = userDAO.queryMovieSlots(movieSlotID);
-            
-            Movie movie = userDAO.queryMovie(movieSlotID);
-            Room room = userDAO.queryRoom(movieSlotID);
-            
-            List<Seat> seats = userDAO.querySeatsInRoom(movieSlotID);
-            int maxWidth = 0, maxLength = 0;
-            for(Seat seat : seats) {
-                System.out.println(seat);
-            } // print seat
-            
-            for(Seat seat : seats) {
-                maxWidth = Math.max(maxWidth, seat.getY());
-                maxLength = Math.max(maxLength, seat.getX());
-            }
-            System.out.println(movieSlot);
-            request.setAttribute("movieSlot", movieSlot);
-            request.setAttribute("movie", movie);
-            request.setAttribute("room", room);
-            request.setAttribute("seats", seats);
-            request.setAttribute("maxWidth", maxWidth);
-            request.setAttribute("maxLength", maxLength);
-            request.getRequestDispatcher(Router.BOOKING_SEAT).forward(request, response);
+            ud = new UserDAO(request.getServletContext());
+            List<CinemaChain> cinemaChains = ud.queryCinemaChains(null);
+            request.setAttribute("cinemaChains", cinemaChains);
+            request.getRequestDispatcher(router.DISPLAY_CINEMA_CHAINS).forward(request, response);
         } catch (Exception ex) {
-            Logger.getLogger(BookingSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DisplayCinemaChainsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -109,13 +86,7 @@ public class BookingSeatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        List<String> seatIDs = new ArrayList<>();
-        for(int i = 1; i <= 8; ++i) {
-            String seatID = request.getParameter("selectedSeat" + i);
-            if(!seatID.isEmpty()) seatIDs.add(seatID);
-        }
-        out.println(seatIDs);
+        processRequest(request, response);
     }
 
     /**

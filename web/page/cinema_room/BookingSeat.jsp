@@ -17,7 +17,7 @@
         <style>
             #container {
                 width: 100vw;
-                height: 120vh;
+                height: 200vh;
                 position: relative;
                 background-color: #262626;
             }
@@ -112,6 +112,14 @@
                 text-transform: uppercase;
                 transition: background-color 0.3s ease, transform 0.2s ease; 
             }
+            
+            @media only screen and (max-width: 1024px) {
+                .seatButton {
+                    width: 25px;
+                    height: 25px;
+                    font-size: 10px;
+                }
+            }
 
         </style>
     </head>
@@ -127,7 +135,7 @@
                     <c:set var="seatName" value="${seat.getName()}" />
                     <c:set var="seatNameLength" value="${fn:length(seatName)}" />
                     <button type="button" class="seatButton" id="seatButton_${seat.seatID}" onclick="chooseSeat('${seat.getSeatID()}', '${seat.getName()}');">
-                        ${fn:substring(seatName, 4, seatNameLength)}
+                        ${fn:substring(seatName, 0, seatNameLength)}
                     </button>
                 </c:forEach>
                 <div id="seatInfo">
@@ -156,7 +164,7 @@
                             <div style="margin-bottom: 5%; color: gray;">Giá tiền</div>
                             <h3 id="totalPriceH3" style="margin: 0;">0đ</h3>
                         </div>
-                        <button id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/booking/seat', 'POST')">Đặt vé</button>
+                        <button id="purchaseButton" style="margin-left: auto;" onclick="purchaseTickets();">Đặt vé</button>
                     </div>
                 </div>
                 
@@ -175,10 +183,11 @@
     <script>
         const start = 5;
         const sizeX = Math.floor((9 * window.innerWidth / 10) / 40);
-        const sizeY = Math.floor((6 * window.innerHeight / 10) / 40);
+        const sizeY = Math.floor((9 * window.innerHeight / 10) / 40);
         
         const roomWidth = ${requestScope.maxWidth}, roomLength = ${requestScope.maxLength};
-        const initX = Math.floor((sizeX - roomWidth) / 2), initY = Math.floor((sizeY - roomLength) / 2);
+        const initX = Math.floor((sizeX - roomLength) / 2);
+        const initY = 0;
         const distance = 40; // 40px
         const bookedSeatColor = "rgb(64, 64, 64)";
         const availableSeatColor = "rgb(114, 46, 209)", chosenSeatColor = "rgb(216, 45, 139)";
@@ -198,8 +207,8 @@
             backgroundColor = "${seat.getStatus() == 'Available' ? availableSeatColor : bookedSeatColor}";
             cursor = "${seat.getStatus() == 'Available' ? 'pointer' : 'not-allowed'}";
             console.log("background-color: " + backgroundColor + ";");
-            document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getX()} + initY) * distance + "px);"
-                                                                    + "left: calc(5vw + " + (${seat.getY()} + initX) * distance + "px);";
+            document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getY()} + initY - 1) * distance + "px);"
+                                                                    + "left: calc(5vw + " + (${seat.getX()} + initX - 1) * distance + "px);";
             document.getElementById("seatButton_" + seatID).style.backgroundColor = backgroundColor;  
             document.getElementById("seatButton_" + seatID).style.cursor = cursor;                                             
         </c:forEach>
@@ -216,9 +225,6 @@
                 seatName
             };
             selectedSeats = [...selectedSeats, newSelectedSeat];
-            for(let i = 0; i < selectedSeats.length; ++i) {
-                console.log(selectedSeats[i]);
-            }
             
             for(let i = 1; i <= 8; ++i) {
                 if(document.getElementById("selectedSeat" + i).value === "") {
@@ -250,10 +256,18 @@
             document.getElementById("totalPriceH3").textContent = totalPrice + "đ";
         }  
         
+        function compareSeatByName(seat1, seat2) {
+            if(seat1.seatName.length !== seat2.seatName.length) return seat1.seatName.length - seat2.seatName.length;
+            for(let i = 0; i < seat1.seatName.length; ++i) {
+                if(seat1.seatName[i] !== seat2.seatName[i]) return seat1.seatName[i] - seat2.seatName[i];
+            }
+            return 0;
+        }
+        
         function updateSelectedSeatsText() {
             let selectedSeatsDivText = "";
             let i = 0;
-            selectedSeats = selectedSeats.sort((seat1, seat2) => seat1.seatName.localeCompare(seat2.seatName));
+//            selectedSeats = selectedSeats.sort((seat1, seat2) => compareSeatByName(seat1, seat2));
             for(; i < selectedSeats.length - 1; ++i) {
                 selectedSeatsDivText += selectedSeats[i].seatName + ", ";
             }
@@ -271,6 +285,14 @@
             document.getElementById(id).action = url;
             document.getElementById(id).method = methodType;
             document.getElementById(id).submit();
+        }
+        
+        function purchaseTickets() {
+            if(numberOfSelectedSeat === 0) {
+                alert("Quý khách vui lòng chọn ít nhất 1 ghế.");
+                return;
+            }
+            callServlet('bookingSeatForm', '/movie/booking/seat', 'POST');
         }
 
     </script>

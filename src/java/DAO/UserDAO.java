@@ -232,7 +232,9 @@ public class UserDAO extends SQLServerConnect {
                             "	select SeatID from MovieSlot\n" +
                             "	join Ticket on MovieSlot.MovieSlotID = Ticket.MovieSlotID\n" +
                             "	where Ticket.Status = 'Booked'\n" +
-                            ") as BookedSeats on Seat.SeatID = BookedSeats.SeatID";
+                            ") as BookedSeats on Seat.SeatID = BookedSeats.SeatID\n" +
+                            "where MovieSlotID = " + movieSlotID;
+                            
         ResultSet rs = getResultSet(sqlQuery);
         while(rs.next()) {
             Seat seat = new Seat(rs.getInt("SeatID"), rs.getInt("RoomID"), rs.getString("Name"), rs.getInt("CoordinateX"), rs.getInt("CoordinateY"), rs.getString("Status"));
