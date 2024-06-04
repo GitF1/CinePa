@@ -53,62 +53,75 @@
 
             }
         </style>
+        
+        
         <script>
-
+            // khoảng cách mặt định ban đầu giữa khung chứa rạp phim 
             const marginWidth = 50;
             const marginHeight = 60;
             const borderRadiusPercent = 20;
-
+            // chiều dài và chiều rộng của ghế ban đầu
             var WidthElement = 50;
             var HeightElement = 45;
-
+            // chiều dài , chiều rộng của khung chứa các seat
             var innerWidth = window.innerWidth - marginWidth * 2;
             var innerHeight = window.innerHeight - marginHeight * 2;
-
+            // tỉ lệ giữa margin giữa các seat
             let percentWidthAndMarginX = 15 / 55;
             let percentHeightAndMarginY = 20 / 50;
-
+            
+            // tổng số ghế được hiện thị ở hàng ngang (X) và dọc (Y)
             let numberOfSeatCoordinateX;
             let numberOfSeatCoordinateY;
-
+            // zoom in zoom out khi scroll 
             let zoomScale = 1;
-
+            
+            
+            // di chuyển khung hình bằng chuột
             let isDragging = false;
             let initialX, initialY;
             let xOffset = 0, yOffset = 0;
-
+            
+            
+            //
             function createSeats() {
                 const container = document.getElementById('seatsContainer');
+                
                 container.innerHTML = '';
-
+                // khoảng cách giữa các ghế
                 const marginX = percentWidthAndMarginX * WidthElement;
                 const marginY = percentHeightAndMarginY * HeightElement;
 
                 console.log("width elemen: " + WidthElement + " margin x:" + marginX);
                 console.log("height elemen:  " + HeightElement + " margin y:" + marginY);
-
+                // tổng số ghế hàng ngang = width khung hình /(width ghế + khoảng cách X)
                 numberOfSeatCoordinateX = Math.floor((innerWidth) / (WidthElement + marginX));
+                 // tổng số ghế hàng dọc = height khung hình  /(height dài ghế + khoảng cách Y)
                 numberOfSeatCoordinateY = Math.floor((innerHeight) / (HeightElement + marginY));
 
                 console.log("number x: " + numberOfSeatCoordinateX);
                 console.log("number y:" + numberOfSeatCoordinateY);
-
+                
+                // hiển thị ra các ghế
                 for (let y = 1; y <= numberOfSeatCoordinateY; y++) {
                     for (let x = 1; x <= numberOfSeatCoordinateX; x++) {
                         const seat = document.createElement('div');
 
                         seat.className = 'seat';
-
+                        // set chiều dài rộng seat
                         seat.style.width = WidthElement + 'px';
                         seat.style.height = HeightElement + 'px';
-
+                        
+                        // tọa độ của ghế
                         seat.style.left = (x - 1) * (WidthElement + marginX) + 'px';
                         seat.style.top = (y - 1) * (HeightElement + marginY) + 'px';
-
+                        
+                        // style thay đổi ghi zoom hoặc thêm ghế
                         seat.style.borderRadius = (WidthElement * borderRadiusPercent / 100) + 'px';
                         seat.style.fontSize = (WidthElement / 3) + 'px';
                         seat.innerHTML = y + ',' + x;
-
+                        
+                        // onclick
                         seat.onclick = function () {
                             this.classList.toggle('selected');
                         };
@@ -118,17 +131,21 @@
                 }
 
             }
-
+            
+            // thêm ghế (thêm cả hàng dọc và ngang) -> cần tách 
             function increaSeats() {
 
                 const amountSeats = document.getElementsByClassName("seat");
                 console.log("amoutn seats: " + amountSeats.length);
+                
+                // stop khi tổng số over 1000
                 if (amountSeats.length > 1000)
                     return;
-
+                
+                // tăng hàng dọc (X) và hàng ngang (Y) lên 1
                 numberOfSeatCoordinateX++;
                 numberOfSeatCoordinateY++;
-
+                // tính lại chiều dài, rộng ghế 
                 WidthElement = Math.floor(innerWidth / (numberOfSeatCoordinateX * (1 + percentWidthAndMarginX)));
                 HeightElement = Math.floor(innerHeight / (numberOfSeatCoordinateY * (1 + percentHeightAndMarginY)));
 
@@ -136,7 +153,7 @@
 
             }
 
-
+            // xử lí zoom in zoom out khi scroll
             function zoom(event) {
                 event.preventDefault();
 
@@ -151,7 +168,7 @@
 
             }
 
-
+            // xủ lí kéo thả khung hình
             function startDrag(event) {
                 const container = document.getElementById('seatsContainer');
                 isDragging = true;
@@ -159,7 +176,7 @@
                 initialY = event.clientY;
                 xOffset = 0;
                 yOffset = 0;
-                //container.style.cursor = 'grabbing';
+              
             }
 
             function drag(event) {
@@ -194,7 +211,7 @@
                 yOffset += event.clientY - initialY;
 
             }
-
+            // handle Load into DOM
             window.onload = () => {
                 createSeats();
                 const container = document.getElementById('seatsContainer');
