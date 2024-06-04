@@ -42,16 +42,16 @@ public class Cinema {
         this.avatar = avatar;
     }
     
-    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune) {
-        this.cinemaID = cinemaID;
-        this.cinemaChainID = cinemaChainID;
-        this.name = name;
-        this.address = address;
-        this.province = province;
-        this.district = district;
-        this.commune = commune;
-      
-    }
+//    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune) {
+//        this.cinemaID = cinemaID;
+//        this.cinemaChainID = cinemaChainID;
+//        this.name = name;
+//        this.address = address;
+//        this.province = province;
+//        this.district = district;
+//        this.commune = commune;
+//      
+//    }
 
  
 

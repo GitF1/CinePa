@@ -130,17 +130,9 @@
                     <label >Tình trạng giao dịch:</label>
                     <label>
                         <%
-                            if (signValue.equals(vnp_SecureHash)) {
-                                if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
-                                    out.print("Thành công");
-                                } else {
-                                    out.print("Không thành công");
-                                }
-
-                            } else {
-                                out.print("invalid signature");
-                            }
-                        %></label>
+                           request.getParameter("message");
+                        %>
+                    </label>
                 </div> 
             </div>
             <p>

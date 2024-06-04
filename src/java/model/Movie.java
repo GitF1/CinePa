@@ -1,5 +1,10 @@
 package model;
 
+
+/**
+ *
+ * @author Admin
+ */
 public class Movie {
 
     private int movieID;
@@ -14,9 +19,21 @@ public class Movie {
     public Movie() {
     }
 
-    // Constructor
+//
+//    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
+//        this.movieID = movieID;
+//        this.title = title;
+//        this.synopsis = synopsis;
+//        this.datePublished = datePublished;
+//        this.imageURL = imageURL;
+//        this.rating = rating;
+//        this.status = status;
+//        this.country = country;
+//    }
 
-    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
+    
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String country, String status) {
         this.movieID = movieID;
         this.title = title;
         this.synopsis = synopsis;
@@ -95,7 +112,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + '}';
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '}';
     }
 
     

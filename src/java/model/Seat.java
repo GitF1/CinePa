@@ -62,10 +62,7 @@ public class Seat {
         this.roomID = roomID;
     }
 
-    public String getName() {
-        return name;
-    }
-
+ 
     public void setName(String name) {
         this.name = name;
     }

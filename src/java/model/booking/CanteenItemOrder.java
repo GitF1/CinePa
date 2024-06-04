@@ -13,16 +13,26 @@ import model.CanteenItem;
 public class CanteenItemOrder extends CanteenItem {
 
     private int amount;
-
+    private int voucherID;
+    
     public CanteenItemOrder() {
         super();
     }
 
-    public CanteenItemOrder(int amount, int id, String name, double price, String image) {
-        super(id, name, price, image);
+    public CanteenItemOrder(int amount, int id) {
+        super();
+        setItemID(id);
         this.amount = amount;
     }
 
+    public int getVoucherID() {
+        return voucherID;
+    }
+
+    public void setVoucherID(int voucherID) {
+        this.voucherID = voucherID;
+    }
+    
     public CanteenItemOrder(int amount) {
         super();
         this.amount = amount;
@@ -35,9 +45,10 @@ public class CanteenItemOrder extends CanteenItem {
     public void setAmount(int amount) {
         this.amount = amount;
     }
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "CanteenItemOrder{" + "amount=" + amount + "id: " + id + '}';
+    }
 
 }

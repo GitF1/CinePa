@@ -45,7 +45,13 @@ public class BookingDAO extends SQLServerConnect {
                 String name = rs.getString("Name");
                 int coordinateX = rs.getInt("CoordinateX");
                 int coordinateY = rs.getInt("CoordinateY");
-                seats.add(new Seat(name, roomID, coordinateX, coordinateY));
+
+                Seat newSeat = new Seat();
+                newSeat.setName(name);
+                newSeat.setRoomID(roomID);
+                newSeat.setX(coordinateX);
+                newSeat.setY(coordinateY);
+                seats.add(newSeat);
             }
 
         } catch (Exception e) {
@@ -119,25 +125,26 @@ public class BookingDAO extends SQLServerConnect {
             connection.setAutoCommit(false);
 
             // Check if the seats are already booked of this movie slot
-            String checkSeatsSQL = "SELECT SeatID FROM Ticket WHERE MovieSlotID = ? AND SeatID IN ("
-                    + String.join(",", seatIDs.stream().map(id -> "?").toArray(String[]::new))
-                    + ") FOR UPDATE";
+            String placeholders = String.join(",", seatIDs.stream().map(id -> "?").toArray(String[]::new));
+            String checkSeatsSQL = "SELECT SeatID FROM Ticket WITH (ROWLOCK, UPDLOCK) WHERE MovieSlotID = ? AND SeatID IN ("
+                    + placeholders + ")";
+            
             pstmt = connection.prepareStatement(checkSeatsSQL);
             pstmt.setInt(1, movieSlotID);
-            
+
             for (int i = 0; i < seatIDs.size(); i++) {
                 pstmt.setInt(i + 2, seatIDs.get(i));
             }
-            
+
             rs = pstmt.executeQuery();
-            
+
             if (rs.next()) {
                 // If any seat is already booked, return false
                 return false;
             }
 
             // Insert a new order
-            String insertOrderSQL = "INSERT INTO [Order] (UserID, TimeCreated, Status) VALUES (?, NOW(), 'PENDING')";
+            String insertOrderSQL = "INSERT INTO [Order] (UserID, TimeCreated, Status) VALUES (?, GETDATE(), 'PENDING')";
             pstmt = connection.prepareStatement(insertOrderSQL, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, userID);
             pstmt.executeUpdate();
@@ -158,7 +165,7 @@ public class BookingDAO extends SQLServerConnect {
                 pstmt.setInt(3, seatID);
                 pstmt.addBatch();
             }
-            
+
             pstmt.executeBatch();
 
             // Insert canteen items in order if user select
@@ -175,7 +182,7 @@ public class BookingDAO extends SQLServerConnect {
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();
-            }   
+            }
 
             // Commit the transaction
             connection.commit();

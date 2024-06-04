@@ -23,7 +23,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import model.booking.OrderTicket;
 import util.RouterJSP;
 import util.VnPayConfig;
 
@@ -72,7 +74,18 @@ public class VnPayServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.getRequestDispatcher(RouterJSP.VN_PAY_PAYMENT_HOMEPAGE).forward(request, response);
+        HttpSession session = request.getSession();
+        OrderTicket order = (OrderTicket) session.getAttribute("order");
+
+// Thiết lập các thuộc tính cho chuyển tiếp đến trang JSP
+        request.setAttribute("totalPriceTicket", order.getTotalPriceTicket());
+        request.setAttribute("totalPriceCanteen", order.getTotalPriceCanteen());
+        request.setAttribute("movieName", order.getMovieName());
+        request.setAttribute("slotMovie", order.getSlotMovie());
+        request.setAttribute("date", order.getDate());
+        request.setAttribute("canteenOrders", order.getCanteenItemOrders());
+
+        request.getRequestDispatcher(RouterJSP.VN_PAY_PAYMENT_HOMEPAGE).forward(request, response);
     }
 
     /**
@@ -86,10 +99,13 @@ public class VnPayServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = Integer.parseInt(req.getParameter("amount")) * 100;
+        System.out.println("amout:" + (String)req.getParameter("amount"));
+        int amount = Integer.parseInt((String) req.getParameter("amount"))*100;
+
         String bankCode = req.getParameter("bankCode");
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
@@ -98,7 +114,7 @@ public class VnPayServlet extends HttpServlet {
         String vnp_TmnCode = VnPayConfig.vnp_TmnCode;
 
         Map<String, String> vnp_Params = new HashMap<>();
-        
+
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
@@ -108,8 +124,7 @@ public class VnPayServlet extends HttpServlet {
         if (bankCode != null && !bankCode.isEmpty()) {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
-        
-        
+
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);

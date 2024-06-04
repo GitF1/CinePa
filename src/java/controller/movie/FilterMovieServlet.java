@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import model.Movie;
-import model.MovieInGenre;
 import util.RouterJSP;
 
 /**

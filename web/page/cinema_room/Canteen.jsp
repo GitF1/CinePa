@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <title>Combo Selection</title>
         <style>
-     
+
             .combo-box {
                 border: 1px solid #ddd;
                 padding: 20px;
@@ -33,6 +33,7 @@
             .total {
                 font-size: 18px;
                 margin-top: 20px;
+                right:10px;
             }
             .submit-btn {
                 background-color: #ff4081;
@@ -41,6 +42,8 @@
                 border: none;
                 cursor: pointer;
                 font-size: 16px;
+                margin: 10x ;
+                border-radius: 10px;
             }
             #background_box{
                 position: fixed;
@@ -89,6 +92,7 @@
                     total += price * quantity;
                 });
                 document.getElementById('totalPrice').innerText = total.toFixed(2) + 'đ';
+                document.getElementById('hiddenTotalPriceCanteen').value = total.toFixed(2);
             }
 
             function increment(id) {
@@ -98,20 +102,52 @@
             }
 
             function decrement(id) {
+
                 const input = document.getElementById(id);
+
+
+
                 if (parseInt(input.value) > 0) {
                     input.value = parseInt(input.value) - 1;
                     updateTotal();
                 }
+
             }
+            function enableInputs() {
+                const inputs = document.querySelectorAll('.input-amount');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                });
+            }
+
+            function callServlet(id, url, methodType) {
+                enableInputs();
+                document.getElementById(id).action = url;
+                document.getElementById(id).method = methodType;
+                document.getElementById(id).submit();
+            }
+
+            document.addEventListener("mousedown", function (event) {
+                const comboBox = document.getElementById("comboBox");
+                const background = document.getElementById("wrapper-box-select_canteen");
+                const isClickInside = background.contains(event.target);
+
+                if (!isClickInside && comboBox.style.display === "block") {
+                    comboBox.style.display = "none";
+                }
+            });
+
+            document.getElementById("wrapper-box-select_canteen").addEventListener("mousedown", function (event) {
+                event.stopPropagation();
+            });
         </script>
     </head>
     <body>
-
         <div id="comboBox" class="combo-box" style="display:none;">
             <div id="background_box" >
                 <div id="wrapper-box-select_canteen" class="wrapper-box">
                     <div class="layer_box">
+
                         <c:forEach var="item" items="${canteenItems}">
                             <div class="combo" data-price="${item.getPrice()}">
                                 <h3>${item.getName()} - ${item.getPrice()}đ</h3>
@@ -128,10 +164,15 @@
 
 
                     </div>
+
                     <div class="total">
                         <span>Tổng cộng: </span><span id="totalPrice">0đ</span>
+                        <input type="hidden" id="hiddenTotalPriceCanteen" name="totalPriceCanteenItem" value="0">
                     </div>
-                    <button type="submit" class="submit-btn">Tiếp tục</button>
+
+                    <button class="submit-btn" id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/booking/seat', 'POST')">Đặt vé</button>
+
+
                 </div>
 
             </div>

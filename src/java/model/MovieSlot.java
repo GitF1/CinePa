@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MovieSlot {
-    
+
     private int movieSlotID;
     private int roomID;
     private int movieID;
@@ -112,12 +112,17 @@ public class MovieSlot {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getFormattedDate() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        return startTime.format(dateFormatter);
+    }
+
     public String getFormattedStartTime() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return startTime.format(timeFormatter);
     }
-    
+
     public String getFormattedEndTime() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         return endTime.format(timeFormatter);
@@ -125,17 +130,16 @@ public class MovieSlot {
 
     @Override
     public String toString() {
-        return "MovieSlot{" +
-                "movieSlotID=" + movieSlotID +
-                ", roomID=" + roomID +
-                ", movieID=" + movieID +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", type='" + type + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", status=" + status +
-                '}';
+        return "MovieSlot{"
+                + "movieSlotID=" + movieSlotID
+                + ", roomID=" + roomID
+                + ", movieID=" + movieID
+                + ", startTime=" + startTime
+                + ", endTime=" + endTime
+                + ", type='" + type + '\''
+                + ", price=" + price
+                + ", discount=" + discount
+                + ", status=" + status
+                + '}';
     }
 }
-

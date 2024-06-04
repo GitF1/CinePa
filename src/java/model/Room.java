@@ -9,6 +9,7 @@ package model;
  * @author Admin
  */
 public class Room {
+    
     private int roomID;
     private int cinemaID;
     private String name;
