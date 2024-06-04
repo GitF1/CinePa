@@ -5,6 +5,7 @@
 package controller_room;
 
 import DAO.UserDAO;
+import DAO.booking.BookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,11 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.CanteenItem;
 import model.Movie;
 import model.MovieSlot;
 import model.Room;
 import model.Seat;
-import util.Router;
+import model.booking.CanteenItemOrder;
+import model.booking.OrderTicket;
+import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -67,32 +72,51 @@ public class BookingSeatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int movieSlotID = 1003;
+        
+        checkUserID(request, response);
+
+        int movieSlotID = 3;
+
         try {
+
             UserDAO userDAO = new UserDAO(request.getServletContext());
+            BookingDAO bookingDAO = new BookingDAO(getServletContext());
+            List<CanteenItem> canteenItems = bookingDAO.getListAllCanteenItem();
+
             MovieSlot movieSlot = userDAO.queryMovieSlots(movieSlotID);
             
             Movie movie = userDAO.queryMovie(movieSlotID);
             Room room = userDAO.queryRoom(movieSlotID);
-            
+
             List<Seat> seats = userDAO.querySeatsInRoom(movieSlotID);
             int maxWidth = 0, maxLength = 0;
-            for(Seat seat : seats) {
-                System.out.println(seat);
-            } // print seat
-            
-            for(Seat seat : seats) {
+
+            for (Seat seat : seats) {
                 maxWidth = Math.max(maxWidth, seat.getY());
                 maxLength = Math.max(maxLength, seat.getX());
             }
-            System.out.println(movieSlot);
+
+            request.setAttribute("movieSlotID", movieSlotID);
             request.setAttribute("movieSlot", movieSlot);
             request.setAttribute("movie", movie);
             request.setAttribute("room", room);
             request.setAttribute("seats", seats);
             request.setAttribute("maxWidth", maxWidth);
             request.setAttribute("maxLength", maxLength);
-            request.getRequestDispatcher(Router.BOOKING_SEAT).forward(request, response);
+            request.setAttribute("canteenItems", canteenItems);
+
+            // init session for order ticket
+            OrderTicket order = new OrderTicket();
+            order.setRoomName(room.getName());
+            order.setRoomType(room.getType());
+            order.setMovieName(movie.getTitle());
+            order.setSlotMovie(movieSlot.getFormattedStartTime() + "~" + movieSlot.getFormattedEndTime());
+            order.setDate(movieSlot.getFormattedDate());
+            //
+            HttpSession session = request.getSession();
+            session.setAttribute("order", order);
+            //
+            request.getRequestDispatcher(RouterJSP.BOOKING_SEAT).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(BookingSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,13 +133,119 @@ public class BookingSeatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        List<String> seatIDs = new ArrayList<>();
-        for(int i = 1; i <= 8; ++i) {
-            String seatID = request.getParameter("selectedSeat" + i);
-            if(!seatID.isEmpty()) seatIDs.add(seatID);
+        response.setContentType("text/html");
+        HttpSession session = request.getSession();
+
+        Integer userID = checkUserID(request, response);
+
+        // check user ID
+        if (userID == null || userID == 0) {
+            response.sendRedirect(RouterURL.LOGIN);
+            return;
         }
-        out.println(seatIDs);
+
+        String movieSlotIDParam = request.getParameter("movieSlotID");
+
+        String totalCostCanteenStr = request.getParameter("totalPriceCanteenItem");
+
+        String totalCostTicketStr = request.getParameter("totalPriceTicket");
+
+        double totalCostCanteen = -1;
+        double totalCostTicket = -1;
+
+        if (movieSlotIDParam == null || movieSlotIDParam.isEmpty()) {
+            response.sendRedirect(RouterURL.LOGIN);
+            return;
+        }
+
+        int movieSlotID = -1;
+
+        try {
+            totalCostCanteen = Double.parseDouble(totalCostCanteenStr);
+            totalCostTicket = Double.parseDouble(totalCostTicketStr);
+            movieSlotID = Integer.parseInt(movieSlotIDParam);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+        List<Integer> seatIDs = getListSeatIDs(request);
+
+        List<CanteenItemOrder> canteenOrders = getListCanteenOrder(request);
+
+        PrintWriter out = response.getWriter();
+        
+        OrderTicket order = (OrderTicket) session.getAttribute("order");
+        
+        order.setUserID(userID);
+        order.setSeatsID(seatIDs);
+        order.setCanteenItemOrders(canteenOrders);
+        order.setTotalPriceCanteen(totalCostCanteen);
+        order.setTotalPriceTicket(totalCostTicket);
+        //
+        response.sendRedirect(RouterURL.PAYMENT_VNPAY);
+
+        // handle paying before add into database
+//        out.println("user Id:" + userID);
+//        out.println(canteenOrders);
+//        out.println(seatIDs.toString());
+//        out.println("movie slot Id:" + movieSlotID);
+//        out.println("total price ticket" + totalCostTicketStr);
+//        out.println("total price food" + totalCostCanteenStr);
+    }
+
+    //--------------------------------------------------------------//
+    private List<Integer> getListSeatIDs(HttpServletRequest request) {
+        List<Integer> seatIDs = new ArrayList<>();
+
+        for (int i = 1; i <= 8; ++i) {
+            String seatID = request.getParameter("selectedSeat" + i);
+
+            if (seatID == null || seatID.isEmpty()) {
+                continue;
+            }
+            try {
+                int seatIDInt = Integer.parseInt(seatID);
+                seatIDs.add(seatIDInt);
+            } catch (NumberFormatException e) {
+                continue; // Exit the method if seatID is not a number
+            }
+
+        }
+        return seatIDs;
+    }
+
+    private List<CanteenItemOrder> getListCanteenOrder(HttpServletRequest request) {
+        List<CanteenItemOrder> canteenOrders = new ArrayList<>();
+
+        // Iterate over all parameters
+        request.getParameterMap().forEach((key, value) -> {
+            if (key.startsWith("quantity_")) {
+                try {
+                    int id = Integer.parseInt(key.substring(9)); // Extract item ID from parameter name
+                    int amount = Integer.parseInt(value[0]);
+                    if (amount > 0) {
+                        canteenOrders.add(new CanteenItemOrder(amount, id));
+                    }
+                } catch (NumberFormatException e) {
+                    // Handle potential number format exception
+                }
+            }
+        });
+        return canteenOrders;
+    }
+
+    public Integer checkUserID(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Lấy userID từ session
+        Integer userID = (Integer) request.getSession().getAttribute("userID");
+
+        // Kiểm tra userID
+        if (userID == null || userID == 0) {
+            // Nếu không có userID hoặc nó bằng 0, chuyển hướng đến trang đăng nhập
+            response.sendRedirect(RouterURL.LOGIN);
+            return null;
+        }
+
+        return userID;
     }
 
     /**

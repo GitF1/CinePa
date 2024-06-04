@@ -1,0 +1,385 @@
+.content {
+    height: 480px;
+    background-color: black;
+}
+
+.container {}
+
+.content-image {}
+
+.content-desc {}
+
+.film-image {
+    float: right;
+    width: 254px;
+    height: 360px;
+    background-color: palegreen;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.trailer-view:hover,
+.film-image:hover {
+    cursor: pointer;
+    opacity: .8;
+}
+
+.pdt50 {
+    padding-top: 50px;
+}
+
+.clXam {
+    color: #9da1a3;
+}
+
+.clWhite {
+    color: white;
+}
+
+.mg20 {
+    margin: 0 20px;
+}
+
+.title-2.clWhite {
+    margin-bottom: 12px;
+}
+
+.mgt12 {
+    margin-bottom: 13px;
+}
+
+.content-sumary {
+    width: 850px;
+    height: 77px;
+    overflow: auto;
+    color: #9da1a3;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fw-700 {
+    font-weight: 700;
+}
+
+.liti {
+    margin-top: 20px;
+}
+
+.inline-block.tliti-type {
+    margin: 0 30px;
+}
+
+.trailer-part {
+    margin-top: 34px;
+}
+
+span.clWhite {
+    margin-right: 40px;
+}
+
+i.fa.fa-youtube-play {
+    color: red;
+    font-size: 24px;
+}
+
+i.fa.fa-comments {
+    font-size: 24px;
+    color: yellow;
+}
+
+i.fa.fa-star {
+    font-size: 24px;
+    color: yellow;
+}
+
+/* phan danh sach phim va review :  */
+.booking-ticket {}
+
+.list-active-films {
+}
+
+.active-film {
+    width: 330PX;
+
+}
+
+.active-film-img {
+    border-radius: 8px;
+}
+
+p.active-film-btn {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    background-color: #579b41;
+    color: white;
+}
+
+.active-film-img {
+    height: 120px;
+    background-position: center;
+    transition: transform 0.3s ease;
+    background-size: cover;
+}
+
+.ctive-film-img-a {}
+
+.active-film-img:hover {
+    transform: scale(1.07);
+}
+
+.active-film-desc {
+    height: 30px;
+}
+
+p.active-film-btn {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    background-color: #579b41;
+    color: white;
+    padding: 4px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+p.active-film-desc {
+    font-weight: 650;
+    line-height: 17px;
+    margin-bottom: 12px;
+    width: 292px;
+}
+
+p.active-film-type {
+    margin: 0;
+    line-height: 14px;
+    width: 285px;
+}
+
+i.fa.fa-star {
+    font-size: 24px;
+    padding-top: 10px;
+}
+
+.active-film.row {
+    margin-bottom: 17px;
+}
+
+h3.pdc {
+    margin: 30px 0;
+}
+
+/* phan review :  */
+#review {
+    margin-left: 100px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.vinh {
+    height: 100px;
+    background-color: #d7d72b;
+}
+
+.review-heading {}
+
+.review-part {}
+
+.review-part-img {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    border-radius: 50%;
+    background-image: url('https://avatar.momocdn.net/avatar/dd20/c0d235fb34b51cf120860c2560c5969615be941cc7a82d4c63b8e200eef3.png');
+}
+
+.review-part-detail {
+    display: inline-block;
+}
+
+.review-part-detail {
+    display: inline-block;
+    margin-left: 13px;
+}
+
+p.review-part-name {
+    margin: 0;
+    color: #262626;
+}
+
+.review-part-time {
+    font-size: 12px;
+
+    color: #888888;
+}
+
+.review-part-cinepa {
+    color: #f060af;
+    margin-left: 12px;
+}
+
+.review-part-rate {
+    color: #171717;
+    font-weight: 600;
+    margin: 0;
+}
+
+.review-part-content {
+    line-height: 20px;
+    margin-top: 5px;
+}
+
+.review-part-content {
+    line-height: 20px;
+    margin-top: 5px;
+    height: 65px;
+    overflow: auto;
+}
+
+.pdt0 {
+    padding-top: 0px !important;
+}
+
+.review-part {
+    margin-top: 36px;
+}
+
+/* phan modal :  */
+.modal-t {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.open {
+    display: flex;
+}
+
+.trailer-modal-container {
+    width: 770px;
+    height: 622px;
+    background-color: #171717;
+    animation: modalFadeIN ease .5s;
+}
+
+.modal-header {
+    height: 60px;
+    background-color: black;
+
+}
+
+span.modal-header-name {
+    font-size: 20px;
+    margin-left: 48px;
+}
+
+.modal-header-official {}
+
+.modal-header-close {
+    margin-bottom: 24px;
+}
+
+i.fa.fa-window-close {
+    background-color: red;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.modal-link {
+    height: 370px;
+    background-color: #9da1a3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+}
+
+i.fa.fa-youtube-square {
+    font-size: 52px;
+    color: red;
+}
+
+i.fa.fa-youtube-square:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+.modal-desc {
+    display: flex;
+    margin-top: 30px;
+}
+
+.modal-desc-img {
+    width: 380px;
+    height: 120px;
+    background-size: cover;
+    margin-left: 24px;
+}
+
+.modal-desc-content {
+    margin-left: 24px;
+}
+
+.modal-desc-content-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+}
+
+.modal-desc-content-type {
+    color: #bababa;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 38px;
+}
+
+.modal-desc-content-detail {
+    color: #9f9f9f;
+    height: 74px;
+    overflow: auto;
+}
+
+.modal-desc-book,
+.modal-desc-close {
+    width: 80px;
+    height: 30px;
+    background-color: #c1177c;
+    border-radius: 10px;
+    font-size: 16px;
+    color: rgba(225, 225, 225, .9);
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+.modal-desc-close {
+    background-color: rgb(115 115 115);
+    margin-left: 16px;
+}
+
+@keyframes modalFadeIN {
+    from {
+        opacity: 0;
+        transform: translateY(-140px);
+
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+}

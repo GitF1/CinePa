@@ -9,6 +9,7 @@ package model;
  * @author ACER
  */
 public class Seat {
+    
     private int seatID;
     private int roomID;
     private String name;
@@ -48,6 +49,10 @@ public class Seat {
     public void setSeatID(int seatID) {
         this.seatID = seatID;
     }
+    
+    public String getName() {
+        return name;
+    }
 
     public int getRoomID() {
         return roomID;
@@ -57,10 +62,7 @@ public class Seat {
         this.roomID = roomID;
     }
 
-    public String getName() {
-        return name;
-    }
-
+ 
     public void setName(String name) {
         this.name = name;
     }

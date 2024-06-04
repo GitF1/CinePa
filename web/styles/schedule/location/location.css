@@ -1,0 +1,38 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+label {
+    font-size: 16px;
+    color: #666;
+}
+
+select {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    appearance: none; /* Remove default styling */
+    background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="gray" stroke-width="2" d="M8 10l4 4 4-4z"/></svg>') no-repeat right 10px center;
+    background-color: #f9f9f9;
+    background-size: 12px;
+}
+
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #007BFF;
+}
+

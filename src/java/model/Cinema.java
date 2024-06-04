@@ -16,6 +16,11 @@ public class Cinema {
     private String province;
     private String district;
     private String commune;
+    private String avatar;
+   
+
+    public Cinema() {
+    }
 
     public Cinema(int cinemaID, int cinemaChainID, String address, String province, String district, String commune) {
         this.cinemaID = cinemaID;
@@ -25,16 +30,30 @@ public class Cinema {
         this.district = district;
         this.commune = commune;
     }
-    
-    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune) {
+
+    // Constructor
+    public Cinema(int cinemaID, int cinemaChainID, String address, String province, String district, String commune, String avatar) {
         this.cinemaID = cinemaID;
         this.cinemaChainID = cinemaChainID;
-        this.name = name;
         this.address = address;
         this.province = province;
         this.district = district;
         this.commune = commune;
+        this.avatar = avatar;
     }
+    
+//    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune) {
+//        this.cinemaID = cinemaID;
+//        this.cinemaChainID = cinemaChainID;
+//        this.name = name;
+//        this.address = address;
+//        this.province = province;
+//        this.district = district;
+//        this.commune = commune;
+//      
+//    }
+
+ 
 
     public int getCinemaID() {
         return cinemaID;
@@ -92,8 +111,25 @@ public class Cinema {
         this.commune = commune;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
-        return "Cinema{" + "cinemaID=" + cinemaID + ", cinemaChainID=" + cinemaChainID + ", name=" + name + ", address=" + address + ", province=" + province + ", district=" + district + ", commune=" + commune + '}';
-    }   
+        return "Cinema{"
+                + "cinemaID=" + cinemaID
+                + ", cinemaChainID=" + cinemaChainID
+                + ", address='" + address + '\''
+                + ", province='" + province + '\''
+                + ", district='" + district + '\''
+                + ", commune='" + commune + '\''
+                + ", avatar='" + avatar + '\''
+                + '}';
+    }
+
 }

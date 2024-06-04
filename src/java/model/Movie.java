@@ -1,40 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.util.Date;
 
 /**
  *
  * @author Admin
  */
 public class Movie {
-      private int movieID;
+
+    private int movieID;
     private String title;
     private String synopsis;
-    private Date datePublished;
+    private String datePublished;
     private String imageURL;
     private double rating;
-    private String country;
     private String status;
+    private String country;
 
-    // Constructor
-    public Movie(int movieID, String title, String synopsis, Date datePublished, String imageURL, double rating, String country, String status) {
+    public Movie() {
+    }
+
+//
+//    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
+//        this.movieID = movieID;
+//        this.title = title;
+//        this.synopsis = synopsis;
+//        this.datePublished = datePublished;
+//        this.imageURL = imageURL;
+//        this.rating = rating;
+//        this.status = status;
+//        this.country = country;
+//    }
+
+    
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String country, String status) {
         this.movieID = movieID;
         this.title = title;
         this.synopsis = synopsis;
         this.datePublished = datePublished;
         this.imageURL = imageURL;
         this.rating = rating;
-        this.country = country;
         this.status = status;
+        this.country = country;
     }
 
-    // Default constructor
-    public Movie() {
-    }
 
     // Getter and Setter methods
     public int getMovieID() {
@@ -61,11 +70,11 @@ public class Movie {
         this.synopsis = synopsis;
     }
 
-    public Date getDatePublished() {
+    public String getDatePublished() {
         return datePublished;
     }
 
-    public void setDatePublished(Date datePublished) {
+    public void setDatePublished(String datePublished) {
         this.datePublished = datePublished;
     }
 

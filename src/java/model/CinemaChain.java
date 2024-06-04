@@ -14,6 +14,10 @@ public class CinemaChain {
     private String information;
     private String avatar;
 
+    public CinemaChain() {
+    }
+    
+    // Constructor
     public CinemaChain(int cinemaChainID, String name, String information, String avatar) {
         this.cinemaChainID = cinemaChainID;
         this.name = name;
@@ -21,6 +25,7 @@ public class CinemaChain {
         this.avatar = avatar;
     }
 
+    // Getters and setters
     public int getCinemaChainID() {
         return cinemaChainID;
     }
@@ -55,6 +60,17 @@ public class CinemaChain {
 
     @Override
     public String toString() {
-        return "Cinema{" + "cinemaChainID=" + cinemaChainID + ", name=" + name + ", information=" + information + '}';
+        return "CinemaChain{" +
+                "cinemaChainID=" + cinemaChainID +
+                ", name='" + name + '\'' +
+                ", information='" + information + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        CinemaChain cinemaChain = new CinemaChain(1, "AMC Theatres", "AMC Theatres is the largest movie exhibition company in the world.", "path/to/avatar.png");
+        System.out.println(cinemaChain);
     }
 }

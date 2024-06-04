@@ -27,7 +27,7 @@ public interface UserServiceInteface {
 
     void delete(int id); // hàm này xóa 1 đối tượng User
 
-    boolean register(String username, String password, String email, String fullName, String code); // hàm đăng ký mới cho User
+    boolean register(String fullname, String username, String email, String password, String code); // hàm đăng ký mới cho User
 
     User login(String username, String password); // hàm đăng nhập
 

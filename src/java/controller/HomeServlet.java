@@ -4,6 +4,9 @@
  */
 package controller;
 
+import DAO.CinemaChainDAO;
+import DAO.UserDAO;
+import controller.auth.LoginServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,7 +14,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import util.Router;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.RouterJSP;
 
 /**
  *
@@ -19,6 +26,20 @@ import util.Router;
  */
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
+
+    RouterJSP route = new RouterJSP();
+    UserDAO userDAO;
+
+    @Override
+    public void init() throws ServletException {
+        try {
+            super.init();
+            this.userDAO = new UserDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,7 +70,16 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(new Router().HOMEPAGE).forward(request, response);
+        try {
+
+            HttpSession session = request.getSession();
+            CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
+            ArrayList<String> cinemaNames = cc.getCinemaChainList();
+            session.setAttribute("chains", cinemaNames);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.getRequestDispatcher(new RouterJSP().HOMEPAGE).forward(request, response);
     }
 
     /**
