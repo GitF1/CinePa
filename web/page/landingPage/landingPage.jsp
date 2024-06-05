@@ -4,8 +4,8 @@
 <%@page import ="DAO.CinemaChainDAO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="jakarta.servlet.ServletContext" %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,13 +14,11 @@
     <!--link boostrap :-->  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!--phan Q Vinh :--> 
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
@@ -69,16 +67,16 @@
 </head>
 <body>
 
-    <jsp:include page="header.jsp" />
+    <jsp:include page="Header.jsp" />
 
 
-    <jsp:include page="banner.jsp" />
+    <jsp:include page="Banner.jsp" />
 
     <jsp:include page="../movie/Index.jsp" />
 
-    <jsp:include page="mostReview.jsp" />
+    <jsp:include page="MostReview.jsp" />
 
-    <jsp:include page="question.jsp" />
+    <jsp:include page="Question.jsp" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 

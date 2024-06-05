@@ -1,16 +1,21 @@
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="jakarta.servlet.ServletContext" %>
 <%@ page import="model.MovieWithStatus" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@page import="model.Movie"%>
+<%@page import="model.MovieWithStatus"%>
+<%@page import="DAO.MovieDAO"%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Movie List</title>
         <!--Include necessary CSS and JavaScript files only once--> 
-        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -18,28 +23,28 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
-        <!--<link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/page/movie/movie-style.css">
 
     </head>
     <body class="bodyV">
-<%
-    String status = request.getParameter("status");
-    if (status == null || (!status.equals("Showing") && !status.equals("Coming"))) {
-        status = "Showing"; // Default status
-    }
+        <%
+            String status = request.getParameter("status");
+            if (status == null || (!status.equals("Showing") && !status.equals("Coming"))) {
+                status = "Showing"; // Default status
+            }
 
-    MovieDAO movieDAO = new MovieDAO(getServletContext());
-    List<Movie> movies = movieDAO.getMoviesByStatus(status);
-    Map<Integer, List<String>> movieGenresMap = movieDAO.getAllMovieGenres();
+            MovieDAO movieDAO = new MovieDAO(getServletContext());
+            List<MovieWithStatus> movies = movieDAO.getMoviesByStatus(status);
+            Map<Integer, List<String>> movieGenresMap = movieDAO.getAllMovieGenres();
 
-    String uniqueId = java.util.UUID.randomUUID().toString();
+            String uniqueId = java.util.UUID.randomUUID().toString();
 
-    request.setAttribute("movies", movies);
-    request.setAttribute("movieGenresMap", movieGenresMap);
-    request.setAttribute("status", status);
-    request.setAttribute("uniqueId", uniqueId);
+            request.setAttribute("movies", movies);
+            request.setAttribute("movieGenresMap", movieGenresMap);
+            request.setAttribute("status", status);
+            request.setAttribute("uniqueId", uniqueId);
 
-%>
+        %>
         <div class="container">
             <h2 class="text-center"><c:out value="${status}"/></h2>
             <div id="movieSlider_${uniqueId}" class="slider">

@@ -10,7 +10,7 @@ package util;
  */
 public class RouterJSP {
 
-    public static String LANDING_PAGE = "/page/";
+    public static String LANDING_PAGE = "/page/landingPage/LandingPage.jsp";
 
     public String HOMEPAGE = "/page/home/Home.jsp";
 
