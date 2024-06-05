@@ -85,6 +85,7 @@
                         <input type="radio" id="bankCode" name="bankCode" value="INTCARD">
                         <label for="bankCode">Thanh toán qua thẻ quốc tế</label><br> 
                     </div>
+                    
                     <div class="form-group">
 
                         <h5>Chọn ngôn ngữ giao diện thanh toán:</h5>

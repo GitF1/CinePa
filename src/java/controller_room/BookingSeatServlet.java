@@ -35,6 +35,18 @@ import util.RouterURL;
 @WebServlet(name = "BookingSeatServlet", urlPatterns = {"/booking/seat"})
 public class BookingSeatServlet extends HttpServlet {
 
+    BookingDAO bookingDAO;
+
+    @Override
+    public void init() throws ServletException {
+        super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        try {
+            bookingDAO = new BookingDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(BookingSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -73,7 +85,7 @@ public class BookingSeatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         checkUserID(request, response);
 
         int movieSlotID = 3;
@@ -173,24 +185,23 @@ public class BookingSeatServlet extends HttpServlet {
         List<CanteenItemOrder> canteenOrders = getListCanteenOrder(request);
 
         PrintWriter out = response.getWriter();
-        
+
         OrderTicket order = (OrderTicket) session.getAttribute("order");
         
+        order.setMovieSlotID(movieSlotID);
         order.setUserID(userID);
         order.setSeatsID(seatIDs);
         order.setCanteenItemOrders(canteenOrders);
         order.setTotalPriceCanteen(totalCostCanteen);
         order.setTotalPriceTicket(totalCostTicket);
         //
+        //boolean isBooked = bookingDAO.bookTicketMovieSlot(userID, movieSlotID, seatIDs, canteenOrders, response);
+        
+        //
         response.sendRedirect(RouterURL.PAYMENT_VNPAY);
 
         // handle paying before add into database
-//        out.println("user Id:" + userID);
-//        out.println(canteenOrders);
-//        out.println(seatIDs.toString());
-//        out.println("movie slot Id:" + movieSlotID);
-//        out.println("total price ticket" + totalCostTicketStr);
-//        out.println("total price food" + totalCostCanteenStr);
+
     }
 
     //--------------------------------------------------------------//
