@@ -7,10 +7,11 @@ package DAO;
 import DB.SQLServerConnect;
 import java.sql.SQLException;
 import jakarta.servlet.ServletContext;
-
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import model.User;
 
 /**
  *
@@ -49,9 +50,7 @@ public class CinemaChainDAO extends SQLServerConnect {
     }
 
     public ArrayList<String> getCinemaChainList() throws SQLException {
-        
         ArrayList<String> cinemaNames = new ArrayList<>();
-        
         String sqlQuery = "SELECT Name FROM CinemaChain";
 
         ResultSet rs = getResultSet(sqlQuery);
