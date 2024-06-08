@@ -13,5 +13,7 @@
     </head>
     <body>
         <h1>Hello World!Admin</h1>
+        <a class="dropdown-item" href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp">Create Movie</a>
+        <a class="dropdown-item" href="${pageContext.request.contextPath}/page/admin/TestJS.jsp">View Profile</a>
     </body>
 </html>

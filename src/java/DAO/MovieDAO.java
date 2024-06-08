@@ -1,11 +1,13 @@
-
 package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+//import java.sql.Date;
 import java.sql.SQLException;
 import DB.SQLServerConnect;
 import jakarta.servlet.ServletContext;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +18,7 @@ import java.util.Set;
 import model.Movie;
 import model.MovieInGenre;
 import model.Review;
+//import model.User;
 import model.movie.MovieInfo;
 
 /**
@@ -29,7 +32,7 @@ public class MovieDAO extends SQLServerConnect {
         connect(context);
     }
 
-     public MovieInfo getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
+    public MovieInfo getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
 
         DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
@@ -82,14 +85,12 @@ public class MovieDAO extends SQLServerConnect {
         return movie; // Trả về đối tượng Movie
     }
 
-    
     public ArrayList<MovieInfo> getAvailableMovies(ServletContext context) throws Exception {
-        
-         DB.SQLServerConnect dbConnect = new SQLServerConnect();
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
-        
-        
+
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
         String sql = "SELECT * FROM MovieCinema WHERE Status = 'Available'";
 
@@ -108,7 +109,7 @@ public class MovieDAO extends SQLServerConnect {
 
                 // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
                 if (status.trim().equalsIgnoreCase("Available")) {
-                    MovieInfo movie = getMovieWithGenresByID(movieID, context) ; 
+                    MovieInfo movie = getMovieWithGenresByID(movieID, context);
                     if (movie != null) {
                         availableMovies.add(movie);
                     }
@@ -118,21 +119,20 @@ public class MovieDAO extends SQLServerConnect {
             e.printStackTrace();
         }
 
-        return availableMovies; 
+        return availableMovies;
     }
 
-     public ArrayList<Review> getReviewsByMovieID(int movieID , ServletContext context) throws Exception {
-         
-          DB.SQLServerConnect dbConnect = new SQLServerConnect();
+    public ArrayList<Review> getReviewsByMovieID(int movieID, ServletContext context) throws Exception {
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
         java.sql.Connection connection = dbConnect.connect(context);
 
-         
         ArrayList<Review> reviews = new ArrayList<>();
-        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username " +
-                     "FROM Review " +
-                     "JOIN [User] ON Review.UserID = [User].UserID " +
-                     "WHERE Review.MovieID = ?";
+        String sql = "SELECT Review.*, [User].AvatarLink, [User].Username "
+                + "FROM Review "
+                + "JOIN [User] ON Review.UserID = [User].UserID "
+                + "WHERE Review.MovieID = ?";
 
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
@@ -317,7 +317,7 @@ public class MovieDAO extends SQLServerConnect {
         }
         return genres;
     }
-    
+
     ///
     // Get all countries
     public Set<String> getAllCountries() {
@@ -404,8 +404,8 @@ public class MovieDAO extends SQLServerConnect {
         }
         return list;
     }
-    
-     // New method to fetch all distinct genres
+
+    // New method to fetch all distinct genres
     public Set<String> getAllGenres() {
         Set<String> genres = new HashSet<>();
         String sql = "SELECT DISTINCT Genre FROM MovieInGenre";
@@ -421,5 +421,87 @@ public class MovieDAO extends SQLServerConnect {
         return genres;
     }
 
+    public void insertMovie(Movie movie) throws ParseException {//insert movie - DuyND
+        String sql = "INSERT INTO [dbo].[Movie]\n"
+                + "           ([Title]\n"
+                + "           ,[DatePublished]\n"
+                + "           ,[ImageURL]\n"
+                + "           ,[Synopsis]\n"
+                + "           ,[Country]\n"
+                + "           ,[Year]\n"
+                + "           ,[Length]\n"
+                + "           ,[LinkTrailer]\n"
+                + "           ,[Status])\n"
+                + "     VALUES  (?,?,?,?,?,?,?,?,?)";
+        // Use try-with-resources for automatic resource management
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setString(1, movie.getTitle());
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+            java.util.Date result = df.parse(movie.getDatePublished());
+            java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+            st.setDate(2, sqlDate);//need to turn into sql date
+            st.setString(3, movie.getImageURL());
+            st.setString(4, movie.getSynopsis());
+            st.setString(5, movie.getCountry());
+            st.setInt(6, result.getYear() + 1900);//need to turn into year int
+            st.setInt(7, movie.getLength());
+            st.setString(8, movie.getTrailerLink());
+            st.setString(9, movie.getStatus());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            // Properly handle the exception, log it, or rethrow as a custom exception
+            e.printStackTrace(); // Replace with appropriate logging in production code
+        }
+    }
+
+    public int getMovieID(String movieTitle) throws SQLException {
+
+        int id = 0;
+        String sqlQuery = "SELECT MovieID FROM [Movie] WHERE Title = ? ";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setString(1, movieTitle);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getInt("MovieID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return id;
+
+    }
+
+    public void insertMovieGenre(Movie movie, String[] genres) {//insert movie genres - DuyND
+        String sql = "INSERT INTO [dbo].[MovieInGenre]\n"
+                + "           ([MovieID]\n"
+                + "           ,[Genre])\n"
+                + "     VALUES  (?,?)";
+        // Use try-with-resources for automatic resource management
+        for (String s : genres) {
+            try {
+
+                PreparedStatement st = connection.prepareStatement(sql);
+
+                st.setInt(1, getMovieID(movie.getTitle()));
+                st.setString(2, s);
+                st.executeUpdate();
+
+            } catch (SQLException e) {
+                // Properly handle the exception, log it, or rethrow as a custom exception
+                e.printStackTrace(); // Replace with appropriate logging in production code
+            }
+        }
+        
+    }
 
 }
