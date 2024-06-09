@@ -35,6 +35,7 @@
                 id="title"
                 name="title"
                 placeholder="Nhập tiêu đề"
+                required
                 />
 
             <label for="synopsis" class="form-label">Mô tả phim</label>
@@ -44,6 +45,7 @@
                 name="synopsis"
                 rows="3"
                 placeholder="Nhập mô tả phim"
+                required
                 ></textarea>
 
             <!-- datepicker -->
@@ -56,10 +58,11 @@
                 id="datePublished"
                 name="datePublished"
                 placeholder="Nhập ngày phát hành"
+                required
                 />
 
             <label for="file" class="form-label">Hình ảnh</label>
-            <input  id = "file"  name="file" type="file" class="form-control" />
+            <input  id = "file" required name="file" type="file" class="form-control" />
 
             <!-- <label for="exampleFormControlInput1" class="form-label">Country</label> -->
             <label for="country" class="form-label">Quốc gia</label>
@@ -69,6 +72,7 @@
                 id="country"
                 placeholder="Nhập quốc gia"
                 name="country"
+                required
                 />
             
             <label for="genres" class="form-label">Thể loại</label><br />
@@ -81,7 +85,7 @@
                 Thêm thể loại</button
             ><br />
             <!-- <label for="exampleFormControlInput1" class="form-label">Year</label> -->
-            <label for="exampleFormControlInput1" class="form-label">Thời lượng</label>
+            <label for="duration" class="form-label">Thời lượng</label>
             <div class="input-group">
                 <input
                     type="number"
@@ -90,6 +94,7 @@
                     name="duration"
                     aria-describedby="basic-addon3 basic-addon4"
                     placeholder="Nhập thời lượng phim "
+                    required
                     />
                 <span class="input-group-text" id="basic-addon3">'</span>
             </div>
@@ -103,6 +108,7 @@
                 id="urlInput"
                 name="urlInput"
                 placeholder="Nhập link youtube..."
+                required
                 />
             <label for="exampleFormControlInput1" class="form-label">Trạng thái</label>
             <select
@@ -161,6 +167,7 @@
                     input.className = "form-control";
                     input.placeholder = "Nhập tên thể loại";
                     input.setAttribute("aria-label", "Recipient's username");
+                    input.setAttribute("required",true);
                     input.setAttribute("aria-describedby", "button-addon"+counter);
                     input.setAttribute("list", "datalistOptions2");
                     input.id = "exampleDataList";

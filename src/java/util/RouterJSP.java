@@ -43,4 +43,7 @@ public class RouterJSP {
 
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
 
+    public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
+    
+    public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
 }

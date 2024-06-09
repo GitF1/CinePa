@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import DB.SQLServerConnect;
 import jakarta.servlet.ServletContext;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -181,6 +182,35 @@ public class MovieDAO extends SQLServerConnect {
                         rs.getDouble("Rating"),
                         rs.getString("Status"),
                         rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public List<Movie> getAllMovieNew() {//to return all movie info-DuyND
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+//                int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink
+                Movie movie = new Movie(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country"),
+                        rs.getInt("Length"),
+                        rs.getString("LinkTrailer")
                 );
                 list.add(movie);
             }
@@ -458,6 +488,8 @@ public class MovieDAO extends SQLServerConnect {
             // Properly handle the exception, log it, or rethrow as a custom exception
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
+        
+        
     }
 
     public int getMovieID(String movieTitle) throws SQLException {
@@ -501,7 +533,139 @@ public class MovieDAO extends SQLServerConnect {
                 e.printStackTrace(); // Replace with appropriate logging in production code
             }
         }
-        
+
+    }
+
+    public void insertMovieGenreByID(int id, String[] genres) {//insert movie genres - DuyND
+        String sql = "INSERT INTO [dbo].[MovieInGenre]\n"
+                + "           ([MovieID]\n"
+                + "           ,[Genre])\n"
+                + "     VALUES  (?,?)";
+        // Use try-with-resources for automatic resource management
+        for (String s : genres) {
+            try {
+
+                PreparedStatement st = connection.prepareStatement(sql);
+
+                st.setInt(1, id);
+                st.setString(2, s);
+                st.executeUpdate();
+
+            } catch (SQLException e) {
+                // Properly handle the exception, log it, or rethrow as a custom exception
+                e.printStackTrace(); // Replace with appropriate logging in production code
+            }
+        }
+
+    }
+
+    public void deleteAllGenresOfMovieByID(int id) {
+        String sql = "DELETE FROM [dbo].[MovieInGenre] WHERE MovieID=?\n";
+        // Use try-with-resources for automatic resource management
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setInt(1, id);
+            st.execute();
+        } catch (SQLException e) {
+            // Properly handle the exception, log it, or rethrow as a custom exception
+            e.printStackTrace(); // Replace with appropriate logging in production code
+        }
+
+    }
+
+    public void deleteMovieByID(int id) {
+        String sql = "DELETE FROM [dbo].[Movie] WHERE MovieID=?\n";
+        // Use try-with-resources for automatic resource management
+
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setInt(1, id);
+            st.execute();
+        } catch (SQLException e) {
+            // Properly handle the exception, log it, or rethrow as a custom exception
+            e.printStackTrace(); // Replace with appropriate logging in production code
+        }
+
+    }
+
+    public void updateMovieByObject(MovieInfo movie, String status, String[] genres) throws SQLException {//update db movie
+        String sql = "update Movie set "
+                + "Title = '" + movie.getTitle() + "',"
+                + "DatePublished = '" + new java.sql.Date(movie.getDatePublished().getTime()) + "',"
+                + "ImageURL = '" + movie.getImageURL() + "',"
+                + "Synopsis = '" + movie.getSynopsis() + "',"
+                + "Country = '" + movie.getCountry() + "',"
+                + "Year = '" + movie.getYear() + "',"
+                + "Length = '" + movie.getLength() + "',"
+                + "LinkTrailer = '" + movie.getLinkTrailer() + "',"
+                + "Status = '" + status + "'"
+                + " where MovieID = '" + movie.getMovieID() + "'";
+        Statement st = connection.createStatement();
+        st.executeUpdate(sql);
+         sql = "UPDATE [dbo].[Movie] "
+                + "SET  "
+                + "Title=?,"
+                + "DatePublished=?,"
+                + "ImageURL=?,"
+                + "Synopsis=?,"
+                + "Country=?,"
+                + "Year=?,"
+                + "Length=?,"
+                + "LinkTrailer=?,"
+                + "Status=?"
+                + "WHERE MovieID=?\n";
+        // Use try-with-resources for automatic resource management
+
+//        try {
+//
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            st.setString(1, movie.getTitle());
+//           
+//         
+//            java.sql.Date sqlDate = new java.sql.Date(movie.getDatePublished().getTime());
+//            st.setDate(2, sqlDate);
+//            st.setString(3, movie.getImageURL());
+//            st.setString(4, movie.getSynopsis());
+//            st.setString(5, movie.getCountry());
+//            st.setInt(6, movie.getYear());
+//            st.setInt(7, movie.getLength());
+//            st.setString(8, movie.getLinkTrailer());
+//            st.setString(9,status);
+//            st.setInt(10,movie.getMovieID());
+//            st.executeUpdate();
+//        } catch (SQLException e) {
+//            // Properly handle the exception, log it, or rethrow as a custom exception
+//            e.printStackTrace(); // Replace with appropriate logging in production code
+//        }
+        deleteAllGenresOfMovieByID(movie.getMovieID());
+        insertMovieGenreByID(movie.getMovieID(),genres);
+
+    }
+    public String getImageUrlByID(int id) throws SQLException {
+
+        String role = "";
+        String sqlQuery = "SELECT ImageURL FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+         
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    role = rs.getString("ImageURL");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return role;
+
     }
 
 }
