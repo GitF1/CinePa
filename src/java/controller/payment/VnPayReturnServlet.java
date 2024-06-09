@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
@@ -73,21 +74,25 @@ public class VnPayReturnServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
         String vnp_TxnRef = request.getParameter("vnp_TxnRef");
-
+        HttpSession session = request.getSession();
         if ("00".equals(vnp_ResponseCode)) {
             // Payment successful, confirm and complete the order
             int orderID = Integer.parseInt(vnp_TxnRef);
-            bookingDAO.confirmOrder(orderID);
+            boolean isConfirm = bookingDAO.confirmOrder(orderID);
+            
+            if (isConfirm) {
+                session.removeAttribute("order");
+            }
 
         } else {
             // Payment failed, rollback the order
             int orderID = Integer.parseInt(vnp_TxnRef);
             bookingDAO.rollbackOrder(orderID);
         }
-        
+
         request.setAttribute("vnp_TxnRef", request.getParameter("vnp_TxnRef"));
         request.setAttribute("vnp_Amount", request.getParameter("vnp_Amount"));
         request.setAttribute("vnp_OrderInfo", request.getParameter("vnp_OrderInfo"));
@@ -96,7 +101,7 @@ public class VnPayReturnServlet extends HttpServlet {
         request.setAttribute("vnp_BankCode", request.getParameter("vnp_BankCode"));
         request.setAttribute("vnp_PayDate", request.getParameter("vnp_PayDate"));
         request.setAttribute("vnp_TransactionStatus", request.getParameter("vnp_TransactionStatus"));
-        
+
         request.getRequestDispatcher(RouterJSP.RETURN_TRACSACTION_BOOKING_TICKET).forward(request, response);
 
     }

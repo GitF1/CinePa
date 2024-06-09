@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -101,7 +102,7 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        RouterJSP route = new RouterJSP();
+
         if (debug) {
             log("AuthFilter:doFilter()");
         }
@@ -112,9 +113,10 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
         HttpSession session = httpRequest.getSession();
+
         String username = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
-        
+
         if (role == null) {
             UserDAO userDAO;
             try {
@@ -124,20 +126,27 @@ public class AuthFilter implements Filter {
 
             }
         }
+        session = httpRequest.getSession(true);
+        String urlStore = (String) httpRequest.getRequestURI();
+        if (!urlStore.equals(RouterURL.LOGIN)) {
+            session.setAttribute("redirectTo", urlStore);
+        }
 
+        
+        String loginURI = httpRequest.getContextPath() + "/login";
         //Có thể phải coi lại đề phòng lỗi url
-//        request.getRequestDispatcher(route.LOGIN).forward(request, response);
         if (url.contains("/admin") && (!role.equals("ADMIN"))) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+            httpResponse.sendRedirect(loginURI);
         }
         if (url.contains("/user") && (!role.equals("USER"))) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+            httpResponse.sendRedirect(loginURI);
         }
         if (url.contains("/staff") && (!role.equals("STAFF"))) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+            httpResponse.sendRedirect(loginURI);
         }
 
         Throwable problem = null;
+
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {

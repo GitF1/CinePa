@@ -21,6 +21,7 @@ import model.movie.MovieInfo;
 import model.Movie;
 
 import jakarta.servlet.ServletContext;
+
 /**
  *
  * @author VINHNQ
@@ -32,11 +33,7 @@ public class MovieDAO extends SQLServerConnect {
         connect(context);
     }
 
-    public MovieInfo getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
-
-        DB.SQLServerConnect dbConnect = new SQLServerConnect();
-
-        java.sql.Connection connection = dbConnect.connect(context);
+    public MovieInfo getMovieWithGenresByID(int movieID) throws Exception {
 
         String movieSql = "SELECT * FROM Movie WHERE MovieID = ?";
         String genreSql = "SELECT Genre FROM MovieInGenre WHERE MovieID = ?";
@@ -82,7 +79,7 @@ public class MovieDAO extends SQLServerConnect {
             e.printStackTrace();
         }
 
-        return movie; // Trả về đối tượng Movie
+        return movie; 
     }
 
     public ArrayList<MovieInfo> getAvailableMovies(ServletContext context) throws Exception {
@@ -92,6 +89,7 @@ public class MovieDAO extends SQLServerConnect {
         java.sql.Connection connection = dbConnect.connect(context);
 
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
+
         String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
 
         try {
@@ -109,7 +107,7 @@ public class MovieDAO extends SQLServerConnect {
 
                 // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
                 if (status.trim().equalsIgnoreCase("Available")) {
-                    MovieInfo movie = getMovieWithGenresByID(movieID, context);
+                    MovieInfo movie = getMovieWithGenresByID(movieID);
                     if (movie != null) {
                         availableMovies.add(movie);
                     }

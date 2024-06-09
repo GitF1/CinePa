@@ -48,5 +48,6 @@ public class RouterJSP {
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
     
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
-
+    
+    public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
 }
