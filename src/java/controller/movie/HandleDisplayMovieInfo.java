@@ -52,7 +52,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         //lay Movie : 
         MovieInfo movie = new MovieInfo();
         try {
-            movie =  (MovieInfo) movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID), context);
+            movie =  (MovieInfo) movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID));
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,7 +74,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
 
         // them vao Request : 
         request.setAttribute("movie", movie);
-        request.setAttribute("listAvalableMovies", listAvailabelMovies);
+        request.setAttribute("listAvailableMovies", listAvailabelMovies);
         request.setAttribute("listReviews", listReviews);
 
         try {
@@ -92,6 +92,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
             throws ServletException, IOException {
         
         scheduleDAO.handleDoPostComponentSchedule(request, response);
+        
         String redirectUrl = "/movie/HandleDisplayMovieInfo";
         response.setContentType("text/plain");
         response.getWriter().write(redirectUrl);

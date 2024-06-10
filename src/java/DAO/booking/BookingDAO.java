@@ -159,8 +159,8 @@ public class BookingDAO extends SQLServerConnect {
             }
             req.setAttribute("orderID", orderID);
             // Initiate VNPay payment process
-            new VnPayService().PayMentService(orderID,req, res);
-            
+            new VnPayService().PayMentService(orderID, req, res);
+
             // Commit transaction
             connection.commit();
 
@@ -190,7 +190,7 @@ public class BookingDAO extends SQLServerConnect {
         }
     }
 
-    public void confirmOrder(int orderID) {
+    public boolean confirmOrder(int orderID) {
         PreparedStatement pstmt = null;
 
         try {
@@ -261,7 +261,7 @@ public class BookingDAO extends SQLServerConnect {
 
             // Commit transaction
             connection.commit();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             if (connection != null) {
@@ -271,6 +271,7 @@ public class BookingDAO extends SQLServerConnect {
                     ex.printStackTrace();
                 }
             }
+            return false;
         } finally {
             try {
                 if (pstmt != null) {

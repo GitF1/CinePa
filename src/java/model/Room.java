@@ -18,7 +18,7 @@ public class Room {
     private int length;
     private int width;
     private String status;
-    //
+    
     
     // Constructor
     public Room(int roomID, int cinemaID, String name, String type, int capacity, String status) {

@@ -79,7 +79,8 @@ public class HomeServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        request.getRequestDispatcher(new RouterJSP().HOMEPAGE).forward(request, response);
+        
+        request.getRequestDispatcher(RouterJSP.LANDING_PAGE).forward(request, response);
     }
 
     /**
