@@ -20,11 +20,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import model.Cinema;
 import model.CinemaChain;
-import model.Movie;
 import model.MovieSlot;
+import model.schedule.CinemaMovieSlot;
 import model.schedule.Schedule;
 import model.schedule.DateInfo;
 import model.schedule.MovieSchedule;
@@ -162,39 +165,60 @@ public class ScheduleDAO extends SQLServerConnect {
 
     }
 
-    public List<MovieSlot> getAllMovieSlotsByMovieIDBeta(int movieID, String date) {
-        List<MovieSlot> movieSlots = new ArrayList<>();
-        String sql = "SELECT * FROM MovieSlot WHERE movieID = ? AND Status ='SHOWING' AND CONVERT(DATE, startTime) = ? AND startTime > ?";
+    public List<CinemaMovieSlot> getMovieSlotsByMovieID(int movieID) throws SQLException {
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, movieID);
-            preparedStatement.setString(2, date); // Assuming the date parameter is in 'yyyy-MM-dd' format
+        List<CinemaMovieSlot> cinemaMovieSlots = new ArrayList<>();
 
-            // Get the current date and time
-            LocalDateTime now = LocalDateTime.now();
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(now)); // Set the current time as the third parameter
+        String sql = "SELECT c.CinemaID, c.Address, c.Province, c.District, c.Commune, c.Avatar AS CinemaAvatar, "
+                + "ms.MovieSlotID, ms.RoomID, ms.StartTime, ms.EndTime, ms.Type, ms.Price, ms.Discount, ms.Status "
+                + "FROM Cinema c "
+                + "JOIN Movie m ON c.CinemaID = m.CinemaID "
+                + "JOIN MovieSlot ms ON m.MovieID = ms.MovieID "
+                + "WHERE m.MovieID = ? "
+                + "ORDER BY c.CinemaID, ms.StartTime";
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    MovieSlot movieSlot = new MovieSlot();
-                    movieSlot.setMovieSlotID(resultSet.getInt("movieSlotID"));
-                    movieSlot.setRoomID(resultSet.getInt("roomID"));
-                    movieSlot.setMovieID(resultSet.getInt("movieID"));
-                    movieSlot.setStartTime(resultSet.getObject("startTime", LocalDateTime.class));
-                    movieSlot.setEndTime(resultSet.getObject("endTime", LocalDateTime.class));
-                    movieSlot.setType(resultSet.getString("type"));
-                    movieSlot.setPrice(resultSet.getFloat("price"));
-                    movieSlot.setDiscount(resultSet.getFloat("discount"));
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, movieID);
+            ResultSet rs = stmt.executeQuery();
 
-                    movieSlots.add(movieSlot);
+            Map<Integer, CinemaMovieSlot> cinemaMap = new HashMap<>();
+
+            while (rs.next()) {
+                int cinemaID = rs.getInt("CinemaID");
+                CinemaMovieSlot cinemaMovieSlot = cinemaMap.get(cinemaID);
+
+                if (cinemaMovieSlot == null) {
+                    cinemaMovieSlot = new CinemaMovieSlot(
+                            cinemaID,
+                            rs.getString("Address"),
+                            rs.getString("Province"),
+                            rs.getString("District"),
+                            rs.getString("Commune"),
+                            rs.getString("CinemaAvatar"),
+                            new ArrayList<>()
+                    );
+                    cinemaMap.put(cinemaID, cinemaMovieSlot);
                 }
+
+                MovieSlot movieSlot = new MovieSlot();
+                
+                movieSlot.setMovieSlotID(rs.getInt("MovieSlotID"));
+                movieSlot.setRoomID(rs.getInt("RoomID"));
+                movieSlot.setMovieID(movieID); // Note: use the method parameter
+                movieSlot.setStartTime(rs.getObject("StartTime", LocalDateTime.class));
+                movieSlot.setEndTime(rs.getObject("EndTime", LocalDateTime.class));
+                movieSlot.setType(rs.getString("Type"));
+                movieSlot.setPrice(rs.getFloat("Price"));
+                movieSlot.setDiscount(rs.getFloat("Discount"));
+                movieSlot.setStatus(rs.getString("Status"));
+
+                cinemaMovieSlot.getMovieSlots().add(movieSlot);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            cinemaMovieSlots.addAll(cinemaMap.values());
         }
-        // Sort the movie slots by start time
-        Collections.sort(movieSlots, Comparator.comparing(MovieSlot::getStartTime));
-        return movieSlots;
+
+        return cinemaMovieSlots;
     }
 
     // Method to get all movie slots for a given movieID
@@ -251,7 +275,7 @@ public class ScheduleDAO extends SQLServerConnect {
         // Get the necessary data
         List<String> citiesProvinces = getListCites();
         List<DateInfo> listDateOfWeek = new DateInfo().generateWeek();
-        List<CinemaChain> listCinemaChain = getListCinemaChain(4, 0);
+        List<CinemaChain> listCinemaChain = getListCinemaChain(8, 0);
         String selectedCity = getSelectedCity(schedule, citiesProvinces);
         int cinemaChainID = getCinemaChainID(schedule);
         String scheduleForDate = getScheduleForDate(schedule, listDateOfWeek);
@@ -354,7 +378,6 @@ public class ScheduleDAO extends SQLServerConnect {
 
         storeScheduleInSession(session, schedule);
         setAttribute(request, schedule);
-        
 
     }
 
@@ -400,7 +423,6 @@ public class ScheduleDAO extends SQLServerConnect {
 //        // Retrieve list of movies by cinema ID from the database or another source
 //        return new ArrayList<>(); // Placeholder implementation
 //    }
-
     private void handleErrorGetDate(HttpServletRequest request) {
     }
 }

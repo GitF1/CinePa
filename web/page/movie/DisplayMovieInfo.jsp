@@ -5,8 +5,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
 <%@ page import="model.movie.MovieInfo" %>
-
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -16,7 +14,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="page/movie/DisplayMovieInfoCss.css"/>
-        
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -44,8 +42,8 @@
                         <!-- title 2 :  -->
                         <div class="title-2 clWhite">
                             <span class="clXam">${movie.title}</span>
-                            <span class="mg20 clXam">${movie.year}</span>
-                            <span class="clXam">${movie.length}</span>
+                            <span class="mg20 clXam">${movie.year != 0 ? movie.year : "N/A"}</span>
+                            <span class="clXam">${ movie.length != 0 ? movie.length : "N/A"}</span>
                         </div>
                         <!-- rating :  -->
                         <div class="mgt12">
@@ -57,7 +55,7 @@
                         <!-- noi dung :  -->
                         <h6 class="clWhite fw-700">Noi Dung</h6>
                         <div class="content-sumary">
-                            ${movie.synopsis}
+                            ${ movie.synopsis != null ? movie.synopsis : "N/A"}
                         </div>
                         <!-- nhung cai li ti :  -->
                         <div class="liti">
@@ -102,9 +100,9 @@
             <div class="row">
                 <div class="booking-ticket col-8">
                     <!-- Vinh code o day :  -->
-                    
-                    <div class="vinh">
-                         <jsp:include page="../../components/schedule/Schedule.jsp" />
+
+                    <div class="schedule-movie">
+                        <jsp:include page="./schedule/ScheduleMovie.jsp" />
                     </div>
 
 

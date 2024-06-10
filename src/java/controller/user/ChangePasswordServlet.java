@@ -59,7 +59,7 @@ public class ChangePasswordServlet extends HttpServlet {
         // check pass co dung khong , neu dung thi update password :
         if (user.getPassword().equalsIgnoreCase(currentPass)) {
             try {
-                userDAO.updateUserPassword(id, newPass);
+                userDAO.updateUserPasswordByID(id, newPass);
             } catch (SQLException ex) {
                 Logger.getLogger(ChangePasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
