@@ -107,7 +107,6 @@ public class CinemaChainDAO extends SQLServerConnect {
 
     }
 
-    public static void main(String[] args) {//for testing, delete at will
 
     public void createCinemaChain(CinemaChain cinemaChain, int userId) {
         String sqlCinemaChain = "INSERT INTO CinemaChain (Name, Information, Avatar) VALUES (?, ?, ?)";
