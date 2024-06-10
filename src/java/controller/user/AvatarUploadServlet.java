@@ -35,6 +35,8 @@ import util.RouterURL;
         maxFileSize = 1024 * 1024 * 10, // 10 MB
         maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
+
+
 public class AvatarUploadServlet extends HttpServlet {
 
     private Cloudinary cloudinary;
@@ -47,6 +49,7 @@ public class AvatarUploadServlet extends HttpServlet {
      * @param config
      * @throws ServletException if a servlet-specific error occurs
      */
+    
     @Override
     public void init(ServletConfig config)
             throws ServletException {

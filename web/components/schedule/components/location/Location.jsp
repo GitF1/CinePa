@@ -16,7 +16,7 @@
 
 
 
-        <select name="cityProvince" id="cityProvince" onchange="fetchCityProvinceDetails()">
+        <select class="location-select_box__city" name="cityProvince" id="cityProvince" onchange="fetchCityProvinceDetails()">
             <c:forEach var="city" items="${citiesProvinces}">
                 <option value="${city}" ${city == citySelect ? 'selected' : ''}>${city}</option>
             </c:forEach>

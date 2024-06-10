@@ -92,9 +92,11 @@ public class ForgetPasswordServlet extends HttpServlet {
         String OTP = request.getParameter("OTP");
         String newPassword = request.getParameter("new-password");
         String confirmPassword = request.getParameter("confirm-password");
+        
         UserDAO ud;
         
         System.out.println("newPassword = " + newPassword + ", confirmPassword = " + confirmPassword);
+        
         if(newPassword != null && confirmPassword != null) {
             boolean isValidPassword, confirmPasswordOk, changePasswordOk;
             isValidPassword = confirmPasswordOk = changePasswordOk = false;
@@ -103,7 +105,7 @@ public class ForgetPasswordServlet extends HttpServlet {
             if(isValidPassword && confirmPasswordOk) {
                 try {
                     ud = new UserDAO(request.getServletContext());
-                    ud.updateUserPassword(email, newPassword);
+                    ud.updateUserPasswordByEmail(email, newPassword);
                     changePasswordOk = true;
                 } catch (Exception ex) {
                     Logger.getLogger(ForgetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
