@@ -46,7 +46,27 @@ public class RouterJSP {
     public String MOVIE_LIST = "page/movie/MovieListComponents.jsp";
 
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
-    
+
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
+
+    public String Room_Admin = "/page/admin/rooms/Room-Admin.jsp";
+
+    public String List_CinemaChain = "/page/admin/rooms/ListCinemaChain.jsp";
+
+    public String List_Cinema = "/page/admin/rooms/ListCinema.jsp";
+
+    public String Add_Room = "/page/admin/rooms/CreateRoom.jsp";
+
+    public String Update_Room = "/page/admin/rooms/UpdateRoom.jsp";
+
+    public String Combined_Page = "/page/admin/rooms/Combined.jsp"; // Update this path accordingly
+
+    public String Home_owner = "/page/owner/manage/HomeOwner.jsp"; // Update this path accordingly
+
+    public String Create_cinemaChain = "/page/owner/manage/CreateOwner.jsp";
+
+    public String CinemaChain = "/page/owner/manage/CinemaChain.jsp";
+    
+    public String Create_Cinema ="/page/owner/manage/CreateCinemas.jsp";
 
 }

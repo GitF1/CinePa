@@ -150,8 +150,8 @@ public class LoginServlet extends HttpServlet {
                     //END OF TEMP CODE
                     response.sendRedirect(RouterURL.HOMEPAGE);
                 }
-                case "STAFF" ->
-                    request.getRequestDispatcher(route.STAFF).forward(request, response);
+                case "OWNER" ->
+                    request.getRequestDispatcher(route.Home_owner).forward(request, response);
                 case "ADMIN" ->
                     request.getRequestDispatcher(route.ADMIN).forward(request, response);
             }
