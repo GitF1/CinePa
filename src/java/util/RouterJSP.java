@@ -52,4 +52,10 @@ public class RouterJSP {
     public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
     
     public static String SCHEDULE_MOVIE ="/page/movie/schedule/ScheduleMovie.jsp";
+
+    public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
+    
+    public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
+    
+    public String SALES_REPORT = "/page/admin/Report.jsp";
 }

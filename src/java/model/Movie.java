@@ -15,25 +15,14 @@ public class Movie {
     private double rating;
     private String status;
     private String country;
+    private int length ;//new var, set default to 0 -DuyND
+    private String trailerLink ;//new var
 
     public Movie() {
     }
 
-//
-//    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
-//        this.movieID = movieID;
-//        this.title = title;
-//        this.synopsis = synopsis;
-//        this.datePublished = datePublished;
-//        this.imageURL = imageURL;
-//        this.rating = rating;
-//        this.status = status;
-//        this.country = country;
-//    }
 
-    
-
-    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String country, String status) {
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink) {//new constructor with trailer and length
         this.movieID = movieID;
         this.title = title;
         this.synopsis = synopsis;
@@ -42,6 +31,35 @@ public class Movie {
         this.rating = rating;
         this.status = status;
         this.country = country;
+        this.length = length;
+        this.trailerLink = trailerLink;
+    }
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
+        this.movieID = movieID;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.datePublished = datePublished;
+        this.imageURL = imageURL;
+        this.rating = rating;
+        this.status = status;
+        this.country = country;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public String getTrailerLink() {
+        return trailerLink;
+    }
+
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
     }
 
 
