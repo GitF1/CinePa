@@ -25,10 +25,11 @@ body {
     border-radius: 10px;
 }
 
-.cinema img {
-    display: block;
-    margin: 0 auto 10px;
-    max-width: 100px;
+.cinema-header img {
+
+    margin-right:20px ;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
 }
 
@@ -37,7 +38,23 @@ body {
     flex-wrap: wrap;
     justify-content: center;
 }
-
+.cinema-header{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.cinema-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cinema-info h3 {
+    font-size: 0.8em;
+}
+.cinema-info p {
+    font-size: 0.6em;
+    color: #ccc;
+}
 .slot {
     margin: 5px;
     padding: 10px 20px;

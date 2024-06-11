@@ -84,10 +84,8 @@ public class MovieDAO extends SQLServerConnect {
 
     public ArrayList<MovieInfo> getAvailableMovies(ServletContext context) throws Exception {
 
-        DB.SQLServerConnect dbConnect = new SQLServerConnect();
 
-        java.sql.Connection connection = dbConnect.connect(context);
-
+      
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
 
         String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
@@ -101,12 +99,13 @@ public class MovieDAO extends SQLServerConnect {
 
             // Lặp qua các kết quả và tạo đối tượng Movie cho mỗi kết quả
             while (resultSet.next()) {
+                
                 int movieID = resultSet.getInt("MovieID");
                 int cinemaID = resultSet.getInt("CinemaID");
                 String status = resultSet.getString("Status");
 
-                // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
-                if (status.trim().equalsIgnoreCase("Available")) {
+                // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "showing"
+                if (status.trim().equalsIgnoreCase("Showing")) {
                     MovieInfo movie = getMovieWithGenresByID(movieID);
                     if (movie != null) {
                         availableMovies.add(movie);

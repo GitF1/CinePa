@@ -87,8 +87,13 @@ public class BookingSeatServlet extends HttpServlet {
             throws ServletException, IOException {
 
         checkUserID(request, response);
+        String movieSlotIDStr = (String) request.getParameter("movieSlotID");
 
-        int movieSlotID = 3;
+        if (movieSlotIDStr == null) {
+            response.sendRedirect(RouterURL.HOMEPAGE);
+        }
+
+        int movieSlotID = Integer.parseInt(movieSlotIDStr);
 
         try {
 
@@ -188,6 +193,9 @@ public class BookingSeatServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         OrderTicket order = (OrderTicket) session.getAttribute("order");
+        if (order == null) {
+            order = new OrderTicket();
+        }
 
         order.setMovieSlotID(movieSlotID);
         order.setUserID(userID);
