@@ -46,4 +46,6 @@ public class RouterJSP {
     public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
     
     public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
+    
+    public String SALES_REPORT = "/page/admin/Report.jsp";
 }
