@@ -10,9 +10,9 @@ package model;
  */
 public class CanteenItem {
 
-    private int id;
-    private String name;
-    private double price;
+    protected int id;
+    protected String name;
+    protected double price;
     private String image;
 
     public CanteenItem() {

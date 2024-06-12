@@ -9,20 +9,35 @@ package model;
  * @author Admin
  */
 public class Room {
+    
     private int roomID;
     private int cinemaID;
     private String name;
     private String type;
-    private byte capacity;
+    private int capacity;
+    private int length;
+    private int width;
     private String status;
-
+    
+    
     // Constructor
-    public Room(int roomID, int cinemaID, String name, String type, byte capacity, String status) {
+    public Room(int roomID, int cinemaID, String name, String type, int capacity, String status) {
         this.roomID = roomID;
         this.cinemaID = cinemaID;
         this.name = name;
         this.type = type;
         this.capacity = capacity;
+        this.status = status;
+    }
+    
+    public Room(int roomID, int cinemaID, String name, String type, int capacity, int length, int width, String status) {
+        this.roomID = roomID;
+        this.cinemaID = cinemaID;
+        this.name = name;
+        this.type = type;
+        this.capacity = capacity;
+        this.length = length;
+        this.width = width;
         this.status = status;
     }
 
@@ -63,12 +78,28 @@ public class Room {
         this.type = type;
     }
 
-    public byte getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(byte capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public String getStatus() {
@@ -81,14 +112,7 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "roomID=" + roomID +
-                ", cinemaID=" + cinemaID +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", capacity=" + capacity +
-                ", status='" + status + '\'' +
-                '}';
+        return "Room{" + "roomID=" + roomID + ", cinemaID=" + cinemaID + ", name=" + name + ", type=" + type + ", capacity=" + capacity + ", length=" + length + ", width=" + width + ", status=" + status + '}';
     }
 }
 

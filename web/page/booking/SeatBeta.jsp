@@ -48,8 +48,8 @@
             <%
                 ArrayList<Seat> seats = (ArrayList<Seat>) request.getAttribute("seats");
                 for (Seat seat : seats) {
-                    int x = seat.getCoordinateX();
-                    int y = seat.getCoordinateY();
+                    int x = seat.getX();
+                    int y = seat.getY();
                     int id = seat.getSeatID();
             %>
             <div onclick="toggleComboBox('<%= id %>')" class="seat" style= "left: <%= x * 65 %>px; top: <%= y *70 %>px;">
@@ -92,34 +92,7 @@
 
 
         </script>
-        <script>
-
-            function toggleComboBox(itemID) {
-
-                let comboBox = document.getElementById("comboBox");
-
-                if (comboBox.style.display === "none" || comboBox.style.display === "") {
-                    comboBox.style.display = "block";
-                } else {
-                    comboBox.style.display = "none";
-                }
-            }
-
-
-            document.addEventListener("mousedown", function (event) {
-                const comboBox = document.getElementById("comboBox");
-                const background = document.getElementById("wrapper-box-select_canteen");
-                const isClickInside = background.contains(event.target);
-
-                if (!isClickInside && comboBox.style.display === "block") {
-                    comboBox.style.display = "none";
-                }
-            });
-
-            document.getElementById("wrapper-box-select_canteen").addEventListener("mousedown", function (event) {
-                event.stopPropagation();
-            });
-        </script>
+     
 
     </body>
 

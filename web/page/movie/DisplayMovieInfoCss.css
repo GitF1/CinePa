@@ -1,13 +1,20 @@
+body {
+    margin:0;
+}
+
 .content {
     height: 480px;
     background-color: black;
 }
 
-.container {}
+.container {
+}
 
-.content-image {}
+.content-image {
+}
 
-.content-desc {}
+.content-desc {
+}
 
 .film-image {
     float: right;
@@ -99,7 +106,8 @@ i.fa.fa-star {
 }
 
 /* phan danh sach phim va review :  */
-.booking-ticket {}
+.booking-ticket {
+}
 
 .list-active-films {
 }
@@ -128,7 +136,8 @@ p.active-film-btn {
     background-size: cover;
 }
 
-.ctive-film-img-a {}
+.ctive-film-img-a {
+}
 
 .active-film-img:hover {
     transform: scale(1.07);
@@ -187,9 +196,11 @@ h3.pdc {
     background-color: #d7d72b;
 }
 
-.review-heading {}
+.review-heading {
+}
 
-.review-part {}
+.review-part {
+}
 
 .review-part-img {
     display: inline-block;
@@ -286,7 +297,8 @@ span.modal-header-name {
     margin-left: 48px;
 }
 
-.modal-header-official {}
+.modal-header-official {
+}
 
 .modal-header-close {
     margin-bottom: 24px;

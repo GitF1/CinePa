@@ -17,9 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import model.Movie;
 import model.MovieInGenre;
+import model.MovieWithStatus;
 import util.RouterJSP;
 
 /**
@@ -67,7 +66,7 @@ public class MovieServlet extends HttpServlet {
             status = "Coming"; // Trạng thái mặc định
         }
         try {
-            List<Movie> movies = movieDAO.getMoviesByStatus(status);
+            List<MovieWithStatus> movies = movieDAO.getMoviesByStatus(status);
             List<MovieInGenre> movieInGenres = movieDAO.getAllMovieInGenre();
 
             // Create a map to store genres by movie ID

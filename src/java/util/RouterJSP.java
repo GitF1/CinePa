@@ -10,6 +10,8 @@ package util;
  */
 public class RouterJSP {
 
+    public static String LANDING_PAGE = "/page/landingPage/LandingPage.jsp";
+
     public String HOMEPAGE = "/page/home/Home.jsp";
 
     public String REGISTER = "/page/auth/Register.jsp";
@@ -21,6 +23,8 @@ public class RouterJSP {
     public String FORGET_PASSWORD = "/page/auth/ForgetPassword.jsp";
 
     public String DISPLAY_INFO = "/page/user/DisplayUserInfo.jsp";
+
+    public static String BOOKING_SEAT = "/page/cinema_room/BookingSeat.jsp";
 
     //for example, must replace when get real page content schedule component
     public String SCHEDULE_MOIVE = "components/schedule/Schedule.jsp";
@@ -36,12 +40,18 @@ public class RouterJSP {
     public static String ROOM_CREAT_SEAT = "/page/owner/room/Seat.create.jsp";
 
     public static String VN_PAY_PAYMENT_HOMEPAGE = "/page/payment/vnpay/vnpay_pay.jsp";
-    
+
     public static String PAYMENT_HOMEPAGE = "/page/payment/payment.index";
 
-    public String MOVIE_LIST= "page/movie/MovieListComponents.jsp";
+    public String MOVIE_LIST = "page/movie/MovieListComponents.jsp";
 
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
+    
+    public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
+    
+    public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
+    
+    public static String SCHEDULE_MOVIE ="/page/movie/schedule/ScheduleMovie.jsp";
 
     public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
     

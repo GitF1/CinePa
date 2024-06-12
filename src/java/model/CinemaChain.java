@@ -6,7 +6,7 @@ package model;
 
 /**
  *
- * @author PC
+ * @author ACER
  */
 public class CinemaChain {
     

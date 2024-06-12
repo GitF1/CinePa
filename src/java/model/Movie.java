@@ -1,5 +1,10 @@
 package model;
 
+
+/**
+ *
+ * @author Admin
+ */
 public class Movie {
 
     private int movieID;
@@ -16,7 +21,6 @@ public class Movie {
     public Movie() {
     }
 
-    // Constructor
 
     public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink) {//new constructor with trailer and length
         this.movieID = movieID;
@@ -126,7 +130,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + '}';
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '}';
     }
 
     

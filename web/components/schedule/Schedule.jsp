@@ -17,8 +17,8 @@
 
 
     <body>
-        
-        <jsp:include page="./components/location/Location.jsp" />
+        <jsp:include page="../.././page/landingPage/Header.jsp" />
+        <jsp:include page="./components/Header.jsp" />
         <jsp:include page="./components/ListMovieTheater.jsp" />
         
     <c:choose>

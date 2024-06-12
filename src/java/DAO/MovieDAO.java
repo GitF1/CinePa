@@ -2,7 +2,6 @@ package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//import java.sql.Date;
 import java.sql.SQLException;
 import DB.SQLServerConnect;
 import jakarta.servlet.ServletContext;
@@ -13,14 +12,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import model.Movie;
+
 import model.MovieInGenre;
+import model.MovieWithStatus;
 import model.Review;
 //import model.User;
 import model.movie.MovieInfo;
+import model.Movie;
+
+import jakarta.servlet.ServletContext;
 
 /**
  *
@@ -33,11 +37,7 @@ public class MovieDAO extends SQLServerConnect {
         connect(context);
     }
 
-    public MovieInfo getMovieWithGenresByID(int movieID, ServletContext context) throws Exception {
-
-        DB.SQLServerConnect dbConnect = new SQLServerConnect();
-
-        java.sql.Connection connection = dbConnect.connect(context);
+    public MovieInfo getMovieWithGenresByID(int movieID) throws Exception {
 
         String movieSql = "SELECT * FROM Movie WHERE MovieID = ?";
         String genreSql = "SELECT Genre FROM MovieInGenre WHERE MovieID = ?";
@@ -83,17 +83,14 @@ public class MovieDAO extends SQLServerConnect {
             e.printStackTrace();
         }
 
-        return movie; // Trả về đối tượng Movie
+        return movie;
     }
 
     public ArrayList<MovieInfo> getAvailableMovies(ServletContext context) throws Exception {
 
-        DB.SQLServerConnect dbConnect = new SQLServerConnect();
-
-        java.sql.Connection connection = dbConnect.connect(context);
-
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
-        String sql = "SELECT * FROM MovieCinema WHERE Status = 'Available'";
+
+        String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
 
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
@@ -104,22 +101,23 @@ public class MovieDAO extends SQLServerConnect {
 
             // Lặp qua các kết quả và tạo đối tượng Movie cho mỗi kết quả
             while (resultSet.next()) {
+
                 int movieID = resultSet.getInt("MovieID");
                 int cinemaID = resultSet.getInt("CinemaID");
                 String status = resultSet.getString("Status");
 
-                // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "available"
-                if (status.trim().equalsIgnoreCase("Available")) {
-                    MovieInfo movie = getMovieWithGenresByID(movieID, context);
+                // Tạo đối tượng Movie và thêm vào danh sách nếu trạng thái là "showing"
+                if (status.trim().equalsIgnoreCase("Showing")) {
+                    MovieInfo movie = getMovieWithGenresByID(movieID);
                     if (movie != null) {
                         availableMovies.add(movie);
                     }
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return availableMovies;
     }
 
@@ -164,8 +162,35 @@ public class MovieDAO extends SQLServerConnect {
         return reviews; // Trả về danh sách các review của bộ phim có movieID tương ứng dưới dạng ArrayList
     }
 
-    //
-    public List<Movie> getAllMovie() {
+    // limit 10 -> 20 movie for each request get all movies **
+    public List<MovieWithStatus> getAllMovie() {
+        List<MovieWithStatus> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                MovieWithStatus movie = new MovieWithStatus(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    // limit 10 -> 20 movie for each request get all movies **
+    public List<Movie> getAllMovieAvailable() {
         List<Movie> list = new ArrayList<>();
         String sql = "SELECT * FROM Movie";
         try {
@@ -191,16 +216,18 @@ public class MovieDAO extends SQLServerConnect {
         return list;
     }
 
-    public List<Movie> getAllMovieNew() {//to return all movie info-DuyND
-        List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie";
+    // New method to get movies by status
+    public List<MovieWithStatus> getMoviesByStatus(String status) throws Exception {
+
+        List<MovieWithStatus> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie WHERE Status = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, status);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-//                int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink
-                Movie movie = new Movie(
+                MovieWithStatus movie = new MovieWithStatus(
                         rs.getInt("MovieID"),
                         rs.getString("Title"),
                         rs.getString("Synopsis"),
@@ -208,9 +235,7 @@ public class MovieDAO extends SQLServerConnect {
                         rs.getString("ImageURL"),
                         rs.getDouble("Rating"),
                         rs.getString("Status"),
-                        rs.getString("Country"),
-                        rs.getInt("Length"),
-                        rs.getString("LinkTrailer")
+                        rs.getString("Country")
                 );
                 list.add(movie);
             }
@@ -220,8 +245,82 @@ public class MovieDAO extends SQLServerConnect {
         return list;
     }
 
+    public List<MovieWithStatus> getMoviesByGenre(String genre, ServletContext context) throws Exception {
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
+        java.sql.Connection connection = dbConnect.connect(context);
+
+        List<MovieWithStatus> list = new ArrayList<>();
+        String sql = "SELECT m.* FROM Movie m JOIN MovieInGenre mg ON m.MovieID = mg.MovieID WHERE mg.Genre = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, genre);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                MovieWithStatus movie = new MovieWithStatus(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public Map<Integer, List<String>> getAllMovieGenres(ServletContext context) throws Exception {
+
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
+        java.sql.Connection connection = dbConnect.connect(context);
+
+        Map<Integer, List<String>> movieGenresMap = new HashMap<>();
+        String sql = "SELECT MovieID, Genre FROM MovieInGenre";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int movieId = rs.getInt("MovieID");
+                String genre = rs.getString("Genre");
+                movieGenresMap.computeIfAbsent(movieId, k -> new ArrayList<>()).add(genre);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return movieGenresMap;
+    }
+
+    public List<String> getGenresForMovie(int movieID, ServletContext context) throws Exception {
+        DB.SQLServerConnect dbConnect = new SQLServerConnect();
+        java.sql.Connection connection = dbConnect.connect(context);
+
+        List<String> genres = new ArrayList<>();
+        String sql = "SELECT Genre FROM MovieInGenre WHERE MovieID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, movieID);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                genres.add(rs.getString("Genre"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return genres;
+    }
+
     // New method to get all MovieInGenre
-    public List<MovieInGenre> getAllMovieInGenre() {
+    public List<MovieInGenre> getAllMovieInGenre() throws Exception {
+
         List<MovieInGenre> list = new ArrayList<>();
         String sql = "SELECT * FROM MovieInGenre";
         try {
@@ -275,34 +374,6 @@ public class MovieDAO extends SQLServerConnect {
             System.out.println(e);
         }
         return genres;
-    }
-
-    // New method to get movies by status
-    public List<Movie> getMoviesByStatus(String status) {
-        List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie WHERE Status = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, status);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                Movie movie = new Movie(
-                        rs.getInt("MovieID"),
-                        rs.getString("Title"),
-                        rs.getString("Synopsis"),
-                        rs.getString("DatePublished"),
-                        rs.getString("ImageURL"),
-                        rs.getDouble("Rating"),
-                        rs.getString("Status"),
-                        rs.getString("Country")
-                );
-                list.add(movie);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
     }
 
     //
@@ -488,8 +559,7 @@ public class MovieDAO extends SQLServerConnect {
             // Properly handle the exception, log it, or rethrow as a custom exception
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
-        
-        
+
     }
 
     public int getMovieID(String movieTitle) throws SQLException {
@@ -607,7 +677,7 @@ public class MovieDAO extends SQLServerConnect {
                 + " where MovieID = '" + movie.getMovieID() + "'";
         Statement st = connection.createStatement();
         st.executeUpdate(sql);
-         sql = "UPDATE [dbo].[Movie] "
+        sql = "UPDATE [dbo].[Movie] "
                 + "SET  "
                 + "Title=?,"
                 + "DatePublished=?,"
@@ -619,33 +689,12 @@ public class MovieDAO extends SQLServerConnect {
                 + "LinkTrailer=?,"
                 + "Status=?"
                 + "WHERE MovieID=?\n";
-        // Use try-with-resources for automatic resource management
 
-//        try {
-//
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            st.setString(1, movie.getTitle());
-//           
-//         
-//            java.sql.Date sqlDate = new java.sql.Date(movie.getDatePublished().getTime());
-//            st.setDate(2, sqlDate);
-//            st.setString(3, movie.getImageURL());
-//            st.setString(4, movie.getSynopsis());
-//            st.setString(5, movie.getCountry());
-//            st.setInt(6, movie.getYear());
-//            st.setInt(7, movie.getLength());
-//            st.setString(8, movie.getLinkTrailer());
-//            st.setString(9,status);
-//            st.setInt(10,movie.getMovieID());
-//            st.executeUpdate();
-//        } catch (SQLException e) {
-//            // Properly handle the exception, log it, or rethrow as a custom exception
-//            e.printStackTrace(); // Replace with appropriate logging in production code
-//        }
         deleteAllGenresOfMovieByID(movie.getMovieID());
-        insertMovieGenreByID(movie.getMovieID(),genres);
+        insertMovieGenreByID(movie.getMovieID(), genres);
 
     }
+
     public String getImageUrlByID(int id) throws SQLException {
 
         String role = "";
@@ -654,7 +703,6 @@ public class MovieDAO extends SQLServerConnect {
         try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
 
             pstmt.setInt(1, id);
-         
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {

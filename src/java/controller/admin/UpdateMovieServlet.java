@@ -46,6 +46,7 @@ public class UpdateMovieServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     @Override
     public void init(ServletConfig config)
             throws ServletException {
@@ -98,7 +99,7 @@ public class UpdateMovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Movie> movieList = movieDAO.getAllMovieNew();
+        List<Movie> movieList = movieDAO.getAllMovieAvailable();
         request.setAttribute("movieList", movieList);
         response.setContentType("text/html;charset=UTF-8");
 
@@ -120,7 +121,7 @@ public class UpdateMovieServlet extends HttpServlet {
 //        processRequest(request, response);
         ServletContext context = request.getServletContext();
         try {
-            MovieInfo mi = movieDAO.getMovieWithGenresByID(Integer.parseInt(request.getParameter("movieID")), context);
+            MovieInfo mi = movieDAO.getMovieWithGenresByID(Integer.parseInt(request.getParameter("movieID")));
             request.setAttribute("mi", mi);
             Date date = mi.getDatePublished();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");

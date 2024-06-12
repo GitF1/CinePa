@@ -9,9 +9,10 @@ package model;
  * @author Admin
  */
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MovieSlot {
-    
+
     private int movieSlotID;
     private int roomID;
     private int movieID;
@@ -20,9 +21,10 @@ public class MovieSlot {
     private String type;
     private float price;
     private float discount;
+    private String status;
 
     // Constructor
-    public MovieSlot(int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount) {
+    public MovieSlot(int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status) {
         this.movieSlotID = movieSlotID;
         this.roomID = roomID;
         this.movieID = movieID;
@@ -31,6 +33,8 @@ public class MovieSlot {
         this.type = type;
         this.price = price;
         this.discount = discount;
+        this.status = status;
+
     }
 
     // Default constructor
@@ -102,18 +106,41 @@ public class MovieSlot {
         this.discount = discount;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getFormattedDate() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        return startTime.format(dateFormatter);
+    }
+
+    public String getFormattedStartTime() {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        return startTime.format(timeFormatter);
+    }
+
+    public String getFormattedEndTime() {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        return endTime.format(timeFormatter);
+    }
+
     @Override
     public String toString() {
-        return "MovieSlot{" +
-                "movieSlotID=" + movieSlotID +
-                ", roomID=" + roomID +
-                ", movieID=" + movieID +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", type='" + type + '\'' +
-                ", price=" + price +
-                ", discount=" + discount +
-                '}';
+        return "MovieSlot{"
+                + "movieSlotID=" + movieSlotID
+                + ", roomID=" + roomID
+                + ", movieID=" + movieID
+                + ", startTime=" + startTime
+                + ", endTime=" + endTime
+                + ", type='" + type + '\''
+                + ", price=" + price
+                + ", discount=" + discount
+                + ", status=" + status
+                + '}';
     }
 }
-
