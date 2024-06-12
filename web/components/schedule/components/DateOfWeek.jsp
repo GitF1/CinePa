@@ -19,32 +19,32 @@
 
             }
             .date_item:hover{
-                opacity: 0.7;
-                background-color: #eee;
+                opacity: 0.9;
+               
             }
 
             .date{
-                padding: 16px;
+                padding: 12px 16px;
                 font-size: 1.2em;
                 font-weight: 600;
                 margin-bottom: 5px;
-
                 background-color: #ccc;
                 border-top-right-radius: 8px;
                 border-top-left-radius: 8px;
             }
             .date-of_week {
-                padding:10px 16px;
+                padding: 5px 16px;
                 color:#8e8c8c;
                 border-bottom-right-radius: 8px;
                 border-bottom-left-radius: 8px;
             }
             .select-date .date-of_week{
-                color:#DC8665;
+                color:#d82d8b;
+                font-weight: 600;
             }
             .select-date .date{
-                background-color: #CD7672;
-                color:#ccc;
+                background-color: #d82d8b;
+                color:#fff;
             }
         </style>
     </head>

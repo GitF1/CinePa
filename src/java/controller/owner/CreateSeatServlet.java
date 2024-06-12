@@ -75,7 +75,6 @@ public class CreateSeatServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-//        out.println(request.getParameter("length"));
         int length = Integer.parseInt(request.getParameter("length"));
         int width = Integer.parseInt(request.getParameter("width"));
         for(int x = 1; x <= width; ++x) {
