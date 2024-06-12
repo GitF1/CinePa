@@ -11,6 +11,10 @@
 
     </head>
     <body>
+        <jsp:include page="../landingPage/Header.jsp" />
+
+        <jsp:include page="../landingPage/Banner.jsp" />
+
         <div class="container">
             <!-- Filter Form -->
             <form method="get" action="${pageContext.request.contextPath}/filter-movies">
@@ -60,7 +64,9 @@
                 <c:forEach var="movie" items="${movies}" varStatus="status">
                     <div class="col-md-3 mb-4">
                         <div class="card">
-                            <img src="${movie.imageURL}" alt="${movie.title}" class="card-img-top">
+                            <a href="${pageContext.request.contextPath}/HandleDisplayMovieInfo?movieID=${movie.movieID}">
+                                <img src="${movie.imageURL}" alt="${movie.title}" class="card-img-top">
+                            </a>             
                             <div class="card-body">
                                 <h5 class="card-title">${movie.title}</h5>
                                 <p class="card-text"><strong>Genres:</strong>
@@ -104,5 +110,8 @@
             </nav>
 
         </div>
+
+        <jsp:include page="../home/Footer.jsp" />
+
     </body>
 </html>
