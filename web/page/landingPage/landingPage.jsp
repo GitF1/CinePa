@@ -77,6 +77,10 @@
     <jsp:include page="MostReview.jsp" />
 
     <jsp:include page="Question.jsp" />
+    
+
+    <jsp:include page="../home/Footer.jsp" />
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 

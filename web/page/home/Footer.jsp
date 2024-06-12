@@ -29,7 +29,7 @@
                 font-weight: bold;
             }
             /* Liên kết footer */
-            .footer-links a {
+            .footer-links i {
                 color: white;
             }
         </style>
@@ -68,22 +68,20 @@
                         <!-- Cột grid -->
                         <!-- Cột grid -->
                         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <h6>Sản phẩm</h6>
+                            <h6>DỊCH VỤ</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
-                            <p><a href="#" class="footer-links">MDBootstrap</a></p>
-                            <p><a href="#" class="footer-links">MDWordPress</a></p>
-                            <p><a href="#" class="footer-links">BrandFlow</a></p>
-                            <p><a href="#" class="footer-links">Bootstrap Angular</a></p>
+                            <p><i class="footer-links">Vé xem phim</i></p>
+                            <p><i class="footer-links">Vé bắp nước</i></p>
                         </div>
                         <!-- Cột grid -->
                         <!-- Cột grid -->
                         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <h6>Liên kết hữu ích</h6>
+                            <h6>MUA VÉ XEM PHIM</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
-                            <p><a href="#" class="footer-links">Tài khoản của bạn</a></p>
-                            <p><a href="#" class="footer-links">Trở thành Đối tác Liên kết</a></p>
-                            <p><a href="#" class="footer-links">Tính phí vận chuyển</a></p>
-                            <p><a href="#" class="footer-links">Trợ giúp</a></p>
+                            <p><i class="footer-links">Lịch chiếu phim</i></p>
+                            <p><i class="footer-links">Rạp chiếu phim</i></p>
+                            <p><i class="footer-links">Phim chiếu rạp</i></p>
+                            <p><i class="footer-links">Review phim</i></p>
                         </div>
                         <!-- Cột grid -->
                         <!-- Cột grid -->
@@ -91,7 +89,7 @@
                             <h6>Liên hệ</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
                             <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
-                            <p><i class="fas fa-envelope me-3"></i> info@example.com</p>
+                            <p><i class="fas fa-envelope me-3"></i> cinepa.org@gmail.com</p>
                             <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
                             <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
                         </div>
@@ -103,7 +101,7 @@
             <!-- Bản quyền -->
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                 © 2020 Bản quyền:
-                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                <a class="text-white" href="https://mdbootstrap.com/">CinePA.com</a>
             </div>
         </footer>
         <!-- Footer -->
