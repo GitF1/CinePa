@@ -441,4 +441,18 @@ public class UserDAO extends SQLServerConnect {
         if(rs.next()) return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         return null;
     }
+    // Query room
+    
+    // Save room 
+    public int insertSeats(int roomID, String seatName, int coordinateX, int coordinateY) throws SQLException {
+        String sql = "INSERT INTO Seat (RoomID, Name, CoordinateX, CoordinateY) VALUES (?, ?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, roomID);
+        ps.setString(2, seatName);
+        ps.setInt(3, coordinateX);
+        ps.setInt(4, coordinateY);
+        
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }
