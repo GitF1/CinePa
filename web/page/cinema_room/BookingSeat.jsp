@@ -107,6 +107,14 @@
                 text-transform: uppercase;
                 transition: background-color 0.3s ease, transform 0.2s ease;
             }
+            
+            @media only screen and (max-width: 1024px) {
+                .seatButton {
+                    width: 25px;
+                    height: 25px;
+                    font-size: 10px;
+                }
+            }
 
         </style>
     </head>
@@ -183,10 +191,9 @@
 
         const sizeX = Math.floor((9 * window.innerWidth / 10) / 40);
         const sizeY = Math.floor((9 * window.innerHeight / 10) / 40);
-
+        
         const roomWidth = ${requestScope.maxWidth}, roomLength = ${requestScope.maxLength};
-        const initX = Math.floor((sizeX - roomWidth) / 2);
-//        const initY = Math.floor((sizeY - roomLength) / 2);
+        const initX = Math.floor((sizeX - roomLength) / 2);
         const initY = 0;
         const distance = 40; // 40px
 
@@ -204,15 +211,14 @@
         const finalPrice = price - (price * discount / 100);
 
         <c:forEach var="seat" items="${seats}">
-        seatID = ${seat.getSeatID()};
-        backgroundColor = "${seat.getStatus() == 'Available' ? availableSeatColor : bookedSeatColor}";
-        cursor = "${seat.getStatus() == 'Available' ? 'pointer' : 'not-allowed'}";
-
-        document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getX()} + initY - 1) * distance + "px);"
-                + "left: calc(5vw + " + (${seat.getY()} + initX - 1) * distance + "px);";
-        document.getElementById("seatButton_" + seatID).style.backgroundColor = backgroundColor;
-        document.getElementById("seatButton_" + seatID).style.cursor = cursor;
-
+            seatID = ${seat.getSeatID()};
+            backgroundColor = "${seat.getStatus() == 'Available' ? availableSeatColor : bookedSeatColor}";
+            cursor = "${seat.getStatus() == 'Available' ? 'pointer' : 'not-allowed'}";
+            console.log("background-color: " + backgroundColor + ";");
+            document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getY()} + initY - 1) * distance + "px);"
+                                                                    + "left: calc(5vw + " + (${seat.getX()} + initX - 1) * distance + "px);";
+            document.getElementById("seatButton_" + seatID).style.backgroundColor = backgroundColor;  
+            document.getElementById("seatButton_" + seatID).style.cursor = cursor;                                             
         </c:forEach>
 
         function selectSeat(seatID, seatName) {
@@ -227,12 +233,9 @@
                 seatName
             };
             selectedSeats = [...selectedSeats, newSelectedSeat];
-            for (let i = 0; i < selectedSeats.length; ++i) {
-                console.log(selectedSeats[i]);
-            }
-
-            for (let i = 1; i <= 8; ++i) {
-                if (document.getElementById("selectedSeat" + i).value === "") {
+            
+            for(let i = 1; i <= 8; ++i) {
+                if(document.getElementById("selectedSeat" + i).value === "") {
                     document.getElementById("selectedSeat" + i).value = seatID;
                     break;
                 }
@@ -303,6 +306,7 @@
             }
             return true;
         }
+        
         function toggleComboBox() {
             if (!purchaseTickets())
                 return;
@@ -317,7 +321,6 @@
             }
 
         }
-//
 
     </script>
 </html>
