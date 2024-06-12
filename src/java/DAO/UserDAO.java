@@ -349,7 +349,7 @@ public class UserDAO extends SQLServerConnect {
     //Search movies
     public List<Movie> searchMovies(String input) throws SQLException {
         List<Movie> movies = new ArrayList<>();
-        String sqlQuery = "select * from Movie where Title like '%" + input + "%'";
+        String sqlQuery = "select * from Movie where Title like N'%" + input + "%'";
         ResultSet rs = getResultSet(sqlQuery);
         while (rs.next()) {
             Movie movie = new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Country"), rs.getString("Status"));
@@ -456,5 +456,19 @@ public class UserDAO extends SQLServerConnect {
             return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }
         return null;
+    }
+    // Query room
+    
+    // Save room 
+    public int insertSeats(int roomID, String seatName, int coordinateX, int coordinateY) throws SQLException {
+        String sql = "INSERT INTO Seat (RoomID, Name, CoordinateX, CoordinateY) VALUES (?, ?, ?, ?)";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, roomID);
+        ps.setString(2, seatName);
+        ps.setInt(3, coordinateX);
+        ps.setInt(4, coordinateY);
+        
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
     }
 }

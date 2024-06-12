@@ -40,7 +40,6 @@ public class HandleDisplayUserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         // tao Servlet Context : 
         ServletContext context = getServletContext();
         HttpSession session = request.getSession();

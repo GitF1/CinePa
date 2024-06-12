@@ -102,6 +102,7 @@ public class BookingSeatServlet extends HttpServlet {
             List<CanteenItem> canteenItems = bookingDAO.getListAllCanteenItem();
 
             MovieSlot movieSlot = userDAO.queryMovieSlots(movieSlotID);
+            
             Movie movie = userDAO.queryMovie(movieSlotID);
             Room room = userDAO.queryRoom(movieSlotID);
 

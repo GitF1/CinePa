@@ -18,7 +18,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+        <style>
+            .movie-style_frame iframe{
+                
+                width:  100% !important;
+            }
+        </style>
     </head>
 
     <body>
@@ -102,7 +107,7 @@
                     <!-- Vinh  -->
 
                     <div class="schedule-movie">
-                         <jsp:include page="./schedule/ScheduleMovie.jsp" />
+                        <jsp:include page="./schedule/ScheduleMovie.jsp" />
                     </div>
 
 
@@ -200,7 +205,7 @@
 
                 <!-- modal link youtube :  -->
 
-                <div>
+                <div class="movie-style_frame">
                     ${movie.linkTrailer}              
                 </div>
                 <!-- modal desc  -->
