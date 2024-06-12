@@ -18,8 +18,6 @@
     </head>
     <%
 
-        int movieID = Integer.parseInt(request.getParameter("movieID"));
-
         ScheduleDAO scheduleDAO = new ScheduleDAO(getServletContext());
 
         List<String> cities = scheduleDAO.getListCites();
@@ -39,11 +37,8 @@
 
 
     %>
-
     <body>
-
         <div class="header-movie_schedule">
-            <div class="header-title">Lịch chiếu </div>
             <div class="location-selector">
                 <div class="location-button selected" onclick="openModal()">
                     <span class="icon"><i class="fa-solid fa-location-dot"></i></span>
@@ -83,22 +78,6 @@
         </div>
 
 
-        <div class="date-selector">
-            <div class="dates" id="dates-container">
-                <%
-                    List<DateInfo> week = new DateInfo().generateWeek();
-                    for (DateInfo dateInfo : week) {
-                %>
-                <div class="date-box" onclick="selectDate('<%= dateInfo.getTime()%>')">
-                    <div class="date__header-movie-schedule"><strong><%= dateInfo.getDate()%></strong></div>
-                    <div class="date-of-week__header-movie-schedule"><%= dateInfo.getDayOfWeek()%></div>
-                </div>
-                <%
-                    }
-                %>
-            </div>
-        </div>
-
         <script>
             function openModal() {
                 document.getElementById("cityModal").style.display = "block";
@@ -109,16 +88,21 @@
             }
 
             function selectCity(city) {
+
                 var selectedCityElement = document.getElementById("selected-city");
                 selectedCityElement.innerText = city;
 
                 var cities = document.getElementsByClassName("city");
+
                 for (var i = 0; i < cities.length; i++) {
                     cities[i].classList.remove("selected");
                 }
 
                 event.target.classList.add("selected");
+
                 closeModal();
+
+                fetchCityProvinceDetails(city);
             }
 
             window.onclick = function (event) {
@@ -127,8 +111,22 @@
                     closeModal();
                 }
             }
+            function fetchCityProvinceDetails(city) {
+              
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "schedule", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-         
+                xhr.send("cityProvince=" + encodeURIComponent(city));
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Handle the server response
+                        var responseUrl = xhr.responseText;
+                        window.location.href = responseUrl;
+                    }
+                }
+            }
+
         </script>
     </body>
 </html>

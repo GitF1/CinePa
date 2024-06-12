@@ -15,7 +15,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
+
     <style type="text/css">
         @media only screen and (min-width:768px){
             .nav-item.dropdown:hover .dropdown-menu{
@@ -55,11 +55,11 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <c:forEach  var="o" items="${cinemaNames}">
                                 <form action="<!--servlet here-->">
-                                    
+
                                     <li><input class="dropdown-item" type="submit" name="chain" value="<c:out value = "${o}"/>"></li>
                                 </form>
                             </c:forEach>
-                            
+
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -89,12 +89,6 @@
             </div>
         </div>
     </nav>
-    <c:if test="${not empty cinemaNames}">
-        <ul>
-            <c:forEach var="name" items="${cinemaNames}">
-                <li><c:out value="${name}" /></li>
-                </c:forEach>
-        </ul>
-    </c:if>
+
 
 </html>

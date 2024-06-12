@@ -52,116 +52,9 @@
         <!--        <link rel="stylesheet" href="/movie/page/movie/schedule/MovieSchedule.css">-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="/movie/page/movie/schedule/styles/Header.css"/>
+        <link rel="stylesheet" href="/movie/page/movie/schedule/styles/MovieSchedule.css"/>
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f8f8f8;
-                margin: 0;
-                padding: 0;
-            }
-            .container-wrapper__movie-schedule{
-                width: 100%;
-                margin: 20px auto;
-                padding: 20px;
-                background-color: #fff;
-                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-                border-radius: 10px;
-            }
-            .container-movie_schedule {
-                width: 100%;
-                margin: 20px auto;
-                padding: 20px;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-                border-radius: 4px;
-            }
 
-            .container-movie_schedule  h1, h2 {
-                text-align: center;
-                color: #333;
-            }
-
-            .cinema {
-                margin-bottom: 20px;
-                padding: 20px;
-                background-color: #f4f4f4;
-                border-radius: 10px;
-            }
-
-            .cinema-header img {
-
-                margin-right:20px ;
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-            }
-
-            .slots {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .cinema-header{
-                display: flex;
-                align-items: center;
-                width: 100%;
-            }
-            .cinema-info a{
-                color: #3b82f6;
-            }
-            .cinema-info h3 {
-                font-size: 1.1em;
-            }
-            .cinema-info p {
-                font-size: 0.7em;
-                color: #bebbbb;
-                margin:0;
-                margin-right:20px;
-            }
-            .cine-info_adress{
-                display: flex;
-                align-items: center;
-            }
-            .slot {
-                margin: 5px;
-                padding: 6px 15px;
-                background-color: #f8f9fa;
-                color: #0284c7;
-                border-radius: 6px;
-                cursor: pointer;
-                text-align: center;
-                border: 1px solid #0284c7;
-                transition: all 0.2s linear;
-            }
-
-            .slot:hover {
-                opacity: 0.7;
-                transform: translate3d(2px, -2px, 0);
-            }
-            .slot span {
-                font-size:0.9em;
-            }
-            .slots{
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                flex-direction: column;
-            }
-            .slots h4 {
-                width: 5%;
-                margin-top: 20px;
-                font-size: 0.6em;
-                border: 1px solid #eee;
-                padding: 10px;
-                background-color: #e88021;
-                color: #fffffff2;
-                border-radius: 8px;
-                text-align: center;
-                font-weight: 600;
-            }
-            .slot-buttons{
-                margin-left: 5px;
-            }
         </style>
     </head>
     <body>
@@ -314,9 +207,9 @@
         }
     }
     function forwardToServlet(movieSlotID) {
-        
+
         const form = document.createElement('form');
-        form.method = 'POST';
+        form.method = 'GET';
         form.action = '/movie/user/booking/seat'; // Replace with your servlet URL
 
         const movieSlotInput = document.createElement('input');
@@ -459,6 +352,9 @@
 
                 const slotButton = document.createElement('button');
                 slotButton.classList.add('slot');
+                slotButton.onclick = function () {
+                    forwardToServlet(slot.movieSlotID);
+                };
                 slotButton.innerHTML = '<strong>' + slot.startTime + '</strong> ~ <span>' + slot.endTime + '</span>';
                 slotButtonsContainer.appendChild(slotButton);
             });

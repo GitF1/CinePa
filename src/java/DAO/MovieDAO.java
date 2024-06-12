@@ -83,13 +83,11 @@ public class MovieDAO extends SQLServerConnect {
             e.printStackTrace();
         }
 
-        return movie; 
+        return movie;
     }
 
     public ArrayList<MovieInfo> getAvailableMovies(ServletContext context) throws Exception {
 
-
-      
         ArrayList<MovieInfo> availableMovies = new ArrayList<>();
 
         String sql = "SELECT * FROM Movie WHERE Status = 'Showing'";
@@ -103,7 +101,7 @@ public class MovieDAO extends SQLServerConnect {
 
             // Lặp qua các kết quả và tạo đối tượng Movie cho mỗi kết quả
             while (resultSet.next()) {
-                
+
                 int movieID = resultSet.getInt("MovieID");
                 int cinemaID = resultSet.getInt("CinemaID");
                 String status = resultSet.getString("Status");
@@ -191,11 +189,35 @@ public class MovieDAO extends SQLServerConnect {
         return list;
     }
 
-    // New method to get movies by status
-    public List<MovieWithStatus> getMoviesByStatus(String status, ServletContext context) throws Exception {
+    // limit 10 -> 20 movie for each request get all movies **
+    public List<Movie> getAllMovieAvailable() {
+        List<Movie> list = new ArrayList<>();
+        String sql = "SELECT * FROM Movie";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
 
-        DB.SQLServerConnect dbConnect = new SQLServerConnect();
-        java.sql.Connection connection = dbConnect.connect(context);
+            while (rs.next()) {
+                Movie movie = new Movie(
+                        rs.getInt("MovieID"),
+                        rs.getString("Title"),
+                        rs.getString("Synopsis"),
+                        rs.getString("DatePublished"),
+                        rs.getString("ImageURL"),
+                        rs.getDouble("Rating"),
+                        rs.getString("Status"),
+                        rs.getString("Country")
+                );
+                list.add(movie);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    // New method to get movies by status
+    public List<MovieWithStatus> getMoviesByStatus(String status) throws Exception {
 
         List<MovieWithStatus> list = new ArrayList<>();
         String sql = "SELECT * FROM Movie WHERE Status = ?";
@@ -213,9 +235,7 @@ public class MovieDAO extends SQLServerConnect {
                         rs.getString("ImageURL"),
                         rs.getDouble("Rating"),
                         rs.getString("Status"),
-                        rs.getString("Country"),
-                        rs.getInt("Length"),
-                        rs.getString("LinkTrailer")
+                        rs.getString("Country")
                 );
                 list.add(movie);
             }
@@ -354,34 +374,6 @@ public class MovieDAO extends SQLServerConnect {
             System.out.println(e);
         }
         return genres;
-    }
-
-    // New method to get movies by status
-    public List<MovieWithStatus> getMoviesByStatus(String status) {
-        List<MovieWithStatus> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movie WHERE Status = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, status);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                MovieWithStatus movie = new MovieWithStatus(
-                        rs.getInt("MovieID"),
-                        rs.getString("Title"),
-                        rs.getString("Synopsis"),
-                        rs.getString("DatePublished"),
-                        rs.getString("ImageURL"),
-                        rs.getDouble("Rating"),
-                        rs.getString("Status"),
-                        rs.getString("Country")
-                );
-                list.add(movie);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
     }
 
     //
@@ -567,8 +559,7 @@ public class MovieDAO extends SQLServerConnect {
             // Properly handle the exception, log it, or rethrow as a custom exception
             e.printStackTrace(); // Replace with appropriate logging in production code
         }
-        
-        
+
     }
 
     public int getMovieID(String movieTitle) throws SQLException {
@@ -686,7 +677,7 @@ public class MovieDAO extends SQLServerConnect {
                 + " where MovieID = '" + movie.getMovieID() + "'";
         Statement st = connection.createStatement();
         st.executeUpdate(sql);
-         sql = "UPDATE [dbo].[Movie] "
+        sql = "UPDATE [dbo].[Movie] "
                 + "SET  "
                 + "Title=?,"
                 + "DatePublished=?,"
@@ -698,11 +689,12 @@ public class MovieDAO extends SQLServerConnect {
                 + "LinkTrailer=?,"
                 + "Status=?"
                 + "WHERE MovieID=?\n";
-   
+
         deleteAllGenresOfMovieByID(movie.getMovieID());
-        insertMovieGenreByID(movie.getMovieID(),genres);
+        insertMovieGenreByID(movie.getMovieID(), genres);
 
     }
+
     public String getImageUrlByID(int id) throws SQLException {
 
         String role = "";
@@ -711,7 +703,6 @@ public class MovieDAO extends SQLServerConnect {
         try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
 
             pstmt.setInt(1, id);
-         
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
