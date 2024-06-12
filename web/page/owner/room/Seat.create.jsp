@@ -713,7 +713,7 @@
             zoomScale += zoomIn ? 0.1 : -0.1;
 
 //                zoomScale = Math.max(0.2, Math.min(zoomScale, 5));
-            container.style.transform = 'scale(' + zoomScale + ')';
+           // container.style.transform = 'scale(' + zoomScale + ')';
         }
 
         // xủ lí kéo thả khung hình
@@ -739,13 +739,13 @@
 
 
 
-            if (Math.abs(xOffset + dx) > innerWidth - 10 || Math.abs(yOffset + dy) > innerHeight) {
-                return;
-            }
-
-            function updatePosition() {
-                container.style.transform = 'translate(' + (xOffset + dx) + 'px, ' + (yOffset + dy) + 'px) scale(' + zoomScale + ')';
-            }
+//            if (Math.abs(xOffset + dx) > innerWidth - 10 || Math.abs(yOffset + dy) > innerHeight) {
+//                return;
+//            }
+//
+//            function updatePosition() {
+//                container.style.transform = 'translate(' + (xOffset + dx) + 'px, ' + (yOffset + dy) + 'px) scale(' + zoomScale + ')';
+//            }
             //container.style.transform = 'translate(' + (xOffset + dx) + 'px, ' + (yOffset + dy) + 'px) scale(' + zoomScale + ')';
             requestAnimationFrame(updatePosition);
         }
@@ -786,11 +786,11 @@
         window.onload = () => {
             createSeats();
             const container = document.getElementById('seatsContainer');
-            container.addEventListener('wheel', zoom);
-            container.addEventListener('mousedown', startDrag);
-            container.addEventListener('mousemove', drag);
-            container.addEventListener('mouseup', stopDrag);
-            container.addEventListener('mouseleave', stopDrag);
+            //container.addEventListener('wheel', zoom);
+//            container.addEventListener('mousedown', startDrag);
+//            container.addEventListener('mousemove', drag);
+//            container.addEventListener('mouseup', stopDrag);
+//            container.addEventListener('mouseleave', stopDrag);
         };
     </script>
 </html>
