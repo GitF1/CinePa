@@ -39,7 +39,7 @@
 
         </style>
     </head>
-    <body class="BodyMovie">
+    <div class="BodyMovie">
         <%
             String status = request.getParameter("status");
             if (status == null || (!status.equals("Showing") && !status.equals("Coming"))) {
@@ -127,5 +127,5 @@
                 });
             });
         </script>
-    </body>
+    </div>
 </html>

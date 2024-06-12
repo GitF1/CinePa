@@ -48,15 +48,10 @@ public class RouterJSP {
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
 
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
+        
+    public String LIST_CINEMACHAIN = "/page/admin/rooms/ListCinemaChain.jsp";
 
-
-    public String List_CinemaChain = "/page/admin/rooms/ListCinemaChain.jsp";
-
-    public String List_Cinema = "/page/admin/rooms/ListCinema.jsp";
-
-
-
-    public String Combined_Page = "/page/admin/rooms/Combined.jsp"; // Update this path accordingly
+    public String LIST_CINEMA= "/page/admin/rooms/ListCinema.jsp";
 
     public String ADD_ROOM = "/page/owner/manage/CreateRoom.jsp";
     
@@ -72,7 +67,7 @@ public class RouterJSP {
     
     public String CREATE_CINEMA ="/page/owner/manage/CreateCinemas.jsp";
 
-        public String CINEMAS ="/page/owner/manage/Cinemas.jsp";
+    public String CINEMAS ="/page/owner/manage/Cinemas.jsp";
 
     public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
     
@@ -89,4 +84,11 @@ public class RouterJSP {
     public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
     
     public String SALES_REPORT = "/page/admin/Report.jsp";
+    
+    public static String DISPLAY_CINEMA_CHAINS = "/page/cinema/DisplayCinemaChains.jsp";
+
+    public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";
+    
+    public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
+
 }
