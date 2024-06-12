@@ -77,6 +77,10 @@
     <jsp:include page="MostReview.jsp" />
 
     <jsp:include page="Question.jsp" />
+    
+
+    <jsp:include page="../home/Footer.jsp" />
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
@@ -118,56 +122,11 @@
                 ]
             });
         });
-    </script>
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#movieSlider_${uniqueId}').slick({
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                responsive: [
-                    {
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    }
-                ]
-            });
-        });
 
 
 
     </script>
-    <!-- link js boostrap :  -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 
 </body>
 </html>

@@ -141,8 +141,8 @@ public class AuthFilter implements Filter {
         if (url.contains("/user") && (!role.equals("USER"))) {
             httpResponse.sendRedirect(loginURI);
         }
-        if (url.contains("/staff") && (!role.equals("STAFF"))) {
-            httpResponse.sendRedirect(loginURI);
+        if (url.contains("/owner") && (!role.equals("OWNER"))) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
         }
 
         Throwable problem = null;
