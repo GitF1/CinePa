@@ -9,6 +9,7 @@ package model;
  * @author ACER
  */
 public class CinemaChain {
+    
     private int cinemaChainID;
     private String name;
     private String information;

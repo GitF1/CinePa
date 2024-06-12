@@ -6,7 +6,6 @@ package controller.auth;
 
 import DAO.CinemaChainDAO;
 import DAO.UserDAO;
-import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,7 +22,6 @@ import model.User;
 import util.RouterJSP;
 import util.RouterURL;
 import java.sql.ResultSet;
-
 
 /**
  *
@@ -106,11 +104,10 @@ public class LoginServlet extends HttpServlet {
 
         try {
             rs = userDAO.checkLogin(username_email, hash);
-             ok = rs.next();
+            ok = rs.next();
         } catch (SQLException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
 
         HttpSession session = request.getSession();
         if (ok) {
@@ -147,8 +144,21 @@ public class LoginServlet extends HttpServlet {
                     }
 
                     session.setAttribute("chains", cinemaNames);
-                    //END OF TEMP CODE
-                    response.sendRedirect(RouterURL.HOMEPAGE);
+
+                    // Retrieve the originally requested URL
+                    String redirectTo = null;
+                    
+                    //(String) session.getAttribute("redirectTo");
+
+                    System.out.println("redirect to: " + redirectTo);
+
+                    if (redirectTo == null) {
+                        response.sendRedirect(RouterURL.HOMEPAGE);
+                    } else {
+                        session.removeAttribute("redirectTo");
+                        response.sendRedirect(redirectTo);
+                    }
+
                 }
                 case "STAFF" ->
                     request.getRequestDispatcher(route.STAFF).forward(request, response);
@@ -156,7 +166,6 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher(route.ADMIN).forward(request, response);
             }
 
-            //response.sendRedirect("/movie");
         } else {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);

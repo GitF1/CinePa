@@ -32,7 +32,7 @@ import util.RouterURL;
  *
  * @author ACER
  */
-@WebServlet(name = "BookingSeatServlet", urlPatterns = {"/booking/seat"})
+@WebServlet(name = "BookingSeatServlet", urlPatterns = {"/user/booking/seat"})
 public class BookingSeatServlet extends HttpServlet {
 
     BookingDAO bookingDAO;
@@ -87,8 +87,13 @@ public class BookingSeatServlet extends HttpServlet {
             throws ServletException, IOException {
 
         checkUserID(request, response);
+        String movieSlotIDStr = (String) request.getParameter("movieSlotID");
 
-        int movieSlotID = 3;
+        if (movieSlotIDStr == null) {
+            response.sendRedirect(RouterURL.HOMEPAGE);
+        }
+
+        int movieSlotID = Integer.parseInt(movieSlotIDStr);
 
         try {
 
@@ -128,10 +133,11 @@ public class BookingSeatServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("order", order);
             //
-            request.getRequestDispatcher(RouterJSP.BOOKING_SEAT).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(BookingSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        request.getRequestDispatcher(RouterJSP.BOOKING_SEAT).forward(request, response);
+
     }
 
     /**
@@ -187,7 +193,10 @@ public class BookingSeatServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         OrderTicket order = (OrderTicket) session.getAttribute("order");
-        
+        if (order == null) {
+            order = new OrderTicket();
+        }
+
         order.setMovieSlotID(movieSlotID);
         order.setUserID(userID);
         order.setSeatsID(seatIDs);
@@ -196,12 +205,11 @@ public class BookingSeatServlet extends HttpServlet {
         order.setTotalPriceTicket(totalCostTicket);
         //
         //boolean isBooked = bookingDAO.bookTicketMovieSlot(userID, movieSlotID, seatIDs, canteenOrders, response);
-        
+
         //
         response.sendRedirect(RouterURL.PAYMENT_VNPAY);
 
         // handle paying before add into database
-
     }
 
     //--------------------------------------------------------------//

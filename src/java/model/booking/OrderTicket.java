@@ -24,10 +24,7 @@ public class OrderTicket {
     private String roomName;
     private String roomType;
     
-    
-    //
-    
-    
+       
 
     public OrderTicket() {
     }

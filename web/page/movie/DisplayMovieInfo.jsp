@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.Review" %>
@@ -12,7 +14,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="page/movie/DisplayMovieInfoCss.css"/>
-        
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -40,8 +42,8 @@
                         <!-- title 2 :  -->
                         <div class="title-2 clWhite">
                             <span class="clXam">${movie.title}</span>
-                            <span class="mg20 clXam">${movie.year}</span>
-                            <span class="clXam">${movie.length}</span>
+                            <span class="mg20 clXam">${movie.year != 0 ? movie.year : "N/A"}</span>
+                            <span class="clXam">${ movie.length != 0 ? movie.length : "N/A"}</span>
                         </div>
                         <!-- rating :  -->
                         <div class="mgt12">
@@ -53,7 +55,7 @@
                         <!-- noi dung :  -->
                         <h6 class="clWhite fw-700">Noi Dung</h6>
                         <div class="content-sumary">
-                            ${movie.synopsis}
+                            ${ movie.synopsis != null ? movie.synopsis : "N/A"}
                         </div>
                         <!-- nhung cai li ti :  -->
                         <div class="liti">
@@ -97,10 +99,10 @@
         <div class="container ">
             <div class="row">
                 <div class="booking-ticket col-8">
-                    <!-- Vinh code o day :  -->
-                    
-                    <div class="vinh">
-                         <jsp:include page="../../components/schedule/Schedule.jsp" />
+                    <!-- Vinh  -->
+
+                    <div class="schedule-movie">
+                         <jsp:include page="./schedule/ScheduleMovie.jsp" />
                     </div>
 
 
@@ -157,17 +159,17 @@
                         <c:forEach var="item" items="${listAvailableMovies}">
                             <div class="active-film row">
                                 <div class="active-film-img col-4">
-                                    <a href="HandleDisplayMovieInfo?movieID=${item.movieID}" class="ctive-film-img-a" style="">
+                                    <a href="HandleDisplayMovieInfo?movieID=${item.getMovieID()}" class="ctive-film-img-a" style="">
                                         <div class="active-film-img" style="background-image: url('${item.imageURL}')"></div>
                                     </a>
                                 </div>
                                 <div class="active-film-desc col-8">
-                                    <p class="active-film-btn">${item.country}</p>
-                                    <p class="active-film-desc">${item.title}</p>
+                                    <p class="active-film-btn">${item.getCountry()}</p>
+                                    <p class="active-film-desc">${item.getTitle()}</p>
                                     <p class="active-film-type">khinh di</p>
                                     <span class="active-film-rate">
                                         <i class="fa fa-star"></i>
-                                        ${item.rating}
+                                        ${item.getRating()}
                                     </span>
                                 </div>
                             </div>

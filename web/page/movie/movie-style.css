@@ -1,15 +1,12 @@
-body {
+.BodyMovie {
     padding-top: 20px; /* Tạo khoảng cách 20px ở đỉnh trang */
 }
 
 h2.text-center {
     display: none; /* Ẩn dòng văn bản trong thẻ h1 */
 }
-.the-a {
-    display: block ; 
-}
 
-.movie-cardV {
+.movie-card{
     margin-bottom: 20px;
     transition: all 0.3s ease;
     position: relative;
@@ -29,7 +26,7 @@ h2.text-center {
 }
 
 
-.card-img-topV {
+.card-img-top {
     /*    width: 200px !important;
         height: 300px !important;*/
     object-fit: contain;
