@@ -19,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style type="text/css">
-        
+
         @media only screen and (min-width:768px){
             .nav-item.dropdown:hover .dropdown-menu{
                 display:block;
@@ -29,7 +29,7 @@
                 pointer-events: none;
             }
         }
-        
+
     </style>
 
     <!--get chains from login servlet-->
@@ -68,11 +68,15 @@
                     </li>
 
                 </ul>
+                <c:set var="movieName" value="${requestScope.movieName}"></c:set>
 
-                <form class="d-flex ms-auto">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                    <form id="searchMovieForm" class="d-flex ms-auto" action="searchmovie" method="post">
+                        <input class="form-control me-2" type="text" id="movieNameInput" name="movieName" value="${movieName}" placeholder="Typing...">
+                    </form>
+                <!--                <form class="d-flex ms-auto">
+                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                
+                                </form>-->
                 <ul class="navbar-nav ms-auto mb-2 me-lg-5">
                     <c:if test="${not empty sessionScope.username}">
                         <li class="nav-item dropdown">
@@ -99,5 +103,39 @@
         </div>
     </nav>
 
+    <script>
+        const movieNameInput = document.getElementById("movieNameInput");
+        document.addEventListener("DOMContentLoaded", function () {
+            movieNameInput.focus();
+            const length = movieNameInput.value.length;
+            movieNameInput.setSelectionRange(length, length);
+        });
 
+        function debounce(cb) {
+            let timeout;
+            let delay = 1200;
+
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    cb(...args);
+                }, delay);
+            };
+        }
+
+        function callServlet(id, url, methodType) {
+            document.getElementById(id).action = url;
+            document.getElementById(id).method = methodType;
+            document.getElementById(id).submit();
+        }
+
+        const queryMovies = debounce(() => {
+            callServlet('searchMovieForm', '/movie/searchmovie', 'POST');
+        });
+
+        movieNameInput.addEventListener("input", () => {
+            queryMovies();
+        });
+
+    </script>
 </html>

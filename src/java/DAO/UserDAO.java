@@ -349,7 +349,7 @@ public class UserDAO extends SQLServerConnect {
     //Search movies
     public List<Movie> searchMovies(String input) throws SQLException {
         List<Movie> movies = new ArrayList<>();
-        String sqlQuery = "select * from Movie where Title like '%" + input + "%'";
+        String sqlQuery = "select * from Movie where Title like N'%" + input + "%'";
         ResultSet rs = getResultSet(sqlQuery);
         while (rs.next()) {
             Movie movie = new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Country"), rs.getString("Status"));

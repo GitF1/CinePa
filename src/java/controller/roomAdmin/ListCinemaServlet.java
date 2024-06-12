@@ -70,7 +70,7 @@ public class ListCinemaServlet extends HttpServlet {
             }
 
             request.setAttribute("cinemas", cinemas);
-            request.getRequestDispatcher(router.List_Cinema).forward(request, response);
+            request.getRequestDispatcher(router.LIST_CINEMA).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

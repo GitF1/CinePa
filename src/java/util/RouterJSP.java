@@ -89,6 +89,6 @@ public class RouterJSP {
 
     public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";
     
-    public static String SEARCH_MOVIE = "UNKNOWN";
+    public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
 
 }

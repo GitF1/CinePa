@@ -57,7 +57,7 @@ public class ListCinemaChainServlet extends HttpServlet {
         try {
             List<CinemaChain> cinemaChains = roomDAO.getAllCinemaChains();
             request.setAttribute("cinemaChains", cinemaChains);
-            request.getRequestDispatcher(router.List_CinemaChain).forward(request, response);
+            request.getRequestDispatcher(router.LIST_CINEMACHAIN).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

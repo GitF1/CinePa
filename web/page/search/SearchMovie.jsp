@@ -15,6 +15,7 @@
     </head>
     <body>
         <c:set var="movieName" value="${requestScope.movieName}"></c:set>
+        
             <form id="searchMovieForm" action="searchmovie" method="post">
                 Movie Name: <input type="text" id="movieNameInput" name="movieName" value="${movieName}" >
                 <button type="submit">Search</button>
