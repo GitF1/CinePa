@@ -7,26 +7,42 @@
         <meta charset="UTF-8">
         <title>Select Cinema Chain</title>
         <style>
-
+            .wrapper-cinema__chain_list{
+                display: flex;
+                margin: 20px 10px;
+            }
             .cinema-chain {
-                display: inline-block;
-                margin-right: 10px; /* Adjust spacing between cinema chains */
+                display: flex;
+                margin-right: 20px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
             }
 
             .img-item_theater {
-                width: 90x;
-                height: 90px;
-                border-radius: 8px;
+                width: 70px;
+                height: 70px;
+                border-radius: 10px;
                 border: 1px solid #eee;
                 cursor: pointer;
-                transform: all 0.2s linear;
                 transition: all 0.2s linear;
+                overflow: hidden;
+
             }
 
             .img-item_theater:hover{
                 opacity: 0.8;
                 scale:1.1;
+            }
 
+            .cinema-name{
+                max-width: 70px;
+                color:#737373;
+                font-size: .75em;
+                white-space: nowrap;
+                overflow:hidden;
+                text-overflow: ellipsis;
+                margin-top:5px;
             }
         </style>
         <script>
@@ -48,24 +64,28 @@
         </script>
     </head>
     <body>
-        <div>
+        <div class="wrapper-cinema__chain_list">
             <div class="cinema-chain" onclick="onSelectCinemaChain(0)">
                 <img class="img-item_theater" src="/movie/assets/images/logo_default_theater.jpg" alt="${cinemaChain.getName()}" >
-                <br>
-                Tất cả
+                <div class="cinema-name">
+                    Tất cả
+                </div>
+
             </div>
             <c:forEach items="${cinemaChains}" var="cinemaChain">
                 <div class="cinema-chain" onclick="onSelectCinemaChain(${cinemaChain.getCinemaChainID()})">
                     <c:choose>
                         <c:when test="${empty cinemaChain.getAvatar()}">
-                            <img class="img-item_theater" src="/movie/assets/images/logo_default_theater.jpg" alt="${cinemaChain.getName()}" style="width: 100px; height: 100px;">
+                            <img class="img-item_theater" src="/movie/assets/images/logo_default_theater.jpg" alt="${cinemaChain.getName()}" >
                         </c:when>
                         <c:otherwise>
-                            <img class="img-item_theater" src="${cinemaChain.getAvatar()}" alt="${cinemaChain.getName()}" style="width: 100px; height: 100px;">
+                            <img class="img-item_theater" src="${cinemaChain.getAvatar()}" alt="${cinemaChain.getName()}" >
                         </c:otherwise>
                     </c:choose> 
-                    <br>
-                    ${cinemaChain.getName()}
+                    <div class="cinema-name">
+                        ${cinemaChain.getName()}
+                    </div>
+
                 </div>
             </c:forEach>
         </div>

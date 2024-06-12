@@ -18,7 +18,7 @@
         
         <h2>Change Password</h2>
         
-        <form action="${pageContext.request.contextPath}/changePasswordServlet" method="post" onsubmit="return validateForm()">
+        <form action="/movie/changePasswordServlet" method="post" onsubmit="return validateForm()">
            
             
             <div class="form-group">

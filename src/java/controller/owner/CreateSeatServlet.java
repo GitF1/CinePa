@@ -4,6 +4,7 @@
  */
 package controller.owner;
 
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.RouterJSP;
 
 /**
@@ -19,6 +22,7 @@ import util.RouterJSP;
  */
 @WebServlet(name = "CreateSeatServlet", urlPatterns = {"/owner/room/seat/create"})
 public class CreateSeatServlet extends HttpServlet {
+    UserDAO userDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,7 +74,21 @@ public class CreateSeatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        int length = Integer.parseInt(request.getParameter("length"));
+        int width = Integer.parseInt(request.getParameter("width"));
+        for(int x = 1; x <= width; ++x) {
+            for(int y = 1; y <= length; ++y) {
+                String seatName = request.getParameter("seat_" + x + "_" + y);
+                if(seatName == null) continue;
+                try {
+                    userDAO = new UserDAO(request.getServletContext());
+                    userDAO.insertSeats(5, seatName, x, y);
+                } catch (Exception ex) {
+                    Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }    
+            }
+        }
     }
 
     /**

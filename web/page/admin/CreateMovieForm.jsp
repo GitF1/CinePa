@@ -103,7 +103,7 @@
                 Trailer Link</label
             >
             <input
-                type="url"
+                type="text"
                 class="form-control"
                 id="urlInput"
                 name="urlInput"
