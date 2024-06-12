@@ -111,6 +111,7 @@
         const highlightedColor = "red";
 
         const container = document.getElementById('seatsContainer');
+        const ROW = 'ROW', COL = 'COL';
 
         // tổng số ghế được hiện thị ở hàng ngang (X) và dọc (Y)
         let numberOfSeatCoordinateX = Math.floor((innerWidth) / (WidthElement + percentWidthAndMarginX * WidthElement)) - 1;
@@ -245,52 +246,82 @@
             container.appendChild(seat);
         }
         
-        function selectColSeatsButtonFunc_Restore(x) {
+        function selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3) {
             let cnt = 0;
-            for(let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                const seat = document.getElementById("seat_" + x + "_" + y);
-                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) ++cnt;
-                else if(seat.style.backgroundColor === unselectedSeatColor) ++cnt;
+            let num = (choice === ROW) ? numberOfSeatCoordinateX : numberOfSeatCoordinateY;
+            let left, right;
+            choice === ROW ? right = i : left = i;
+            let seat;
+            for(let j = 1; j <= num; ++j) {
+                choice === ROW ? left = j : right = j;
+                seat = document.getElementById("seat_" + left + "_" + right);
+                cnt += cb1(seat, left, right);
             }
-            if(cnt === numberOfSeatCoordinateY) {
-                for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) continue;
-                    if(seat.style.backgroundColor === unselectedSeatColor) selectDisabledSeat(seat, x, y);
+            if(cnt === num) {
+                for(let j = 1; j <= num; ++j) {
+                    choice === ROW ? left = j : right = j;
+                    seat = document.getElementById("seat_" + left + "_" + right);
+                    cb2(seat, left, right);
                 }
             }
-            else if(cnt !== numberOfSeatCoordinateY) {
-                for(let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) continue;
-                    if(!isDisabled(seat) || seat.style.backgroundColor === unselectedSeatColor) continue;
-                    selectDisabledSeat(seat, x, y);
+            else if(cnt !== num) {
+                for(let j = 1; j <= num; ++j) {
+                    choice === ROW ? left = j : right = j;
+                    seat = document.getElementById("seat_" + left + "_" + right);
+                    cb3(seat, left, right);
                 }
             }
         }
         
-        function selectColSeatsButtonFunc_Delete(x) {
-            let cnt = 0;
-            for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                const seat = document.getElementById("seat_" + x + "_" + y);
-                if (isDisabled(seat) || isSelectedSeat(seat))
-                    ++cnt;
-            }
-            if (cnt === numberOfSeatCoordinateY) {
-                for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    selectSeat(seat, x, y);
-                }
-            } else if (cnt !== numberOfSeatCoordinateY) {
-                for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if (isSelectedSeat(seat))
-                        continue;
-                    selectSeat(seat, x, y);
-                }
-            }        
+        function selectConsecutiveSeatsButtonFunc_Restore(choice, i) {
+            const cb1 = (seat, x, y) => {
+                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return 1;
+                else if(seat.style.backgroundColor === unselectedSeatColor) return 1;
+                return 0;
+            };
+            const cb2 = (seat, x, y) => {
+                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return;
+                if(seat.style.backgroundColor === unselectedSeatColor) selectDisabledSeat(seat, x, y);
+            };
+            const cb3 = (seat, x, y) => {
+                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return;
+                if(!isDisabled(seat) || seat.style.backgroundColor === unselectedSeatColor) return;
+                selectDisabledSeat(seat, x, y);            
+            };        
+            selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3);
         }
-
+        
+        function selectRowSeatsButtonFunc_Restore(y) {
+            selectConsecutiveSeatsButtonFunc_Restore(ROW, y);
+        }
+        
+        function selectColSeatsButtonFunc_Restore(x) {
+            selectConsecutiveSeatsButtonFunc_Restore(COL, x);
+        }
+        
+        function selectConsecutiveSeatsButtonFunc_Delete(choice, i) {
+            const cb1 = (seat, x, y) => {
+                if (isDisabled(seat) || isSelectedSeat(seat)) return 1;
+                return 0;
+            };
+            const cb2 = (seat, x, y) => {
+                selectSeat(seat, x, y);
+            };
+            const cb3 = (seat, x, y) => {
+                if(isSelectedSeat(seat)) return;
+                selectSeat(seat, x, y);
+            };       
+            selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3);
+        }
+        
+        function selectRowSeatsButtonFunc_Delete(y) {
+            selectConsecutiveSeatsButtonFunc_Delete(ROW, y);
+        }
+        
+        function selectColSeatsButtonFunc_Delete(x) {
+            selectConsecutiveSeatsButtonFunc_Delete(COL, x);
+        }
+        
         function selectColSeatsButtonFunc(x) {
             const restoreSelectedSeatsButton = document.getElementById('restoreSelectedSeatsButton');
             if(restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
@@ -300,54 +331,7 @@
             selectColSeatsButtonFunc_Delete(x);
         }
         
-        function selectRowSeatsButtonFunc_Restore(y) {
-            let cnt = 0;
-            for(let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                const seat = document.getElementById("seat_" + x + "_" + y);
-                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) ++cnt;
-                else if(seat.style.backgroundColor === unselectedSeatColor) ++cnt;
-            }
-            if(cnt === numberOfSeatCoordinateX) {
-                for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) continue;
-                    if(seat.style.backgroundColor === unselectedSeatColor) selectDisabledSeat(seat, x, y);
-                }
-            }
-            else if(cnt !== numberOfSeatCoordinateX) {
-                for(let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) continue;
-                    if(!isDisabled(seat) || seat.style.backgroundColor === unselectedSeatColor) continue;
-                    selectDisabledSeat(seat, x, y);
-                }
-            }
-        }
-        
-        function selectRowSeatsButtonFunc_Delete(y) {
-            let cnt = 0;
-            for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                const seat = document.getElementById("seat_" + x + "_" + y);
-                if (isDisabled(seat) || isSelectedSeat(seat))
-                    ++cnt;
-            }
-            if (cnt === numberOfSeatCoordinateX) {
-                for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    selectSeat(seat, x, y);
-                }
-            } else if (cnt !== numberOfSeatCoordinateX) {
-                for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                    const seat = document.getElementById("seat_" + x + "_" + y);
-                    if (isSelectedSeat(seat))
-                        continue;
-                    selectSeat(seat, x, y);
-                }
-            }   
-        }
-        
         function selectRowSeatsButtonFunc(y) {
-            
             const restoreSelectedSeatsButton = document.getElementById('restoreSelectedSeatsButton');
             if(restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
                 selectRowSeatsButtonFunc_Restore(y);
@@ -516,16 +500,11 @@
                 }
             };
 
-
             container.appendChild(addRowSeatsButton);
             container.appendChild(addColSeatsButton);
             container.appendChild(saveSeatsButton);
             container.appendChild(deleteSelectedSeatsButton);
             container.appendChild(restoreSelectedSeatsButton);
-            
-            const seat = document.getElementById("seat_1_1");
-            console.log(window.getComputedStyle(seat).style.borderTopColor);
-            
         }
 
         function showDropdownMenu(seat, x, y) {
@@ -591,6 +570,7 @@
             postDeleteSeat();
             createSelectColSeatsButton(numberOfSeatCoordinateX);
             updateCoordinateElement(document.getElementById('addColSeatsButton'), numberOfSeatCoordinateX + 1, 0);
+            postIncreConsecutiveSeats();
         };
 
         // Thêm ghế vào hàng ngang sau cùng
@@ -603,13 +583,20 @@
             }
             ++numberOfSeatCoordinateY;
             for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                createSeat(numberOfSeatCoordinateY, x);
-                document.getElementById("seat_" + numberOfSeatCoordinateY + "_" + x).innerHTML = 'Y';
+                createSeat(x, numberOfSeatCoordinateY);
+                document.getElementById("seat_" + x + "_" + numberOfSeatCoordinateY).innerHTML = 'Y';
             }
             postDeleteSeat();
             createSelectRowSeatsButton(numberOfSeatCoordinateY);
-            updateCoordinateElement(document.getElementById('addRowSeatsButton'), 0, numberOfSeatCoordinateY + 1);        
+            updateCoordinateElement(document.getElementById('addRowSeatsButton'), 0, numberOfSeatCoordinateY + 1);   
+            postIncreConsecutiveSeats();
         };
+        
+        function postIncreConsecutiveSeats() {
+            updateCoordinateElement(document.getElementById('saveSeatsButton'),numberOfSeatCoordinateX + 1, numberOfSeatCoordinateY + 1);
+            updateCoordinateElement(document.getElementById('deleteSelectedSeatsButton'),numberOfSeatCoordinateX, numberOfSeatCoordinateY + 1);
+            updateCoordinateElement(document.getElementById('restoreSelectedSeatsButton'),numberOfSeatCoordinateX - 1, numberOfSeatCoordinateY + 1);
+        }
 
         // Xóa ghế cột dọc sau cùng
         function deleteColumnSeats() {
@@ -628,8 +615,7 @@
         function disableSeat(seat) {
             seat.innerHTML = '';
             seat.style.backgroundColor = "#cccccc";
-            seat.style.color = "#666666";
-            seat.style.border = "1px solid #999999";
+            seat.style.border = "1px solid #7ee0fb";
             seat.style.cursor = "not-allowed";
             seat.style.opacity = "0.6";
             console.log(seat.style.backgroundColor);
@@ -728,8 +714,6 @@
 
 //                zoomScale = Math.max(0.2, Math.min(zoomScale, 5));
             container.style.transform = 'scale(' + zoomScale + ')';
-
-
         }
 
         // xủ lí kéo thả khung hình
@@ -782,19 +766,22 @@
                 existingDropdown.remove();
         };
 
-//        const saveSeatsButton = document.getElementById('saveSeatsButton');
-//        let initialLeft = saveSeatsButton.getBoundingClientRect().left;
-//        window.addEventListener('scroll', () => {
-//            let scrollLeft = window.scrollX;
-//            saveSeatsButton.style.left = `${initialLeft + scrollLeft}px`;
-//        });
-
         function callServlet(id, url, methodType) {
             document.getElementById(id).action = url;
             document.getElementById(id).method = methodType;
             document.getElementById(id).submit();
         }
-
+        
+        function handleKeyboardShortcuts(event) {
+            console.log(event);
+            if(event.ctrlKey && event.shiftKey && event.key === 's'){
+                alert('Ctrl + Shift + s was pressed');
+                event.preventDefault();
+            }
+        }
+        
+        document.addEventListener('keydown', handleKeyboardShortcuts);
+        
         // handle Load into DOM
         window.onload = () => {
             createSeats();
