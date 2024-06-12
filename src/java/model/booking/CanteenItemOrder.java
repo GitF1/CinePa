@@ -14,6 +14,7 @@ public class CanteenItemOrder extends CanteenItem {
 
     private int amount;
     private int voucherID;
+    private int orderID;
     
     public CanteenItemOrder() {
         super();
@@ -25,6 +26,12 @@ public class CanteenItemOrder extends CanteenItem {
         this.amount = amount;
     }
 
+    public CanteenItemOrder(int amount, int orderID, int id, String name, double price, String image) {
+        super(id, name, price, image);
+        this.amount = amount;
+        this.orderID = orderID;
+    }
+    
     public int getVoucherID() {
         return voucherID;
     }
@@ -44,6 +51,14 @@ public class CanteenItemOrder extends CanteenItem {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     @Override

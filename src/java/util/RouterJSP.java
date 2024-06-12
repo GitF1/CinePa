@@ -10,7 +10,7 @@ package util;
  */
 public class RouterJSP {
 
-    public static String LANDING_PAGE = "/page/";
+    public static String LANDING_PAGE = "/page/landingPage/LandingPage.jsp";
 
     public String HOMEPAGE = "/page/home/Home.jsp";
 
@@ -48,7 +48,16 @@ public class RouterJSP {
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
     
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
+        
+    public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
     
+    public static String SCHEDULE_MOVIE ="/page/movie/schedule/ScheduleMovie.jsp";
+
+    public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
+    
+    public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
+    
+    public String SALES_REPORT = "/page/admin/Report.jsp";
     public static String DISPLAY_CINEMA_CHAINS = "/page/cinema/DisplayCinemaChains.jsp";
 
     public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";

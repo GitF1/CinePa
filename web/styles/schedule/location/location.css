@@ -1,19 +1,10 @@
 
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
 }
 
-h1 {
-    color: #333;
-}
 
-label {
-    font-size: 16px;
-    color: #666;
-}
-
-select {
+.location-select_box__city {
     width: 200px;
     padding: 10px;
     font-size: 16px;
@@ -25,14 +16,10 @@ select {
     background-size: 12px;
 }
 
-select:focus {
+.location-select_box__city:focus {
     border-color: #007BFF;
     outline: none;
 }
 
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #007BFF;
-}
+
 

@@ -27,6 +27,7 @@
             </div>
             <h3>Tổng Hóa Đơn</h3>
             <div class="table-responsive">
+                
                 <div class="">
                     <!-- Hiển thị tổng giá vé -->
                     <p>Tổng giá vé: <%= request.getAttribute("totalPriceTicket")%>đ</p>
@@ -43,14 +44,6 @@
                     <!-- Hiển thị ngày đặt -->
                     <p>Ngày đặt: <%= request.getAttribute("date")%></p>
 
-                    <!-- Hiển thị danh sách các món đồ ăn đã đặt -->
-                    <p>Các loại đồ ăn đã đặt:</p>
-                    <ul>
-                        <% List<CanteenItemOrder> canteenOrders = (List<CanteenItemOrder>) request.getAttribute("canteenOrders"); %>
-                        <% for (CanteenItemOrder canteenOrder : canteenOrders) {%>
-                        <li><%= canteenOrder.getName()%>: <%= canteenOrder.getAmount()%> x <%= canteenOrder.getPrice()%>đ</li>
-                            <% }%>
-                    </ul>
                 </div>
 
                 <form action="/movie/payment/vnpay" id="frmCreateOrder" method="post"> 
@@ -85,6 +78,7 @@
                         <input type="radio" id="bankCode" name="bankCode" value="INTCARD">
                         <label for="bankCode">Thanh toán qua thẻ quốc tế</label><br> 
                     </div>
+                    
                     <div class="form-group">
 
                         <h5>Chọn ngôn ngữ giao diện thanh toán:</h5>

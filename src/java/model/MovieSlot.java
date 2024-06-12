@@ -34,6 +34,7 @@ public class MovieSlot {
         this.price = price;
         this.discount = discount;
         this.status = status;
+
     }
 
     // Default constructor

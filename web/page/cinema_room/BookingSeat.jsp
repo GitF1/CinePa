@@ -179,7 +179,6 @@
                         <input type="hidden" id="selectedSeat${i}" name="selectedSeat${i}"/>
                     </c:forEach>   
                 </div>
-
             </div>
             <jsp:include page="./Canteen.jsp" />
         </form>

@@ -6,6 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Combo Selection</title>
+      
         <style>
 
             .combo-box {
@@ -170,7 +171,7 @@
                         <input type="hidden" id="hiddenTotalPriceCanteen" name="totalPriceCanteenItem" value="0">
                     </div>
 
-                    <button class="submit-btn" id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/booking/seat', 'POST')">Đặt vé</button>
+                    <button  class="submit-btn" id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/user/booking/seat', 'POST')">Đặt vé</button>
 
 
                 </div>
@@ -179,4 +180,6 @@
 
         </div>
     </body>
+   
+
 </html>

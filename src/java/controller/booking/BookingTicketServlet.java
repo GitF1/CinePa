@@ -13,17 +13,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.booking.OrderTicket;
-import util.RouterJSP;
+import model.booking.CanteenItemOrder;
 import util.RouterURL;
-import util.VnPayConfig;
+
 
 /**
  *
@@ -74,76 +70,76 @@ public class BookingTicketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        boolean parameterMissing = false;
-        Map fields = new HashMap();
-        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
-            String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
-            String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                fields.put(fieldName, fieldValue);
-            } else {
-                parameterMissing = true; // Set the flag if any parameter is missing
-            }
-        }
+//        boolean parameterMissing = false;
+//        Map fields = new HashMap();
+//        for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
+//            String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+//            String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
+//            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+//                fields.put(fieldName, fieldValue);
+//            } else {
+//                parameterMissing = true; // Set the flag if any parameter is missing
+//            }
+//        }
 //        if (parameterMissing) {
 //            response.sendRedirect(RouterURL.BOOKING_SEAT);
 //            return;
 //        }
 
-        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
-        if (fields.containsKey("vnp_SecureHashType")) {
-            fields.remove("vnp_SecureHashType");
-        }
-        if (fields.containsKey("vnp_SecureHash")) {
-            fields.remove("vnp_SecureHash");
-        }
-        String signValue = VnPayConfig.hashAllFields(fields);
-
-        request.setAttribute("vnp_TxnRef", request.getParameter("vnp_TxnRef"));
-        request.setAttribute("vnp_Amount", request.getParameter("vnp_Amount"));
-        request.setAttribute("vnp_OrderInfo", request.getParameter("vnp_OrderInfo"));
-        request.setAttribute("vnp_ResponseCode", request.getParameter("vnp_ResponseCode"));
-        request.setAttribute("vnp_TransactionNo", request.getParameter("vnp_TransactionNo"));
-        request.setAttribute("vnp_BankCode", request.getParameter("vnp_BankCode"));
-        request.setAttribute("vnp_PayDate", request.getParameter("vnp_PayDate"));
-        request.setAttribute("vnp_TransactionStatus", request.getParameter("vnp_TransactionStatus"));
-
-        if (!signValue.equals(vnp_SecureHash)) {
-
-            request.setAttribute("message", "Giao dịch thất bại ");
-
-        } else if (!"00".equals(request.getParameter("vnp_TransactionStatus"))) {
-            request.setAttribute("message", "Giao dịch thất bại ");
-            System.out.print("Giao Dịch Không thành công");
-
-        } else {
-            
-            // Add Info Into Database
-            HttpSession session = request.getSession();
-            OrderTicket order = (OrderTicket) session.getAttribute("order");
-            
-            if (order == null) {
-                request.setAttribute("message", "Đặt vé thất bại ");
-                System.out.print("Order NULL");
-            } else if (order.getUserID() == 0 || order.getSeatsID() == null || order.getCanteenItemOrders() == null || order.getMovieSlotID() == 0) {
-                request.setAttribute("message", "Đặt vé thất bại ");
-                System.out.print("Missing Param in Order");
-            } else {
-
-                boolean isBooked = bookingDAO.bookTicketMovieSlot(order.getUserID(), order.getMovieSlotID(), order.getSeatsID(), order.getCanteenItemOrders());
-
-                if (!isBooked) {
-                    System.out.print("Đặt vé thất bại");
-                    request.setAttribute("message", "Đặt vé thất bại ");
-                } else {
-                    request.setAttribute("message", "Đặt vé thành công");
-                }
-
-            }
-
-        }
-
-        request.getRequestDispatcher(RouterJSP.RETURN_TRACSACTION_BOOKING_TICKET).forward(request, response);
+//        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
+//        if (fields.containsKey("vnp_SecureHashType")) {
+//            fields.remove("vnp_SecureHashType");
+//        }
+//        if (fields.containsKey("vnp_SecureHash")) {
+//            fields.remove("vnp_SecureHash");
+//        }
+//        String signValue = VnPayConfig.hashAllFields(fields);
+//       
+//        request.setAttribute("vnp_TxnRef", request.getParameter("vnp_TxnRef"));
+//        request.setAttribute("vnp_Amount", request.getParameter("vnp_Amount"));
+//        request.setAttribute("vnp_OrderInfo", request.getParameter("vnp_OrderInfo"));
+//        request.setAttribute("vnp_ResponseCode", request.getParameter("vnp_ResponseCode"));
+//        request.setAttribute("vnp_TransactionNo", request.getParameter("vnp_TransactionNo"));
+//        request.setAttribute("vnp_BankCode", request.getParameter("vnp_BankCode"));
+//        request.setAttribute("vnp_PayDate", request.getParameter("vnp_PayDate"));
+//        request.setAttribute("vnp_TransactionStatus", request.getParameter("vnp_TransactionStatus"));
+//
+//        if (!signValue.equals(vnp_SecureHash)) {
+//
+//            request.setAttribute("message", "Giao dịch thất bại ");
+//
+//        } else if (!"00".equals(request.getParameter("vnp_TransactionStatus"))) {
+//            request.setAttribute("message", "Giao dịch thất bại ");
+//            System.out.print("Giao Dịch Không thành công");
+//
+//        } else {
+//
+//            // Add Info Into Database
+//            HttpSession session = request.getSession();
+//            OrderTicket order = (OrderTicket) session.getAttribute("order");
+//
+//            if (order == null) {
+//                request.setAttribute("message", "Đặt vé thất bại ");
+//                System.out.print("Order NULL");
+//            } else if (order.getUserID() == 0 || order.getSeatsID() == null || order.getCanteenItemOrders() == null || order.getMovieSlotID() == 0) {
+//                request.setAttribute("message", "Đặt vé thất bại ");
+//                System.out.print("Missing Param in Order");
+//            } else {
+//
+//                boolean isBooked = bookingDAO.bookTicketMovieSlot(order.getUserID(), order.getMovieSlotID(), order.getSeatsID(), order.getCanteenItemOrders());
+//
+//                if (!isBooked) {
+//                    System.out.print("Đặt vé thất bại");
+//                    request.setAttribute("message", "Đặt vé thất bại ");
+//                } else {
+//                    request.setAttribute("message", "Đặt vé thành công");
+//                }
+//
+//            }
+//
+//        }
+//
+//        request.getRequestDispatcher(RouterJSP.RETURN_TRACSACTION_BOOKING_TICKET).forward(request, response);
     }
 
     /**
@@ -163,10 +159,11 @@ public class BookingTicketServlet extends HttpServlet {
 
         Integer userID = (Integer) session.getAttribute("userID");
         // check user ID
-//        if (userID == null || userID == 0) {
-//            response.sendRedirect(RouterURL.LOGIN);
-//            return;
-//        }
+        
+        if (userID == null || userID == 0) {
+            response.sendRedirect(RouterURL.LOGIN);
+            return;
+        }
 
         String movieSlotIDParam = request.getParameter("movieSlotID");
 
@@ -192,19 +189,19 @@ public class BookingTicketServlet extends HttpServlet {
             System.out.println(e.toString());
         }
 
-//        List<Integer> seatIDs = getListSeatIDs(request);
+        List<Integer> seatIDs = getListSeatIDs(request);
 //
-//        List<CanteenItemOrder> canteenOrders = getListCanteenOrder(request);
+        List<CanteenItemOrder> canteenOrders = getListCanteenOrder(request);
         // handle paying before add into database
         // hanle add canteen, seat, ticket , order into database
-        //boolean isBooked = bookingDAO.bookTicketMovieSlot(userID, 3, seatIDs, canteenOrders);
+      
         PrintWriter out = response.getWriter();
 
-        out.println("user Id:" + userID);
-
-        out.println("movie slot Id:" + movieSlotID);
-        out.println("total price ticket" + totalCostTicketStr);
-        out.println("total price food" + totalCostCanteenStr);
+//        out.println("user Id:" + userID);
+//
+//        out.println("movie slot Id:" + movieSlotID);
+//        out.println("total price ticket" + totalCostTicketStr);
+//        out.println("total price food" + totalCostCanteenStr);
 
 //        if (isBooked) {
 //            out.println("booking succes!");
@@ -213,7 +210,45 @@ public class BookingTicketServlet extends HttpServlet {
 //        }
         out.close();
     }
+        private List<Integer> getListSeatIDs(HttpServletRequest request) {
+        List<Integer> seatIDs = new ArrayList<>();
 
+        for (int i = 1; i <= 8; ++i) {
+            String seatID = request.getParameter("selectedSeat" + i);
+
+            if (seatID == null || seatID.isEmpty()) {
+                continue;
+            }
+            try {
+                int seatIDInt = Integer.parseInt(seatID);
+                seatIDs.add(seatIDInt);
+            } catch (NumberFormatException e) {
+                continue; // Exit the method if seatID is not a number
+            }
+
+        }
+        return seatIDs;
+    }
+
+    private List<CanteenItemOrder> getListCanteenOrder(HttpServletRequest request) {
+        List<CanteenItemOrder> canteenOrders = new ArrayList<>();
+
+        // Iterate over all parameters
+        request.getParameterMap().forEach((key, value) -> {
+            if (key.startsWith("quantity_")) {
+                try {
+                    int id = Integer.parseInt(key.substring(9)); // Extract item ID from parameter name
+                    int amount = Integer.parseInt(value[0]);
+                    if (amount > 0) {
+                        canteenOrders.add(new CanteenItemOrder(amount, id));
+                    }
+                } catch (NumberFormatException e) {
+                    // Handle potential number format exception
+                }
+            }
+        });
+        return canteenOrders;
+    }
     /**
      * Returns a short description of the servlet.
      *
