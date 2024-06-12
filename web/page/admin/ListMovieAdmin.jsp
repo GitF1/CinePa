@@ -41,6 +41,9 @@
     <body>
      
         <%--<c:set var="message" value='${requestScope["movieList"]}' />--%>
+        <a class="btn btn-primary" href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp">
+                    Add movie</a
+                >
         <table class="table">
             <form action = "UpdateMovieServlet" method="post">
                 <thead>

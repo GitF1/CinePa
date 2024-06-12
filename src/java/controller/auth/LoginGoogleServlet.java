@@ -111,7 +111,7 @@ public class LoginGoogleServlet extends HttpServlet {
             case "STAFF" ->
                 request.getRequestDispatcher(route.STAFF).forward(request, response);
             case "ADMIN" ->
-                request.getRequestDispatcher(route.ADMIN).forward(request, response);
+                request.getRequestDispatcher("OverviewGraphServlet").forward(request, response);
         }
     }
 
