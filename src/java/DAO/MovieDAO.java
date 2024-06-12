@@ -206,7 +206,9 @@ public class MovieDAO extends SQLServerConnect {
                         rs.getString("ImageURL"),
                         rs.getDouble("Rating"),
                         rs.getString("Status"),
-                        rs.getString("Country")
+                        rs.getString("Country"),
+                        rs.getInt("Length"),
+                        rs.getString("LinkTrailer")
                 );
                 list.add(movie);
             }
