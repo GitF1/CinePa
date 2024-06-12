@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.roomAdmin;
+package controller.owner;
 
 import DAO.RoomDAO;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Room;
@@ -21,20 +22,19 @@ import util.RouterJSP;
  *
  * @author VINHNQ
  */
-@WebServlet(name = "UpdateRoomServlet", urlPatterns = {"/roomAdmin/updateRoom"})
-public class UpdateRoomServlet extends HttpServlet {
+@WebServlet(name = "ManageRoomServlet", urlPatterns = {"/owner/rooms"})
+public class ManageRoomServlet extends HttpServlet {
 
     RouterJSP router = new RouterJSP();
-
-    private RoomDAO roomDAO;
+    RoomDAO roomDAO;
 
     @Override
     public void init() throws ServletException {
-        super.init();
         try {
+            super.init();
             this.roomDAO = new RoomDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(UpdateRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -46,10 +46,10 @@ public class UpdateRoomServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateRoomServlet</title>");
+            out.println("<title>Servlet ManageRoomServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateRoomServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ManageRoomServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,29 +58,25 @@ public class UpdateRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int roomID = Integer.parseInt(request.getParameter("roomID"));
-        Room room = roomDAO.getRoomById(roomID);
-        request.setAttribute("room", room);
-        request.getRequestDispatcher(router.Update_Room).forward(request, response);
+        int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        List<Room> rooms = roomDAO.getRoomsByCinemaId(cinemaID);
+        request.setAttribute("rooms", rooms);
+
+        request.getRequestDispatcher(router.ROOM_OWNER).forward(request, response);
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int roomID = Integer.parseInt(request.getParameter("roomID")); // Extract roomID from request
-        Room room = roomDAO.getRoomById(roomID); // Get room information from database
-
-        // Update fields of Room object
-        room.setName(request.getParameter("name"));
-        room.setType(request.getParameter("type"));
-        room.setCapacity(Integer.parseInt(request.getParameter("capacity")));
-        room.setLength(Integer.parseInt(request.getParameter("length")));
-        room.setWidth(Integer.parseInt(request.getParameter("width")));
-        room.setStatus(request.getParameter("status"));
-
-        // Call updateRoom method of RoomDAO with the updated Room object
-        roomDAO.updateRoom(room);
-        response.sendRedirect("rooms?cinemaID=" + request.getParameter("cinemaID"));
+        processRequest(request, response);
     }
 
     /**

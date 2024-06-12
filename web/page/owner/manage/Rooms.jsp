@@ -17,12 +17,23 @@
                 border-color: #f8f9fa;
             }
         </style>
-
+        <script type="text/javascript">
+            function doDelete(roomID) {
+                if (confirm("Are you sure to delete this room with id: " + roomID + "?")) {
+                    window.location = "deleteRoom?roomID=" + roomID + "&cinemaID=<%= request.getParameter("cinemaID")%>";
+                }
+            }
+        </script>
     </head>
     <body>
         <h1 class="text-center mt-3">Rooms</h1>
         <div class="container mt-4">
-       
+            <div class="row mb-3">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-right">
+                    <a href="createRoom?cinemaID=<%= request.getParameter("cinemaID")%>" class="btn btn-success">Add Room</a>
+                </div>
+            </div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -31,6 +42,7 @@
                         <th>Capacity</th>
                         <th>Size</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +53,10 @@
                             <td>${room.capacity}</td>
                             <td>${room.length}m x ${room.width}m</td>
                             <td>${room.status}</td>
-                            
+                            <td>
+                                <a href="updateRoom?roomID=${room.roomID}" class="btn btn-primary btn-sm">Update</a>
+                                <a href="#" onclick="doDelete('${room.roomID}')" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

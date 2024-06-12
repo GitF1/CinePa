@@ -11,6 +11,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.CinemaChain;
 import model.User;
 
@@ -19,6 +21,8 @@ import model.User;
  * @author Admin
  */
 public class CinemaChainDAO extends SQLServerConnect {
+
+    private static final Logger LOGGER = Logger.getLogger(CinemaChainDAO.class.getName());
 
     //Chỉ để query cinema chain trong navbar
     public CinemaChainDAO(ServletContext context) throws Exception {
@@ -81,6 +85,7 @@ public class CinemaChainDAO extends SQLServerConnect {
         }
         return cinemaChain;
     }
+
     public CinemaChain getCinemaChainByID(int cinemaChainID) {
         CinemaChain cinemaChain = new CinemaChain();
 
@@ -92,14 +97,14 @@ public class CinemaChainDAO extends SQLServerConnect {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                
+
                 String name = rs.getString("Name");
                 String information = rs.getString("Information");
                 String avatar = rs.getString("Avatar");
-                
+
                 cinemaChain = new CinemaChain(cinemaChainID, name, information, avatar);
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -107,6 +112,20 @@ public class CinemaChainDAO extends SQLServerConnect {
 
     }
 
+    // Phương thức cập nhật thông tin một CinemaChain
+    public void updateCinemaChain(CinemaChain cinemaChain) {
+        String sql = "UPDATE CinemaChain SET Name = ?, Information = ?, Avatar = ? WHERE CinemaChainID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, cinemaChain.getName());
+            st.setString(2, cinemaChain.getInformation());
+            st.setString(3, cinemaChain.getAvatar());
+            st.setInt(4, cinemaChain.getCinemaChainID());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error updating room", e);
+        }
+    }
 
     public void createCinemaChain(CinemaChain cinemaChain, int userId) {
         String sqlCinemaChain = "INSERT INTO CinemaChain (Name, Information, Avatar) VALUES (?, ?, ?)";
@@ -137,14 +156,14 @@ public class CinemaChainDAO extends SQLServerConnect {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-            System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
             System.out.println(e.getMessage());
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }

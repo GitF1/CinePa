@@ -159,7 +159,7 @@ public class LoginServlet extends HttpServlet {
 
                 }
                 case "OWNER" ->
-                    request.getRequestDispatcher(route.Home_owner).forward(request, response);
+                    request.getRequestDispatcher(route.HOME_OWNER).forward(request, response);
                 case "ADMIN" ->
                     request.getRequestDispatcher(route.ADMIN).forward(request, response);
             }

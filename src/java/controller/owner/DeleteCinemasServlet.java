@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.roomAdmin;
+package controller.owner;
 
-import DAO.RoomDAO;
+import DAO.CinemasDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,27 +12,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import util.RouterJSP;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import util.RouterJSP;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "DeleteRoomServlet", urlPatterns = {"/roomAdmin/deleteRoom"})
-public class DeleteRoomServlet extends HttpServlet {
+@WebServlet(name = "DeleteCinemasServlet", urlPatterns = {"/owner/deleteCinema"})
+public class DeleteCinemasServlet extends HttpServlet {
 
-    RouterJSP router = new RouterJSP();
-    private RoomDAO roomDAO;
+    CinemasDAO cinemasDAO;
 
     @Override
     public void init() throws ServletException {
-        super.init();
         try {
-            this.roomDAO = new RoomDAO(getServletContext());
+            super.init();
+            this.cinemasDAO = new CinemasDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(DeleteRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DeleteCinemasServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -44,21 +43,39 @@ public class DeleteRoomServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteRoomServlet</title>");
+            out.println("<title>Servlet DeleteCinemasServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteRoomServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteCinemasServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int roomId = Integer.parseInt(request.getParameter("roomID"));
-        roomDAO.deleteRoomById(roomId);
-        response.sendRedirect("rooms?cinemaID=" + request.getParameter("cinemaID"));
+            int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        int cinemaChainID = Integer.parseInt(request.getParameter("cinemaChainID"));
+        
+        try {
+            cinemasDAO.deleteCinemaAndRooms(cinemaID);
+            response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID);
+        } catch (Exception ex) {
+    Logger.getLogger(DeleteCinemasServlet.class.getName()).log(Level.SEVERE, "Error deleting cinema", ex);
+    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error deleting cinema: " + ex.getMessage());
+}
+
+       
     }
 
     /**

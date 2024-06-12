@@ -58,7 +58,7 @@ public class CreateCinemasOwnerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(router.Create_Cinema).forward(request, response);
+        request.getRequestDispatcher(router.CREATE_CINEMA).forward(request, response);
     }
 
     @Override

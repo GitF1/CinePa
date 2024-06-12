@@ -32,6 +32,17 @@ public class Cinema {
         this.commune = commune;
     }
 
+    public Cinema(int cinemaID, String address, String province, String district, String commune, String avatar) {
+        this.cinemaID = cinemaID;
+        this.address = address;
+        this.province = province;
+        this.district = district;
+        this.commune = commune;
+        this.avatar = avatar;
+    }
+    
+    
+
     // Constructor
     public Cinema(int cinemaID, int cinemaChainID, String address, String province, String district, String commune, String avatar) {
         this.cinemaID = cinemaID;

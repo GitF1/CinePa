@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller.owner;
 
 import DAO.CinemaChainDAO;
@@ -14,53 +15,52 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import util.RouterJSP;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.CinemaChain;
-import model.User;
+import util.RouterJSP;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "HomePageOwnerServlet", urlPatterns = {"/owner/homeOwner"})
-public class HomePageOwnerServlet extends HttpServlet {
-
+@WebServlet(name="UpdateCinemaChainServlet", urlPatterns={"/owner/updateCinemaChain"})
+public class UpdateCinemaChainServlet extends HttpServlet {
+   
     private RouterJSP router = new RouterJSP();
     private CinemaChainDAO cinemaChainDAO;
-
-    @Override
+    
+      @Override
     public void init() throws ServletException {
         try {
             super.init();
             this.cinemaChainDAO = new CinemaChainDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(HomePageOwnerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateCinemaChainServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageOwnerServlet</title>");
+            out.println("<title>Servlet UpdateCinemaChainServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageOwnerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateCinemaChainServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    throws ServletException, IOException {
+         HttpSession session = request.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
 
         if (userID == null) {
@@ -70,14 +70,20 @@ public class HomePageOwnerServlet extends HttpServlet {
 
         CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
 
-        request.setAttribute("cinemaChain", cinemaChain);
-        request.getRequestDispatcher(router.HOME_OWNER).forward(request, response);
-    }
+        if (cinemaChain == null) {
+            request.setAttribute("error", "No Cinema Chain found.");
+            response.sendRedirect(request.getContextPath() + "/owner/homeOwner");
+        } else {
+            request.setAttribute("cinemaChain", cinemaChain);
+            request.getRequestDispatcher(router.UPDATE_CINEMACHAIN).forward(request, response);
+        }
+    } 
 
+  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-         HttpSession session = request.getSession();
+    throws ServletException, IOException {
+        HttpSession session = request.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
 
         if (userID == null) {
@@ -89,22 +95,26 @@ public class HomePageOwnerServlet extends HttpServlet {
         String information = request.getParameter("information");
         String avatar = request.getParameter("avatar");
 
-        CinemaChain existingChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-        if (existingChain == null) {
-            CinemaChain cinemaChain = new CinemaChain();
+        CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
+
+        if (cinemaChain != null) {
             cinemaChain.setName(name);
             cinemaChain.setInformation(information);
             cinemaChain.setAvatar(avatar);
-            cinemaChainDAO.createCinemaChain(cinemaChain, userID);
 
-            request.setAttribute("success", "CinemaChain created successfully!");
+            cinemaChainDAO.updateCinemaChain(cinemaChain);
+
+            response.sendRedirect(request.getContextPath() + "/owner/cinemaChain");
         } else {
-            request.setAttribute("error", "You already have a CinemaChain.");
+            request.setAttribute("error", "No Cinema Chain found.");
+            request.getRequestDispatcher(router.UPDATE_CINEMACHAIN).forward(request, response);
         }
-
-        doGet(request, response);
     }
 
+    /** 
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

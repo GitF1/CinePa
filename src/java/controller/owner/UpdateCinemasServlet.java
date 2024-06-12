@@ -4,8 +4,7 @@
  */
 package controller.owner;
 
-import DAO.RoomDAO;
-import controller.roomAdmin.ListCinemaChainServlet;
+import DAO.CinemasDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,29 +12,28 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.CinemaChain;
+import model.Cinema;
 import util.RouterJSP;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "CinemaChainOwnerServlet", urlPatterns = {"/owner/cinemaChain"})
-public class CinemaChainOwnerServlet extends HttpServlet {
+@WebServlet(name = "UpdateCinemasServlet", urlPatterns = {"/owner/updateCinema"})
+public class UpdateCinemasServlet extends HttpServlet {
 
     RouterJSP router = new RouterJSP();
-    RoomDAO roomDAO;
+    CinemasDAO cinemasDAO;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init();
-            this.roomDAO = new RoomDAO(getServletContext());
+            this.cinemasDAO = new CinemasDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(CinemaChainOwnerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateCinemasServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -47,10 +45,10 @@ public class CinemaChainOwnerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CinemaChainOwnerServlet</title>");
+            out.println("<title>Servlet UpdateCinemasServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CinemaChainOwnerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateCinemasServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,36 +66,35 @@ public class CinemaChainOwnerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
-
-        if (userID == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
+        int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
         try {
-            CinemaChain cinemaChain = roomDAO.getCinemaChainByUserId(userID);
-            request.setAttribute("cinemaChain", cinemaChain);
-            request.getRequestDispatcher(router.CINEMACHAIN).forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving cinema chains.");
+            Cinema cinema = cinemasDAO.getCinemaByID(cinemaID);
+            request.setAttribute("cinema", cinema);
+            request.getRequestDispatcher(router.UPDATE_CINEMA).forward(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(UpdateCinemasServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+            String address = request.getParameter("address");
+            String province = request.getParameter("province");
+            String district = request.getParameter("district");
+            String commune = request.getParameter("commune");
+            String avatar = request.getParameter("avatar");
+
+            Cinema cinema = new Cinema(cinemaID, address, province, district, commune, avatar);
+            cinemasDAO.updateCinema(cinema);
+            // Retrieve cinemaChainID from the updated cinema object
+            int cinemaChainID = cinemasDAO.getCinemaChainIDByCinemaID(cinemaID);
+            response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID);
+        } catch (Exception ex) {
+            Logger.getLogger(UpdateCinemasServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

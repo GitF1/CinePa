@@ -70,9 +70,9 @@ public class CreateCinemaChainServlet extends HttpServlet {
 
         if (cinemaChain != null) {
             request.setAttribute("error", "You have already created a CinemaChain.");
-            request.getRequestDispatcher(router.Home_owner).forward(request, response);
+            request.getRequestDispatcher(router.HOME_OWNER).forward(request, response);
         } else {
-            request.getRequestDispatcher(router.Create_cinemaChain).forward(request, response);
+            request.getRequestDispatcher(router.CREATE_CINEMACHAIN).forward(request, response);
         }
     }
 
@@ -110,7 +110,7 @@ public class CreateCinemaChainServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/owner/homeOwner");
         } else {
             request.setAttribute("error", "You already have a CinemaChain.");
-            request.getRequestDispatcher(router.Create_cinemaChain).forward(request, response);
+            request.getRequestDispatcher(router.CREATE_CINEMACHAIN).forward(request, response);
         }
     }
 

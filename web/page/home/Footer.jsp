@@ -1,104 +1,119 @@
-<%-- 
-    Document   : footer
-    Created on : Jun 5, 2024, 9:54:08 PM
-    Author     : VINHNQ
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .footer {
-            background-color: #000;
-            color: #fff;
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .footer-column {
-            flex: 1;
-            margin: 0 20px;
-            min-width: 200px;
-        }
-        .footer-column h3 {
-            color: #fff;
-        }
-        .footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        .footer .social-icons a {
-            margin: 0 10px;
-            display: inline-block;
-        }
-        .footer .app-links img {
-            width: 130px;
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
-    <footer class="footer">
-        <div class="footer-column">
-            <h3>MUA VÉ XEM PHIM</h3>
-            <a href="#">Lịch chiếu phim</a><br>
-            <a href="#">Rạp chiếu phim</a><br>
-            <a href="#">Phim chiếu rạp</a><br>
-            <a href="#">Review phim</a><br>
-            <a href="#">Top phim</a><br>
-            <a href="#">Blog phim</a>
-        </div>
-        <div class="footer-column">
-            <h3>DỊCH VỤ NỔI BẬT</h3>
-            <a href="#">Vé xem phim</a><br>
-            <a href="#">Bảo hiểm Ô tô</a><br>
-            <a href="#">Vé máy bay</a><br>
-            <a href="#">Ví nhân ái</a><br>
-            <a href="#">Vay nhanh</a>
-        </div>
-        <div class="footer-column">
-            <h3>CHĂM SÓC KHÁCH HÀNG</h3>
-            <address>
-                Địa chỉ: Lầu 6, Tòa nhà Phú Mỹ Hưng, số 8 Hoàng Văn Thái, khu phố 1, Phường Tân Phú, Quận 7, Thành phố Hồ Chí Minh<br>
-                Hotline: 1900 5454 41 (Phí 1.000đ/phút)<br>
-                Email: <a href="mailto:hotro@momo.vn">hotro@momo.vn</a><br>
-                Tổng đài gọi ra: 028.7306.5555 - 028.9999.5555, các đầu số di động Brandname MoMo<br>
-                <a href="#"><img src="huong-dan-tro-giup-tren-ung-dung-momo.png" alt="Hướng dẫn trợ giúp trên ứng dụng MoMo"></a>
-            </address>
-        </div>
-        <div class="footer-column">
-            <h3>HỢP TÁC DOANH NGHIỆP</h3>
-            Hotline: 1900 636 652 (Phí 1.000đ/phút)<br>
-            Email: <a href="mailto:merchant.care@momo.vn">merchant.care@momo.vn</a><br>
-            Website: <a href="https://business.momo.vn">business.momo.vn</a><br>
-            <a href="#"><img src="dang-ky-hop-tac.png" alt="Đăng ký hợp tác"></a>
-        </div>
-        <div class="footer-column">
-            <h3>KẾT NỐI VỚI CHÚNG TÔI</h3>
-            <div class="social-icons">
-                <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
-                <a href="#"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="#"><img src="youtube-icon.png" alt="YouTube"></a>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Footer Ví dụ</title>
+        <!-- Bootstrap core CSS -->
+        <link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <!-- CSS tùy chỉnh -->
+        <style>
+            /* Tùy chỉnh footer */
+            footer {
+                background-color: #1c2331;
+                color: white;
+                padding: 60px 0;
+            }
+            /* Biểu tượng mạng xã hội */
+            .social-icons a {
+                color: white;
+                margin-right: 15px;
+                font-size: 24px;
+            }
+            /* Tên công ty */
+            .company-name {
+                color: white;
+                font-weight: bold;
+            }
+            /* Liên kết footer */
+            .footer-links a {
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Footer -->
+        <footer class="text-center text-lg-start">
+            <!-- Mạng xã hội -->
+            <section class="d-flex justify-content-between p-4" style="background-color: #6351ce;">
+                <!-- Trái -->
+                <div class="me-5">
+                    <span>Kết nối với chúng tôi trên mạng xã hội:</span>
+                </div>
+                <!-- Phải -->
+                <div class="social-icons">
+                    <a href="#" class="text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-google"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-github"></i></a>
+                </div>
+            </section>
+            <!-- Liên kết -->
+            <section>
+                <div class="container text-center text-md-start mt-5">
+                    <!-- Dòng grid -->
+                    <div class="row mt-3">
+                        <!-- Cột grid -->
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <h6 class="company-name">CinePa</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
+                            <p>Việc đặt vé xem phim chưa bao giờ đơn giản và dễ dàng như thế, chỉ với vài thao tác trên màn hình bạn đã có thể đặt vé xem bộ phim mình yêu thích mà không phải xếp hàng tại rạp.</p>
+                        </div>
+                        <!-- Cột grid -->
+                        <!-- Cột grid -->
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6>Sản phẩm</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
+                            <p><a href="#" class="footer-links">MDBootstrap</a></p>
+                            <p><a href="#" class="footer-links">MDWordPress</a></p>
+                            <p><a href="#" class="footer-links">BrandFlow</a></p>
+                            <p><a href="#" class="footer-links">Bootstrap Angular</a></p>
+                        </div>
+                        <!-- Cột grid -->
+                        <!-- Cột grid -->
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <h6>Liên kết hữu ích</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
+                            <p><a href="#" class="footer-links">Tài khoản của bạn</a></p>
+                            <p><a href="#" class="footer-links">Trở thành Đối tác Liên kết</a></p>
+                            <p><a href="#" class="footer-links">Tính phí vận chuyển</a></p>
+                            <p><a href="#" class="footer-links">Trợ giúp</a></p>
+                        </div>
+                        <!-- Cột grid -->
+                        <!-- Cột grid -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6>Liên hệ</h6>
+                            <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
+                            <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                            <p><i class="fas fa-envelope me-3"></i> info@example.com</p>
+                            <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                        </div>
+                        <!-- Cột grid -->
+                    </div>
+                    <!-- Dòng grid -->
+                </div>
+            </section>
+            <!-- Bản quyền -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2020 Bản quyền:
+                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
             </div>
-            <h3>TẢI ỨNG DỤNG TRÊN ĐIỆN THOẠI</h3>
-            <div class="app-links">
-                <a href="#"><img src="app-store-badge.png" alt="App Store"></a><br>
-                <a href="#"><img src="google-play-badge.png" alt="Google Play"></a>
-            </div>
-            <h3>ĐƯỢC CHỨNG NHẬN BỞI</h3>
-            <img src="da-dang-ky-bo-cong-thuong.png" alt="Đã đăng ký Bộ Công Thương">
-        </div>
-    </footer>
-</body>
+        </footer>
+        <!-- Footer -->
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.1/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+        <!-- Font Awesome -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+    </body>
 </html>

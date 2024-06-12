@@ -49,28 +49,38 @@ public class RouterJSP {
 
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
 
-    public String Room_Admin = "/page/admin/rooms/Room-Admin.jsp";
 
     public String List_CinemaChain = "/page/admin/rooms/ListCinemaChain.jsp";
 
     public String List_Cinema = "/page/admin/rooms/ListCinema.jsp";
 
-    public String Add_Room = "/page/admin/rooms/CreateRoom.jsp";
 
-    public String Update_Room = "/page/admin/rooms/UpdateRoom.jsp";
 
     public String Combined_Page = "/page/admin/rooms/Combined.jsp"; // Update this path accordingly
 
-    public String Home_owner = "/page/owner/manage/HomeOwner.jsp"; // Update this path accordingly
-
-    public String Create_cinemaChain = "/page/owner/manage/CreateOwner.jsp";
-
-    public String CinemaChain = "/page/owner/manage/CinemaChain.jsp";
+    public String ADD_ROOM = "/page/owner/manage/CreateRoom.jsp";
     
-    public String Create_Cinema ="/page/owner/manage/CreateCinemas.jsp";
-
+    public String ROOM_OWNER = "/page/owner/manage/Rooms.jsp";
     
+    public String UPDATE_ROOM = "/page/owner/manage/UpdateRoom.jsp";
+    
+    public String HOME_OWNER = "/page/owner/manage/HomeOwner.jsp"; // Update this path accordingly
+
+    public String CREATE_CINEMACHAIN = "/page/owner/manage/CreateCinemaChain.jsp";
+
+    public String CINEMACHAIN = "/page/owner/manage/CinemaChain.jsp";
+    
+    public String CREATE_CINEMA ="/page/owner/manage/CreateCinemas.jsp";
+
+        public String CINEMAS ="/page/owner/manage/Cinemas.jsp";
+
     public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
     
     public static String SCHEDULE_MOVIE ="/page/movie/schedule/ScheduleMovie.jsp";
+    
+    public String UPDATE_CINEMACHAIN ="/page/owner/manage/UpdateCinemaChain.jsp";
+    
+    public String UPDATE_CINEMA="/page/owner/manage/UpdateCinemas.jsp";
+    
+    public String Room_Admin = "/page/admin/rooms/Room-Admin.jsp";
 }
