@@ -99,10 +99,10 @@
         <div class="container ">
             <div class="row">
                 <div class="booking-ticket col-8">
-                    <!-- Vinh code o day :  -->
+                    <!-- Vinh  -->
 
                     <div class="schedule-movie">
-                        <jsp:include page="./schedule/ScheduleMovie.jsp" />
+                         <jsp:include page="./schedule/ScheduleMovie.jsp" />
                     </div>
 
 
@@ -159,17 +159,17 @@
                         <c:forEach var="item" items="${listAvailableMovies}">
                             <div class="active-film row">
                                 <div class="active-film-img col-4">
-                                    <a href="HandleDisplayMovieInfo?movieID=${item.movieID}" class="ctive-film-img-a" style="">
+                                    <a href="HandleDisplayMovieInfo?movieID=${item.getMovieID()}" class="ctive-film-img-a" style="">
                                         <div class="active-film-img" style="background-image: url('${item.imageURL}')"></div>
                                     </a>
                                 </div>
                                 <div class="active-film-desc col-8">
-                                    <p class="active-film-btn">${item.country}</p>
-                                    <p class="active-film-desc">${item.title}</p>
+                                    <p class="active-film-btn">${item.getCountry()}</p>
+                                    <p class="active-film-desc">${item.getTitle()}</p>
                                     <p class="active-film-type">khinh di</p>
                                     <span class="active-film-rate">
                                         <i class="fa fa-star"></i>
-                                        ${item.rating}
+                                        ${item.getRating()}
                                     </span>
                                 </div>
                             </div>

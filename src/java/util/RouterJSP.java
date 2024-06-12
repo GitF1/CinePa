@@ -83,4 +83,10 @@ public class RouterJSP {
     public String UPDATE_CINEMA="/page/owner/manage/UpdateCinemas.jsp";
     
     public String Room_Admin = "/page/admin/rooms/Room-Admin.jsp";
+
+    public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
+    
+    public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
+    
+    public String SALES_REPORT = "/page/admin/Report.jsp";
 }

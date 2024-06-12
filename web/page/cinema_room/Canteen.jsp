@@ -171,7 +171,7 @@
                         <input type="hidden" id="hiddenTotalPriceCanteen" name="totalPriceCanteenItem" value="0">
                     </div>
 
-                    <button  class="submit-btn" id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/booking/seat', 'POST')">Đặt vé</button>
+                    <button  class="submit-btn" id="purchaseButton" style="margin-left: auto;" onclick="callServlet('bookingSeatForm', '/movie/user/booking/seat', 'POST')">Đặt vé</button>
 
 
                 </div>

@@ -146,7 +146,9 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("chains", cinemaNames);
 
                     // Retrieve the originally requested URL
-                    String redirectTo = (String) session.getAttribute("redirectTo");
+                    String redirectTo = null;
+                    
+                    //(String) session.getAttribute("redirectTo");
 
                     System.out.println("redirect to: " + redirectTo);
 
@@ -164,7 +166,6 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher(route.ADMIN).forward(request, response);
             }
 
-            //response.sendRedirect("/movie");
         } else {
             request.setAttribute("ok", ok);
             request.getRequestDispatcher(route.LOGIN).forward(request, response);

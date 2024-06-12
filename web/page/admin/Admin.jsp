@@ -13,5 +13,9 @@
     </head>
     <body>
         <h1>Hello World!Admin</h1>
+        <a class="dropdown-item" href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp">Create Movie</a>
+        <a class="dropdown-item" href="UpdateMovieServlet">Edit Movie</a>
+        <a class="dropdown-item" href="${pageContext.request.contextPath}/page/admin/Test.jsp">Create Movie</a>
+        <a class="dropdown-item" href="OverviewGraphServlet">Overview</a>
     </body>
 </html>
