@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 
 /**
  *
@@ -17,6 +19,8 @@ public class Movie {
     private String country;
     private int length ;//new var, set default to 0 -DuyND
     private String trailerLink ;//new var
+    
+    private List<String> genres;
 
     public Movie() {
     }
@@ -44,6 +48,18 @@ public class Movie {
         this.rating = rating;
         this.status = status;
         this.country = country;
+    }
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, List<String> genres) {
+        this.movieID = movieID;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.datePublished = datePublished;
+        this.imageURL = imageURL;
+        this.rating = rating;
+        this.status = status;
+        this.country = country;
+        this.genres = genres;
     }
 
     public int getLength() {
@@ -105,6 +121,8 @@ public class Movie {
     }
 
     public double getRating() {
+        String ans = String.format("%,.2f", rating);
+        rating = Double.parseDouble(ans);
         return rating;
     }
 
@@ -128,9 +146,23 @@ public class Movie {
         this.status = status;
     }
 
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '}';
+    }
+    
+    public String toString2() {
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '\n' +  genres + '}';
     }
 
     
