@@ -239,6 +239,8 @@ public class UserDAO extends SQLServerConnect {
         user.setDistrict(rs.getString("District"));
         user.setCommune(rs.getString("Commune"));
         user.setPassword(rs.getString("Password"));
+        // khai them : 
+        user.setPassword(rs.getString("Password"));
         return user;
     }
 

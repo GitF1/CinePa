@@ -17,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -70,8 +71,8 @@ public class ChangePasswordServlet extends HttpServlet {
             }
         }
 
-        // chuyen qua cho thang display  ra thong tin user : 
-        request.getRequestDispatcher(router.DISPLAY_INFO).forward(request, response);
+        // chuyen qua cho thang display  ra thong tin user : (chuyen sang cho Servlet truoc : )
+        request.getRequestDispatcher("/user/information").forward(request, response);
 
     }
 
