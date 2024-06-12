@@ -19,7 +19,7 @@
 
     <body>
 
-
+          <jsp:include page="${pageContext.request.contextPath}/page/landingPage/LandingPage.jsp" />
         <div class="d-lg-flex half">
             <div class="bg order-1 order-md-2" style="background-image: url('${pageContext.request.contextPath}/page/user/BackGroundImage/bg_1.jpg');"></div>
 
@@ -38,8 +38,8 @@
                                         <input type="submit" value="Upload" />
                                     </form>
                                 </div>
-                                <h3>View User's Information</h3>
                             </div>
+                                <h3>View User's Information</h3>
 
                             <p class="mb-4"></p>
                             <form action="${pageContext.request.contextPath}/updateUserInfo" method="post">
@@ -56,11 +56,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
-
-                                        <div class="form-group last mb-3">
-                                            <label for="password">Avatar Link </label>
-                                            <input type="password" class="form-control" id="password" name="avatarUrl"  value="${user.getAvatarLink()}">
+                                 
+                                          <div class="col-md-6">
+                                        <div class="form-group first">
+                                            <label for="fname">Full Name</label>
+                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.getFullName()}">
                                         </div>
                                     </div>
 
@@ -73,16 +73,17 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group first">
-                                            <label for="fname">Full Name</label>
-                                            <input type="text" class="form-control" id="fname"  name="fullname" value="${user.getFullName()}">
-                                        </div>
-                                    </div>
+                                   
                                     <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">Birthday</label>
-                                            <input type="text" class="form-control" id="lname" name="birthday" value="${user.getBirthday()}">
+                                            <input type="date" class="form-control" id="lname" name="birthday" value="${user.getBirthday()}">
+                                        </div>
+                                    </div>
+                                          <div class="col-md-6">
+                                        <div class="form-group first">
+                                            <label for="lname">Province</label>
+                                            <input type="text" class="form-control" id="lname" name="province" value="${user.getProvince()}">
                                         </div>
                                     </div>
                                 </div>
@@ -93,22 +94,18 @@
                                             <input type="text" class="form-control" id="fname" name="address" value="${user.getAddress()}">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group first">
-                                            <label for="lname">Province</label>
-                                            <input type="text" class="form-control" id="lname" name="province" value="${user.getProvince()}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
+                                          <div class="col-md-6">
                                         <div class="form-group first">
                                             <label for="lname">District</label>
                                             <input type="text" class="form-control" id="lname" name="district"  value="${user.getDistrict()} ">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                  
+                                </div>
+
+                                <div class="row">
+                                  
+                                    <div class="col-md-6 me-auto">
                                         <div class="form-group first">
                                             <label for="lname">Commune</label>
                                             <input type="text" class="form-control" id="lname" name="commune" value="${user.getCommune()} " >
@@ -128,7 +125,7 @@
 
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <button class="btn px-5 btn-primary" > Update now </button>
+                                        <button class="btn px-5 btn-primary " type="submit" > Update now </button>
                                     </div>
                                 </div>
 
@@ -137,12 +134,12 @@
 
 
 
-                            <form action="page/user/ChangePassword.jsp"  > 
+                            <form action="${pageContext.request.contextPath}/page/user/ChangePassword.jsp"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Change Password </button>
                             </form>
                             <!--button added to return to homepage-DuyND-->
-                            <form action="test2.jsp"  > 
+                            <form action="${pageContext.request.contextPath}"  > 
 
                                 <button class="btn px-5 btn-primary cpw"  >Return </button>
                             </form>

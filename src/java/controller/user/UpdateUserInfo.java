@@ -81,7 +81,7 @@ public class UpdateUserInfo extends HttpServlet {
             Logger.getLogger(UpdateUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         // chuyen qua cho thang display thong tin user : 
-        request.getRequestDispatcher("handleDisplayUserInfo").forward(request, response);
+        request.getRequestDispatcher("user/information").forward(request, response);
 
     }
 
