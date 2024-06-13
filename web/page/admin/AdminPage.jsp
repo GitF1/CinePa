@@ -45,7 +45,7 @@
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="/movie/ManageBanUserServlet?type=CinemaOwner" style="text-decoration: none;" class="text-white">
+                        <a href="/movie/ManageBanUserServlet?type=Owner" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-user-circle-o " style="font-size : 20px" aria-hidden="true"></i>
                             <span> Quản lí chủ rạp </span>
                         </a>
@@ -54,27 +54,27 @@
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center my-2">
-                        <a href="#" style="text-decoration: none;" class="text-white">
+                        <a href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Dashboard</span>
+                            <span>Tạo Phim</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="#" style="text-decoration: none;" class="text-white">
+                        <a href="UpdateMovieServlet" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Dashboard</span>
+                            <span>Chỉnh sửa phim</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="#" style="text-decoration: none;" class="text-white">
+                        <a href="OverviewGraphServlet" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Dashboard</span>
+                            <span>overview</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
@@ -133,28 +133,28 @@
                                 <p class="m-2 fw-bold fs-5 text-primary">Doanh thu </p>
                                 <p>${doanhThu} vnd </p>
                             </div>
-                            <i class="fa fa-search text-primary" style="font-size: 40px;" aria-hidden="true"></i>
+                            <i class="fa fa-credit-card-alt text-primary" style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-warning">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-warning">Nguời dùng </p>
                                 <p>${tongUser} ngưởi</p>
                             </div>
-                            <i class="fa fa-search text-warning " style="font-size: 40px;" aria-hidden="true"></i>
+                            <i class=" fa fa-user-o text-warning " style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-danger">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-danger">Tổng phim</p>
                                 <p>${tongPhim} phim</p>
                             </div>
-                            <i class="fa fa-search text-danger " style="font-size: 40px;" aria-hidden="true"></i>
+                            <i class="fa fa-film text-danger " style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-info">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-info">Tổng review</p>
                                 <p>${tongReview} review </p>
                             </div>
-                            <i class="fa fa-search text-info" style="font-size: 40px;" aria-hidden="true"></i>
+                            <i class="fa fa-commenting-o text-info" style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
 
                     </div>

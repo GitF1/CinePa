@@ -45,6 +45,7 @@
             letter-spacing: 2px; /* Khoảng cách giữa các ký tự */
             margin: 59px 0;
         }
+        
     </style>
 
 
@@ -69,7 +70,6 @@
 
     <jsp:include page="Header.jsp" />
 
-
     <jsp:include page="Banner.jsp" />
 
     <jsp:include page="../movie/Index.jsp" />
@@ -77,7 +77,6 @@
     <jsp:include page="MostReview.jsp" />
 
     <jsp:include page="Question.jsp" />
-
 
     <jsp:include page="../home/Footer.jsp" />
 
@@ -90,7 +89,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
-    <script>
+<!--    <script>
         $(document).ready(function () {
             $('#movieSlider_${uniqueId}').slick({
                 slidesToShow: 4,
@@ -125,7 +124,7 @@
 
 
 
-    </script>
+    </script>-->
 
 
 </body>

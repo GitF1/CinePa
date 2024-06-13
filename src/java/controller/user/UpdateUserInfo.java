@@ -14,11 +14,12 @@ import java.util.logging.Logger;
 import model.User;
 import DAO.UserDAO;
 import jakarta.servlet.annotation.WebServlet;
+import util.RouterURL;
 /**
  *
  * @author FPTSHOP
  */
-@WebServlet("/updateUserInfo")
+@WebServlet("/user/information/update")
 public class UpdateUserInfo extends HttpServlet {
     UserDAO userDAO;
 
@@ -43,9 +44,9 @@ public class UpdateUserInfo extends HttpServlet {
         String fullname = request.getParameter("fullname");
         String birthdayStr = request.getParameter("birthday");
         String address = request.getParameter("address");
-        String province = request.getParameter("province");
-        String district = request.getParameter("district");
-        String commune = request.getParameter("commune");
+        String province = request.getParameter("provinceName");
+        String district = request.getParameter("districtName");
+        String commune = request.getParameter("communeName");
         String avatarUrl = request.getParameter("avatarUrl");
 
         User user = new User();
@@ -81,7 +82,7 @@ public class UpdateUserInfo extends HttpServlet {
             Logger.getLogger(UpdateUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         // chuyen qua cho thang display thong tin user : 
-        request.getRequestDispatcher("handleDisplayUserInfo").forward(request, response);
+        response.sendRedirect(RouterURL.DISPLAY_PROFILE);
 
     }
 

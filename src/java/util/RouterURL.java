@@ -21,8 +21,13 @@ public class RouterURL {
     public static String FORGET_PASSWORD = "/movie/forgetpassword";
 
     public static String DISPLAY_PROFILE = "/movie/user/information";//For quickly routing to user profile - DuyND
-    
+
     public static String PAYMENT_VNPAY = "/movie/payment/vnpay";
+
+    public static String BOOKING_SEAT = "/movie/booking/seat";
+
+    public static String ADMIN_PAGE = "/movie/admin";
     
-    public static String BOOKING_SEAT ="/movie/booking/seat";
+    public static String OWNER_PAGE = "/movie/owner";
+
 }
