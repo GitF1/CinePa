@@ -46,10 +46,11 @@
                     <span class="icon">  <i class="fa-solid fa-caret-down"></i></span>
 
                 </div>
-                <div class="location-button">
+                <div class="location-button" id="nearby-city-button">
                     <span class="icon"><i class="fa-solid fa-location-crosshairs"></i></span>
                     <span>Gần bạn</span>
                 </div>
+                <div class="city-nerest"></div>
             </div>
         </div>
 
@@ -112,7 +113,7 @@
                 }
             }
             function fetchCityProvinceDetails(city) {
-              
+
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "schedule", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -127,6 +128,77 @@
                 }
             }
 
+        </script>
+        <!--       handle nearest location-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                document.getElementById('nearby-city-button').addEventListener('click', function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition, showError);
+                    } else {
+                        alert("Geolocation is not supported by this browser.");
+                    }
+                });
+
+                function showPosition(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    console.log("lat", lat, " lon", lon);
+                    fetchNearbyCity(lat, lon);
+                }
+
+
+
+                function showError(error) {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert("User denied the request for Geolocation.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert("Location information is unavailable.");
+                            break;
+                        case error.TIMEOUT:
+                            alert("The request to get user location timed out.");
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            alert("An unknown error occurred.");
+                            break;
+                    }
+                }
+
+
+
+                function fetchNearbyCity(lat, lon) {
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "city/nearest", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            var city = JSON.parse(xhr.responseText);
+                            console.log(city);
+                            displayNearestCity(city);
+                        }
+                    };
+
+                    xhr.send("latitude=" + lat + "&longitude=" + lon);
+                }
+
+
+                function displayNearestCity(city) {
+                    var container = document.getElementById('city-nerest');
+                    container.innerHTML = '';
+
+                    var cityElement = document.createElement('div');
+                    cityElement.classList.add('city');
+                    cityElement.innerHTML = `
+                   <h3>${city.name}</h3>
+                  
+               `;
+                    container.appendChild(cityElement);
+                }
+            });
         </script>
     </body>
 </html>
