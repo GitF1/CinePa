@@ -10,13 +10,22 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Owner Management</a>
-            <div class="collapse navbar-collapse">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath()%>/owner/cinemaChain">Manage Cinema Chain</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath()%>/owner/createCinemaChain">Create Cinema Chain</a>
+                    </li>
+                </ul>
+                <!-- Add this part for logout functionality -->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%= request.getContextPath()%>/logout">Đăng Xuất</a>
                     </li>
                 </ul>
             </div>
