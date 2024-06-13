@@ -45,7 +45,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Phim chiếu</a>
+                        <a class="nav-link" href="#">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Phim sắp chiếu</a>
@@ -57,16 +57,14 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <c:forEach  var="o" items="${cinemaNames}">
                                 <form action="<!--servlet here-->">
-                                    
+
                                     <li><input class="dropdown-item" type="submit" name="chain" value="<c:out value = "${o}"/>"></li>
                                 </form>
                             </c:forEach>
-                            
+
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
+
                 </ul>
 
                 <form class="d-flex ms-auto">
@@ -74,19 +72,27 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav ms-auto mb-2 me-lg-5">
+                    <c:if test="${not empty sessionScope.username}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <c:out value="${sessionScope.username}" />
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/handleDisplayUserInfo">View Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+                    <c:if test="${!not empty sessionScope.username}">
+                        <li class="nav-item ">
+                            <a class="nav-link " href="${pageContext.request.contextPath}/login" id="" role="button"  >
+                                Login
+                            </a>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <c:out value="${sessionScope.username}" />
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/handleDisplayUserInfo">View Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
-                        </ul>
-                    </li>
-
+                        </li>
+                    </c:if>
                 </ul>
             </div>
         </div>
