@@ -123,6 +123,9 @@
             max-height: 65vh;
             overflow: overlay;
         }
+        #searchButton{
+            margin-left:500px;
+        }
     </style>
 
     <!--get chains from login servlet-->
@@ -215,8 +218,8 @@
                                 <c:out value="${sessionScope.username}" />
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/handleDisplayUserInfo">View Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/information">View Profile</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/order/view">View Ordered</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
                             </ul>
@@ -253,8 +256,10 @@
 
                                         function closeModal() {
                                             document.getElementById("movieNameInput").innerText = "";
-                                          
-                                            document.getElementById("movieContainerForm").style.display ="none";
+
+                                            document.getElementById("movieContainerForm").style.display = "none";
+
+                                            //window.location.href = "/movie";
 
                                         }
 
