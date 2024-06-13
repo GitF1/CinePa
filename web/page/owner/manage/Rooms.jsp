@@ -56,6 +56,7 @@
                             <td>
                                 <a href="updateRoom?roomID=${room.roomID}" class="btn btn-primary btn-sm">Update</a>
                                 <a href="#" onclick="doDelete('${room.roomID}')" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="/movie/owner/room/seat/create?roomID=${room.roomID}" class="btn btn-success btn-sm">Create</a>
                             </td>
                         </tr>
                     </c:forEach>

@@ -252,7 +252,10 @@
                                         });
 
                                         function closeModal() {
-        <c:remove var="movies"></c:remove>
+                                            document.getElementById("movieNameInput").innerText = "";
+                                          
+                                            document.getElementById("movieContainerForm").style.display ="none";
+
                                         }
 
                                         function debounce(cb) {
