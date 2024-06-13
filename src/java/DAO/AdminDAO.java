@@ -20,7 +20,57 @@ public class AdminDAO extends SQLServerConnect {
         super();
         connect(context);
     }
+// lay tong so luong user : Khai
+     public int getUserCount() throws SQLException {
+        String sqlQuery = "SELECT COUNT(*) AS userCount FROM [User]";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
+             ResultSet rs = ps.executeQuery()) {
 
+            if (rs.next()) {
+                return rs.getInt("userCount");
+            } else {
+                throw new SQLException("Error retrieving user count");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            throw e;  // Re-throw the exception after logging
+        }
+    }
+     // lay tong so luong phim : Khai
+     public int getFilmCount() throws SQLException {
+        String sqlQuery = "SELECT COUNT(*) AS MovieCount FROM [Movie]";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("MovieCount");
+            } else {
+                throw new SQLException("Error retrieving user count");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            throw e;  // Re-throw the exception after logging
+        }
+    }
+         // lay tong so luong review : Khai
+     public int getReviewCount() throws SQLException {
+        String sqlQuery = "SELECT COUNT(*) AS ReviewCount FROM [Review]";
+        
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("ReviewCount");
+            } else {
+                throw new SQLException("Error retrieving user count");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            throw e;  // Re-throw the exception after logging
+        }
+    }
     // Method to get banned and unbanned users
     public ArrayList<User> getBanAndUnbanUser(String type, String isBanned) throws SQLException {
         ArrayList<User> userList = new ArrayList<>();

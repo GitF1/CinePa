@@ -155,7 +155,7 @@ public class UserDAO extends SQLServerConnect {
 
     public boolean updateUserPasswordByID(String id, String password) throws SQLException {
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
-        String sql = "update [User] set Password = '" + hash + "'" + " where UserID = '" + id + "'";
+        String sql = "update [User] set Password = '" + hash + "'" + " where Username = '" + id + "'";
         Statement st = connection.createStatement();
         int kq = st.executeUpdate(sql);
         return kq == 1;
@@ -180,6 +180,7 @@ public class UserDAO extends SQLServerConnect {
         return user;
 
     }
+    
 
 //    get user by user name - DuyND
     public User getUserByUsername(String username) throws Exception {
@@ -237,6 +238,9 @@ public class UserDAO extends SQLServerConnect {
         user.setProvince(rs.getString("Province"));
         user.setDistrict(rs.getString("District"));
         user.setCommune(rs.getString("Commune"));
+        user.setPassword(rs.getString("Password"));
+        // khai them : 
+        user.setPassword(rs.getString("Password"));
         return user;
     }
 
