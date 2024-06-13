@@ -1,6 +1,6 @@
 package controller.admin;
 
-import DAO.AdminDAO;
+import DAO.admin.AdminDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;

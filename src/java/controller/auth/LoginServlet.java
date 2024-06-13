@@ -162,7 +162,7 @@ public class LoginServlet extends HttpServlet {
                 case "OWNER" ->
                     response.sendRedirect(RouterURL.OWNER_PAGE);
                 case "ADMIN" ->
-                    request.getRequestDispatcher("OverviewGraphServlet").forward(request, response);
+                    request.getRequestDispatcher("/admin").forward(request, response);
             }
 
         } else {

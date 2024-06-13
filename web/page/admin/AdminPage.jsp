@@ -70,9 +70,16 @@
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="${pageContext.request.contextPath}/OverviewGraphServlet" style="text-decoration: none;" class="text-white">
+                        <a href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-book" aria-hidden="true"></i>
 
+                            <span>New Movie</span>
+                        </a>
+                    </li>
+                    <hr class="my-0  py-0 text-white">
+                    <li class="text-white my-2 py-3 text-center">
+                        <a href="${pageContext.request.contextPath}/OverviewGraphServlet" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-book" aria-hidden="true"></i>
                             <span>Report</span>
                         </a>
                     </li>
@@ -139,14 +146,14 @@
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-primary">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-primary">Doanh thu </p>
-                                <p>${doanhThu} vnd </p>
+                                <p>${doanhThu} VND </p>
                             </div>
                             <i class="fa fa-credit-card-alt text-primary" style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-warning">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-warning">Nguời dùng </p>
-                                <p>${tongUser} ngưởi</p>
+                                <p>${tongUser} User</p>
                             </div>
                             <i class=" fa fa-user-o text-warning " style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
@@ -175,10 +182,10 @@
                         var dateArr = [];
                         var valueArr = [];
                         <c:forEach var="dataPoint" items='${requestScope["sales7Day"]}'>
-        dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
-        valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
-        
-        </c:forEach>
+                        dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
+                        valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
+
+                        </c:forEach>
                         dateArr.forEach(function (value) {
                             console.log(value);
                         });
@@ -215,16 +222,16 @@
                             },
                         });
 
-                        </script>
-                        <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
-                        </div>
-                        <div class="row " style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a1.png?raw=true'); height: 300px; background-size: contain;">
-                        </div>
+                    </script>
+                    <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
+                    </div>
+                    <div class="row " style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a1.png?raw=true'); height: 300px; background-size: contain;">
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js "></script>
-        </body>
-    </html>
+        <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js "></script>
+    </body>
+</html>
