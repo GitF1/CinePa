@@ -45,7 +45,7 @@
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="/movie/ManageBanUserServlet?type=CinemaOwner" style="text-decoration: none;" class="text-white">
+                        <a href="/movie/ManageBanUserServlet?type=Owner" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-user-circle-o " style="font-size : 20px" aria-hidden="true"></i>
                             <span> Quản lí chủ rạp </span>
                         </a>
