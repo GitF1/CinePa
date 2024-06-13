@@ -47,7 +47,7 @@
 
         .custom-modal .modal-dialog {
             position: absolute;
-            top: 5%;
+            top: 0;
             left: 25%;
             width: 50vw;
         }
@@ -92,14 +92,14 @@
         }
 
         #movieNameInput {
-            width: 50%;
+            width: 100%;
             padding: 10px;
             font-size: 1rem;
             border: 1px solid #ced4da;
             border-radius: 8px;
             outline: none;
             transition: border-color 0.3s ease;
-            margin-left: 380px;
+            margin-left: 90%;
         }
 
         .modal-footer button {
@@ -119,6 +119,10 @@
         #movieDetailsContainer {
             cursor: pointer;
         }
+        #movieContainerForm{
+            max-height: 65vh;
+            overflow: overlay;
+        }
     </style>
 
     <!--get chains from login servlet-->
@@ -136,10 +140,10 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Lịch chiếu</a>
+                        <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Phim sắp chiếu</a>
+                        <a class="nav-link" href="#">Phim chiếu</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -159,7 +163,7 @@
                 </ul>
 
                 <div>
-                    <button id="searchButton" class="borderless-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button id="searchButton" class="borderless-btn" onclick="showModal()">
                         <i class="fa-solid fa-magnifying-glass"></i> 
                     </button>
 
@@ -240,61 +244,61 @@
                                         showModal();
         </c:if>
 
-        const movieNameInput = document.getElementById("movieNameInput");
-        document.addEventListener("DOMContentLoaded", function () {
-            movieNameInput.focus();
-            const length = movieNameInput.value.length;
-            movieNameInput.setSelectionRange(length, length);
-        });
+                                        const movieNameInput = document.getElementById("movieNameInput");
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            movieNameInput.focus();
+                                            const length = movieNameInput.value.length;
+                                            movieNameInput.setSelectionRange(length, length);
+                                        });
 
-        function closeModal() {
-            <c:remove var="movies"></c:remove>
+                                        function closeModal() {
+        <c:remove var="movies"></c:remove>
                                         }
 
-        function debounce(cb) {
-            let timeout;
-            let delay = 1200;
+                                        function debounce(cb) {
+                                            let timeout;
+                                            let delay = 1200;
 
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    cb(...args);
-                }, delay);
-            };
-        }
+                                            return (...args) => {
+                                                clearTimeout(timeout);
+                                                timeout = setTimeout(() => {
+                                                    cb(...args);
+                                                }, delay);
+                                            };
+                                        }
 
-        function callServlet(id, url, methodType) {
-            document.getElementById(id).action = url;
-            document.getElementById(id).method = methodType;
-            document.getElementById(id).submit();
-        }
+                                        function callServlet(id, url, methodType) {
+                                            document.getElementById(id).action = url;
+                                            document.getElementById(id).method = methodType;
+                                            document.getElementById(id).submit();
+                                        }
 
-        function showModal() {
-            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            myModal.show();
-        }
+                                        function showModal() {
+                                            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                                            myModal.show();
+                                        }
 
-        const queryMovies = debounce(() => {
-            callServlet('searchMovieForm', '/movie/searchmovie', 'POST');
-        });
+                                        const queryMovies = debounce(() => {
+                                            callServlet('searchMovieForm', '/movie/searchmovie', 'POST');
+                                        });
 
 
 
-        movieNameInput.addEventListener("input", () => {
-            queryMovies();
-        });
-        
-        function displayMovieDetails(movieID) {
-            document.getElementById('movieIDInput').value = movieID;
-            callServlet('movieContainerForm', '/movie/HandleDisplayMovieInfo', 'GET');
-        }
-        
-        function callServlet(id, url, methodType) {
-            document.getElementById(id).action = url;
-            document.getElementById(id).method = methodType;
-            document.getElementById(id).submit();
-        }
-        
+                                        movieNameInput.addEventListener("input", () => {
+                                            queryMovies();
+                                        });
+
+                                        function displayMovieDetails(movieID) {
+                                            document.getElementById('movieIDInput').value = movieID;
+                                            callServlet('movieContainerForm', '/movie/HandleDisplayMovieInfo', 'GET');
+                                        }
+
+                                        function callServlet(id, url, methodType) {
+                                            document.getElementById(id).action = url;
+                                            document.getElementById(id).method = methodType;
+                                            document.getElementById(id).submit();
+                                        }
+
 
     </script>
 </html>
