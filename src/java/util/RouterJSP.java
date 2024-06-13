@@ -33,7 +33,7 @@ public class RouterJSP {
 
     public String STAFF = "/page/staff/Staff.jsp";//templatefor testing login by role
 
-    public String ADMIN = "/page/admin/Admin.jsp";//templatefor testing login by role
+    public String ADMIN = "/admin";//templatefor testing login by role
 
     public String CHANGE_PASSWORD = "/page/user/ChangePassword.jsp";
 
