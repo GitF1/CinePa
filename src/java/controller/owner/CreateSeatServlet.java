@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -22,6 +23,7 @@ import util.RouterJSP;
  */
 @WebServlet(name = "CreateSeatServlet", urlPatterns = {"/owner/room/seat/create"})
 public class CreateSeatServlet extends HttpServlet {
+
     UserDAO userDAO;
 
     /**
@@ -60,6 +62,10 @@ public class CreateSeatServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String roomID = request.getParameter("roomID");
+        request.setAttribute("roomID", roomID);
+        System.out.println("roomID" + roomID);
+
         request.getRequestDispatcher(RouterJSP.ROOM_CREAT_SEAT).forward(request, response);
     }
 
@@ -74,19 +80,30 @@ public class CreateSeatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+
+        String roomIDStr = request.getParameter("roomID");
+
+        if (roomIDStr == null || request.getParameter("length") == null || request.getParameter("width") == null)  {
+            response.sendRedirect(RouterURL.OWNER_PAGE);
+        }
+        
         int length = Integer.parseInt(request.getParameter("length"));
         int width = Integer.parseInt(request.getParameter("width"));
-        for(int x = 1; x <= width; ++x) {
-            for(int y = 1; y <= length; ++y) {
+        int roomID = Integer.parseInt(roomIDStr);
+       
+
+        for (int x = 1; x <= width; ++x) {
+            for (int y = 1; y <= length; ++y) {
                 String seatName = request.getParameter("seat_" + x + "_" + y);
-                if(seatName == null) continue;
+                if (seatName == null) {
+                    continue;
+                }
                 try {
                     userDAO = new UserDAO(request.getServletContext());
                     userDAO.insertSeats(5, seatName, x, y);
                 } catch (Exception ex) {
                     Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }    
+                }
             }
         }
     }

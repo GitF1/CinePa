@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import model.Movie;
 import model.MovieWithStatus;
 import util.RouterJSP;
 
@@ -71,7 +72,7 @@ public class FilterMovieServlet extends HttpServlet {
         int page = (pageParam != null && !pageParam.isEmpty()) ? Integer.parseInt(pageParam) : 1;
         int moviesPerPage = 16;
 
-        List<MovieWithStatus> movies = movieDAO.getAllMovie();
+        List<Movie> movies = movieDAO.getAllMovie();
 
         if (genre != null && !genre.trim().isEmpty()) {
             movies = movies.stream().filter(movie -> {
@@ -94,7 +95,7 @@ public class FilterMovieServlet extends HttpServlet {
         int totalMovies = movies.size();
         int start = (page - 1) * moviesPerPage;
         int end = Math.min(start + moviesPerPage, totalMovies);
-        List<MovieWithStatus> moviesPage = movies.subList(start, end);
+        List<Movie> moviesPage = movies.subList(start, end);
 
         Map<Integer, List<String>> movieGenresMap = movieDAO.getAllMovieGenres();
         Set<String> allGenres = movieDAO.getAllGenres();

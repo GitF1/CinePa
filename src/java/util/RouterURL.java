@@ -29,5 +29,7 @@ public class RouterURL {
     public static String ADMIN_PAGE = "/movie/admin";
     
     public static String OWNER_PAGE = "/movie/owner";
+    
+    public static String SEARCH_MOVIE = "/movie/searchmovie";
 
 }
