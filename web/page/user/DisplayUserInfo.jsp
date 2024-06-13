@@ -54,7 +54,7 @@
                             </div>
                             <h3 class="text-center my-5">View User's Information</h3>
 
-                            <form action="${pageContext.request.contextPath}/updateUserInfo" method="post">
+                            <form action="/movie/user/information/update" method="post">
                                 <div class="hide">
                                     <input type="text" id="username" name="userId" value="${user.getUserID()}" >
                                 </div>

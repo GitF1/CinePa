@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.RouterJSP;
 
 @WebServlet(name = "DisplayAdminPageServlet", urlPatterns = {"/admin"})
 public class DisplayAdminPageServlet extends HttpServlet {
@@ -71,7 +72,7 @@ public class DisplayAdminPageServlet extends HttpServlet {
         request.setAttribute("tongReview", tongReview);
 
         //chuyen sang AdminPage.jsp : 
-        request.getRequestDispatcher("page/admin/AdminPage.jsp").forward(request, response);
+        request.getRequestDispatcher(RouterJSP.ADMIN_PAGE).forward(request, response);
 
     }
 
