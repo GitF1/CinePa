@@ -43,7 +43,7 @@
                                 <td>${user.fullName}</td>
                                 <td>${user.email}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="BanUserServlet?type=${type}&userID=${user.userID}&isBanned=0">Mở khóa tài khoản</a>
+                                    <a class="btn btn-primary" href="BanUserServlet?type=${type}&userID=${user.userID}&isBanned=0">Mở khóa </a>
                                 </td>
 
                             </tr>
@@ -72,7 +72,7 @@
                                 <td>${user.fullName}</td>
                                 <td>${user.email}</td>
                                 <td>
-                                    <a class="btn btn-danger" href="BanUserServlet?type=${type}&userID=${user.userID}&isBanned=1">Khóa tài khoản</a>
+                                    <a class="btn btn-danger" href="BanUserServlet?type=${type}&userID=${user.userID}&isBanned=1">Khóa</a>
                                 </td>
                             </tr>
                         </c:forEach>

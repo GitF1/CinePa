@@ -113,6 +113,7 @@ public class OverviewGraphServlet extends HttpServlet {
             }
             request.setAttribute("sales7Day", graphDAO.getTotalSalesValueLast7Days());
             request.getRequestDispatcher(route.ADMIN).forward(request, response);
+            
         } catch (SQLException ex) {
             Logger.getLogger(OverviewGraphServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

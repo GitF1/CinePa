@@ -12,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,12 +20,14 @@ import java.util.logging.Logger;
 import model.Movie;
 import util.RouterJSP;
 
+
 /**
  *
  * @author ACER
  */
 @WebServlet("/searchmovie")
 public class SearchMovieServlet extends HttpServlet {
+
     RouterJSP router = new RouterJSP();
 
     /**
@@ -46,7 +47,7 @@ public class SearchMovieServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SearchMovieServlet</title>");            
+            out.println("<title>Servlet SearchMovieServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SearchMovieServlet at " + request.getContextPath() + "</h1>");
@@ -67,7 +68,8 @@ public class SearchMovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(router.SEARCH_MOVIE).forward(request, response);
+
+        request.getRequestDispatcher(RouterJSP.LANDING_PAGE).forward(request, response);
     }
 
     /**
@@ -87,10 +89,14 @@ public class SearchMovieServlet extends HttpServlet {
         try {
             UserDAO ud = new UserDAO(request.getServletContext());
             List<Movie> movies = ud.searchMovies(movieName);
+
             System.out.println(movies);
+
             request.setAttribute("movieName", movieName);
             request.setAttribute("movies", movies);
-            request.getRequestDispatcher(router.SEARCH_MOVIE).forward(request, response);
+            request.setAttribute("modalStatus", true);
+
+            request.getRequestDispatcher(RouterJSP.LANDING_PAGE).forward(request, response);
         } catch (Exception ex) {
             Logger.getLogger(SearchMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

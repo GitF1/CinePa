@@ -48,8 +48,8 @@ public class ScheduleDAO extends SQLServerConnect {
 
         List<String> citiesProvinces = new ArrayList<>();
         citiesProvinces.add("Hà Nội");
-        citiesProvinces.add("TP. Hồ Chí Minh ");
         citiesProvinces.add("Đà Nẵng");
+        citiesProvinces.add("TP. Hồ Chí Minh ");
         citiesProvinces.add("Hải Phòng");
 
         return citiesProvinces;
