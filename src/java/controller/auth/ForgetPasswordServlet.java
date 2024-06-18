@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.SendEmail;
 import util.RouterJSP;
+import util.Util;
 
 /**
  *
@@ -153,7 +154,7 @@ public class ForgetPasswordServlet extends HttpServlet {
                 return;
             }
             SendEmail sendEmail = new SendEmail();
-            String code = sendEmail.getRanDom();
+            String code = Util.getRanDom();
             
             boolean updateCodeUserOk = ud.updateUserCode(email, code);
             boolean sendEmailOk = false;

@@ -18,12 +18,8 @@ import model.User;
  */
 public class SendEmail {
 
-    public SendEmail() {}
+    public SendEmail() {
 
-    public String getRanDom() {
-        Random rnd = new Random();
-        int number = rnd.nextInt(999999);
-        return String.format("%06d", number);
     }
 
     public boolean sendEmail(String email, String code) {
@@ -37,7 +33,7 @@ public class SendEmail {
         String toEmail = user.getEmail();
         String fromEmail = "cinepa.org@gmail.com";  // your email
         String password = "yknr qglb mlqu mpwt";  // your app password
-        String logoUrl = "https://example.com/logo.png";  // URL to your logo
+        String logoUrl = "https://res.cloudinary.com/dsvllb1am/image/upload/v1718269790/sgvvasrlc3tisefkq92j.png";  // URL to your logo
 
         try {
             Properties pr = new Properties();
