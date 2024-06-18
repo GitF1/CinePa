@@ -78,7 +78,7 @@
 
 
     <body>
-        <h1>Select and Create Seats</h1>
+        <jsp:include page="./../component/Header.jsp" />
         <form class="container-body_seat__create" id="addSeatsForm">
             <input type="hidden" id="roomID" name="roomID" value="${roomID}"/>
             <div id="seatsContainer"></div>

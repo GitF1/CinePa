@@ -126,6 +126,22 @@
         #searchButton{
             margin-left:500px;
         }
+        .icon-logo-btn{
+
+            font-size: 2em;
+        }
+        .wrapper-navbar-header{
+            display: flex;
+            align-items: center;
+        }
+        .icon-logo_header{
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 2px 3px 16px 1px rgba(0, 0, 0, 0.2);
+
+        }
     </style>
 
     <!--get chains from login servlet-->
@@ -133,14 +149,15 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Cinepa</a>
+            <a class="navbar-brand" href="/movie" style="font-style: italic; font-weight: 600">Cinepa</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="wrapper-navbar-header navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="icon-logo-btn nav-link active" aria-current="page" href="/movie"> <img class="icon-logo_header" src="https://res.cloudinary.com/dsvllb1am/image/upload/v1718269790/sgvvasrlc3tisefkq92j.png"/></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>

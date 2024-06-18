@@ -45,7 +45,7 @@
                         </div>
                         <!-- phan Button :  -->
                         <div class="banner-btn">
-                            <button type="button" class="btn"
+                            <button onclick="forwardSchdule()" type="button" class="btn"
                                     style="background-color:  rgb(216 45 139); color: white; font-weight: 700;">Đặt vé
                                 ngay</button>
                         </div>
@@ -58,4 +58,9 @@
                 </div>
             </div>
         </div>
+        <script>
+            function forwardSchdule() {
+                window.location.href = "/movie/schedule"
+            }
+        </script>
     </body>
