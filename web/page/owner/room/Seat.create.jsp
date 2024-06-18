@@ -78,8 +78,9 @@
 
 
     <body>
-        <h1>Select and Create Seats</h1>
+        <jsp:include page="./../component/Header.jsp" />
         <form class="container-body_seat__create" id="addSeatsForm">
+            <input type="hidden" id="roomID" name="roomID" value="${roomID}"/>
             <div id="seatsContainer"></div>
         </form>
 
@@ -245,95 +246,102 @@
 
             container.appendChild(seat);
         }
-        
+
         function selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3) {
             let cnt = 0;
             let num = (choice === ROW) ? numberOfSeatCoordinateX : numberOfSeatCoordinateY;
             let left, right;
             choice === ROW ? right = i : left = i;
             let seat;
-            for(let j = 1; j <= num; ++j) {
+            for (let j = 1; j <= num; ++j) {
                 choice === ROW ? left = j : right = j;
                 seat = document.getElementById("seat_" + left + "_" + right);
                 cnt += cb1(seat, left, right);
             }
-            if(cnt === num) {
-                for(let j = 1; j <= num; ++j) {
+            if (cnt === num) {
+                for (let j = 1; j <= num; ++j) {
                     choice === ROW ? left = j : right = j;
                     seat = document.getElementById("seat_" + left + "_" + right);
                     cb2(seat, left, right);
                 }
-            }
-            else if(cnt !== num) {
-                for(let j = 1; j <= num; ++j) {
+            } else if (cnt !== num) {
+                for (let j = 1; j <= num; ++j) {
                     choice === ROW ? left = j : right = j;
                     seat = document.getElementById("seat_" + left + "_" + right);
                     cb3(seat, left, right);
                 }
             }
         }
-        
+
         function selectConsecutiveSeatsButtonFunc_Restore(choice, i) {
             const cb1 = (seat, x, y) => {
-                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return 1;
-                else if(seat.style.backgroundColor === unselectedSeatColor) return 1;
+                if (!isDisabled(seat) && !isDisabledSeatSelected(x, y))
+                    return 1;
+                else if (seat.style.backgroundColor === unselectedSeatColor)
+                    return 1;
                 return 0;
             };
             const cb2 = (seat, x, y) => {
-                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return;
-                if(seat.style.backgroundColor === unselectedSeatColor) selectDisabledSeat(seat, x, y);
+                if (!isDisabled(seat) && !isDisabledSeatSelected(x, y))
+                    return;
+                if (seat.style.backgroundColor === unselectedSeatColor)
+                    selectDisabledSeat(seat, x, y);
             };
             const cb3 = (seat, x, y) => {
-                if(!isDisabled(seat) && !isDisabledSeatSelected(x, y)) return;
-                if(!isDisabled(seat) || seat.style.backgroundColor === unselectedSeatColor) return;
-                selectDisabledSeat(seat, x, y);            
-            };        
+                if (!isDisabled(seat) && !isDisabledSeatSelected(x, y))
+                    return;
+                if (!isDisabled(seat) || seat.style.backgroundColor === unselectedSeatColor)
+                    return;
+                selectDisabledSeat(seat, x, y);
+            };
             selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3);
         }
-        
+
         function selectRowSeatsButtonFunc_Restore(y) {
             selectConsecutiveSeatsButtonFunc_Restore(ROW, y);
         }
-        
+
         function selectColSeatsButtonFunc_Restore(x) {
             selectConsecutiveSeatsButtonFunc_Restore(COL, x);
         }
-        
+
         function selectConsecutiveSeatsButtonFunc_Delete(choice, i) {
             const cb1 = (seat, x, y) => {
-                if (isDisabled(seat) || isSelectedSeat(seat)) return 1;
+                if (isDisabled(seat) || isSelectedSeat(seat))
+                    return 1;
                 return 0;
             };
             const cb2 = (seat, x, y) => {
                 selectSeat(seat, x, y);
             };
             const cb3 = (seat, x, y) => {
-                if(isSelectedSeat(seat)) return;
+                if (isSelectedSeat(seat))
+                    return;
                 selectSeat(seat, x, y);
-            };       
+            };
             selectConsecutiveSeatsButton_Template(choice, i, cb1, cb2, cb3);
         }
-        
+
         function selectRowSeatsButtonFunc_Delete(y) {
             selectConsecutiveSeatsButtonFunc_Delete(ROW, y);
         }
-        
+
         function selectColSeatsButtonFunc_Delete(x) {
             selectConsecutiveSeatsButtonFunc_Delete(COL, x);
         }
-        
+
         function selectColSeatsButtonFunc(x) {
             const restoreSelectedSeatsButton = document.getElementById('restoreSelectedSeatsButton');
-            if(restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
+            if (restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
                 selectColSeatsButtonFunc_Restore(x);
                 return;
             }
             selectColSeatsButtonFunc_Delete(x);
         }
-        
+
         function selectRowSeatsButtonFunc(y) {
             const restoreSelectedSeatsButton = document.getElementById('restoreSelectedSeatsButton');
-            if(restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
+            if (restoreSelectedSeatsButton.getAttribute('isActive') === 'true') {
                 selectRowSeatsButtonFunc_Restore(y);
                 return;
             }
@@ -588,14 +596,14 @@
             }
             postDeleteSeat();
             createSelectRowSeatsButton(numberOfSeatCoordinateY);
-            updateCoordinateElement(document.getElementById('addRowSeatsButton'), 0, numberOfSeatCoordinateY + 1);   
+            updateCoordinateElement(document.getElementById('addRowSeatsButton'), 0, numberOfSeatCoordinateY + 1);
             postIncreConsecutiveSeats();
         };
-        
+
         function postIncreConsecutiveSeats() {
-            updateCoordinateElement(document.getElementById('saveSeatsButton'),numberOfSeatCoordinateX + 1, numberOfSeatCoordinateY + 1);
-            updateCoordinateElement(document.getElementById('deleteSelectedSeatsButton'),numberOfSeatCoordinateX, numberOfSeatCoordinateY + 1);
-            updateCoordinateElement(document.getElementById('restoreSelectedSeatsButton'),numberOfSeatCoordinateX - 1, numberOfSeatCoordinateY + 1);
+            updateCoordinateElement(document.getElementById('saveSeatsButton'), numberOfSeatCoordinateX + 1, numberOfSeatCoordinateY + 1);
+            updateCoordinateElement(document.getElementById('deleteSelectedSeatsButton'), numberOfSeatCoordinateX, numberOfSeatCoordinateY + 1);
+            updateCoordinateElement(document.getElementById('restoreSelectedSeatsButton'), numberOfSeatCoordinateX - 1, numberOfSeatCoordinateY + 1);
         }
 
         // Xóa ghế cột dọc sau cùng
@@ -713,7 +721,7 @@
             zoomScale += zoomIn ? 0.1 : -0.1;
 
 //                zoomScale = Math.max(0.2, Math.min(zoomScale, 5));
-           // container.style.transform = 'scale(' + zoomScale + ')';
+            // container.style.transform = 'scale(' + zoomScale + ')';
         }
 
         // xủ lí kéo thả khung hình
@@ -771,17 +779,17 @@
             document.getElementById(id).method = methodType;
             document.getElementById(id).submit();
         }
-        
+
         function handleKeyboardShortcuts(event) {
             console.log(event);
-            if(event.ctrlKey && event.shiftKey && event.key === 's'){
+            if (event.ctrlKey && event.shiftKey && event.key === 's') {
                 alert('Ctrl + Shift + s was pressed');
                 event.preventDefault();
             }
         }
-        
+
         document.addEventListener('keydown', handleKeyboardShortcuts);
-        
+
         // handle Load into DOM
         window.onload = () => {
             createSeats();

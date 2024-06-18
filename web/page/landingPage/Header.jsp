@@ -47,7 +47,7 @@
 
         .custom-modal .modal-dialog {
             position: absolute;
-            top: 5%;
+            top: 0;
             left: 25%;
             width: 50vw;
         }
@@ -92,14 +92,14 @@
         }
 
         #movieNameInput {
-            width: 50%;
+            width: 100%;
             padding: 10px;
             font-size: 1rem;
             border: 1px solid #ced4da;
             border-radius: 8px;
             outline: none;
             transition: border-color 0.3s ease;
-            margin-left: 380px;
+            margin-left: 90%;
         }
 
         .modal-footer button {
@@ -119,6 +119,29 @@
         #movieDetailsContainer {
             cursor: pointer;
         }
+        #movieContainerForm{
+            max-height: 65vh;
+            overflow: overlay;
+        }
+        #searchButton{
+            margin-left:500px;
+        }
+        .icon-logo-btn{
+
+            font-size: 2em;
+        }
+        .wrapper-navbar-header{
+            display: flex;
+            align-items: center;
+        }
+        .icon-logo_header{
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 2px 3px 16px 1px rgba(0, 0, 0, 0.2);
+
+        }
     </style>
 
     <!--get chains from login servlet-->
@@ -126,20 +149,21 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Cinepa</a>
+            <a class="navbar-brand" href="/movie" style="font-style: italic; font-weight: 600">Cinepa</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="wrapper-navbar-header navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="icon-logo-btn nav-link active" aria-current="page" href="/movie"> <img class="icon-logo_header" src="https://res.cloudinary.com/dsvllb1am/image/upload/v1718269790/sgvvasrlc3tisefkq92j.png"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Lịch chiếu</a>
+                        <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Phim sắp chiếu</a>
+                        <a class="nav-link" href="/movie/filter-movies">Phim chiếu</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -159,7 +183,7 @@
                 </ul>
 
                 <div>
-                    <button id="searchButton" class="borderless-btn" onclick="showModal();">
+                    <button id="searchButton" class="borderless-btn" onclick="showModal()">
                         <i class="fa-solid fa-magnifying-glass"></i> 
                     </button>
 
@@ -211,8 +235,8 @@
                                 <c:out value="${sessionScope.username}" />
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/handleDisplayUserInfo">View Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/information">View Profile</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/order/view">View Ordered</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
                             </ul>
@@ -240,61 +264,66 @@
                                         showModal();
         </c:if>
 
-        const movieNameInput = document.getElementById("movieNameInput");
-        document.addEventListener("DOMContentLoaded", function () {
-            movieNameInput.focus();
-            const length = movieNameInput.value.length;
-            movieNameInput.setSelectionRange(length, length);
-        });
+                                        const movieNameInput = document.getElementById("movieNameInput");
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            movieNameInput.focus();
+                                            const length = movieNameInput.value.length;
+                                            movieNameInput.setSelectionRange(length, length);
+                                        });
 
-        function closeModal() {
-            <c:remove var="movies"></c:remove>
+                                        function closeModal() {
+                                            document.getElementById("movieNameInput").innerText = "";
+
+                                            document.getElementById("movieContainerForm").style.display = "none";
+
+                                            //window.location.href = "/movie";
+
                                         }
 
-        function debounce(cb) {
-            let timeout;
-            let delay = 1200;
+                                        function debounce(cb) {
+                                            let timeout;
+                                            let delay = 1200;
 
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    cb(...args);
-                }, delay);
-            };
-        }
+                                            return (...args) => {
+                                                clearTimeout(timeout);
+                                                timeout = setTimeout(() => {
+                                                    cb(...args);
+                                                }, delay);
+                                            };
+                                        }
 
-        function callServlet(id, url, methodType) {
-            document.getElementById(id).action = url;
-            document.getElementById(id).method = methodType;
-            document.getElementById(id).submit();
-        }
+                                        function callServlet(id, url, methodType) {
+                                            document.getElementById(id).action = url;
+                                            document.getElementById(id).method = methodType;
+                                            document.getElementById(id).submit();
+                                        }
 
-        function showModal() {
-            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            myModal.show();
-        }
+                                        function showModal() {
+                                            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                                            myModal.show();
+                                        }
 
-        const queryMovies = debounce(() => {
-            callServlet('searchMovieForm', '/movie/searchmovie', 'POST');
-        });
+                                        const queryMovies = debounce(() => {
+                                            callServlet('searchMovieForm', '/movie/searchmovie', 'POST');
+                                        });
 
 
 
-        movieNameInput.addEventListener("input", () => {
-            queryMovies();
-        });
-        
-        function displayMovieDetails(movieID) {
-            document.getElementById('movieIDInput').value = movieID;
-            callServlet('movieContainerForm', '/movie/HandleDisplayMovieInfo', 'GET');
-        }
-        
-        function callServlet(id, url, methodType) {
-            document.getElementById(id).action = url;
-            document.getElementById(id).method = methodType;
-            document.getElementById(id).submit();
-        }
-        
+                                        movieNameInput.addEventListener("input", () => {
+                                            queryMovies();
+                                        });
+
+                                        function displayMovieDetails(movieID) {
+                                            document.getElementById('movieIDInput').value = movieID;
+                                            callServlet('movieContainerForm', '/movie/HandleDisplayMovieInfo', 'GET');
+                                        }
+
+                                        function callServlet(id, url, methodType) {
+                                            document.getElementById(id).action = url;
+                                            document.getElementById(id).method = methodType;
+                                            document.getElementById(id).submit();
+                                        }
+
 
     </script>
 </html>

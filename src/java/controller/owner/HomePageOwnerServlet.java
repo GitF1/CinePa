@@ -5,7 +5,6 @@
 package controller.owner;
 
 import DAO.CinemaChainDAO;
-import DAO.RoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,13 +17,12 @@ import util.RouterJSP;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.CinemaChain;
-import model.User;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "HomePageOwnerServlet", urlPatterns = {"/owner/homeOwner"})
+@WebServlet(name = "HomePageOwnerServlet", urlPatterns = {"/owner"})
 public class HomePageOwnerServlet extends HttpServlet {
 
     private RouterJSP router = new RouterJSP();

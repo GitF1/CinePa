@@ -18,8 +18,7 @@ public class Movie {
     private String status;
     private String country;
     private int length ;//new var, set default to 0 -DuyND
-    private String trailerLink ;//new var
-    
+    private String trailerLink ;
     private List<String> genres;
 
     public Movie() {
