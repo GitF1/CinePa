@@ -159,7 +159,7 @@
                 </ul>
 
                 <div>
-                    <button id="searchButton" class="borderless-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button id="searchButton" class="borderless-btn" onclick="showModal();">
                         <i class="fa-solid fa-magnifying-glass"></i> 
                     </button>
 

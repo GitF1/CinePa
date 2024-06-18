@@ -412,7 +412,7 @@ public class UserDAO extends SQLServerConnect {
                 + "left join (\n"
                 + "	select SeatID from MovieSlot\n"
                 + "	join Ticket on MovieSlot.MovieSlotID = Ticket.MovieSlotID\n"
-                + "	where Ticket.Status = 'Booked'\n"
+                + "	where Ticket.Status = 'Booked' and MovieSlot.MovieSlotID = " + movieSlotID + "\n"
                 + ") as BookedSeats on Seat.SeatID = BookedSeats.SeatID\n"
                 + "WHERE MovieSlotID=" + movieSlotID;
         ResultSet rs = getResultSet(sqlQuery);
@@ -442,6 +442,7 @@ public class UserDAO extends SQLServerConnect {
 
     // Query movie from movie-slot ID
     public Movie queryMovie(int movieSlotID) throws SQLException {
+        movieSlotID = 1002;
         String sqlQuery = "select Movie.MovieID, Title, Synopsis, DatePublished, ImageURL, Rating, Country, Movie.Status from MovieSlot\n"
                 + "join Movie on MovieSlot.MovieID = Movie.MovieID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
