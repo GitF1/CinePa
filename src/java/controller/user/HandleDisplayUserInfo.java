@@ -4,7 +4,6 @@
  */
 package controller.user;
 
-
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -12,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -21,7 +21,7 @@ import util.RouterJSP;
  *
  * @author FPTSHOP
  */
-@WebServlet("/handleDisplayUserInfo")
+@WebServlet("/user/information")
 public class HandleDisplayUserInfo extends HttpServlet {
 
     RouterJSP router = new RouterJSP();
@@ -42,21 +42,23 @@ public class HandleDisplayUserInfo extends HttpServlet {
             throws ServletException, IOException {
         // tao Servlet Context : 
         ServletContext context = getServletContext();
-
-        // lay userID tu session : 
-        String id = "4";
+        HttpSession session = request.getSession();
         
+        // lay userID tu session : 
+        String username = (String)session.getAttribute("username");
+
         User user = new User();
+        
         try {
-            user = userDAO.getUserById(id);
+            user = userDAO.getUserByUsername(username);
         } catch (Exception ex) {
             user.setAddress(ex.getMessage());
             Logger.getLogger(HandleDisplayUserInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        System.out.println("user: "+ user);
         // them doi tuong user vao request : 
         request.setAttribute("user", user);
-// chuyen sang display ra bang thong tin user : 
+
         request.getRequestDispatcher(router.DISPLAY_INFO).forward(request, response);
 
     }

@@ -6,7 +6,6 @@ package controller.auth;
 
 import DAO.CinemaChainDAO;
 import DAO.UserDAO;
-import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +18,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.User;
 import util.RouterJSP;
+import util.RouterURL;
+import java.sql.ResultSet;
 
 /**
  *
@@ -88,38 +90,51 @@ public class LoginServlet extends HttpServlet {
 
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
+        if (username_email == null || password == null) {
+            request.setAttribute("ok", "bạn chưa nhâp tên đăng nhập hoặc password");
+            request.getRequestDispatcher(route.LOGIN).forward(request, response);
+            return;
+        }
         String hash = org.apache.commons.codec.digest.DigestUtils.sha256Hex(password);
+
         Boolean ok = null;
+        User user;
         String role = "";
-        String username = "";
+        ResultSet rs;
+
         try {
-            role = userDAO.getUserRole(username_email);
+            rs = userDAO.checkLogin(username_email, hash);
+            ok = rs.next();
         } catch (SQLException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try {
 
-            ok = userDAO.checkLogin(username_email, hash);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        HttpSession session = request.getSession();
         if (ok) {
-//            Switch case for role
-//          Add user to session attribute
+
             try {
-                username = userDAO.getUsername(username_email);
+                user = userDAO.getUser(username_email);
+
+                if (user == null) {
+                    response.sendRedirect(RouterURL.LOGIN);
+                    return;
+                }
+
+                System.out.println("user" + user.toString());
+
+                role = user.getRole();
+
+                session.setAttribute("userID", user.getUserID());
+                session.setAttribute("username", user.getUsername());
+                session.setAttribute("role", role);
+
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             switch (role) {
-                case "user":
+                case "USER" -> {
                     //TEMP CODE FOR GETTING CHAINS & Username
-                    HttpSession session = request.getSession();
-                    session.setAttribute("username", username);
+
                     ArrayList<String> cinemaNames = null;
                     try {
                         CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
@@ -127,19 +142,28 @@ public class LoginServlet extends HttpServlet {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-//                    HttpSession session = request.getSession();
+
                     session.setAttribute("chains", cinemaNames);
-                    //END OF TEMP CODE
-                    request.getRequestDispatcher(route.USER).forward(request, response);
-                    break;
-                case "staff":
-                    request.getRequestDispatcher(route.STAFF).forward(request, response);
-                    break;
-                case "admin":
-                    request.getRequestDispatcher(route.ADMIN).forward(request, response);
-                    break;
-            }//end of switch
-            response.sendRedirect("/movie");
+
+                    // Retrieve the originally requested URL
+                    String redirectTo = null;
+
+                    //(String) session.getAttribute("redirectTo");
+                    System.out.println("redirect to: " + redirectTo);
+
+                    if (redirectTo == null) {
+                        response.sendRedirect(RouterURL.HOMEPAGE);
+                    } else {
+                        session.removeAttribute("redirectTo");
+                        response.sendRedirect(redirectTo);
+                    }
+
+                }
+                case "OWNER" ->
+                    response.sendRedirect(RouterURL.OWNER_PAGE);
+                case "ADMIN" ->
+                    request.getRequestDispatcher("/admin").forward(request, response);
+            }
 
         } else {
             request.setAttribute("ok", ok);

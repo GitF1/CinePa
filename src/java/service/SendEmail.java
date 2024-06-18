@@ -6,14 +6,11 @@ import java.util.Random;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
-import jakarta.mail.Multipart;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
 import model.User;
 
 /**
@@ -21,11 +18,7 @@ import model.User;
  */
 public class SendEmail {
 
-    private final String logo_url = "";
-
-    public SendEmail() {
-
-    }
+    public SendEmail() {}
 
     public String getRanDom() {
         Random rnd = new Random();
@@ -44,9 +37,9 @@ public class SendEmail {
         String toEmail = user.getEmail();
         String fromEmail = "cinepa.org@gmail.com";  // your email
         String password = "yknr qglb mlqu mpwt";  // your app password
+        String logoUrl = "https://example.com/logo.png";  // URL to your logo
 
         try {
-
             Properties pr = new Properties();
             pr.setProperty("mail.smtp.host", "smtp.gmail.com");
             pr.setProperty("mail.smtp.port", "587");
@@ -56,28 +49,28 @@ public class SendEmail {
             // SSL properties should not be used when using STARTTLS
             pr.remove("mail.smtp.ssl.enable");
             pr.remove("mail.smtp.socketFactory.port");
-            pr.remove("mail.smtp.socketFactory");
-            //
+            pr.remove("mail.smtp.socketFactory.class");
+
+            // Get session
             Session session = Session.getInstance(pr, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(fromEmail, password);
                 }
             });
-         
 
             Message mess = new MimeMessage(session);
             mess.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             mess.setFrom(new InternetAddress(fromEmail));
-            mess.setSubject("Email Verification");
+            mess.setSubject("User Email Verification");
 
-            // Create HTML content
+            // HTML content
             String htmlContent = "<html>"
                     + "<body style='font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;'>"
                     + "<table align='center' width='600' style='border-collapse: collapse; margin: 20px auto; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>"
                     + "    <tr>"
                     + "        <td align='center' style='padding: 20px 0;'>"
-                    + "            <img src='" + logo_url + "' alt='Your Company Logo' style='height: 50px;'>"
+                    + "            <img src='" + logoUrl + "' alt='Your Company Logo' style='height: 50px;'>"
                     + "        </td>"
                     + "    </tr>"
                     + "    <tr>"
@@ -102,13 +95,8 @@ public class SendEmail {
                     + "</body>"
                     + "</html>";
 
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setContent(htmlContent, "text/html");
+            mess.setContent(htmlContent, "text/html");
 
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(mimeBodyPart);
-
-            mess.setContent(multipart);
             Transport.send(mess);
             test = true;
 

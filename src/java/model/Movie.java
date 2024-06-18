@@ -1,5 +1,12 @@
 package model;
 
+import java.util.List;
+
+
+/**
+ *
+ * @author Admin
+ */
 public class Movie {
 
     private int movieID;
@@ -8,19 +15,68 @@ public class Movie {
     private String datePublished;
     private String imageURL;
     private double rating;
+    private String status;
+    private String country;
+    private int length ;//new var, set default to 0 -DuyND
+    private String trailerLink ;
+    private List<String> genres;
 
     public Movie() {
     }
 
-    // Constructor
-    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating) {
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink) {//new constructor with trailer and length
         this.movieID = movieID;
         this.title = title;
         this.synopsis = synopsis;
         this.datePublished = datePublished;
         this.imageURL = imageURL;
         this.rating = rating;
+        this.status = status;
+        this.country = country;
+        this.length = length;
+        this.trailerLink = trailerLink;
     }
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country) {
+        this.movieID = movieID;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.datePublished = datePublished;
+        this.imageURL = imageURL;
+        this.rating = rating;
+        this.status = status;
+        this.country = country;
+    }
+
+    public Movie(int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, List<String> genres) {
+        this.movieID = movieID;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.datePublished = datePublished;
+        this.imageURL = imageURL;
+        this.rating = rating;
+        this.status = status;
+        this.country = country;
+        this.genres = genres;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public String getTrailerLink() {
+        return trailerLink;
+    }
+
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
+    }
+
 
     // Getter and Setter methods
     public int getMovieID() {
@@ -64,6 +120,8 @@ public class Movie {
     }
 
     public double getRating() {
+        String ans = String.format("%,.2f", rating);
+        rating = Double.parseDouble(ans);
         return rating;
     }
 
@@ -71,15 +129,40 @@ public class Movie {
         this.rating = rating;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+    
+    
+
     @Override
     public String toString() {
-        return "Movie{"
-                + "movieID=" + movieID
-                + ", title='" + title + '\''
-                + ", synopsis='" + synopsis + '\''
-                + ", datePublished='" + datePublished + '\''
-                + ", imageURL='" + imageURL + '\''
-                + ", rating=" + rating
-                + '}';
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '}';
     }
+    
+    public String toString2() {
+        return "Movie{" + "movieID=" + movieID + ", title=" + title + ", synopsis=" + synopsis + ", datePublished=" + datePublished + ", imageURL=" + imageURL + ", rating=" + rating + ", country=" + country + ", status=" + status + '\n' +  genres + '}';
+    }
+
+    
 }

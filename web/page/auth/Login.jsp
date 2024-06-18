@@ -78,6 +78,16 @@
                                      style="padding-left: 2.5rem; padding-right: 2.5rem;">
                                 Login
                             </button>
+                            <!--add google login - duynd-->
+                            <div>
+                                <a class="btn mt-3 btn-outline-primary btn-lg"
+                                   href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/movie/LoginGoogleServlet&response_type=code&client_id=873935314523-gmuli7ipaik12iv4l4rpj2hr6o2jnoke.apps.googleusercontent.com&approval_prompt=force">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" style="width: 20px; height: 20px; margin-right: 10px;">
+
+                                    Sign in with Google
+                                </a>
+                            </div>
+
 
                             <c:if test="${not empty ok && !ok}">
                                 <p class="small fw-bold mt-2 pt-1 mb-0" style="color: red">Wrong username (or email) or password!</p>

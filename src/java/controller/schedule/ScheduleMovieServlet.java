@@ -12,8 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import DAO.schedule.ScheduleDAO;
-import com.google.gson.JsonObject;
-import jakarta.servlet.RequestDispatcher;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

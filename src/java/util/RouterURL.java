@@ -10,13 +10,26 @@ package util;
  */
 public class RouterURL {
 
-    public String HOMEPAGE = "/movie";
+    public static String HOMEPAGE = "/movie";
 
-    public String REGISTER = "/movie/register";
+    public static String REGISTER = "/movie/register";
 
-    public String LOGIN = "/movie/login";
+    public static String LOGIN = "/movie/login";
 
-    public String VERIFY = "/movie/verifycode";
+    public static String VERIFY = "/movie/verifycode";
 
-    public String FORGET_PASSWORD = "/movie/forgetpassword";
+    public static String FORGET_PASSWORD = "/movie/forgetpassword";
+
+    public static String DISPLAY_PROFILE = "/movie/user/information";//For quickly routing to user profile - DuyND
+
+    public static String PAYMENT_VNPAY = "/movie/payment/vnpay";
+
+    public static String BOOKING_SEAT = "/movie/booking/seat";
+
+    public static String ADMIN_PAGE = "/movie/admin";
+    
+    public static String OWNER_PAGE = "/movie/owner";
+    
+    public static String SEARCH_MOVIE = "/movie/searchmovie";
+
 }

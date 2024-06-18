@@ -1,5 +1,6 @@
 package controller.movie;
 
+import DAO.MovieDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -14,12 +15,15 @@ import model.movie.MovieInfo;
 import model.Review;
 import DAO.schedule.ScheduleDAO;
 import java.sql.SQLException;
+import java.util.List;
+import model.schedule.CinemaMovieSlot;
 import util.RouterJSP;
 
 @WebServlet(name = "HandleDisplayMovieInfo", urlPatterns = {"/HandleDisplayMovieInfo"})
 public class HandleDisplayMovieInfo extends HttpServlet {
 
     ScheduleDAO scheduleDAO;
+    MovieDAO movieDAO;
     RouterJSP route = new RouterJSP();
 
     @Override
@@ -28,6 +32,7 @@ public class HandleDisplayMovieInfo extends HttpServlet {
         super.init();
         try {
             scheduleDAO = new ScheduleDAO(getServletContext());
+            movieDAO = new MovieDAO(getServletContext());
         } catch (Exception ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -37,62 +42,62 @@ public class HandleDisplayMovieInfo extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // nhan movieID tu Quang Vinh guii qua : 
-        String movieID = request.getParameter("movieID");
-        if (movieID == null) {
-            movieID = "4";
-        }
-
-        // tao Servlet Context : 
-        ServletContext context = getServletContext();
-
-        //lay Movie : 
-        MovieInfo movie = new MovieInfo();
         try {
-            movie = DAO.MovieDAO.getInstance().getMovieWithGenresByID(Integer.parseInt(movieID), context);
-        } catch (Exception ex) {
-            Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // lay list cac phim dang chieu : 
-        ArrayList<MovieInfo> listAvailabelMovies = new ArrayList<>();
-        try {
-            listAvailabelMovies = DAO.MovieDAO.getInstance().getAvailableMovies(context);
-        } catch (Exception ex) {
 
-            Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // lay list cac Reviews : 
-        ArrayList<Review> listReviews = new ArrayList<>();
-        try {
-            listReviews = DAO.MovieDAO.getInstance().getReviewsByMovieID(Integer.parseInt(movieID), context);
-        } catch (Exception ex) {
-            Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            // nhan movieID tu Quang Vinh guii qua :
+            String movieID = request.getParameter("movieID");
+            if (movieID == null) {
+                System.err.println("missing movieID!");
+                return;
+            }
 
-        // them vao Request : 
-        request.setAttribute("movie", movie);
-        request.setAttribute("listAvalableMovies", listAvailabelMovies);
-        request.setAttribute("listReviews", listReviews);
+            // tao Servlet Context :
+            ServletContext context = getServletContext();
 
-        try {
-            scheduleDAO.handleDoGetComponentSchedule(request, response);
+            //lay Movie :
+            MovieInfo movie = new MovieInfo();
+
+            movie = (MovieInfo) movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID));
+
+            // lay list cac phim dang chieu :
+            ArrayList<MovieInfo> listAvailabelMovies = new ArrayList<>();
+
+            listAvailabelMovies = movieDAO.getAvailableMovies(context);
+
+            // lay list cac Reviews :
+            ArrayList<Review> listReviews = new ArrayList<>();
+
+            listReviews = movieDAO.getReviewsByMovieID(Integer.parseInt(movieID), context);
+            //
+//            List<CinemaMovieSlot> listCinemaMovieSlots = scheduleDAO.getCinemasShowingMovie(Integer.parseInt(movieID), null);
+//
+//            System.out.println("list cinema movie slot:" + listCinemaMovieSlots);
+
+            // them vao Request :
+            request.setAttribute("movie", movie);
+            request.setAttribute("listAvailableMovies", listAvailabelMovies);
+            request.setAttribute("listReviews", listReviews);
+
+            request.getRequestDispatcher("page/movie/DisplayMovieInfo.jsp").forward(request, response);
+
         } catch (SQLException ex) {
             Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(HandleDisplayMovieInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // chuyen qua cho DisplayMovieInfo.jsp : 
-        request.getRequestDispatcher("page/movie/DisplayMovieInfo.jsp").forward(request, response);
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         scheduleDAO.handleDoPostComponentSchedule(request, response);
+
         String redirectUrl = "/movie/HandleDisplayMovieInfo";
         response.setContentType("text/plain");
         response.getWriter().write(redirectUrl);
-        
+
         doGet(request, response);
     }
 

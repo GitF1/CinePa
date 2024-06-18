@@ -28,19 +28,27 @@
                 gap: .75rem;
             }
             .time-item{
-                border:1px solid #117a8b;
+                border:1px solid #0ea5e9;
                 padding: 10px;
                 margin: 0 10px;
                 border-radius: 8px;
                 cursor: pointer;
+                color: #0ea5e9;
             }
             .title-movie{
                 line-height: 1.25;
                 font-weight: 600;
                 font-size: 1.2rem;
+                text-decoration: none;
+                outline: none;
+                margin: 10px;
+                color: #262626;
             }
             .right-time_schedule{
                 margin: 0 45px;
+            }
+            .strong-start_time{
+                font-weight: 600;
             }
 
         </style>
@@ -52,15 +60,19 @@
         <c:forEach items="${listMovie}" var="movie">
             <div class="container-time_schedule">
                 <div class="left-time_schedule">
-                    <img class="thumb-movie" src="${movie.imageURL}" alt="${movie.title} Poster">
+                    <img class="thumb-movie" src="${movie.imageURL}" alt="${movie.getTitle()} Poster">
                 </div>
                 <div class="right-time_schedule">
-                    <p class="title-movie">${movie.title}</p>
+                    <a href="/movie/HandleDisplayMovieInfo?movieID=${movie.getMovieID()}" class="title-movie">${movie.title}</a>
+                    
+                    <div>${movie.getCountry()}</div>
+                   
                     <div class="list-time_showing">
                         <c:forEach items="${movie.listMovieSlot}" var="slot">
-                            <div onclick="onSelectSchedule('${movie.getMovieID()}', '${slot.getMovieSlotID()}')" class="time-item">${slot.startTime.format(DateTimeFormatter.ofPattern('HH:mm'))} - ${slot.endTime.format(DateTimeFormatter.ofPattern('HH:mm'))}</div>
+                            <div onclick="onSelectSchedule('${slot.getMovieSlotID()}')" class="time-item"><strong class="strong-start_time"> ${slot.startTime.format(DateTimeFormatter.ofPattern('HH:mm'))} ~</strong>  ${slot.endTime.format(DateTimeFormatter.ofPattern('HH:mm'))}</div>
                         </c:forEach>
                     </div>
+                    
                 </div>
 
             </div>
@@ -70,10 +82,12 @@
     <script>
 
 
-        function onSelectSchedule(movieID, movieSlotID) {
+        function onSelectSchedule(movieSlotID) {
 
+            var servletURL = '/movie/user/booking/seat?movieSlotID=' + movieSlotID;
 
-
+            // Redirect to the servlet
+            window.location.href = servletURL;
         }
 
 

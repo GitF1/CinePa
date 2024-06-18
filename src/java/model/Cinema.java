@@ -6,18 +6,18 @@ package model;
 
 /**
  *
- * @author PC
+ * @author ACER
  */
 public class Cinema {
 
-    private int cinemaID;
-    private int cinemaChainID;
-    private String address;
-    private String province;
-    private String district;
-    private String commune;
-    private String avatar;
-   
+    protected int cinemaID;
+    protected int cinemaChainID;
+    protected String name;
+    protected String address;
+    protected String province;
+    protected String district;
+    protected String commune;
+    protected String avatar;
 
     public Cinema() {
     }
@@ -31,7 +31,19 @@ public class Cinema {
         this.commune = commune;
     }
 
+    public Cinema(int cinemaID, String address, String province, String district, String commune, String avatar) {
+        this.cinemaID = cinemaID;
+        this.address = address;
+        this.province = province;
+        this.district = district;
+        this.commune = commune;
+        this.avatar = avatar;
+    }
+    
+    
+
     // Constructor
+
     public Cinema(int cinemaID, int cinemaChainID, String address, String province, String district, String commune, String avatar) {
         this.cinemaID = cinemaID;
         this.cinemaChainID = cinemaChainID;
@@ -42,7 +54,17 @@ public class Cinema {
         this.avatar = avatar;
     }
 
-    // Getters and setters
+    public Cinema(int cinemaID, int cinemaChainID, String name, String address, String province, String district, String commune, String avatar) {
+        this.cinemaID = cinemaID;
+        this.cinemaChainID = cinemaChainID;
+        this.name = name;
+        this.address = address;
+        this.province = province;
+        this.district = district;
+        this.commune = commune;
+        this.avatar = avatar;
+    }
+
     public int getCinemaID() {
         return cinemaID;
     }
@@ -57,6 +79,14 @@ public class Cinema {
 
     public void setCinemaChainID(int cinemaChainID) {
         this.cinemaChainID = cinemaChainID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {

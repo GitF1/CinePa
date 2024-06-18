@@ -30,19 +30,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, String fullName, String code, int status) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.fullName = fullName;
-        this.code = code;
-        this.status = status;
-    }
 
-    public User(String username, String email, String fullName, String code) {
+
+    public User(String fullName, String username, String email, String code) {
+        this.fullName = fullName;
         this.username = username;
         this.email = email;
-        this.fullName = fullName;
         this.code = code;
     }
     
@@ -61,9 +54,6 @@ public class User {
         this.status = status;
         this.role = role;
     }
-
-
-    
 
     public User(int userID, String avatarLink, String role, String fullName, String username, String password, String bio, String email, Date birthday, String address, boolean isBanned, int levelPremiumID, double accountBalance, int bonusPoint, String province, String district, String commune, String code, int status) {
         this.userID = userID;
@@ -85,6 +75,25 @@ public class User {
         this.commune = commune;  // Updated field
         this.code = code;
         this.status = status;  // Updated field
+    }
+    
+    public User(int userID, String avatarLink, String role, String username, String bio, String email, String fullName, Date birthday, String address, boolean isBanned, int levelPremiumID, double accountBalance, int bonusPoint, String province, String district, String commune) {
+        this.userID = userID;
+        this.avatarLink = avatarLink;
+        this.role = role;
+        this.fullName = fullName; 
+        this.username = username;
+        this.bio = bio;
+        this.email = email;
+        this.birthday = birthday;
+        this.address = address;
+        this.isBanned = isBanned;
+        this.levelPremiumID = levelPremiumID;
+        this.accountBalance = accountBalance;
+        this.bonusPoint = bonusPoint;
+        this.province = province; 
+        this.district = district;  
+        this.commune = commune;
     }
 
     public int getUserID() {

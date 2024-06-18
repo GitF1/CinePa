@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
  */
-
 package filter;
 
 import DAO.UserDAO;
@@ -20,23 +19,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
  * @author PC
  */
 public class AuthFilter implements Filter {
-    
+
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
+
     public AuthFilter() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -63,8 +63,8 @@ public class AuthFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -102,7 +102,7 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        RouterJSP route = new RouterJSP();
+
         if (debug) {
             log("AuthFilter:doFilter()");
         }
@@ -113,28 +113,40 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String url = httpRequest.getServletPath();
         HttpSession session = httpRequest.getSession();
+
         String username = (String) session.getAttribute("username");
-        String role = "";
-        UserDAO userDAO;
-        try {
+        String role = (String) session.getAttribute("role");
+
+        if (role == null) {
+            UserDAO userDAO;
+            try {
                 userDAO = new UserDAO(httpRequest.getServletContext());
                 role = userDAO.getUserRole(username);
             } catch (Exception ex) {
-                
+
             }
-        //Có thể phải coi lại đề phòng lỗi url
-//        request.getRequestDispatcher(route.LOGIN).forward(request, response);
-        if (url.contains("/admin")&& (!role.equals("admin")) ) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
         }
-        if (url.contains("/user")&& (!role.equals("user"))) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+        session = httpRequest.getSession(true);
+        String urlStore = (String) httpRequest.getRequestURI();
+        if (!urlStore.equals(RouterURL.LOGIN)) {
+            session.setAttribute("redirectTo", urlStore);
         }
-        if (url.contains("/staff")&& (!role.equals("staff"))) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
-        }
+
         
+        String loginURI = httpRequest.getContextPath() + "/login";
+        //Có thể phải coi lại đề phòng lỗi url
+        if (url.contains("/admin") && (!role.equals("ADMIN"))) {
+            httpResponse.sendRedirect(loginURI);
+        }
+        if (url.contains("/user") && (!role.equals("USER"))) {
+            httpResponse.sendRedirect(loginURI);
+        }
+        if (url.contains("/owner") && (!role.equals("OWNER"))) {
+            httpResponse.sendRedirect(loginURI);
+        }
+
         Throwable problem = null;
+
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {
@@ -179,16 +191,16 @@ public class AuthFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("AuthFilter:Initializing filter");
             }
         }
@@ -207,20 +219,20 @@ public class AuthFilter implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -237,7 +249,7 @@ public class AuthFilter implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -251,9 +263,9 @@ public class AuthFilter implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
-    
+
 }
