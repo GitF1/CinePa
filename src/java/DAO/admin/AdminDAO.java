@@ -1,16 +1,10 @@
-package DAO;
-
-import DB.SQLServerConnect;
-import jakarta.servlet.ServletContext;
-import java.util.ArrayList;
-import model.User;
+package DAO.admin;
 
 import DB.SQLServerConnect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import model.User;
 import jakarta.servlet.ServletContext;
 
@@ -21,11 +15,11 @@ public class AdminDAO extends SQLServerConnect {
         connect(context);
     }
 // lay tong so luong user : Khai
-     public int getUserCount() throws SQLException {
+
+    public int getUserCount() throws SQLException {
         String sqlQuery = "SELECT COUNT(*) AS userCount FROM [User]";
-        
-        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
-             ResultSet rs = ps.executeQuery()) {
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery); ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getInt("userCount");
@@ -37,12 +31,12 @@ public class AdminDAO extends SQLServerConnect {
             throw e;  // Re-throw the exception after logging
         }
     }
-     // lay tong so luong phim : Khai
-     public int getFilmCount() throws SQLException {
+    // lay tong so luong phim : Khai
+
+    public int getFilmCount() throws SQLException {
         String sqlQuery = "SELECT COUNT(*) AS MovieCount FROM [Movie]";
-        
-        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
-             ResultSet rs = ps.executeQuery()) {
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery); ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getInt("MovieCount");
@@ -54,12 +48,12 @@ public class AdminDAO extends SQLServerConnect {
             throw e;  // Re-throw the exception after logging
         }
     }
-         // lay tong so luong review : Khai
-     public int getReviewCount() throws SQLException {
+    // lay tong so luong review : Khai
+
+    public int getReviewCount() throws SQLException {
         String sqlQuery = "SELECT COUNT(*) AS ReviewCount FROM [Review]";
-        
-        try (PreparedStatement ps = connection.prepareStatement(sqlQuery);
-             ResultSet rs = ps.executeQuery()) {
+
+        try (PreparedStatement ps = connection.prepareStatement(sqlQuery); ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
                 return rs.getInt("ReviewCount");
@@ -71,6 +65,7 @@ public class AdminDAO extends SQLServerConnect {
             throw e;  // Re-throw the exception after logging
         }
     }
+
     // Method to get banned and unbanned users
     public ArrayList<User> getBanAndUnbanUser(String type, String isBanned) throws SQLException {
         ArrayList<User> userList = new ArrayList<>();
@@ -148,7 +143,7 @@ public class AdminDAO extends SQLServerConnect {
                 user.setEmail(email);
                 user.setFullName(fullName);
                 user.setIsBanned(isBanned);
-                
+
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -157,4 +152,96 @@ public class AdminDAO extends SQLServerConnect {
         return userList;
     }
 
+    public double getTotalAmountTicket() {
+
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // 2. Prepare SQL query to get ticket details with related movie slot price and discount
+            String sql = "SELECT t.TicketID, ms.Price, ms.Discount "
+                    + "FROM Ticket t "
+                    + "INNER JOIN MovieSlot ms ON t.MovieSlotID = ms.MovieSlotID";
+
+            stmt = connection.prepareStatement(sql);
+
+            // 3. Execute query
+            rs = stmt.executeQuery();
+
+            // 4. Calculate total price
+            double totalPrice = 0.0;
+            while (rs.next()) {
+                double price = rs.getDouble("Price");
+                double discount = rs.getDouble("Discount");
+                double ticketPrice = price - discount;
+                totalPrice += ticketPrice;
+            }
+
+            // 5. Output the total price
+            return totalPrice;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // 6. Close connections and resources
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    public double getTotalCanteenOrderPrice() {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Prepare SQL query to retrieve all canteen orders with details
+            String sql = "SELECT ci.Price "
+                    + "FROM CanteenItemInOrder cio "
+                    + "INNER JOIN CanteenItem ci ON cio.CanteenItemID = ci.CanteenItemID";
+
+            stmt = connection.prepareStatement(sql);
+
+            // Execute query
+            rs = stmt.executeQuery();
+
+            // Calculate total price
+            double totalPrice = 0;
+            while (rs.next()) {
+                double price = rs.getDouble("Price");
+                totalPrice += price;
+            }
+
+            return totalPrice;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQL exceptions appropriately
+        } finally {
+            // Close resources in reverse order of opening
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                // Do not close the connection here, as it might be reused by other methods
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Return 0 or handle appropriately if an error occurs
+        return 0;
+    }
 }

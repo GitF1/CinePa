@@ -13,13 +13,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Report</title>
     </head>
     <body>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-
-        </script>
+     
         <div>
             <canvas id="weeklySalesChart"></canvas>
         </div>
@@ -61,7 +59,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Chart.js Line Chart'
+                            text: 'Weekly Sales Line Chart'
                         }
                     }
                 },
@@ -72,32 +70,6 @@
             <canvas id="myChart"></canvas>
         </div>
 
-
-
-        <script>
-//            const ctx = document.getElementById('myChart');
-//
-//            new Chart(ctx, {
-//
-//                type: 'doughnut',
-//                data: {
-//                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//                    datasets: [{
-//                            label: '# of Votes',
-//                            data: [12, 19, 3, 5, 2, 3],
-//                            borderWidth: 1
-//                        }]
-//                },
-//                options: {
-//                    scales: {
-//                        y: {
-//                            beginAtZero: true
-//                        }
-//                    }
-//                }
-//            });
-
-        </script>
         <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js "></script>
     </body>
 </html>

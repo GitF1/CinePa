@@ -21,8 +21,7 @@
 
     </head>
     <body>
-        <h1>Hello World!</h1>
-
+     
 
         <div class="container">
             <form action="${pageContext.request.contextPath}/CreateMovieServlet" method="post" enctype="multipart/form-data">

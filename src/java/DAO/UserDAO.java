@@ -180,7 +180,6 @@ public class UserDAO extends SQLServerConnect {
         return user;
 
     }
-    
 
 //    get user by user name - DuyND
     public User getUserByUsername(String username) throws Exception {
@@ -360,7 +359,7 @@ public class UserDAO extends SQLServerConnect {
             List<String> genres = new ArrayList<>();
             String sqlQueryGenres = "select  Genre from Movie join MovieInGenre on Movie.MovieID = MovieInGenre.MovieID where Movie.MovieID = " + rs.getInt("MovieID");
             ResultSet genresRs = getResultSet(sqlQueryGenres);
-            while(genresRs.next()) {
+            while (genresRs.next()) {
                 genres.add(genresRs.getString("Genre"));
             }
             Movie movie = new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Status"), rs.getString("Country"), genres);
@@ -404,6 +403,7 @@ public class UserDAO extends SQLServerConnect {
     }
 
     //Query seats from MovieSlot (list những ghế có trong room tại slot đó)
+    
     public List<Seat> querySeatsInRoom(int movieSlotID) throws SQLException {
         List<Seat> seats = new ArrayList<>();
         String sqlQuery = "select Seat.SeatID, Seat.RoomID, Seat.Name, CoordinateX, CoordinateY, \n"
@@ -416,9 +416,10 @@ public class UserDAO extends SQLServerConnect {
                 + "left join (\n"
                 + "	select SeatID from MovieSlot\n"
                 + "	join Ticket on MovieSlot.MovieSlotID = Ticket.MovieSlotID\n"
-                + "	where Ticket.Status = 'Booked'\n"
+                + "	where Ticket.Status = 'Booked' AND MovieSlot.MovieSlotID = " + movieSlotID + "\n"
                 + ") as BookedSeats on Seat.SeatID = BookedSeats.SeatID\n"
                 + "WHERE MovieSlotID=" + movieSlotID;
+        
         ResultSet rs = getResultSet(sqlQuery);
         while (rs.next()) {
             Seat seat = new Seat(rs.getInt("SeatID"), rs.getInt("RoomID"), rs.getString("Name"), rs.getInt("CoordinateX"), rs.getInt("CoordinateY"), rs.getString("Status"));
@@ -426,6 +427,7 @@ public class UserDAO extends SQLServerConnect {
         }
         return seats;
     }
+    
     // Query seats
 
     // Query movie slot
@@ -469,7 +471,7 @@ public class UserDAO extends SQLServerConnect {
         return null;
     }
     // Query room
-    
+
     // Save room 
     public int insertSeats(int roomID, String seatName, int coordinateX, int coordinateY) throws SQLException {
         String sql = "INSERT INTO Seat (RoomID, Name, CoordinateX, CoordinateY) VALUES (?, ?, ?, ?)";
@@ -478,7 +480,7 @@ public class UserDAO extends SQLServerConnect {
         ps.setString(2, seatName);
         ps.setInt(3, coordinateX);
         ps.setInt(4, coordinateY);
-        
+
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
