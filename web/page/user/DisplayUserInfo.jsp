@@ -15,13 +15,36 @@
 
         <style>
             .user-avatar {
-                width: 78px;
-                height: 78px;
+                width: 150px;
+                height: 150px;
                 background-image: url(https://th.bing.com/th/id/OIP.j_NOgofx2PhT1iPFXWbe0QHaNK?w=187&h=333&c=7&r=0&o=5&dpr=1.3&pid=1.7);
                 margin: auto;
                 border-radius: 50%;
                 background-size: cover;
                 margin-bottom: 31px;
+            }
+            /* File Input Styles */
+            .file-input {
+                padding: 10px;
+                border: 2px solid #ddd;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+            /* Submit Button Styles */
+            .submit-button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            .submit-button:hover {
+                background-color: #0056b3;
             }
         </style>
     </head>
@@ -47,14 +70,14 @@
 
                                 <div class="container">
                                     <form method="post" action="/movie/user/upload/avatar" enctype="multipart/form-data">
-                                        <input type="file" name="file" />
-                                        <input type="submit" value="Upload" />
+                                        <input type="file" name="file" class="file-input" />
+                                        <input type="submit" value="Upload" class="submit-button" />
                                     </form>
                                 </div>
                             </div>
                             <h3 class="text-center my-5">View User's Information</h3>
 
-                            <form action="${pageContext.request.contextPath}/updateUserInfo" method="post">
+                            <form action="/movie/user/information/update" method="post">
                                 <div class="hide">
                                     <input type="text" id="username" name="userId" value="${user.getUserID()}" >
                                 </div>
@@ -149,9 +172,9 @@
                                 </div>
 
                                 <div class="col-3">
-                                   <form action="${pageContext.request.contextPath}"  class="text-center">
-                                    <button class="btn  btn-warning cpw">Return </button>
-                                </form>
+                                    <form action="${pageContext.request.contextPath}"  class="text-center">
+                                        <button class="btn  btn-warning cpw">Return </button>
+                                    </form>
                                 </div>
 
 

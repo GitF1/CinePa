@@ -33,7 +33,7 @@ public class RouterJSP {
 
     public String STAFF = "/page/staff/Staff.jsp";//templatefor testing login by role
 
-    public String ADMIN = "/admin";//templatefor testing login by role
+    public String ADMIN = "/page/admin/AdminPage.jsp";//templatefor testing login by role
 
     public String CHANGE_PASSWORD = "/page/user/ChangePassword.jsp";
 
@@ -46,6 +46,9 @@ public class RouterJSP {
     public String MOVIE_LIST = "page/movie/MovieListComponents.jsp";
 
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
+    
+    public String MOVIE_SHOW = "page/movie/MovieShow.jsp";
+
 
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
         
@@ -90,5 +93,7 @@ public class RouterJSP {
     public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";
     
     public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
+    
+    public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 
 }

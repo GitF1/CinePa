@@ -121,7 +121,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="no-cinema">
-                        <a href="<%= request.getContextPath()%>/owner/homeOwner">Back Home</a>
+                        <a href="<%= request.getContextPath()%>/owner">Back Home</a>
                     </div>
                 </c:otherwise>
             </c:choose>

@@ -163,15 +163,15 @@ public class MovieDAO extends SQLServerConnect {
     }
 
     // limit 10 -> 20 movie for each request get all movies **
-    public List<MovieWithStatus> getAllMovie() {
-        List<MovieWithStatus> list = new ArrayList<>();
+    public List<Movie> getAllMovie() {
+        List<Movie> list = new ArrayList<>();
         String sql = "SELECT * FROM Movie";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                MovieWithStatus movie = new MovieWithStatus(
+                Movie movie = new Movie(
                         rs.getInt("MovieID"),
                         rs.getString("Title"),
                         rs.getString("Synopsis"),

@@ -1,5 +1,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.graph.SalesData" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +20,7 @@
     </head>
 
     <body>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <div class="container-fluid">
             <!-- row heading :  -->
 
@@ -54,18 +60,27 @@
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center my-2">
-                        <a href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp" style="text-decoration: none;" class="text-white">
-                            <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Tạo Phim</span>
+                        <a href="${pageContext.request.contextPath}/UpdateMovieServlet" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
+
+                            <span>Edit movies</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="UpdateMovieServlet" style="text-decoration: none;" class="text-white">
-                            <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Chỉnh sửa phim</span>
+                        <a href="${pageContext.request.contextPath}/page/admin/CreateMovieForm.jsp" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+
+                            <span>New Movie</span>
+                        </a>
+                    </li>
+                    <hr class="my-0  py-0 text-white">
+                    <li class="text-white my-2 py-3 text-center">
+                        <a href="${pageContext.request.contextPath}/OverviewGraphServlet" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                            <span>Report</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
@@ -131,14 +146,14 @@
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-primary">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-primary">Doanh thu </p>
-                                <p>${doanhThu} vnd </p>
+                                <p>${doanhThu} VND </p>
                             </div>
                             <i class="fa fa-credit-card-alt text-primary" style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
                         <div class="col-md-2 d-flex align-items-center justify-content-between border-start border-5 shadow border-warning">
                             <div style="border-radius: 10px;">
                                 <p class="m-2 fw-bold fs-5 text-warning">Nguời dùng </p>
-                                <p>${tongUser} ngưởi</p>
+                                <p>${tongUser} User</p>
                             </div>
                             <i class=" fa fa-user-o text-warning " style="font-size: 24px;" aria-hidden="true"></i>
                         </div>
@@ -160,6 +175,54 @@
                     </div>
 
                     <!-- phan image them vo :  -->
+                    <div>
+                        <canvas id="weeklySalesChart"></canvas>
+                    </div>
+                    <script>
+                        var dateArr = [];
+                        var valueArr = [];
+                        <c:forEach var="dataPoint" items='${requestScope["sales7Day"]}'>
+                        dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
+                        valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
+
+                        </c:forEach>
+                        dateArr.forEach(function (value) {
+                            console.log(value);
+                        });
+                        valueArr.forEach(function (value) {
+                            console.log(value);
+                        });
+                        const ctx = document.getElementById('weeklySalesChart');
+
+                        new Chart(ctx, {
+
+                            type: 'line',
+                            data: {
+                                labels: dateArr,
+                                datasets: [{
+                                        label: 'Sales',
+                                        data: valueArr,
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        fill: false,
+                                        tension: 0.1
+                                    }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Weekly Sales Line Chart'
+                                    }
+                                }
+                            },
+                        });
+
+                    </script>
                     <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
                     </div>
                     <div class="row " style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a1.png?raw=true'); height: 300px; background-size: contain;">
@@ -169,6 +232,6 @@
         </div>
 
 
-
+        <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js "></script>
     </body>
 </html>

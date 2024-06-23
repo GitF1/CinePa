@@ -14,22 +14,84 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="page/movie/DisplayMovieInfoCss.css"/>
-
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             .movie-style_frame iframe{
-                
+
                 width:  100% !important;
             }
+
+            p.active-film-desc {
+                font-weight: bold;
+                margin: 0;
+                transition: color 0.3s, cursor 0.3s;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            p.active-film-desc:hover {
+                color: #ff69b4; /* Pink color on hover */
+            }
+
+            /* Additional styling to ensure consistency and improve appearance */
+            p.active-film-type,
+            p.active-film-rate {
+                margin: 5px 0;
+            }
+
+            p.active-film-btn {
+                display: inline-block;
+                padding: 4px;
+                background-color: #579b41;
+                color: white;
+                border-radius: 12px;
+                font-size: 12px;
+            }
+
+            .trailer-button {
+                height: 32px; /* Match height and width for a square shape */
+                width: 32px;
+                border-radius: 50%; /* Circular shape */
+                border: 2px solid #ff4c4c; /* Pink border */
+                background-color: transparent; /* Transparent background */
+                display: flex; /* Flex to center the icon */
+                align-items: center; /* Center vertically */
+                justify-content: center; /* Center horizontally */
+                cursor: pointer; /* Pointer cursor on hover */
+                transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition */
+                margin-right: 8px; /* Space to the right */
+                color: #ff4c4c; /* Text color matches the border */
+            }
+
+            .trailer-icon {
+                width: 20px; /* Fit within the container */
+                height: 20px; /* Fit within the container */
+                fill: currentColor; /* Uses the current color of .trailer-button */
+            }
+
+            /* Hover effect */
+            .trailer-button:hover {
+                background-color: #ff4c4c; /* Background color on hover */
+                color: white; /* Icon color on hover */
+                border-color: white; /* Border color on hover */
+            }
+
+            .trailer-button:hover .trailer-icon {
+                fill: white; /* Change icon color on hover */
+            }
+
+            .content {
+                background: radial-gradient(circle, rgb(4 4 4 / 10%) 0%, rgb(35 46 36 / 80%) 0%);
+                display: flex;
+                align-items: center;
+                align-items: flex-start;
+            }
+
+
+
         </style>
     </head>
-
     <body>
-
-
-
         <!--  phan noi dung phim :  -->
         <div class="content">
             <div class="container">
@@ -53,19 +115,19 @@
                         <!-- rating :  -->
                         <div class="mgt12">
                             <span class="clWhite">
-                                <i class="fa fa-star" aria-hidden="true"></i>
+                                <i>⭐ </i>
                                 ${movie.rating}
                             </span>
                         </div>
                         <!-- noi dung :  -->
-                        <h6 class="clWhite fw-700">Noi Dung</h6>
+                        <h6 class="clWhite fw-700">Nội Dung</h6>
                         <div class="content-sumary">
                             ${ movie.synopsis != null ? movie.synopsis : "N/A"}
                         </div>
                         <!-- nhung cai li ti :  -->
                         <div class="liti">
                             <div class="inline-block tliti-date">
-                                <div class="  fs-14 clXam">Ngay chieu</div>
+                                <div class="  fs-14 clXam">Ngày Chiếu</div>
                                 <div class="clWhite fw-700"> ${movie.datePublished}</div>
                             </div>
                             <div class="inline-block tliti-type">
@@ -74,16 +136,23 @@
 
                             </div>
                             <div class="inline-block titi-country">
-                                <div class=" fs-14 clXam">Quoc gia</div>
+                                <div class=" fs-14 clXam">Quốc Gia</div>
                                 <div class="clWhite  fw-700">${movie.country}</div>
 
                             </div>
                         </div>
 
                         <!-- phan xem trailer , xem review :  -->
-                        <div class="trailer-part">
-                            <span class="clWhite trailer-view js-trailer">
-                                <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                        <div class="trailer-part d-flex align-items-center">
+                            <span class="clWhite trailer-view js-trailer d-flex align-items-center" style="margin-right: 16px;">
+                                <div class="trailer-button h-6 w-6 rounded-full border-2 border-pink-600 text-white/80" style="margin-right: 8px;">
+                                    <svg class="trailer-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px;">
+                                    <g fill="none" fill-rule="evenodd">
+                                    <path d="M34.667 24.335c0 .515-.529.885-.529.885l-14.84 9.133c-1.08.704-1.965.182-1.965-1.153V15.467c0-1.338.884-1.856 1.968-1.153L34.14 23.45c-.002 0 .527.37.527.885Z" fill="currentColor" fill-rule="nonzero"></path>
+                                    </g>
+                                    </svg>
+                                </div>
+
                                 Xem trailer
                             </span>
 
@@ -91,7 +160,8 @@
                                 <span class="clWhite">
                                     <i class="fa fa-comments" aria-hidden="true"></i>
                                     Xem review
-                                </span></a>
+                                </span>
+                            </a>
                         </div>
 
 
@@ -113,7 +183,7 @@
 
                     <!-- Khai code phan review phim :  -->
                     <div id="review">
-                        <h3 class="review-heading">Binh luan tu nguoi xem</h3>
+                        <h3 class="review-heading">Bình luận từ người xem</h3>
 
 
                         <c:choose>
@@ -153,8 +223,7 @@
 
                 <!-- Phan danh sach phim dang chieu :  -->
                 <div class="list-active-films col-4">
-                    <h3 class="pdc">Phim dang chieu </h3>
-
+                    <h3 class="pdc">Phim đang chiếu </h3>
 
 
 
@@ -169,13 +238,11 @@
                                     </a>
                                 </div>
                                 <div class="active-film-desc col-8">
-                                    <p class="active-film-btn">${item.getCountry()}</p>
                                     <p class="active-film-desc">${item.getTitle()}</p>
-                                    <p class="active-film-type">${item.getGenresAsString()}</p>
-                                    <span class="active-film-rate">
-                                        <i class="fa fa-star"></i>
-                                        ${item.getRating()}
-                                    </span>
+                                    <p class="active-film-type">Genre: Kinh dị</p>
+                                    <p class="active-film-rate">
+                                        <i>⭐ </i>${item.getRating()}
+                                    </p>
                                 </div>
                             </div>
                         </c:forEach>
@@ -220,7 +287,7 @@
                         <span class="modal-desc-content-type"> ${genreString}</span>
 
                         <div class="modal-desc-content-detail">  ${movie.synopsis}</div>
-                        <button class="modal-desc-book">Đat ve</button>
+                        <button class="modal-desc-book">Đặt vé</button>
                         <button class="modal-desc-close js-trailer-close">Đóng</button>
                     </div>
                 </div>

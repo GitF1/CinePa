@@ -105,7 +105,18 @@ public class OverviewGraphServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            //        processRequest(request, response);
+            graphDAO.getTotalSalesValueLast7Days();
+            for (SalesData sd : graphDAO.getTotalSalesValueLast7Days()) {
+                System.out.println(sd);
+            }
+            request.setAttribute("sales7Day", graphDAO.getTotalSalesValueLast7Days());
+            request.getRequestDispatcher(route.ADMIN).forward(request, response);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(OverviewGraphServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
