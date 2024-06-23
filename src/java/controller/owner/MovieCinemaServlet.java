@@ -4,7 +4,8 @@
  */
 package controller.owner;
 
-import DAO.CinemaChainDAO;
+import DAO.MovieCinemaDAO;
+import DAO.MovieDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,29 +13,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.Movie;
+import model.MovieCinema;
 import util.RouterJSP;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.CinemaChain;
 
 /**
  *
  * @author VINHNQ
  */
-@WebServlet(name = "HomePageOwnerServlet", urlPatterns = {"/owner"})
-public class HomePageOwnerServlet extends HttpServlet {
+@WebServlet(name = "MovieCinemaServlet", urlPatterns = {"/owner/movieCinema"})
+public class MovieCinemaServlet extends HttpServlet {
+    RouterJSP router = new RouterJSP();
 
-    private RouterJSP router = new RouterJSP();
-    private CinemaChainDAO cinemaChainDAO;
+    private MovieCinemaDAO movieCinemaDAO;
+    private MovieDAO movieDAO;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init();
-            this.cinemaChainDAO = new CinemaChainDAO(getServletContext());
+            movieCinemaDAO = new MovieCinemaDAO(getServletContext());
+            movieDAO = new MovieDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(HomePageOwnerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException(ex);
         }
     }
 
@@ -46,10 +48,10 @@ public class HomePageOwnerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageOwnerServlet</title>");
+            out.println("<title>Servlet MovieCinemaServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageOwnerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet MovieCinemaServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,25 +60,26 @@ public class HomePageOwnerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
+         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        List<Movie> movies = movieDAO.getAllMovie(); // Ensure this method returns all necessary details
+        List<MovieCinema> movieCinemas = movieCinemaDAO.getMoviesByCinemaID(cinemaID);
 
-        if (userID == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-        request.setAttribute("cinemaChain", cinemaChain);
-
-        request.getRequestDispatcher(router.HOME_OWNER).forward(request, response);
-      
+        request.setAttribute("movies", movies);
+        request.setAttribute("movieCinemas", movieCinemas);
+        request.setAttribute("cinemaID", cinemaID);
+        request.getRequestDispatcher(router.MOVIECINEMA).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        int movieID = Integer.parseInt(request.getParameter("movieID"));
+        String status = request.getParameter("status");
+
+        movieCinemaDAO.addMovieToCinema(movieID, cinemaID, status);
+
+        response.sendRedirect("movieCinema?cinemaID=" + cinemaID);
     }
 
     @Override

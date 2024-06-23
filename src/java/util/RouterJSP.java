@@ -31,6 +31,8 @@ public class RouterJSP {
 
     public String USER = "/page/landingPage/LandingPage.jsp";//templatefor testing login by role
 
+    public String CINEMA_CHAIN_ITEM = "/page/cinemaChain/CinemaDetail.jsp";//templatefor testing login by role
+
     public String STAFF = "/page/staff/Staff.jsp";//templatefor testing login by role
 
     public String ADMIN = "/page/admin/AdminPage.jsp";//templatefor testing login by role
@@ -46,54 +48,57 @@ public class RouterJSP {
     public String MOVIE_LIST = "page/movie/MovieListComponents.jsp";
 
     public String MOVIE_Genre = "page/movie/FilterMovie.jsp";
-    
+
     public String MOVIE_SHOW = "page/movie/MovieShow.jsp";
 
-
     public static String RETURN_TRACSACTION_BOOKING_TICKET = "/page/payment/vnpay/vnpay_return.jsp";
-        
+
     public String LIST_CINEMACHAIN = "/page/admin/rooms/ListCinemaChain.jsp";
 
-    public String LIST_CINEMA= "/page/admin/rooms/ListCinema.jsp";
+    public String LIST_CINEMA = "/page/admin/rooms/ListCinema.jsp";
 
     public String ADD_ROOM = "/page/owner/manage/CreateRoom.jsp";
-    
+
     public String ROOM_OWNER = "/page/owner/manage/Rooms.jsp";
-    
+
     public String UPDATE_ROOM = "/page/owner/manage/UpdateRoom.jsp";
-    
+
     public String HOME_OWNER = "/page/owner/manage/HomeOwner.jsp"; // Update this path accordingly
 
     public String CREATE_CINEMACHAIN = "/page/owner/manage/CreateCinemaChain.jsp";
 
     public String CINEMACHAIN = "/page/owner/manage/CinemaChain.jsp";
-    
-    public String CREATE_CINEMA ="/page/owner/manage/CreateCinemas.jsp";
 
-    public String CINEMAS ="/page/owner/manage/Cinemas.jsp";
+    public String MOVIECINEMA = "/page/owner/manage/MovieCinema.jsp";
+
+    public String CREATE_CINEMA = "/page/owner/manage/CreateCinemas.jsp";
+
+    public String CINEMAS = "/page/owner/manage/Cinemas.jsp";
 
     public static String VIEW_ORDER = "/page/bill/Bill.index.jsp";
-    
-    public static String SCHEDULE_MOVIE ="/page/movie/schedule/ScheduleMovie.jsp";
-    
-    public String UPDATE_CINEMACHAIN ="/page/owner/manage/UpdateCinemaChain.jsp";
-    
-    public String UPDATE_CINEMA="/page/owner/manage/UpdateCinemas.jsp";
-    
+
+    public static String SCHEDULE_MOVIE = "/page/movie/schedule/ScheduleMovie.jsp";
+
+    public String UPDATE_CINEMACHAIN = "/page/owner/manage/UpdateCinemaChain.jsp";
+
+    public String UPDATE_BANNER = "/page/owner/manage/UpdateBanner.jsp";
+
+    public String UPDATE_CINEMA = "/page/owner/manage/UpdateCinemas.jsp";
+
     public String Room_Admin = "/page/admin/rooms/Room-Admin.jsp";
 
     public String UPDATE_MOVIE_LIST = "/page/admin/ListMovieAdmin.jsp";
-    
+
     public String UPDATE_MOVIE = "/page/admin/EditMovieForm.jsp";
-    
+
     public String SALES_REPORT = "/page/admin/Report.jsp";
-    
+
     public static String DISPLAY_CINEMA_CHAINS = "/page/cinema/DisplayCinemaChains.jsp";
 
     public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";
-    
+
     public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
-    
+
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 
 }

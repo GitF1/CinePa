@@ -113,9 +113,12 @@
                             <!-- Add more details if needed -->
                         </div>
                         <div class="card-footer">
-                            <a href="${pageContext.request.contextPath}/owner/createCinema?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-primary">Create Cinema</a>
-                            <a href="${pageContext.request.contextPath}/owner/updateCinemaChain?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-warning">Update </a>
-                            <a href="${pageContext.request.contextPath}/owner/cinemas?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-secondary">View Cinemas</a>
+                            <div class="card-footer">
+                                <a href="${pageContext.request.contextPath}/owner/createCinema?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-primary">Create Cinema</a>
+                                <a href="${pageContext.request.contextPath}/owner/updateCinemaChain?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-warning">Update </a>
+                                <a href="${pageContext.request.contextPath}/owner/cinemas?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-secondary">View Cinemas</a>
+                            </div>
+
                         </div>
                     </div>
                 </c:when>
