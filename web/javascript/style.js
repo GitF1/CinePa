@@ -20,3 +20,7 @@ function callServlet(id, url, methodType) {
     document.getElementById(id).method = methodType;
     document.getElementById(id).submit();
 }
+
+function testStyleJS() {
+    console.log("Call testStyleJS()");
+}

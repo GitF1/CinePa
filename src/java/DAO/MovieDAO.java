@@ -132,29 +132,28 @@ public class MovieDAO extends SQLServerConnect {
                 + "FROM Review "
                 + "JOIN [User] ON Review.UserID = [User].UserID "
                 + "WHERE Review.MovieID = ?";
-
+                
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, movieID);
-
             // Thực thi truy vấn và lấy kết quả
             ResultSet resultSet = preparedStatement.executeQuery();
-
             // Lặp qua các kết quả và tạo đối tượng Review cho mỗi kết quả
             while (resultSet.next()) {
-                int reviewID = resultSet.getInt("ReviewID");
+//                int reviewID = 1; //resultSet.getInt("ReviewID"); please change again!
                 int userID = resultSet.getInt("UserID");
                 int rating = resultSet.getInt("Rating");
                 Date timeCreated = resultSet.getTimestamp("TimeCreated");
                 String content = resultSet.getString("Content");
                 String userAvatarLink = resultSet.getString("AvatarLink");
                 String username = resultSet.getString("Username");
-
+                
                 // Tạo đối tượng Review và thêm vào danh sách
-                Review review = new Review(reviewID, userID, movieID, rating, timeCreated, content, userAvatarLink, username);
+                Review review = new Review(userID, movieID, rating, timeCreated, content, userAvatarLink, username);
                 reviews.add(review);
             }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

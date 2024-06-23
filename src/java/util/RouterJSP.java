@@ -96,4 +96,7 @@ public class RouterJSP {
     
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 
+    public static String FAVOURITE_MOVIE_PAGE = "/page/movie/favouriteMovies/FavouriteMovies.jsp";
+    
+    public static String REVIEW_MOVIE_PAGE = "/page/movie/reviewMovie/ReviewMovie.jsp";
 }
