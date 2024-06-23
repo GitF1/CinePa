@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import service.UserServiceInteface;
 import util.RouterJSP;
 import model.User;
-import service.SendEmail;
+import service.EmailService;
 import service.UserServiceImpl;
 import util.Util;
 import util.Validation;
@@ -136,7 +136,7 @@ public class RegisterServlet extends HttpServlet {
         }
 
         // Send verification email
-        SendEmail sm = new SendEmail();
+        EmailService sm = new EmailService();
         String code = Util.getRanDom();
 
         User user = new User(fullName, username, email, code);

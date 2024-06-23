@@ -4,6 +4,7 @@
  */
 package controller;
 
+import DAO.confirm.ConfirmDAO;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -17,6 +18,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import service.EmailService;
+import util.Util;
 
 /**
  *
@@ -24,6 +29,19 @@ import java.io.OutputStream;
  */
 @WebServlet(name = "GenerateQR", urlPatterns = {"/generate/QR"})
 public class GenerateQR extends HttpServlet {
+
+    ConfirmDAO confirmDAO;
+
+    @Override
+    public void init() throws ServletException {
+
+        try {
+            super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            confirmDAO = new ConfirmDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(GenerateQR.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,34 +70,7 @@ public class GenerateQR extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Retrieve email, phone, item-id, and user-id from the request
-        String orderId = request.getParameter("order-id");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String itemId = request.getParameter("item-id");
-        String userId = request.getParameter("user-id");
-
-        // Validate parameters
-        if (orderId == null || email == null || phone == null || itemId == null || userId == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing email, phone, item-id, or user-id");
-            return;
-        }
-
-        // Construct the QR code data
-        String qrCodeText = "http://localhost:8080/movie/order/view?" + "orderID=" + orderId + "email=" + email + "&phone=" + phone + "&item-id=" + itemId + "&user-id=" + userId;
-        int size = 250;
-        String fileType = "png";
-        response.setContentType("image/png");
-        OutputStream outputStream = response.getOutputStream();
-        try {
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size);
-            MatrixToImageWriter.writeToStream(bitMatrix, fileType, outputStream);
-        } catch (WriterException e) {
-            throw new ServletException(e);
-        } finally {
-            outputStream.close();
-        }
+        
     }
 
     /**

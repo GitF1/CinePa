@@ -6,10 +6,8 @@ package util;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -43,14 +41,6 @@ public class FileUploader {
 
         result = (String) uploadResult.get("secure_url");
         return result;
-    }
-
-    public static void main(String[] args) throws IOException {
-        FileUploader fu = new FileUploader();
-//        File tempFile = new File("/Demo.jpg");
-//        URL path = FileUploader.class.getResource("Demo.jpg");
-//        File f = new File(path.getFile());
-//        fu.uploadAndReturnUrl(f, "check", "user");
     }
 
 }

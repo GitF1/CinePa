@@ -26,6 +26,7 @@ import model.booking.Bill;
 import model.booking.CanteenItemOrder;
 import model.movie.MovieInfo;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -33,12 +34,12 @@ import util.RouterJSP;
  */
 @WebServlet(name = "BillServlet", urlPatterns = {"/order/view"})
 public class BillServlet extends HttpServlet {
-    
+
     OrderDAO orderDAO;
     MovieDAO movieDAO;
     CinemaDAO cinemaDAO;
     CinemaChainDAO cinemaChainDAO;
-    
+
     @Override
     public void init() throws ServletException {
         super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
@@ -90,9 +91,17 @@ public class BillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
-        int userID = 1;//(int) session.getAttribute("userID")
+        Integer userID = (int) session.getAttribute("userID");
+        
+        if (userID == null) {
+            response.sendRedirect(RouterURL.LOGIN);
+            return;
+        }
+        
         List<Bill> orders = orderDAO.getListOrderTicket(userID);
+        
         request.setAttribute("orders", orders);
         request.setAttribute("viewDetail", false);
         request.getRequestDispatcher(RouterJSP.VIEW_ORDER).forward(request, response);
@@ -110,40 +119,36 @@ public class BillServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            
+
             String orderID = request.getParameter("orderID");
-            String movieSlotID = request.getParameter("movieSlotID");
             String movieID = request.getParameter("movieID");
-            
+
             System.out.println("orderID" + orderID);
-            System.out.println("movieSlotID" + movieSlotID);
+
             System.out.println("movieID" + movieID);
-            if (orderID == null || movieSlotID == null || movieID == null) {
+            if (orderID == null || movieID == null) {
                 System.err.println("null prameter");
                 return;
             }
             List<Seat> seats = orderDAO.getSeatsByOrderID(Integer.parseInt(orderID));
             List<CanteenItemOrder> canteenItems = orderDAO.getCanteenItemsByOrderID(Integer.parseInt(orderID));
-            System.out.println("canteen items: "+ canteenItems);
+            System.out.println("canteen items: " + canteenItems);
             MovieInfo movieInfor = movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID));
             int cinemaID = movieInfor.getCinemaID();
             Cinema cinema = cinemaDAO.getCinemaByID(cinemaID);
-            
+
             CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByID(cinema.getCinemaChainID());
-            
+
             System.out.println("seats" + seats);
-            
+
             request.setAttribute("canteenItems", canteenItems);
             request.setAttribute("seats", seats);
             request.setAttribute("movieInfor", movieInfor);
-            request.setAttribute("movieInfor", movieInfor);
             request.setAttribute("cinema", cinema);
             request.setAttribute("cinemaChain", cinemaChain);
-            request.setAttribute("viewDetail", true);
-            
-        
+
             request.getRequestDispatcher("/page/bill/OrderDetail.jsp").forward(request, response);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(BillServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

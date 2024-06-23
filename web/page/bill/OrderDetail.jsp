@@ -12,6 +12,7 @@
 
     </head>
     <body>
+         <jsp:include page=".././landingPage/Header.jsp" />
         <div class="container">
             <div class="header">
                 <h1>Ticket Details</h1>
