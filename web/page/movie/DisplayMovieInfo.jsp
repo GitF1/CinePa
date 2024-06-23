@@ -239,7 +239,7 @@
                                 </div>
                                 <div class="active-film-desc col-8">
                                     <p class="active-film-desc">${item.getTitle()}</p>
-                                    <p class="active-film-type">Genre: Kinh dị</p>
+                                    <p class="active-film-type">${item.getGenresAsString()}</p>
                                     <p class="active-film-rate">
                                         <i>⭐ </i>${item.getRating()}
                                     </p>

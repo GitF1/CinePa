@@ -28,5 +28,16 @@ public class RegisterOwnerDAO extends SQLServerConnect {
         }
         return status;
     }
-}
 
+    public void addRegisterOwner(int userID) {
+        String sql = "INSERT INTO RegisterOwner (UserID, Status) VALUES (?, ?)";
+        try (
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userID);
+            statement.setString(2, "Waiting");
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+    }
+}

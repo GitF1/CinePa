@@ -237,6 +237,8 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/information">View Profile</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/order/view">View Ordered</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/CheckRegisterOwnerServlet">Register Owner</a></li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
                             </ul>

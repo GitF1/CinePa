@@ -43,7 +43,7 @@
                                 hàng.
                             </li>
                         </ol>
-                        <a class="btn btn-primary text-center d-block mx-auto text-white" href="/movie/NewServlet">Đồng ý và tiếp tục</a>
+                        <a class="btn btn-primary text-center d-block mx-auto text-white" href="${pageContext.request.contextPath}/RegisterOwnerServlet">Đồng ý và tiếp tục</a>
                     </div>
 
                 </div>

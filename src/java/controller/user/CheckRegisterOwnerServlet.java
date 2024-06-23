@@ -1,31 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package controller.user;
 
 import DAO.RegisterOwnerDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author FPTSHOP
- */
+
 @WebServlet(name = "CheckRegisterOwnerServlet", urlPatterns = {"/CheckRegisterOwnerServlet"})
 public class CheckRegisterOwnerServlet extends HttpServlet {
 
     RegisterOwnerDAO registerOwnerDAO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() throws jakarta.servlet.ServletException {
         super.init();
         try {
             registerOwnerDAO = new RegisterOwnerDAO((ServletContext) getServletContext());
@@ -39,14 +33,25 @@ public class CheckRegisterOwnerServlet extends HttpServlet {
 
         // lay userID tu session : 
         HttpSession session = (HttpSession) request.getSession();
-        String id = (String) session.getAttribute("userID");
+        int id = (int) session.getAttribute("userID");
 
         // lay Status theo id : 
-        String status = registerOwnerDAO.checkRegisterOwner(id);
+        String status = registerOwnerDAO.checkRegisterOwner(String.valueOf(id));
 
         // kiem tra Status la : null , Waiting , Reject : 
         if (status == null) {
-            response.sendRedirect(request.getContextPath() + "/RegisterOwnerServlet");
+            request.getRequestDispatcher("/page/user/RegisterOwner.jsp").forward(request, response);
+        }
+        // neu la Waiting : 
+        if (status.equalsIgnoreCase("Waiting")) {
+            // chuyen den trang thong bao la da yeu cau lam Owner thanh cong : 
+            request.getRequestDispatcher("/page/user/WaitingRegisterOwner.jsp").forward(request, response);
+        }
+        // neu la Reject : 
+        if(status.equalsIgnoreCase("Reject")){
+            // chuyen den trang Reject : 
+                        request.getRequestDispatcher("/page/user/RejectRegisterOwner.jsp").forward(request, response);
+
         }
 
     }

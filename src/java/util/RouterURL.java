@@ -31,5 +31,7 @@ public class RouterURL {
     public static String OWNER_PAGE = "/movie/owner";
     
     public static String SEARCH_MOVIE = "/movie/searchmovie";
+    
+    public static String REGISTER_OWNER = "/movie/RegisterOwnerServlet";
 
 }
