@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             .movie-style_frame iframe{
-
                 width:  100% !important;
             }
 
@@ -87,7 +86,126 @@
                 align-items: flex-start;
             }
 
+            .review-container {
+                width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 16px;
+                margin: 16px;
+                margin-left: 0;
+                font-family: Arial, sans-serif;
+                /*background-color: white;*/
+            }
+            .user-info {
+                display: flex;
+                align-items: center;
+            }
+            .avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-right: 16px;
+            }
+            .avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .user-name {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .rating {
+                margin-top: 8px;
+            }
+            .comment {
+                margin-top: 16px;
+                margin-left: 6px;
+                font-size: 14px;
+            }
 
+            #movie-rating-div {
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                font-family: Arial, sans-serif;
+            }
+
+            #movie-rating-strong {
+                font-size: 32px;
+            }
+
+            #movie-rating-div img {
+                vertical-align: middle;
+                margin-right: 5px;
+            }
+
+            #total-rating-div {
+                margin-top: 10px;
+            }
+
+            #write-review-button {
+                margin-left: 59%;
+                padding: 10px 20px;
+                background-color: rgb(216, 45, 139);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            /* User muốn viết feedback */
+            .ratingMovieContainer {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+            }
+
+            .rating-container {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .button-star {
+                border: none;
+                background-color: #f8f8f8;
+                cursor: pointer;
+                margin: 0 5px;
+            }
+
+            .review-container-2 {
+                margin-top: 20px;
+            }
+
+            textarea {
+                width: 100%;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 18px;
+                resize: none;
+                font-family: 'Times New Roman', Times, serif;
+                margin: 0;
+            }
+
+            #submitReviewMovieButton {
+                padding: 10px 20px;
+                background-color: rgb(216, 45, 139);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            .submit-container {
+                text-align: center; margin-top: 20px;
+            }
 
         </style>
     </head>
@@ -132,7 +250,7 @@
                             </div>
                             <div class="inline-block tliti-type">
                                 <div class=" fs-14 clXam  xxx">Thể Loại</div>
-                                <div class="clWhite  fw-700">${genreString} </div>
+                                <div class="clWhite fw-700">${genreString} </div>
 
                             </div>
                             <div class="inline-block titi-country">
@@ -156,12 +274,51 @@
                                 Xem trailer
                             </span>
 
-                            <a href="#review" style="display: inline-block; text-decoration: none;">
+                            <a onclick="scrollToReviewSection();" style="display: inline-block; text-decoration: none; cursor: pointer;">
                                 <span class="clWhite">
                                     <i class="fa fa-comments" aria-hidden="true"></i>
                                     Xem review
                                 </span>
                             </a>
+                            
+                            <c:if test="${not empty sessionScope.userID}">
+                                <c:set var="isFavoritedMovie" value="${requestScope.isFavoritedMovie}"></c:set>
+                                <c:if test="${isFavoritedMovie == false}">
+                                    <form id="addToFavoriteForm">
+                                    <input type="hidden" name="isAddingToFavorite" value="true"/>
+                                    <input type="hidden" id="favoritedAtInput" name="favoritedAt"/>
+                                    <a onclick="addToFavorite();" style="display: inline-block; text-decoration: none; cursor: pointer; margin-left: -25px;">
+                                        <span class="clWhite">
+                                            <img src="assets/images/add-to-favorites.png"></img>
+                                            Thêm vào yêu thích
+                                        </span>
+                                    </a>
+                                    </form>
+                                </c:if>
+                                
+                                <c:if test="${isFavoritedMovie == true}">
+                                    <form id="deleteFavoriteMovieForm">
+                                    <input type="hidden" name="deletedFavouriteMovieInput" value="${movie.movieID}"/>
+                                    <input type="hidden" name="isDeletingInMovieInfo" value="true"/>
+                                    <a onclick="deleteFavoriteMovie();" style="display: inline-block; text-decoration: none; cursor: pointer; margin-left: -25px;">
+                                        <span class="clWhite">
+                                            <img src="assets/images/delete-favorite.png"></img>
+                                            Hủy yêu thích
+                                        </span>
+                                    </a>
+                                    </form>                                    
+                                </c:if>
+
+
+                                <form id="viewFavouriteMoviesForm">
+                                <a onclick="viewFavouriteMovies();" style="display: inline-block; text-decoration: none; cursor: pointer; margin-left: -25px;">
+                                    <span class="clWhite">
+                                        <img src="assets/images/view-favourite-movies.png"></img>
+                                        Xem phim đã yêu thích
+                                    </span>
+                                </a>
+                                </form>
+                            </c:if>
                         </div>
 
 
@@ -182,44 +339,112 @@
 
 
                     <!-- Khai code phan review phim :  -->
-                    <div id="review">
-                        <h3 class="review-heading">Bình luận từ người xem</h3>
-
-
-                        <c:choose>
-                            <c:when test="${not empty listReviewsdd}">
-                                <c:forEach var="item" items="${listReviews}">
-                                    <div class="review-part">
-                                        <div class="review-part-img" style="background-image: url('${item.userAvatarLink}')"></div>
-                                        <div class="review-part-detail">
-                                            <p class="review-part-name">${item.username}</p>
-                                            <span class="review-part-time">${item.timeCreated}</span>
-                                            <span class="review-part-cinepa">
-                                                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                                Đã mua qua CinePa
-                                            </span>
-                                        </div>
-                                        <p class="review-part-rate">
-                                            <i class="fa fa-star pdt0"></i>
-                                            ${item.rating}
-                                        </p>
-                                        <div class="review-part-content">
-                                            ${item.content}
-                                        </div>
+                    <!--                    <div id="review">
+                                            <h3 class="review-heading">Bình luận từ người xem</h3>
+                    
+                    <!-- Comment code a Khải về review phim -->
+<!--                    <c:choose>
+                        <c:when test="${not empty listReviewsdd}">
+                            <c:forEach var="item" items="${listReviews}">
+                                <div class="review-part">
+                                    <div class="review-part-img" style="background-image: url('${item.userAvatarLink}')"></div>
+                                    <div class="review-part-detail">
+                                        <p class="review-part-name">${item.username}</p>
+                                        <span class="review-part-time">${item.timeCreated}</span>
+                                        <span class="review-part-cinepa">
+                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                            Đã mua qua CinePa
+                                        </span>
                                     </div>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <p>Không có review nào.</p>
-                            </c:otherwise>
-                        </c:choose>
+                                    <p class="review-part-rate">
+                                        <i class="fa fa-star pdt0"></i>
+                                ${item.rating}
+                            </p>
+                            <div class="review-part-content">
+                                ${item.content}
+                            </div>
+                        </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p>Không có review nào.</p>
+                        </c:otherwise>
+                    </c:choose>
+                </div>-->
 
+                    <!-- KA code phần render review phim -->
+                    <div>
+                        <c:set var="userReviews" value="${requestScope.userReviews}"></c:set>
+                            <h3 class="review-heading" id="reviewMovieHeader">Bình luận từ người xem</h3>
+                            <div id="movie-rating-div">
+                                <img id="starImage${star}" src="assets/images/yellow_star_icon.png" alt="white star"/> <strong id="movie-rating-strong">${movie.rating}</strong> <div id="total-rating-div">/10, ${userReviews.size()} đánh giá</div>
+                            </div>
+                            
+                        <c:if test="${empty userReviews}">
+                            <p>Không có review nào.</p>
+                        </c:if>
+                            
+                        <form id="ratingMovieContainer" class="ratingMovieContainer" action="/movie/reviewmovie" method="post">
+                            <input type="hidden" name="isSendingFeedback" value="true"/>
+                        </form>
+                         
+                        <div class="review-container" style="margin-bottom: 80px;">
+                            <c:forEach var="entry" items="${userReviews}">
+                                <c:set var="review" value="${entry.key}"></c:set>
+                                <c:set var="user" value="${entry.value}"></c:set>
+                                <c:if test="${review.userID == userID && review.movieID == movie.movieID}">
+                                    <input type="hidden" id="haveCommented"/>
+                                    <div class="user-info">
+                                        <div class="avatar">
+                                            <img src="https://st.depositphotos.com/2001755/3622/i/450/depositphotos_36220949-stock-photo-beautiful-landscape.jpg" alt="Your Avatar">
+                                        </div>
+                                        <div class="user-name" style="color: red">Tôi</div>
+                                    </div>
+                                    <div id="movie-rating-div" style="margin-top: 10px; margin-left: 6px;">
+                                        <img id="starImage${star}" src="assets/images/yellow_star_icon.png" alt="white star" style="width: 25px;"/> <strong id="total-rating-div">${review.rating}/10</strong>
+                                    </div>
+                                    <div class="comment">
+                                        ${review.content}
+                                    </div>
+                                </c:if>
 
+                            </c:forEach>
+                        </div>
+                            
+                        <div class="review-container">
+                            <c:forEach var="entry" items="${userReviews}">
+                                <c:set var="review" value="${entry.key}"></c:set>
+                                <c:set var="user" value="${entry.value}"></c:set>
+                                <c:if test="${!(review.userID == userID && review.movieID == movie.movieID)}">
+                                    <div class="user-info">
+                                        <div class="avatar">
+                                            <img src="https://st.depositphotos.com/2001755/3622/i/450/depositphotos_36220949-stock-photo-beautiful-landscape.jpg" alt="Your Avatar">
+                                        </div>
+                                        <div class="user-name">${user.fullName}</div>
+                                    </div>
+                                    <div id="movie-rating-div" style="margin-top: 10px; margin-left: 6px;">
+                                        <img id="starImage${star}" src="assets/images/yellow_star_icon.png" alt="white star" style="width: 25px;"/> <strong id="total-rating-div">${review.rating}/10</strong>
+                                    </div>
+                                    <div class="comment">
+                                        ${review.content}
+                                    </div>
+                                    <hr>
+                                </c:if>
+
+                            </c:forEach>
+                        </div>
+
+                        <!--<div>
+                        <c:set var="listReviews" value="${requestScope.listReviews}"></c:set>
+                        <c:forEach var="review" items="${listReviews}">
+                            <div>${review}</div>
+                        </c:forEach>
+                    </div>-->
+                    <c:set var="userID" value="${sessionScope.userID}"></c:set>
                     </div>
-
-
-                </div>
-
+                </div>    
+                
+                <!-- KA xin hết -->
 
                 <!-- Phan danh sach phim dang chieu :  -->
                 <div class="list-active-films col-4">
@@ -297,9 +522,170 @@
             </div>
         </div>
 
-        <script src="page/movie/DisplayMovieInfoJS.js">
+        <script src="page/movie/DisplayMovieInfoJS.js"></script>
+        <script src="javascript/style.js"></script>
+        <script>
+            let isWritingReview = false;
+            let haveCommented = document.getElementById('haveCommented') === null ? false : true;
+            
+            const ratingMovieContainer = document.getElementById('ratingMovieContainer');
+            const userID = ${userID};
+            const movieID = ${movie.movieID};
+            const canReview = ${requestScope.canReview};
+            console.log(userID + ' ' + movieID + ' ' + canReview);
+            if(!(userID === '' || canReview === false || haveCommented === true)) {
+                const movieRatingDiv = document.getElementById('movie-rating-div');
+                const writeReviewButton = document.createElement('button');
+                writeReviewButton.id = 'write-review-button';
+                writeReviewButton.onclick = () => goWriteReview();
+                writeReviewButton.innerText = 'Viết bình luận';
+                movieRatingDiv.appendChild(writeReviewButton);
+            }
+            function goWriteReview() {
+                if(isWritingReview) {
+                    isWritingReview = false;
+                    ratingMovieContainer.innerHTML = '';
+                    return;
+                }
+                
+                isWritingReview = true;
+                
+                const ratingContainer = document.createElement('div');
+                ratingContainer.classList.add('rating-container');
+                for(let star = 1; star <= 10; ++star) {
+                    const starButton = document.createElement('button');
+                    starButton.id = 'starButton' + star;
+                    starButton.classList.add('button-star');
+                    starButton.type = 'button';
+                    starButton.onclick = () => rateMovie(star);
+                    
+                    const starImage = document.createElement('img');
+                    starImage.id = 'starImage' + star;
+                    starImage.src = 'assets/images/white_star_icon.png';
+                    starImage.alt = 'white star';
+                    
+                    starButton.appendChild(starImage);
+                    ratingContainer.appendChild(starButton);
+                }
+                
+                const reviewContainer = document.createElement('div');
+                reviewContainer.classList.add('review-container-2');
+                
+                const reviewTextArea = document.createElement('textarea');
+                reviewTextArea.id = 'reviewTextArea';
+                reviewTextArea.name = 'reviewText';
+                reviewTextArea.rows = 3;
+                reviewTextArea.required = true;
+                
+                reviewContainer.appendChild(reviewTextArea);
+                
+                const submitContainer = document.createElement('div');
+                submitContainer.classList.add('submit-container');
 
+                const submitButton = document.createElement('button');
+                submitButton.id = 'submitReviewMovieButton';
+                submitButton.type = 'button';
+                submitButton.onclick = () => sendFeedback();
+                submitButton.textContent = 'Gửi đánh giá';
+                submitContainer.appendChild(submitButton);
+                
+                const starOutput = document.createElement('input');
+                starOutput.type = 'hidden';
+                starOutput.id = 'starOutput';
+                starOutput.name = 'starOutput';
+                
+                const timeCreatedOutput = document.createElement('input');
+                timeCreatedOutput.type = 'hidden';
+                timeCreatedOutput.id = 'timeCreatedOutput';
+                timeCreatedOutput.name = 'timeCreatedOutput';
 
+                ratingMovieContainer.appendChild(ratingContainer);
+                ratingMovieContainer.appendChild(reviewContainer);
+                ratingMovieContainer.appendChild(submitContainer);
+                ratingMovieContainer.appendChild(starOutput);
+                ratingMovieContainer.appendChild(timeCreatedOutput);
+            }
+
+            function rateMovie(star) {
+                const starImage = document.getElementById('starImage' + star);
+                if (starImage.src.includes("white_star_icon.png")) {
+                    for (let i = 1; i <= star; ++i) {
+                        document.getElementById('starImage' + i).src = "assets/images/yellow_star_icon.png";
+                    }
+                } else {
+                    for (let i = 1; i <= 10; ++i) {
+                        document.getElementById('starImage' + i).src = "assets/images/white_star_icon.png";
+                    }
+                }
+                document.getElementById('starOutput').value = star;
+            }
+
+            function voteMovie(star, src) {
+                for (let i = 1; i <= star; ++i) {
+                    document.getElementById('starButton' + i).innerHTML = '';
+                    const starImage = document.createElement('img');
+                    starImage.src = src;
+                    document.getElementById('starButton' + i).append(starImage);
+                }
+            }
+
+            function sendFeedback() {
+                let review = document.getElementById('reviewTextArea');
+                let reviewContent = review.value;
+                let starBtn = document.getElementById('starOutput');
+                let rating = starBtn.value;
+                if (rating === '') {
+                    alert("Hãy chọn sao trước khi gửi đánh giá!");
+                    return;
+                }
+                
+                if(reviewContent === '') {
+                    alert("Hãy viết bình luận trước khi gửi!");
+                    return;
+                }
+                
+                let timeCreatedOutput = document.getElementById('timeCreatedOutput');
+                timeCreatedOutput.value = getCurrentDateTime();
+                
+                callServlet('ratingMovieContainer', 'HandleDisplayMovieInfo?movieID=' + movieID, 'POST');
+            }
+            
+            
+            function getCurrentDateTime() {
+                const now = new Date();
+
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); 
+                const day = String(now.getDate()).padStart(2, '0');
+
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+                return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
+            }
+
+            function scrollToReviewSection() {
+                document.getElementById('reviewMovieHeader').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+            
+            function addToFavorite() {
+                let favoritedAtInput = document.getElementById('favoritedAtInput');
+                favoritedAtInput.value = getCurrentDateTime();
+                
+                callServlet('addToFavoriteForm', 'HandleDisplayMovieInfo?movieID=' + movieID, 'POST');
+            }
+            
+            function deleteFavoriteMovie() {
+                callServlet('deleteFavoriteMovieForm', 'myfavouritemovie', 'POST');
+            }
+            
+            function viewFavouriteMovies() {
+                callServlet('viewFavouriteMoviesForm', 'myfavouritemovie', 'GET');
+            }
         </script>
     </body>
 </html>

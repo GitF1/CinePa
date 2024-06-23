@@ -105,4 +105,7 @@ public class RouterJSP {
     
     public static String OWNER_STATISTIC_MOVIE_PAGE ="/page/owner/dashboard/movie/MovieStatistic.jsp";
 
+    public static String FAVOURITE_MOVIE_PAGE = "/page/movie/favouriteMovies/FavouriteMovies.jsp";
+    
+    public static String REVIEW_MOVIE_PAGE = "/page/movie/reviewMovie/ReviewMovie.jsp";
 }
