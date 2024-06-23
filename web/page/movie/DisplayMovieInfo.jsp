@@ -70,7 +70,7 @@
                             </div>
                             <div class="inline-block tliti-type">
                                 <div class=" fs-14 clXam  xxx">The loai</div>
-                                <div class="clWhite  fw-700">${genreString} </div>
+                                <div class="clWhite  fw-700">${movie.getGenresAsString()} </div>
 
                             </div>
                             <div class="inline-block titi-country">
@@ -171,7 +171,7 @@
                                 <div class="active-film-desc col-8">
                                     <p class="active-film-btn">${item.getCountry()}</p>
                                     <p class="active-film-desc">${item.getTitle()}</p>
-                                    <p class="active-film-type">khinh di</p>
+                                    <p class="active-film-type">${item.getGenresAsString()}</p>
                                     <span class="active-film-rate">
                                         <i class="fa fa-star"></i>
                                         ${item.getRating()}

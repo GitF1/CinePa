@@ -40,6 +40,10 @@ public class MovieInfo  {
         this.linkTrailer = linkTrailer;
         this.genres = genres;
     }
+    // lay ra chuoi cac the loai : 
+     public String getGenresAsString() {
+        return String.join(", ", genres);
+    }
     
     
    

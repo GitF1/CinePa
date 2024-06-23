@@ -83,7 +83,8 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>       
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/page/user/RegisterOwner.jsp">Đăng kí chủ rạp </a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Đăng Xuất </a></li>
                                 </ul>
@@ -91,7 +92,7 @@
                         </ul>
                     </c:when>
                     <c:otherwise>
-                       <ul class="navbar-nav ms-auto mb-2 me-lg-5">
+                        <ul class="navbar-nav ms-auto mb-2 me-lg-5">
                             <li class="nav-item dropdown">
                                 <a type="button" href="${pageContext.request.contextPath}/login" class="btn btn-primary">Đăng nhập</a>
                             </li>
