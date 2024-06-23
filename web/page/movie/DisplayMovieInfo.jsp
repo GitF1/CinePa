@@ -250,7 +250,7 @@
                             </div>
                             <div class="inline-block tliti-type">
                                 <div class=" fs-14 clXam  xxx">Thể Loại</div>
-                                <div class="clWhite  fw-700">${genreString} </div>
+                                <div class="clWhite fw-700">${genreString} </div>
 
                             </div>
                             <div class="inline-block titi-country">
@@ -379,6 +379,10 @@
                             <div id="movie-rating-div">
                                 <img id="starImage${star}" src="assets/images/yellow_star_icon.png" alt="white star"/> <strong id="movie-rating-strong">${movie.rating}</strong> <div id="total-rating-div">/10, ${userReviews.size()} đánh giá</div>
                             </div>
+                            
+                        <c:if test="${empty userReviews}">
+                            <p>Không có review nào.</p>
+                        </c:if>
                             
                         <form id="ratingMovieContainer" class="ratingMovieContainer" action="/movie/reviewmovie" method="post">
                             <input type="hidden" name="isSendingFeedback" value="true"/>
@@ -525,10 +529,10 @@
             let haveCommented = document.getElementById('haveCommented') === null ? false : true;
             
             const ratingMovieContainer = document.getElementById('ratingMovieContainer');
-            const userID = "${userID}";
-            const movieID = "${movie.movieID}";
-            const canReview = "${requestScope.canReview}";
-//            console.log(userID + ' ' + movieID + ' ' + canReview);
+            const userID = ${userID};
+            const movieID = ${movie.movieID};
+            const canReview = ${requestScope.canReview};
+            console.log(userID + ' ' + movieID + ' ' + canReview);
             if(!(userID === '' || canReview === false || haveCommented === true)) {
                 const movieRatingDiv = document.getElementById('movie-rating-div');
                 const writeReviewButton = document.createElement('button');
