@@ -29,7 +29,7 @@ import util.FileUploader;
         maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )//Need to include this in servlet
 public class FileUploadDemoServlet extends HttpServlet {
-FileUploader fu ;
+    FileUploader fu ;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -94,11 +94,11 @@ FileUploader fu ;
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-String url="";
+        String url = "";
         Part filePart = request.getPart("file");
         File tempFile = File.createTempFile("upload_", "_");
         filePart.write(tempFile.getAbsolutePath());
-        url=fu.uploadAndReturnUrl(tempFile, "check", "user");
+        url = fu.uploadAndReturnUrl(tempFile, "check", "user");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
