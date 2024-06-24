@@ -8,8 +8,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="model.graph.SalesData" %>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,6 +22,7 @@
         <div>
             <canvas id="weeklySalesChart"></canvas>
         </div>
+        
         <div>
             <canvas id="monthlySalesChart"></canvas>
         </div>
@@ -30,6 +31,7 @@
             var dateArr = [];
             var valueArr = [];
             <c:forEach var="dataPoint" items='${requestScope["sales7Day"]}'>
+                
             dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
             valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
             </c:forEach>
@@ -193,6 +195,7 @@
 //          
 
         </script>
+        
         <div>
             <canvas id="myChart"></canvas>
         </div>

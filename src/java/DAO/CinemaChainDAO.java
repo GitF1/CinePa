@@ -128,7 +128,7 @@ public class CinemaChainDAO extends SQLServerConnect {
     }
 
     public void createCinemaChain(CinemaChain cinemaChain, int userId) {
-        String sqlCinemaChain = "INSERT INTO CinemaChain (Name, Information, Avatar) VALUES (?, ?, ?)";
+        String sqlCinemaChain = "INSERT INTO CinemaChain (Name, Information, Avatar, UserID) VALUES (?, ?, ?, ?)";
         String sqlManagesChain = "INSERT INTO ManagesChain (UserID, CinemaChainID) VALUES (?, ?)";
 
         try {
@@ -138,6 +138,7 @@ public class CinemaChainDAO extends SQLServerConnect {
             st1.setString(1, cinemaChain.getName());
             st1.setString(2, cinemaChain.getInformation());
             st1.setString(3, cinemaChain.getAvatar());
+            st1.setInt(4, userId);
             st1.executeUpdate();
 
             ResultSet generatedKeys = st1.getGeneratedKeys();

@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.CinemaChain;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -87,11 +88,12 @@ public class CreateCinemaChainServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
 
         if (userID == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(RouterURL.LOGIN);
             return;
         }
 
@@ -100,6 +102,7 @@ public class CreateCinemaChainServlet extends HttpServlet {
         String avatar = request.getParameter("avatar");
 
         CinemaChain existingChain = cinemaChainDAO.getCinemaChainByUserId(userID);
+
         if (existingChain == null) {
             CinemaChain cinemaChain = new CinemaChain();
             cinemaChain.setName(name);
@@ -107,7 +110,7 @@ public class CreateCinemaChainServlet extends HttpServlet {
             cinemaChain.setAvatar(avatar);
             cinemaChainDAO.createCinemaChain(cinemaChain, userID);
 
-            response.sendRedirect(request.getContextPath() + "/owner/homeOwner");
+            response.sendRedirect(RouterURL.OWNER_PAGE);
         } else {
             request.setAttribute("error", "You already have a CinemaChain.");
             request.getRequestDispatcher(router.CREATE_CINEMACHAIN).forward(request, response);

@@ -22,6 +22,7 @@ import model.User;
 import util.RouterJSP;
 import util.RouterURL;
 import java.sql.ResultSet;
+import java.util.Enumeration;
 
 /**
  *
@@ -126,7 +127,10 @@ public class LoginServlet extends HttpServlet {
 
                 session.setAttribute("userID", user.getUserID());
                 session.setAttribute("username", user.getUsername());
+                session.setAttribute("email", user.getEmail());
                 session.setAttribute("role", role);
+
+                System.out.println("role after login: " + session.getAttribute("role"));
 
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,18 +148,38 @@ public class LoginServlet extends HttpServlet {
                     }
 
                     session.setAttribute("chains", cinemaNames);
-
                     // Retrieve the originally requested URL
-                    String redirectTo = null;
-
-                    //(String) session.getAttribute("redirectTo");
+                    String redirectTo = (String) session.getAttribute("redirectTo");
                     System.out.println("redirect to: " + redirectTo);
 
                     if (redirectTo == null) {
                         response.sendRedirect(RouterURL.HOMEPAGE);
                     } else {
+                        // Reconstruct the URL with stored parameters
+                        StringBuilder redirectUrlWithParams = new StringBuilder(redirectTo);
+                        boolean firstParam = true;
+                        Enumeration<String> attributeNames = session.getAttributeNames();
+
+                        while (attributeNames.hasMoreElements()) {
+                            String attributeName = attributeNames.nextElement();
+                            if (attributeName.startsWith("param_")) {
+                                String paramName = attributeName.substring(6);
+                                String paramValue = (String) session.getAttribute(attributeName);
+
+                                if (firstParam) {
+                                    redirectUrlWithParams.append("?");
+                                    firstParam = false;
+                                } else {
+                                    redirectUrlWithParams.append("&");
+                                }
+
+                                redirectUrlWithParams.append(paramName).append("=").append(paramValue);
+                                session.removeAttribute(attributeName);
+                            }
+                        }
+
                         session.removeAttribute("redirectTo");
-                        response.sendRedirect(redirectTo);
+                        response.sendRedirect(redirectUrlWithParams.toString());
                     }
 
                 }
@@ -167,7 +191,7 @@ public class LoginServlet extends HttpServlet {
 
         } else {
             request.setAttribute("ok", ok);
-            request.getRequestDispatcher(route.LOGIN).forward(request, response);
+            request.getRequestDispatcher(RouterJSP.LOGIN).forward(request, response);
         }
     }
 

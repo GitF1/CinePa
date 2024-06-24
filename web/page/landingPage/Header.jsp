@@ -127,7 +127,6 @@
             margin-left:500px;
         }
         .icon-logo-btn{
-
             font-size: 2em;
         }
         .wrapper-navbar-header{
