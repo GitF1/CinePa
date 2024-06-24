@@ -33,6 +33,8 @@ public class RouterJSP {
 
     public String USER = "/page/landingPage/LandingPage.jsp";//templatefor testing login by role
 
+    public String CINEMA_CHAIN_ITEM = "/page/cinemaChain/CinemaDetail.jsp";//templatefor testing login by role
+
     public String STAFF = "/page/staff/Staff.jsp";//templatefor testing login by role
 
     public String ADMIN = "/page/admin/AdminPage.jsp";//templatefor testing login by role
@@ -69,6 +71,8 @@ public class RouterJSP {
 
     public String CINEMACHAIN = "/page/owner/manage/CinemaChain.jsp";
 
+    public String MOVIECINEMA = "/page/owner/manage/MovieCinema.jsp";
+
     public String CREATE_CINEMA = "/page/owner/manage/CreateCinemas.jsp";
 
     public String CINEMAS = "/page/owner/manage/Cinemas.jsp";
@@ -78,6 +82,8 @@ public class RouterJSP {
     public static String SCHEDULE_MOVIE = "/page/movie/schedule/ScheduleMovie.jsp";
 
     public String UPDATE_CINEMACHAIN = "/page/owner/manage/UpdateCinemaChain.jsp";
+
+    public String UPDATE_BANNER = "/page/owner/manage/UpdateBanner.jsp";
 
     public String UPDATE_CINEMA = "/page/owner/manage/UpdateCinemas.jsp";
 
@@ -96,6 +102,8 @@ public class RouterJSP {
     public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
 
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
+
+
     
     // URL JSP FILE FOR OWNER //
     

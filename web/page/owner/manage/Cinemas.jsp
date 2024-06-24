@@ -19,15 +19,23 @@
             .btn-primary, .btn-danger, .btn-info {
                 color: #fff;
             }
+            img {
+                vertical-align: middle;
+                border-style: none;
+                border-radius: 10px;
+            }
         </style>
         <script type="text/javascript">
             function doDelete(cinemaID) {
                 if (confirm("Are you sure to delete this cinema with id: " + cinemaID + "?")) {
-                    window.location = "deleteCinema?cinemaID=" + cinemaID + "&cinemaChainID=<%= request.getParameter("cinemaChainID") %>";
+                    window.location = "deleteCinema?cinemaID=" + cinemaID + "&cinemaChainID=<%= request.getParameter("cinemaChainID")%>";
                 }
             }
             function onSelectCinema(cinemaID) {
                 window.location.href = 'rooms?cinemaID=' + encodeURIComponent(cinemaID);
+            }
+            function viewMovies(cinemaID) {
+                window.location.href = 'movieCinema?cinemaID=' + encodeURIComponent(cinemaID);
             }
         </script>
     </head>
@@ -66,6 +74,7 @@
                                 <a href="updateCinema?cinemaID=${cinema.cinemaID}" class="btn btn-primary btn-sm">Update</a>
                                 <a href="#" onclick="doDelete('${cinema.cinemaID}')" class="btn btn-danger btn-sm">Delete</a>
                                 <a href="#" onclick="onSelectCinema('${cinema.cinemaID}')" class="btn btn-info btn-sm">View Rooms</a>
+                                <a href="#" onclick="viewMovies('${cinema.cinemaID}')" class="btn btn-success btn-sm">View Movies</a>
                             </td>
                         </tr>
                     </c:forEach>

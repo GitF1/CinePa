@@ -162,18 +162,17 @@
                         <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/movie/filter-movies">Phim chiếu</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/filter-movies">Phim chiếu</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Rạp chiếu
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <c:forEach  var="o" items="${cinemaNames}">
-                                <form action="<!--servlet here-->">
-
-                                    <li><input class="dropdown-item" type="submit" name="chain" value="<c:out value = "${o}"/>"></li>
-                                </form>
+                            <c:forEach var="cinema" items="${cinemaNames}">
+                                <li>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/cinemaItem?cinemaName=${cinema}">${cinema}</a>
+                                </li>
                             </c:forEach>
 
                         </ul>

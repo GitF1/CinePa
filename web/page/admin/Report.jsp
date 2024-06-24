@@ -36,6 +36,12 @@
             dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
             valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
             </c:forEach>
+            dateArr.forEach(function (value) {
+                console.log(value);
+            });
+            valueArr.forEach(function (value) {
+                console.log(value);
+            });
             const ctx = document.getElementById('weeklySalesChart');
             new Chart(ctx, {
 
