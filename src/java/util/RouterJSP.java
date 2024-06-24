@@ -103,9 +103,7 @@ public class RouterJSP {
 
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 
-    public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
 
-    public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
     
     // URL JSP FILE FOR OWNER //
     
