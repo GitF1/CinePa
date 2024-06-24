@@ -117,6 +117,7 @@ public class RoomDAO extends SQLServerConnect {
                 cinemaChain.setName(rs.getString("Name"));
                 cinemaChain.setInformation(rs.getString("Information"));
                 cinemaChain.setAvatar(rs.getString("Avatar"));
+                cinemaChain.setBanner(rs.getString("Banner")); // Added Banner field
                 cinemaChains.add(cinemaChain);
             }
         } catch (SQLException e) {

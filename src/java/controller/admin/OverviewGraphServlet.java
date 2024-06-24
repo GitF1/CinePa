@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.graph.SalesData;
@@ -27,6 +29,7 @@ import util.RouterJSP;
 @WebServlet(name = "OverviewGraphServlet", urlPatterns = {"/OverviewGraphServlet"})
 public class OverviewGraphServlet extends HttpServlet {
 
+    boolean directToReport = false;
     RouterJSP route = new RouterJSP();
     DAO.GraphDAO graphDAO;
 
@@ -81,17 +84,9 @@ public class OverviewGraphServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            //        processRequest(request, response);
-            graphDAO.getTotalSalesValueLast7Days();
-            for (SalesData sd : graphDAO.getTotalSalesValueLast7Days()) {
-                System.out.println(sd);
-            }
-            request.setAttribute("sales7Day", graphDAO.getTotalSalesValueLast7Days());
-            request.getRequestDispatcher(route.SALES_REPORT).forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(OverviewGraphServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        directToReport = true;
+        doPost(request, response);
+
     }
 
     /**
@@ -111,10 +106,33 @@ public class OverviewGraphServlet extends HttpServlet {
             for (SalesData sd : graphDAO.getTotalSalesValueLast7Days()) {
                 System.out.println(sd);
             }
+            System.out.println("----");
+
+            HashMap<String, ArrayList> temp = graphDAO.getSalesAndChain();
+            for (String s : temp.keySet()) {
+                ArrayList<SalesData> temparr = temp.get(s);
+                for (SalesData sd : temparr) {
+                    System.out.println(sd);
+                }
+            }
+            ArrayList<String> month = graphDAO.getMonth();
+            request.setAttribute("month", month);
             request.setAttribute("sales7Day", graphDAO.getTotalSalesValueLast7Days());
-            request.getRequestDispatcher(route.ADMIN).forward(request, response);
+
             
+            HashMap<String, ArrayList> monthlyChain=new HashMap<>();
+            monthlyChain = graphDAO.getSalesAndChain();
+            request.setAttribute("monthlyChain", monthlyChain);
+            
+            if (directToReport) {
+                directToReport = false;
+                request.getRequestDispatcher(route.SALES_REPORT).forward(request, response);
+            } else {
+                request.getRequestDispatcher(route.ADMIN).forward(request, response);
+            }
+
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(OverviewGraphServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

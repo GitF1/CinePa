@@ -122,48 +122,45 @@ public class CinemasDAO extends SQLServerConnect {
     }
 
     public void deleteCinemaAndRooms(int cinemaID) {
-    String deleteRoomsQuery = "DELETE FROM Room WHERE CinemaID = ?";
-    String deleteCinemaQuery = "DELETE FROM Cinema WHERE CinemaID = ?";
+        String deleteRoomsQuery = "DELETE FROM Room WHERE CinemaID = ?";
+        String deleteCinemaQuery = "DELETE FROM Cinema WHERE CinemaID = ?";
 
-    try (PreparedStatement deleteRoomsStatement = connection.prepareStatement(deleteRoomsQuery);
-         PreparedStatement deleteCinemaStatement = connection.prepareStatement(deleteCinemaQuery)) {
+        try (PreparedStatement deleteRoomsStatement = connection.prepareStatement(deleteRoomsQuery); PreparedStatement deleteCinemaStatement = connection.prepareStatement(deleteCinemaQuery)) {
 
-        // Disable auto-commit to start a transaction
-        connection.setAutoCommit(false);
+            // Disable auto-commit to start a transaction
+            connection.setAutoCommit(false);
 
-        // First, delete all rooms associated with the cinema
-        deleteRoomsStatement.setInt(1, cinemaID);
-        deleteRoomsStatement.executeUpdate();
+            // First, delete all rooms associated with the cinema
+            deleteRoomsStatement.setInt(1, cinemaID);
+            deleteRoomsStatement.executeUpdate();
 
-        // Now, delete the cinema
-        deleteCinemaStatement.setInt(1, cinemaID);
-        deleteCinemaStatement.executeUpdate();
+            // Now, delete the cinema
+            deleteCinemaStatement.setInt(1, cinemaID);
+            deleteCinemaStatement.executeUpdate();
 
-        // Commit the transaction
-        connection.commit();
+            // Commit the transaction
+            connection.commit();
 
-    } catch (SQLException e) {
-        // Rollback the transaction in case of an error
-        try {
-            if (connection != null) {
-                connection.rollback();
+        } catch (SQLException e) {
+            // Rollback the transaction in case of an error
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.rollback();
+                }
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
             }
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error rolling back transaction", ex);
-        }
-        LOGGER.log(Level.SEVERE, "Error deleting cinema and rooms", e);
-    } finally {
-        try {
-            if (connection != null) {
-                connection.setAutoCommit(true); // Reset auto-commit to true
-                connection.close();
+            LOGGER.log(Level.SEVERE, "Error deleting cinema and rooms", e);
+        } finally {
+            try {
+                if (connection != null && !connection.isClosed()) {
+                    connection.setAutoCommit(true); // Reset auto-commit to true
+                }
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error resetting auto-commit or closing connection", ex);
             }
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error closing connection", ex);
         }
     }
-}
-
 
     public Cinema getCinemaByID(int cinemaID) {
         Cinema cinema = null;

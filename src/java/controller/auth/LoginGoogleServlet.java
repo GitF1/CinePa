@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
@@ -68,7 +69,7 @@ public class LoginGoogleServlet extends HttpServlet {
         UserGoogleDto userGoogle = getUserInfo(accessToken);
         System.out.println(userGoogle);
         System.out.println(userGoogle.getEmail());
-        String username_email= userGoogle.getEmail();
+        String username_email = userGoogle.getEmail();
         String role = "";
         HttpSession session = request.getSession();
         User user;
@@ -77,7 +78,7 @@ public class LoginGoogleServlet extends HttpServlet {
 
             if (user == null) {
                 request.setAttribute("ok", "Tài khoản google chưa đăng ký");
-            request.getRequestDispatcher(route.LOGIN).forward(request, response);
+                request.getRequestDispatcher(route.LOGIN).forward(request, response);
                 return;
             }
 
@@ -87,6 +88,8 @@ public class LoginGoogleServlet extends HttpServlet {
 
             session.setAttribute("userID", user.getUserID());
             session.setAttribute("username", user.getUsername());
+            session.setAttribute("email", user.getEmail());
+
             session.setAttribute("role", role);
 
         } catch (SQLException ex) {
@@ -105,8 +108,39 @@ public class LoginGoogleServlet extends HttpServlet {
                 }
 
                 session.setAttribute("chains", cinemaNames);
-                //END OF TEMP CODE
-                response.sendRedirect(RouterURL.HOMEPAGE);
+                String redirectTo = (String) session.getAttribute("redirectTo");
+                System.out.println("redirect to: " + redirectTo);
+
+                if (redirectTo == null) {
+                    response.sendRedirect(RouterURL.HOMEPAGE);
+                } else {
+                    // Reconstruct the URL with stored parameters
+                    StringBuilder redirectUrlWithParams = new StringBuilder(redirectTo);
+                    boolean firstParam = true;
+                    Enumeration<String> attributeNames = session.getAttributeNames();
+
+                    while (attributeNames.hasMoreElements()) {
+                        String attributeName = attributeNames.nextElement();
+                        if (attributeName.startsWith("param_")) {
+                            String paramName = attributeName.substring(6);
+                            String paramValue = (String) session.getAttribute(attributeName);
+
+                            if (firstParam) {
+                                redirectUrlWithParams.append("?");
+                                firstParam = false;
+                            } else {
+                                redirectUrlWithParams.append("&");
+                            }
+
+                            redirectUrlWithParams.append(paramName).append("=").append(paramValue);
+                            session.removeAttribute(attributeName);
+                        }
+                    }
+
+                    session.removeAttribute("redirectTo");
+                    response.sendRedirect(redirectUrlWithParams.toString());
+                }
+               
             }
             case "STAFF" ->
                 request.getRequestDispatcher(route.STAFF).forward(request, response);

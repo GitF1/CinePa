@@ -64,18 +64,17 @@ public class DeleteCinemasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
         int cinemaChainID = Integer.parseInt(request.getParameter("cinemaChainID"));
-        
+
         try {
             cinemasDAO.deleteCinemaAndRooms(cinemaID);
             response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID);
         } catch (Exception ex) {
-    Logger.getLogger(DeleteCinemasServlet.class.getName()).log(Level.SEVERE, "Error deleting cinema", ex);
-    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error deleting cinema: " + ex.getMessage());
-}
+            Logger.getLogger(DeleteCinemasServlet.class.getName()).log(Level.SEVERE, "Error deleting cinema", ex);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error deleting cinema: " + ex.getMessage());
+        }
 
-       
     }
 
     /**
@@ -89,7 +88,7 @@ public class DeleteCinemasServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

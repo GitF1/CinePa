@@ -5,34 +5,43 @@
 package controller.owner;
 
 import DAO.CinemasDAO;
-import DAO.RoomDAO;
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.PrintWriter;
 import model.Cinema;
+import util.FileUploader;
 import util.RouterJSP;
 
-/**
- *
- * @author VINHNQ
- */
 @WebServlet(name = "CreateCinemasOwnerServlet", urlPatterns = {"/owner/createCinema"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 public class CreateCinemasOwnerServlet extends HttpServlet {
 
-    RouterJSP router = new RouterJSP();
-    CinemasDAO cinemasDAO;
+    
+    private RouterJSP router = new RouterJSP();
+    private CinemasDAO cinemasDAO;
+    private FileUploader fileUploader;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init();
             this.cinemasDAO = new CinemasDAO(getServletContext());
+            this.fileUploader = new FileUploader();
         } catch (Exception ex) {
             Logger.getLogger(CreateCinemasOwnerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,19 +73,31 @@ public class CreateCinemasOwnerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String address = request.getParameter("address");
+       String address = request.getParameter("address");
         String province = request.getParameter("province");
         String district = request.getParameter("district");
         String commune = request.getParameter("commune");
-        String avatar = request.getParameter("avatar");
+        Part filePart = request.getPart("avatar");
+        
         int cinemaChainID = Integer.parseInt(request.getParameter("cinemaChainID"));
+
+        String avatarUrl = null;
+
+        if (filePart != null && filePart.getSize() > 0) {
+            File tempFile = File.createTempFile("upload_", "_" + filePart.getSubmittedFileName());
+            try (InputStream fileContent = filePart.getInputStream()) {
+                filePart.write(tempFile.getAbsolutePath());
+            }
+            avatarUrl = fileUploader.uploadAndReturnUrl(tempFile, "cinema_avatar", "cinema");
+            tempFile.delete();
+        }
 
         Cinema cinema = new Cinema();
         cinema.setAddress(address);
         cinema.setProvince(province);
         cinema.setDistrict(district);
         cinema.setCommune(commune);
-        cinema.setAvatar(avatar);
+        cinema.setAvatar(avatarUrl);
         cinema.setCinemaChainID(cinemaChainID);
 
         try {
@@ -87,11 +108,7 @@ public class CreateCinemasOwnerServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";

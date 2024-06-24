@@ -8,30 +8,38 @@ import DAO.CinemasDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cinema;
+import util.FileUploader;
 import util.RouterJSP;
 
-/**
- *
- * @author VINHNQ
- */
 @WebServlet(name = "UpdateCinemasServlet", urlPatterns = {"/owner/updateCinema"})
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+    maxFileSize = 1024 * 1024 * 10, // 10 MB
+    maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 public class UpdateCinemasServlet extends HttpServlet {
 
+    
     RouterJSP router = new RouterJSP();
     CinemasDAO cinemasDAO;
+    FileUploader fileUploader;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init();
             this.cinemasDAO = new CinemasDAO(getServletContext());
+            this.fileUploader = new FileUploader();
         } catch (Exception ex) {
             Logger.getLogger(UpdateCinemasServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,14 +90,26 @@ public class UpdateCinemasServlet extends HttpServlet {
         try {
             int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
             String address = request.getParameter("address");
-            String province = request.getParameter("province");
-            String district = request.getParameter("district");
-            String commune = request.getParameter("commune");
-            String avatar = request.getParameter("avatar");
+            String province = request.getParameter("provinceName");
+            String district = request.getParameter("districtName");
+            String commune = request.getParameter("communeName");
 
+            // Retrieve the existing cinema to get the current avatar
+            Cinema existingCinema = cinemasDAO.getCinemaByID(cinemaID);
+            String avatar = existingCinema.getAvatar();
+
+            // Handle avatar upload
+            Part avatarPart = request.getPart("avatar");
+            if (avatarPart != null && avatarPart.getSize() > 0) {
+                File tempFile = File.createTempFile("upload_", "_");
+                avatarPart.write(tempFile.getAbsolutePath());
+                avatar = fileUploader.uploadAndReturnUrl(tempFile, "cinema_" + cinemaID, "cinemas");
+            }
+
+            // Update cinema details
             Cinema cinema = new Cinema(cinemaID, address, province, district, commune, avatar);
             cinemasDAO.updateCinema(cinema);
-            // Retrieve cinemaChainID from the updated cinema object
+
             int cinemaChainID = cinemasDAO.getCinemaChainIDByCinemaID(cinemaID);
             response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID);
         } catch (Exception ex) {

@@ -63,6 +63,7 @@
                     </div>
 
                     <h4>Chọn phương thức thanh toán</h4>
+                    
                     <div class="form-group">
                         <h5>Cách 1: Chuyển hướng sang Cổng VNPAY chọn phương thức thanh toán</h5>
                         <input type="radio" Checked="True" id="bankCode" name="bankCode" value="">
