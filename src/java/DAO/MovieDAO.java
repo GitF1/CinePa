@@ -132,7 +132,7 @@ public class MovieDAO extends SQLServerConnect {
                 + "FROM Review "
                 + "JOIN [User] ON Review.UserID = [User].UserID "
                 + "WHERE Review.MovieID = ?";
-                
+
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -148,12 +148,12 @@ public class MovieDAO extends SQLServerConnect {
                 String content = resultSet.getString("Content");
                 String userAvatarLink = resultSet.getString("AvatarLink");
                 String username = resultSet.getString("Username");
-                
+
                 // Tạo đối tượng Review và thêm vào danh sách
                 Review review = new Review(userID, movieID, rating, timeCreated, content, userAvatarLink, username);
                 reviews.add(review);
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -717,4 +717,46 @@ public class MovieDAO extends SQLServerConnect {
 
     }
 
+    public String getTitleByID(int id) throws SQLException {
+
+        String title = "";
+        String sqlQuery = "SELECT Title FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    title = rs.getString("Title");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return title;
+
+    }
+    public int getLengthByID(int id) throws SQLException {
+
+        int length = 0;
+        String sqlQuery = "SELECT Length FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    length = rs.getInt("Length");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return length;
+
+    }
 }

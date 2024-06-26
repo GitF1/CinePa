@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import model.Cinema;
 import model.CinemaChain;
@@ -463,6 +464,68 @@ public class ScheduleDAO extends SQLServerConnect {
 //        // Retrieve list of movies by cinema ID from the database or another source
 //        return new ArrayList<>(); // Placeholder implementation
 //    }
+    
+    
+    //Functions for crud movieslot - DuyND
+    public boolean checkOverlap(Date start, Date end, int roomID) {
+        boolean overlap = false;
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(start.getTime());
+        String sql = "select * from MovieSlot where ((?>MovieSlot.StartTime and ?<MovieSlot.EndTime) and Cast(? as date) = Cast(MovieSlot.StartTime as date) and MovieSlot.RoomID=?)";
+        //in order: end start start room id
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setTimestamp(1, new java.sql.Timestamp(end.getTime()));
+            st.setTimestamp(2, new java.sql.Timestamp(start.getTime()));
+            st.setTimestamp(3, new java.sql.Timestamp(start.getTime()));
+            st.setInt(4, roomID);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    overlap = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return overlap;
+    }
+
+    public ArrayList<MovieSlot> getDateSchedule(Date date, int roomID) {
+        ArrayList<MovieSlot> result = new ArrayList<>();
+        String sqlQuery = "select * from MovieSlot where (? = Cast(MovieSlot.StartTime as date)) and MovieSlot.RoomID=?";
+        java.sql.Date insertDate = new java.sql.Date(date.getTime());
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sqlQuery);
+            pstmt.setDate(1, insertDate);
+            pstmt.setInt(2, roomID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+//                    int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status
+                    result.add(new MovieSlot(
+                            1,//placeholder, will not be used
+                            rs.getInt("RoomID"),
+                            rs.getInt("MovieID"),
+                            rs.getTimestamp("StartTime").toLocalDateTime(),
+                            rs.getTimestamp("EndTime").toLocalDateTime(),
+                            rs.getString("Type"),
+                            rs.getFloat("Price"),
+                            rs.getFloat("Discount"),
+                            rs.getString("status")
+                    )
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return result;
+    }
+    
+    
+    
     private void handleErrorGetDate(HttpServletRequest request) {
     }
 }
