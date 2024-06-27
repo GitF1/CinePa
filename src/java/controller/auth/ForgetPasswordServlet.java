@@ -14,8 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import service.SendEmail;
+import service.EmailService;
 import util.RouterJSP;
+import util.Util;
 
 /**
  *
@@ -152,8 +153,8 @@ public class ForgetPasswordServlet extends HttpServlet {
                 request.getRequestDispatcher(route.FORGET_PASSWORD).forward(request, response);
                 return;
             }
-            SendEmail sendEmail = new SendEmail();
-            String code = sendEmail.getRanDom();
+            EmailService sendEmail = new EmailService();
+            String code = Util.getRanDom();
             
             boolean updateCodeUserOk = ud.updateUserCode(email, code);
             boolean sendEmailOk = false;

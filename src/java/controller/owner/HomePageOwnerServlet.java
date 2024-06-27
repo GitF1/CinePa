@@ -67,39 +67,15 @@ public class HomePageOwnerServlet extends HttpServlet {
         }
 
         CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-
         request.setAttribute("cinemaChain", cinemaChain);
+
         request.getRequestDispatcher(router.HOME_OWNER).forward(request, response);
+      
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
-
-        if (userID == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        String name = request.getParameter("name");
-        String information = request.getParameter("information");
-        String avatar = request.getParameter("avatar");
-
-        CinemaChain existingChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-        if (existingChain == null) {
-            CinemaChain cinemaChain = new CinemaChain();
-            cinemaChain.setName(name);
-            cinemaChain.setInformation(information);
-            cinemaChain.setAvatar(avatar);
-            cinemaChainDAO.createCinemaChain(cinemaChain, userID);
-
-            request.setAttribute("success", "CinemaChain created successfully!");
-        } else {
-            request.setAttribute("error", "You already have a CinemaChain.");
-        }
-
         doGet(request, response);
     }
 

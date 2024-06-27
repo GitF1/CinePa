@@ -5,6 +5,7 @@
 package controller.payment;
 
 import DAO.booking.BookingDAO;
+import DAO.confirm.ConfirmDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,8 @@ import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
+import util.Util;
+import util.error.Retry;
 
 /**
  *
@@ -25,12 +28,14 @@ import util.RouterJSP;
 public class VnPayReturnServlet extends HttpServlet {
 
     BookingDAO bookingDAO;
+    ConfirmDAO confirmDAO;
 
     @Override
     public void init() throws ServletException {
         super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         try {
             bookingDAO = new BookingDAO(getServletContext());
+            confirmDAO = new ConfirmDAO(getServletContext());
         } catch (Exception ex) {
             Logger.getLogger(VnPayReturnServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -78,13 +83,25 @@ public class VnPayReturnServlet extends HttpServlet {
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
         String vnp_TxnRef = request.getParameter("vnp_TxnRef");
         HttpSession session = request.getSession();
+        System.out.println("order: " + session.getAttribute("order"));
+
         if ("00".equals(vnp_ResponseCode)) {
-            // Payment successful, confirm and complete the order
-            int orderID = Integer.parseInt(vnp_TxnRef);
-            boolean isConfirm = bookingDAO.confirmOrder(orderID);
-            
-            if (isConfirm) {
-                session.removeAttribute("order");
+            try {
+                // Payment successful, confirm and complete the order
+                int orderID = Integer.parseInt(vnp_TxnRef);
+                String codeActive = Util.generateActivationCodeOrder();
+                boolean isOrderConfirmed = Retry.retryOperation(() -> bookingDAO.confirmOrder(orderID, codeActive), 3);
+
+                System.out.println("Order confirmation result: " + isOrderConfirmed);
+
+                boolean isSend = Retry.retryOperation(() -> confirmDAO.sendInFormationCofirm(request, response, orderID,codeActive), 3);
+
+                if (isOrderConfirmed) {
+                    session.removeAttribute("order");
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(VnPayReturnServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {

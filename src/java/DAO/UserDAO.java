@@ -180,6 +180,26 @@ public class UserDAO extends SQLServerConnect {
         return user;
 
     }
+    
+    public User getUserById(int id) throws Exception {
+
+        User user = null;
+
+        String sql = "SELECT * FROM [User] WHERE UserID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                user = extractUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        }
+        return user;
+
+    }
 
 //    get user by user name - DuyND
     public User getUserByUsername(String username) throws Exception {
@@ -349,6 +369,18 @@ public class UserDAO extends SQLServerConnect {
     }
 
     //Query cinema
+    
+    //Get genres from movieID
+    public List<String> getGenresFromMovieID(int movieID) throws SQLException {
+        List<String> genres = new ArrayList<>();
+        String sqlQueryGenres = "select  Genre from Movie join MovieInGenre on Movie.MovieID = MovieInGenre.MovieID where Movie.MovieID = " + movieID;
+        ResultSet genresRs = getResultSet(sqlQueryGenres);
+        while (genresRs.next()) {
+            genres.add(genresRs.getString("Genre"));
+        }
+        return genres;
+    }
+    
     //Search movies
     public List<Movie> searchMovies(String input) throws SQLException {
         List<Movie> movies = new ArrayList<>();
@@ -356,12 +388,7 @@ public class UserDAO extends SQLServerConnect {
                 + "and status = 'SHOWING'";
         ResultSet rs = getResultSet(sqlQuery);
         while (rs.next()) {
-            List<String> genres = new ArrayList<>();
-            String sqlQueryGenres = "select  Genre from Movie join MovieInGenre on Movie.MovieID = MovieInGenre.MovieID where Movie.MovieID = " + rs.getInt("MovieID");
-            ResultSet genresRs = getResultSet(sqlQueryGenres);
-            while (genresRs.next()) {
-                genres.add(genresRs.getString("Genre"));
-            }
+            List<String> genres = getGenresFromMovieID(rs.getInt("MovieID"));
             Movie movie = new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Status"), rs.getString("Country"), genres);
             movies.add(movie);
         }
@@ -448,6 +475,7 @@ public class UserDAO extends SQLServerConnect {
 
     // Query movie from movie-slot ID
     public Movie queryMovie(int movieSlotID) throws SQLException {
+        movieSlotID = 1002;
         String sqlQuery = "select Movie.MovieID, Title, Synopsis, DatePublished, ImageURL, Rating, Country, Movie.Status from MovieSlot\n"
                 + "join Movie on MovieSlot.MovieID = Movie.MovieID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;

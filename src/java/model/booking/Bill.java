@@ -15,13 +15,14 @@ public class Bill {
     int orderID;
     Timestamp timeCreated;
     int movieSlotID;
-    int movieID;
+    int movieID;    
     int roomID;
     String movieTitle;
     Timestamp startTime;
     Timestamp endTime;
 
     public Bill() {
+          
     }
 
     public Bill(int orderID, Timestamp timeCreated, int roomID, int movieSlotID, int movieID, String movieTitle, Timestamp startTime, Timestamp endTime) {

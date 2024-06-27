@@ -46,6 +46,7 @@ public class BookingDAO extends SQLServerConnect {
 
             // Add each seat to the list
             while (rs.next()) {
+                
                 String name = rs.getString("Name");
                 int coordinateX = rs.getInt("CoordinateX");
                 int coordinateY = rs.getInt("CoordinateY");
@@ -56,6 +57,7 @@ public class BookingDAO extends SQLServerConnect {
                 newSeat.setX(coordinateX);
                 newSeat.setY(coordinateY);
                 seats.add(newSeat);
+                
             }
 
         } catch (Exception e) {
@@ -190,7 +192,7 @@ public class BookingDAO extends SQLServerConnect {
         }
     }
 
-    public boolean confirmOrder(int orderID) {
+    public boolean confirmOrder(int orderID, String codeActive) {
         PreparedStatement pstmt = null;
 
         try {
@@ -198,9 +200,11 @@ public class BookingDAO extends SQLServerConnect {
             connection.setAutoCommit(false);
 
             // Update the order status to confirmed
-            String updateOrderSQL = "UPDATE [Order] SET Status = 'CONFIRMED' WHERE OrderID = ?";
+            String updateOrderSQL = "UPDATE [Order] SET Status = 'CONFIRMED', Code = ? WHERE OrderID = ?";
             pstmt = connection.prepareStatement(updateOrderSQL);
-            pstmt.setInt(1, orderID);
+
+            pstmt.setString(1, codeActive);
+            pstmt.setInt(2, orderID);
             pstmt.executeUpdate();
 
             // Retrieve temporary order details from the temporary tables

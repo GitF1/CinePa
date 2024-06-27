@@ -71,7 +71,6 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
             HttpSession session = request.getSession();
             CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
             ArrayList<String> cinemaNames = cc.getCinemaChainList();

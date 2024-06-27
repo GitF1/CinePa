@@ -12,6 +12,7 @@ public class SalesData {//can be used for both income data and ticket sold data
     private String date;
     private double valueSold;
     private double ticketSold;
+    private String chain;
 
     public SalesData() {
     }
@@ -19,6 +20,12 @@ public class SalesData {//can be used for both income data and ticket sold data
     public SalesData(String date, double valueSold) {
         this.date = date;
         this.valueSold = valueSold;
+    }
+
+    public SalesData(String date, double valueSold,  String chain) {
+        this.date = date;
+        this.valueSold = valueSold;
+        this.chain = chain;
     }
 
     public SalesData(String date, double valueSold, double ticketSold) {
@@ -51,11 +58,20 @@ public class SalesData {//can be used for both income data and ticket sold data
         this.ticketSold = ticketSold;
     }
 
+    public String getChain() {
+        return chain;
+    }
+
+    public void setChain(String chain) {
+        this.chain = chain;
+    }
+
     @Override
     public String toString() {
-        return "SalesData{" + "date=" + date + ", valueSold=" + valueSold + ", ticketSold=" + ticketSold + '}';
+        return "SalesData{" + "date=" + date + ", valueSold=" + valueSold + ", ticketSold=" + ticketSold + ", chain=" + chain + '}';
     }
-    
+
+   
     
     
 }

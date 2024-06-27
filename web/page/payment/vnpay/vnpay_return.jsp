@@ -1,3 +1,4 @@
+<%@page import="util.RouterURL"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.nio.charset.StandardCharsets"%>
@@ -64,8 +65,28 @@
             .table-responsive {
                 margin-top: 20px;
             }
-            p {
+            .container  p {
                 text-align: center;
+                margin-top: 20px;
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                margin: 10px 5px;
+                font-size: 16px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            #countdown {
+                color: #e74c3c;
+                font-weight: bold;
                 margin-top: 20px;
             }
         </style>
@@ -92,6 +113,7 @@
             String signValue = VnPayConfig.hashAllFields(fields);
 
         %>
+        <jsp:include page="../.././landingPage/Header.jsp" />
         <!--Begin display -->
         <div class="container">
             <div class="header clearfix">
@@ -130,7 +152,7 @@
                     <label >Tình trạng giao dịch:</label>
                     <label>
                         <%
-                           request.getParameter("message");
+                            request.getParameter("message");
                         %>
                     </label>
                 </div> 
@@ -138,7 +160,33 @@
             <p>
                 &nbsp;
             </p>
-
+            <div>
+                <button class="btn" onclick="window.location.href = '<%= RouterURL.VIEW_ORDER%>';">View Order</button>
+                <button class="btn" onclick="window.location.href = '<%= RouterURL.HOMEPAGE%>';">Back Home</button>
+            </div>
+            <div id="countdown">30</div> 
         </div>  
     </body>
+    <script>
+        // Countdown timer function
+        function startCountdown(seconds) {
+            var counter = seconds;
+            var countdownElement = document.getElementById('countdown');
+
+            var interval = setInterval(function () {
+                countdownElement.textContent = counter;
+                counter--;
+
+                if (counter < 0) {
+                    clearInterval(interval);
+                    window.location.href = '<%= RouterURL.HOMEPAGE%>'; // Redirect to home page
+                }
+            }, 1000);
+        }
+
+        // Start the countdown timer when the page loads
+        window.onload = function () {
+            startCountdown(30);
+        }
+    </script>
 </html>
