@@ -24,6 +24,7 @@ public class MovieSlot2 {//mainly to be parsed as json file
     private String title;//currently set as movieID
     private Date start;
     private Date end;
+    private String color = "rgb(13,110,253)";
 
 //    Because localdatetime does not parse to json, do not question my decisions - DuyND
     public MovieSlot2(int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status) {

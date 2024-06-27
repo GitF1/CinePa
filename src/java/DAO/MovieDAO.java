@@ -750,6 +750,7 @@ public class MovieDAO extends SQLServerConnect {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     length = rs.getInt("Length");
+                    System.out.println("dao function:"+length);
                 }
             }
         } catch (SQLException e) {

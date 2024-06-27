@@ -46,7 +46,6 @@ public class MovieLengthServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     public void init(ServletConfig config)
             throws ServletException {
@@ -112,11 +111,12 @@ public class MovieLengthServlet extends HttpServlet {
             Logger.getLogger(MovieLengthServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(length);
-        ArrayList<MovieSlot2> list = new ArrayList<>();
+        Gson gson = new Gson();
+        String json = gson.toJson(length);
 
-        response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-        response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-        response.getWriter().write(length);       // Write response body.
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 
     /**

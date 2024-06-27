@@ -15,8 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import model.Cinema;
 import model.CinemaChain;
+import model.Movie;
 import model.MovieSlot;
 import model.schedule.CinemaMovieSlot;
 import model.schedule.Schedule;
@@ -522,6 +527,43 @@ public class ScheduleDAO extends SQLServerConnect {
             e.printStackTrace(); // Handle exceptions appropriately in real scenarios
         }
         return result;
+    }
+    public void insertMovieSlot(MovieSlot movieSlot) throws ParseException {//insert movieslot - DuyND
+        String sql = "INSERT INTO [dbo].[MovieSlot]\n"
+                + "           ([RoomID]\n"
+                + "           ,[MovieID]\n"
+                + "           ,[StartTime]\n"
+                + "           ,[EndTime]\n"
+                + "           ,[Type]\n"
+                + "           ,[Price]\n"
+                + "           ,[Discount]\n"
+                + "           ,[Status])\n"
+                + "     VALUES  (?,?,?,?,?,?,?,?)";
+        // Use try-with-resources for automatic resource management
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1,movieSlot.getMovieID());
+            st.setInt(2, movieSlot.getRoomID());
+            java.sql.Date startTime = new java.sql.Date((Date.from(movieSlot.getStartTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
+            java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());            
+            java.sql.Timestamp timestampStart = new java.sql.Timestamp(startTime.getTime());
+            java.sql.Timestamp timestampEnd = new java.sql.Timestamp(endTime.getTime());
+            st.setTimestamp(3, timestampStart);
+            st.setTimestamp(4, timestampEnd);
+            st.setString(5, movieSlot.getType());
+            st.setFloat(6, movieSlot.getPrice());
+            st.setFloat(7, movieSlot.getDiscount());
+            st.setString(8, movieSlot.getStatus());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            // Properly handle the exception, log it, or rethrow as a custom exception
+            e.printStackTrace(); // Replace with appropriate logging in production code
+        }
+
     }
     
     

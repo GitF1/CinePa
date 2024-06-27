@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="DAO.MovieDAO" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,6 +33,7 @@
             var currDate;
             var calendarEl;
             var currMovie;
+            var movieLength;
         </script>
     </head>
     <body>
@@ -39,8 +41,9 @@
 
         <div class="container">
             <button id="somebutton">press here</button>
+            <h1 style="color: red;"><c:out value="${requestScope.message}"/></h1>
             <div id="somediv"></div>
-            <form action="" method="post" enctype="multipart/form-data">
+            <form action="${pageContext.request.contextPath}/CreateMovieSlotServlet" method="post" >
                 <!--implement sau-->
                 <label for="cinema" class="form-label">Cinema - Choose 1</label>
                 <select class="form-select" aria-label="" id="cinema" name="cinema">
@@ -211,7 +214,7 @@
                         start: currDate,
                         end: currDate
                     },
-
+                    eventOverlap: true,
                     views: {
                         timeGridOneDay: {
                             type: 'timeGrid',
@@ -229,12 +232,54 @@
             function updateLengthCall() {
                 const movieLengthServlet = "${pageContext.request.contextPath}/MovieLengthServlet";
                 currMovie = document.getElementById('movie').value;
-//                $.post(yourServletURL2,
-//                        {
-//                            date: currDate,
-//
-//                        }, function (data, status) {
-                alert("Data: " + currMovie + "\nStatus: ");
+                $.post(movieLengthServlet,
+                        {
+                            movieID: currMovie,
+
+                        }, function (data, status) {
+                    movieLength = JSON.parse(data);
+                    var temp = new Date();
+                    temp.setUTCHours(0, 0, 0, 0);
+                    temp = new Date(temp.getTime() - (movieLength+1) * 60000 + temp.getTimezoneOffset() * 60000);
+                    console.log(temp);
+                    $.post(yourServletURL,
+                            {
+                                date: currDate,
+
+                            }, function (data2, status2) {
+//                    alert("Data: " + data + "\nStatus: " + status);
+                        response = JSON.parse(data2);
+
+
+                    });
+                    console.log(temp.getHours() + ":" + temp.getMinutes());
+                    document.getElementById("startTime").max = temp.getHours() + ":" + temp.getMinutes();
+                    console.log("--");
+                    console.log(document.getElementById("date").value);
+                    console.log(document.getElementById("startTime").value);
+                    console.log("--");
+
+
+                    document.getElementById("endTime").valueAsDate = new Date((document.getElementById("startTime").valueAsDate).getTime() + movieLength * 60000);
+                    var activity = {
+                        "title": "NEW",
+                        "start": document.getElementById("date").value + "T" + document.getElementById("startTime").value + ":00.000+0000",
+                        "end": document.getElementById("date").value + "T" + document.getElementById("endTime").value + ":00.000+0000",
+                        "color": "rgb(220,53,69)"
+                    };
+                    response.push(activity);
+                    console.log(response);
+                    calendar.removeAllEvents();
+
+                    calendar.addEventSource(response);
+                    calendar.refetchEvents();
+//                    alert("Data: " + JSON.parse(data) + "\nStatus: " + status);
+//                    response = JSON.parse(data);
+
+
+
+                });
+
 
 
 
@@ -250,16 +295,7 @@
             document.getElementById('startTime').addEventListener('change', function () {
                 updateLengthCall();
             });
-//            $.get(yourServletURL, function (responseText) {  // Execute Ajax GET request on your servlet URL and execute the following function with Ajax response text...
-//                $("#somediv").text(responseText); // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-//                response = JSON.parse(responseText);
-//                console.log("preload");
-//                console.log(response);
-//                console.log("loaded");
-//                calendar.removeAllEvents();
-//                calendar.addEventSource(response);
-//                calendar.refetchEvents();
-//            });
+
 
 
 
