@@ -95,16 +95,14 @@ public class ScheduleServlet extends HttpServlet {
             throws ServletException, IOException {
         String text = "some text1";
         long valueDateFromClient = Long.parseLong((String) request.getParameter("date"));
-        java.util.Date date = new GregorianCalendar(2024, Calendar.JUNE, 25).getTime();;
+//        java.util.Date date = new GregorianCalendar(2024, Calendar.JUNE, 25).getTime();;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-
-        date = new Date(valueDateFromClient);
-
+        java.util.Date date = new Date(valueDateFromClient);
 //        Date date = new GregorianCalendar(2024, Calendar.JUNE, 25).getTime();
         System.out.println(date);
 
         ArrayList<MovieSlot2> list = new ArrayList<>();
-        for (MovieSlot ms : scheduleDAO.getDateSchedule(date, 1)) {
+        for (MovieSlot ms : scheduleDAO.getDateSchedule(date, Integer.parseInt(request.getParameter("room")))) {
 //            System.out.println(ms);
             MovieSlot2 ms2 = new MovieSlot2(ms);
             try {

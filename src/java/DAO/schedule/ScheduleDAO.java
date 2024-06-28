@@ -543,8 +543,8 @@ public class ScheduleDAO extends SQLServerConnect {
         try {
 
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1,movieSlot.getMovieID());
-            st.setInt(2, movieSlot.getRoomID());
+            st.setInt(1,movieSlot.getRoomID());
+            st.setInt(2, movieSlot.getMovieID());
             java.sql.Date startTime = new java.sql.Date((Date.from(movieSlot.getStartTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
             java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());            
             java.sql.Timestamp timestampStart = new java.sql.Timestamp(startTime.getTime());

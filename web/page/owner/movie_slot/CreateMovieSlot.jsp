@@ -40,94 +40,116 @@
 
 
         <div class="container">
-            <button id="somebutton">press here</button>
+
             <h1 style="color: red;"><c:out value="${requestScope.message}"/></h1>
             <div id="somediv"></div>
-            <form action="${pageContext.request.contextPath}/CreateMovieSlotServlet" method="post" >
+            <form action="${pageContext.request.contextPath}/CreateMovieSlotFormInfoServlet" method="post" >
                 <!--implement sau-->
-                <label for="cinema" class="form-label">Cinema - Choose 1</label>
-                <select class="form-select" aria-label="" id="cinema" name="cinema">
-                    <option selected value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
-                </select>
-                <label for="room" class="form-label">Room - Choose 1</label>
-                <select class="form-select" aria-label="" id="room" name="room">
-                    <option selected value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
-                </select>
-                <label for="movie" class="form-label">Phim - Choose 1</label>
-                <select class="form-select" aria-label="" id="movie" name="movie">
-                    <option selected value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
-                </select>
-                <!-- datepicker -->
-                <label for="date" class="form-label"
-                       >Ngày</label
-                >
-                <input
-                    type="date"
-                    class="form-control"
-                    id="date"
-                    name="date"
-                    placeholder="Nhập ngày"
-                    required
 
-                    />
+                <div class="row">
+                    <div class="col-6">
+                        <label for="cinema" class="form-label">Rạp</label>
+                        <select required class="form-select" aria-label="" id="cinema" name="cinema" onchange="this.form.submit()">
+                            <option value="0" selected disabled>Please select</option>
+                            <c:forEach var="cinema" items="${cinemas}">
+                                <option value="${cinema.cinemaID}">${cinema.address}</option>
 
-                <label for="startTime" class="form-label"
-                       >Thời gian bắt đầu</label
-                >
-                <input
-                    type="time"
-                    class="form-control"
-                    id="startTime"
-                    name="startTime"
-                    placeholder="Nhập thời gian bắt đầu"
-                    required
-                    />
-                <label for="endTime" class="form-label"
-                       >Thời gian kết thúc</label
-                >
+                            </c:forEach>
+                        </select>
+                        <script>
+                            document.getElementById("cinema").value =<c:if test="${empty cinema}">
+                            0
+                            </c:if>
+                            <c:if test="${not empty cinema}">
+                            "${cinema}"
+                            </c:if>
 
-                <input
-                    readonly
-                    type="time"
-                    class="form-control"
-                    id="endTime"
-                    name="endTime"
-                    placeholder="Thời gian kết thức"
-                    required
-                    />
 
-                <label for="calendar" class="form-label">Lịch trình trong ngày</label>
-                <br/>
-                <!--CALENDAR-->
-                <div class="card" >
-                    <div class="card-body">
-                        <div id='calendar'></div>
+                        </script>
+                        <label for="room" class="form-label">Phòng</label>
+                        <select  required class="form-select" aria-label="" id="room" name="room">
+                            <option value="0" selected disabled>Please select</option>
+                            <c:forEach var="room" items="${rooms}">
+                                <option value="${room.roomID}">${room.name}</option>
+
+                            </c:forEach>
+                        </select>
+                        <label for="movie" class="form-label">Phim</label>
+                        <select  required class="form-select" aria-label="" id="movie" name="movie">
+                            <option value="0" selected disabled>Please select</option>
+                            <c:forEach var="movie" items="${movies}">
+                                <option value="${movie.movieID}">${movie.title}</option>
+
+                            </c:forEach>
+                        </select>
+                        <!-- datepicker -->
+                        <label for="date" class="form-label"
+                               >Ngày</label
+                        >
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="date"
+                            name="date"
+                            placeholder="Nhập ngày"
+                            required
+
+
+                            />
+
+                        <label for="startTime" class="form-label"
+                               >Thời gian bắt đầu</label
+                        >
+                        <input
+                            disabled
+                            type="time"
+                            class="form-control"
+                            id="startTime"
+                            name="startTime"
+                            placeholder="Nhập thời gian bắt đầu"
+                            required
+                            />
+                        <label for="endTime" class="form-label"
+                               >Thời gian kết thúc</label
+                        >
+
+                        <input
+                            readonly
+                            type="time"
+                            class="form-control"
+                            id="endTime"
+                            name="endTime"
+                            placeholder="Thời gian kết thức"
+                            required
+                            />
+                        <label for="exampleFormControlInput1" class="form-label">
+                            Giá vé</label
+                        >
+                        <input
+                            type="number" 
+                            step="0.01"
+                            class="form-control"
+                            id="price"
+                            name="price"
+                            placeholder="Nhập giá vé"
+                            required
+                            />
+                    </div>
+                    <div class="col-6">
+                        <label for="calendar" class="form-label">Lịch trình trong ngày</label>
+                        <br/>
+                        <!--CALENDAR-->
+                        <div class="card" >
+                            <div class="card-body">
+                                <div id='calendar'></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <label for="exampleFormControlInput1" class="form-label">
-                    Giá vé</label
-                >
-                <input
-                    type="number" 
-                    step="0.01"
-                    class="form-control"
-                    id="price"
-                    name="price"
-                    placeholder="Nhập giá vé"
-                    required
-                    />
+
 
                 <br/>
-                <button type="submit" class="btn btn-danger" onclick="">
+                <button type="submit" class="btn btn-danger" onclick="" formaction="${pageContext.request.contextPath}/CreateMovieSlotServlet">
                     Tạo suất chiếu</button
                 >
             </form>
@@ -145,45 +167,41 @@
             crossorigin="anonymous"
         ></script>
         <!--jquery-->
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha384-ZvpUoO/+P0o2QE0Wea1Ygq6hEENenOPJo7FfHRVN9cAo50LjMOhpS7CbRBVxnlNv"
-            crossorigin="anonymous"
-        ></script>
+
 
 
 
 
         <!--Calender js-->
         <script>
-            document.getElementById('date').valueAsDate = new Date();
-            currDate = document.getElementById('date').valueAsDate.getTime();
+                            document.getElementById('date').valueAsDate = new Date();
+                            currDate = document.getElementById('date').valueAsDate.getTime();
 
 
-            document.addEventListener('DOMContentLoaded', function () {
-                calendarEl = document.getElementById('calendar');
+                            document.addEventListener('DOMContentLoaded', function () {
+                                calendarEl = document.getElementById('calendar');
 
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                    timeZone: 'UTC',
-                    initialView: 'timeGridOneDay',
-                    validRange: {
-                        start: currDate,
-                        end: currDate
-                    },
+                                calendar = new FullCalendar.Calendar(calendarEl, {
+                                    timeZone: 'UTC',
+                                    initialView: 'timeGridOneDay',
+                                    validRange: {
+                                        start: currDate,
+                                        end: currDate
+                                    },
 
-                    views: {
-                        timeGridOneDay: {
-                            type: 'timeGrid',
-                            duration: {days: 1},
-                            buttonText: '1 day'
-                        }
-                    },
-                    events: response,
-                    aspectRatio: 2
-                });
+                                    views: {
+                                        timeGridOneDay: {
+                                            type: 'timeGrid',
+                                            duration: {days: 1},
+                                            buttonText: '1 day'
+                                        }
+                                    },
+                                    events: response,
+                                    aspectRatio: 2
+                                });
 
-                calendar.render();
-            });
+                                calendar.render();
+                            });
         </script>
         <!--Update-->
         <script>
@@ -195,7 +213,7 @@
                 $.post(yourServletURL,
                         {
                             date: currDate,
-
+                            room: document.getElementById('room').value
                         }, function (data, status) {
 //                    alert("Data: " + data + "\nStatus: " + status);
                     response = JSON.parse(data);
@@ -240,7 +258,7 @@
                     movieLength = JSON.parse(data);
                     var temp = new Date();
                     temp.setUTCHours(0, 0, 0, 0);
-                    temp = new Date(temp.getTime() - (movieLength+1) * 60000 + temp.getTimezoneOffset() * 60000);
+                    temp = new Date(temp.getTime() - (movieLength + 1) * 60000 + temp.getTimezoneOffset() * 60000);
                     console.log(temp);
                     $.post(yourServletURL,
                             {
@@ -277,16 +295,9 @@
 //                    response = JSON.parse(data);
 
 
-
                 });
 
-
-
-
             }
-
-
-
 
             updateCalendarCall();
             document.getElementById('date').addEventListener('change', function () {
@@ -295,8 +306,22 @@
             document.getElementById('startTime').addEventListener('change', function () {
                 updateLengthCall();
             });
+            document.getElementById('movie').addEventListener('change', function () {
+                document.getElementById("startTime").disabled = false;
+                updateLengthCall();
+            });
+            document.getElementById('cinema').addEventListener('change', function () {
+                document.getElementById("room").disabled = false;
+                document.getElementById("movie").disabled = false;
+                document.getElementById("room").value = 0;
+                document.getElementById("movie").value = 0;
+                updateCalendarCall();
+            });
+            document.getElementById('room').addEventListener('change', function () {
+                document.getElementById("movie").value = 0;
+                updateCalendarCall();
 
-
+            });
 
 
 

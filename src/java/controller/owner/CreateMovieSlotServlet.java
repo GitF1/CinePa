@@ -123,6 +123,23 @@ public class CreateMovieSlotServlet extends HttpServlet {
                         0,//TEMPLATE
                         "Scheduled"//TEMPLATE
                 ));
+                System.out.println(new MovieSlot(
+                        Integer.parseInt(request.getParameter("cinema")),
+                        Integer.parseInt(request.getParameter("room")),
+                        Integer.parseInt(request.getParameter("movie")),
+                        LocalDateTime.of(
+                                LocalDate.parse(request.getParameter("date")),
+                                LocalTime.parse(request.getParameter("startTime"))
+                        ),
+                        LocalDateTime.of(
+                                LocalDate.parse(request.getParameter("date")),
+                                LocalTime.parse(request.getParameter("endTime"))
+                        ),
+                        "TYPE",//TEMPLATE
+                        Float.parseFloat(request.getParameter("price")),
+                        0,//TEMPLATE
+                        "Scheduled"//TEMPLATE
+                ));
             } catch (ParseException ex) {
                 System.out.println(ex.getMessage());
                 request.setAttribute("message", ex.getMessage());

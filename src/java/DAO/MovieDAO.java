@@ -25,6 +25,8 @@ import model.movie.MovieInfo;
 import model.Movie;
 
 import jakarta.servlet.ServletContext;
+import java.util.logging.Level;
+import model.Room;
 
 /**
  *
@@ -759,5 +761,37 @@ public class MovieDAO extends SQLServerConnect {
         }
         return length;
 
+    }
+    public List<Movie> getMoviesByCinemaId(int cinemaID) {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "select *from MovieCinema join Movie on MovieCinema.MovieID=Movie.MovieID where MovieCinema.CinemaID=?;";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cinemaID);
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()) {
+                    Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                            rs.getString("Title"),
+                            rs.getString("Synopsis"),
+                            rs.getDate("DatePublished").toString(),
+                            rs.getString("ImageURL"),
+                            rs.getDouble("Rating"),
+                            rs.getString("Status"),
+                            rs.getString("Country"),
+                            rs.getInt("Length"),
+                            rs.getString("LinkTrailer")
+                    );
+//                    int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink
+movies.add(movie);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return movies;
     }
 }

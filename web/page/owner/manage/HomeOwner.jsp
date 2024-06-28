@@ -32,7 +32,7 @@
                     </li>
                     <li class="nav-item">
                         <!--em không hiểu flow nên để tạm movie slot ở đây- DuyND-->
-                        <a class="nav-link" href="<%= request.getContextPath()%>/page/owner/movie_slot/CreateMovieSlot.jsp">Create Movie Slot</a>
+                        <a class="nav-link" href="<%= request.getContextPath()%>/CreateMovieSlotFormInfoServlet">Create Movie Slot</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
