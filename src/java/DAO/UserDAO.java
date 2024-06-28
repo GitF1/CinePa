@@ -466,6 +466,7 @@ public class UserDAO extends SQLServerConnect {
         String sqlQuery = "select Movie.MovieID, Title, Synopsis, DatePublished, ImageURL, Rating, Country, Movie.Status from MovieSlot\n"
                 + "join Movie on MovieSlot.MovieID = Movie.MovieID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
+        
         ResultSet rs = getResultSet(sqlQuery);
         
         if (rs.next()) {
@@ -477,9 +478,11 @@ public class UserDAO extends SQLServerConnect {
 
     // Query room from movie-slot ID
     public Room queryRoom(int movieSlotID) throws SQLException {
+        
         String sqlQuery = "select Room.RoomID, CinemaID, Room.Name, Capacity, Room.Status, Length, Width  from MovieSlot\n"
                 + "join Room on MovieSlot.RoomID = Room.RoomID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
+        
         ResultSet rs = getResultSet(sqlQuery);
         if (rs.next()) {
             return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
