@@ -4,7 +4,9 @@
     Author     : duyqu
 --%>
 
+<%@page import="DAO.RegisterOwnerDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.ServletContext" %>
 
 <!--jstl import-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -18,6 +20,14 @@
 <!DOCTYPE html>
 
 <html>
+    <%
+        ServletContext context = application;
+         RegisterOwnerDAO registerOwnerDAO = new RegisterOwnerDAO(context) ; 
+        Integer id = (Integer) session.getAttribute("userID");
+        String status = registerOwnerDAO.checkRegisterOwner(String.valueOf(id));
+
+    %>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -235,7 +245,9 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/information">View Profile</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/order/view">View Ordered</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/CheckRegisterOwnerServlet">Register Owner</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/CheckRegisterOwnerServlet">
+                                        <%= "Accept".equalsIgnoreCase(status) ? "View" : "Register Owner"%>
+                                    </a></li>
 
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>

@@ -1,17 +1,14 @@
-
 package controller.user;
 
 import DAO.RegisterOwnerDAO;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 
 @WebServlet(name = "CheckRegisterOwnerServlet", urlPatterns = {"/CheckRegisterOwnerServlet"})
 public class CheckRegisterOwnerServlet extends HttpServlet {
@@ -48,10 +45,14 @@ public class CheckRegisterOwnerServlet extends HttpServlet {
             request.getRequestDispatcher("/page/user/WaitingRegisterOwner.jsp").forward(request, response);
         }
         // neu la Reject : 
-        if(status.equalsIgnoreCase("Reject")){
+        if (status.equalsIgnoreCase("Reject")) {
             // chuyen den trang Reject : 
-                        request.getRequestDispatcher("/page/user/RejectRegisterOwner.jsp").forward(request, response);
+            request.getRequestDispatcher("/page/user/RejectRegisterOwner.jsp").forward(request, response);
 
+        }
+        // neu da Accept thi  chuyen den trang chu Owner : 
+        if (status.equalsIgnoreCase("Accept")) {
+            request.getRequestDispatcher("/owner").forward(request, response);
         }
 
     }

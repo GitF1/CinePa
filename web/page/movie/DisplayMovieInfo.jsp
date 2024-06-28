@@ -250,7 +250,7 @@
                             </div>
                             <div class="inline-block tliti-type">
                                 <div class=" fs-14 clXam  xxx">Thể Loại</div>
-                                <div class="clWhite  fw-700">${genreString} </div>
+                                <div class="clWhite  fw-700">${movie.getGenresAsString()} </div>
 
                             </div>
                             <div class="inline-block titi-country">
