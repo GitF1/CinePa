@@ -4,8 +4,8 @@
  */
 package controller.owner.dashboard;
 
+import DAO.owner.StatisticOwnerCinemaDAO;
 import DAO.owner.StatisticOwnerDAO;
-import DAO.owner.StatisticOwnerMovieDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,24 +15,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Movie;
+import java.util.stream.Collectors;
+import model.Cinema;
 import model.owner.dashboard.ChartModel;
 import util.ChartUtil;
 import util.RouterJSP;
-import util.RouterURL;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "OwnerStatisticMovieServlet", urlPatterns = {"/owner/dashboard/statistic/movies"})
-public class OwnerStatisticMovieServlet extends HttpServlet {
+@WebServlet(name = "OwnerDashboardCinemaStatisticServlet", urlPatterns = {"/owner/dashboard/statistic/cinemas"})
+public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
 
-    StatisticOwnerMovieDAO daoMovie;
     StatisticOwnerDAO dao;
+    StatisticOwnerCinemaDAO daoCinema;
 
     @Override
     public void init() throws ServletException {
@@ -40,7 +41,7 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
         try {
 
             dao = new StatisticOwnerDAO(getServletContext());
-            daoMovie = new StatisticOwnerMovieDAO(getServletContext());
+            daoCinema = new StatisticOwnerCinemaDAO(getServletContext());
 
         } catch (Exception ex) {
             Logger.getLogger(OwnerDashBoardServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,7 +61,6 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
 
         }
     }
@@ -82,7 +82,7 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
 
             Integer userID = (Integer) session.getAttribute("userID");
             String role = (String) session.getAttribute("role");
-            List<Movie> listMovie = (List<Movie>) session.getAttribute("listMovieDashBoard");
+            List<Cinema> listCinema = (List<Cinema>) session.getAttribute("listCinemaDashBoard");
 
             if (userID == null || role == null || role != util.Role.OWNER) {
                 //response.sendRedirect(RouterURL.LOGIN);
@@ -95,66 +95,66 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
             }
             session.setAttribute("cinemaChainID", cinemaChainID);
 
-            String movieIDParam = request.getParameter("movieID");
-            String movieTitle = request.getParameter("movieTitle");
+            String selectedCinemaIDs = request.getParameter("selectedCinemaIDs");
+
+            List<Integer> cinemaIDList;
+            if (selectedCinemaIDs == null || selectedCinemaIDs.isEmpty()) {
+                // Initialize an empty list if selectedCinemaIDs is null or empty
+                cinemaIDList = new ArrayList<>();
+            } else {
+                // Split the comma-separated string into an array
+                String[] cinemaIDArray = selectedCinemaIDs.split(",");
+
+                // Convert the array into a List of Integers
+                cinemaIDList = Arrays.stream(cinemaIDArray)
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+            }
+
+           
+
+            List<Cinema> cinemas = new ArrayList();
+
+            if (listCinema == null || listCinema.isEmpty()) {
+                cinemas = daoCinema.getListCinemaByCinemaChain(cinemaChainID, 20, 0);
+                session.setAttribute("listMovieDashBoard", cinemas);
+            } else {
+                cinemas = listCinema;
+            }
+
+            request.setAttribute("cinemas", cinemas);
 
             String monthParam = request.getParameter("month");
             String yearParam = request.getParameter("year");
-
-            System.out.println("movieID" + movieIDParam + "month: " + monthParam + "year:" + yearParam);
-            
-            List<Movie> movies = new ArrayList<>();
-            if (listMovie == null || listMovie.isEmpty()) {
-                movies = daoMovie.getListMoviebyCinemaChainID(cinemaChainID, 20, 0);
-                session.setAttribute("listMovieDashBoard", movies);
-            } else {
-                movies = listMovie;
-            }
-
-            //
-            request.setAttribute("movies", movies);
-
-            Integer movieID = null;
             Integer month = null;
             Integer year = null;
 
-            if (movieIDParam != null) {
-                movieID = Integer.valueOf(movieIDParam);
-            }
-            if (monthParam != null) {
+            if (monthParam != null && !monthParam.isEmpty()) {
                 month = Integer.valueOf(monthParam);
             }
-            if (yearParam != null) {
+            if (yearParam != null && !yearParam.isEmpty()) {
                 year = Integer.valueOf(yearParam);
             }
+//            List<Integer> listCinemaID = new ArrayList();
+//            listCinemaID.add(1);
+//            listCinemaID.add(2);
+//            listCinemaID.add(3);
 
-            ChartModel chartRevenue = daoMovie.getRevenueByDateInMonthOfMovie(cinemaChainID, movieID, month, year);
-            ChartModel chartOrderTicket = daoMovie.getOrderTicketByDateInMonthOfMovie(cinemaChainID, movieID, month, year);
-            //
-            chartRevenue.setLable("Revenue");
-            chartRevenue.setType("bar");
-            chartOrderTicket.setLable("Ticket Sale");
-            chartOrderTicket.setType("line");
-            //
-            List<ChartModel> listCombined = new ArrayList(2);
-            //
-            listCombined.add(chartRevenue);
-            listCombined.add(chartOrderTicket);
-            //
+            List<ChartModel> charts = daoCinema.getListRevenueOfCinemasSelect(cinemaChainID, cinemaIDList, month, year);
+            System.out.println("list data" + charts.toString());
             List<Integer> labels = ChartUtil.getListDateInMonth(month, year);
-            // 
-            request.setAttribute("movieID", movieID);
-            request.setAttribute("month", monthParam);
-            request.setAttribute("year", yearParam);
-            request.setAttribute("listCombineChart", listCombined);
-            request.setAttribute("labels", labels);
-            request.setAttribute("movieTitle", movieTitle == null ? "Tất cả" : movieTitle);
-            //
-            request.getRequestDispatcher(RouterJSP.OWNER_STATISTIC_MOVIE_PAGE).forward(request, response);
-        } catch (Exception ex) {
-            Logger.getLogger(OwnerStatisticMovieServlet.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendRedirect(RouterURL.ERORPAGE);
 
+            request.setAttribute("month", month);
+            request.setAttribute("year", year);
+            request.setAttribute("labels", labels);
+            request.setAttribute("cinemas", cinemas);
+            request.setAttribute("listCombineChart", charts);
+            request.setAttribute("listCinemaID", cinemaIDList);
+
+            request.getRequestDispatcher(RouterJSP.OWNER_STATISTIC_CINEMA_PAGE).forward(request, response);
+
+        } catch (Exception ex) {
+            Logger.getLogger(OwnerDashboardCinemaStatisticServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

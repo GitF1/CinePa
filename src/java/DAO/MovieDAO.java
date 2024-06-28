@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import DB.SQLServerConnect;
+import com.google.api.client.json.Json;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import controller.notification.WebsocketServer;
 import jakarta.servlet.ServletContext;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -25,6 +29,8 @@ import model.movie.MovieInfo;
 import model.Movie;
 
 import jakarta.servlet.ServletContext;
+import service.NotificationService;
+import util.RouterURL;
 
 /**
  *
@@ -132,7 +138,7 @@ public class MovieDAO extends SQLServerConnect {
                 + "FROM Review "
                 + "JOIN [User] ON Review.UserID = [User].UserID "
                 + "WHERE Review.MovieID = ?";
-                
+
         try {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -148,12 +154,12 @@ public class MovieDAO extends SQLServerConnect {
                 String content = resultSet.getString("Content");
                 String userAvatarLink = resultSet.getString("AvatarLink");
                 String username = resultSet.getString("Username");
-                
+
                 // Tạo đối tượng Review và thêm vào danh sách
                 Review review = new Review(userID, movieID, rating, timeCreated, content, userAvatarLink, username);
                 reviews.add(review);
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -666,11 +672,11 @@ public class MovieDAO extends SQLServerConnect {
 
     public void updateMovieByObject(MovieInfo movie, String status, String[] genres) throws SQLException {//update db movie
         String sql = "update Movie set "
-                + "Title = '" + movie.getTitle() + "',"
+                + "Title = N'" + movie.getTitle() + "',"
                 + "DatePublished = '" + new java.sql.Date(movie.getDatePublished().getTime()) + "',"
                 + "ImageURL = '" + movie.getImageURL() + "',"
-                + "Synopsis = '" + movie.getSynopsis() + "',"
-                + "Country = '" + movie.getCountry() + "',"
+                + "Synopsis = N'" + movie.getSynopsis() + "',"
+                + "Country = N'" + movie.getCountry() + "',"
                 + "Year = '" + movie.getYear() + "',"
                 + "Length = '" + movie.getLength() + "',"
                 + "LinkTrailer = '" + movie.getLinkTrailer() + "',"
@@ -678,6 +684,9 @@ public class MovieDAO extends SQLServerConnect {
                 + " where MovieID = '" + movie.getMovieID() + "'";
         Statement st = connection.createStatement();
         st.executeUpdate(sql);
+
+        NotificationService.sendNotification(movie.getTitle() + " đã cập nhật một số thông tin! bạn hãy ghé", movie.getImageURL(), RouterURL.DETAIL_MOVIE_PAGE + "?movieID=" + movie.getMovieID());
+
         sql = "UPDATE [dbo].[Movie] "
                 + "SET  "
                 + "Title=?,"

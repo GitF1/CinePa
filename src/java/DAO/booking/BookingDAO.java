@@ -46,7 +46,7 @@ public class BookingDAO extends SQLServerConnect {
 
             // Add each seat to the list
             while (rs.next()) {
-                
+
                 String name = rs.getString("Name");
                 int coordinateX = rs.getInt("CoordinateX");
                 int coordinateY = rs.getInt("CoordinateY");
@@ -57,7 +57,7 @@ public class BookingDAO extends SQLServerConnect {
                 newSeat.setX(coordinateX);
                 newSeat.setY(coordinateY);
                 seats.add(newSeat);
-                
+
             }
 
         } catch (Exception e) {
@@ -121,6 +121,7 @@ public class BookingDAO extends SQLServerConnect {
     }
 
     public boolean bookTicketMovieSlot(int userID, int movieSlotID, List<Integer> seatIDs, List<CanteenItemOrder> canteenOrderItems, HttpServletRequest req, HttpServletResponse res) throws IOException {
+
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -149,7 +150,7 @@ public class BookingDAO extends SQLServerConnect {
                 pstmt.setInt(3, seatID);
                 pstmt.executeUpdate();
             }
-
+            
             for (CanteenItemOrder item : canteenOrderItems) {
                 String insertTempCanteenItemsSQL = "INSERT INTO TempOrderCanteenItems (OrderID, CanteenItemID, Amount, Price) VALUES (?, ?, ?, ?)";
                 pstmt = connection.prepareStatement(insertTempCanteenItemsSQL);
@@ -178,17 +179,6 @@ public class BookingDAO extends SQLServerConnect {
                 }
             }
             return false;
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 

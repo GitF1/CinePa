@@ -26,9 +26,10 @@
 
         String monthName = ChartUtil.getCurrentMonthName();
     %>
+        
     <body>
         <jsp:include page="../../../.././components/chart/Chart.jsp">
-            <jsp:param name="id" value="chartLine"/>
+            <jsp:param name="id" value="chartLineOrder"/>
             <jsp:param name="label" value="<%=  monthName%>"/>
             <jsp:param name="data" value="<%= new Gson().toJson(chart.getData())%>"/>
             <jsp:param name="labels" value="<%= new Gson().toJson(chart.getLables())%>"/>
