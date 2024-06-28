@@ -23,26 +23,16 @@
     <body>
         <div class=" wrapper-chart mt-4 col-10 mx-auto mt-4">
 
-            <jsp:include page="../../../../.././components/chart/Chart.jsp" >
+            <jsp:include page="../../../../.././components/chart/ChartStakedCombine.jsp" >
                 <jsp:param name="id" value="chartRevenuMovie"/>
                 <jsp:param name="label" value="Renueve Sales"/>
                 <jsp:param name="type" value="bar"/>
-                <jsp:param name="data" value="<%= new Gson().toJson(listChart.get(0).getData())%>"/>
+                <jsp:param name="data" value="<%= new Gson().toJson(listChart)%>"/>
                 <jsp:param name="labels" value="<%= new Gson().toJson(labels)%>"/>
                 <jsp:param name="bg-color" value="rgb(75, 192, 192)"/>
             </jsp:include>
         </div>
 
-        <div class=" wrapper-chart mt-4 col-10 mx-auto mt-4">
-            <jsp:include page="../../../../.././components/chart/Chart.jsp" >
-                <jsp:param name="id" value="chartOrderTicketMovie"/>
-                <jsp:param name="label" value="Ticket Sales"/>
-                <jsp:param name="type" value="line"/>
-                <jsp:param name="data" value="<%= new Gson().toJson(listChart.get(1).getData())%>"/>
-                <jsp:param name="labels" value="<%= new Gson().toJson(labels)%>"/>
-                <jsp:param name="bg-color" value="rgb(255, 159, 64)"/>
-            </jsp:include>
-        </div>
 
 
     </body>

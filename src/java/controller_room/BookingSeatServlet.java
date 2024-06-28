@@ -108,6 +108,7 @@ public class BookingSeatServlet extends HttpServlet {
             Room room = userDAO.queryRoom(movieSlotID);
 
             List<Seat> seats = userDAO.querySeatsInRoom(movieSlotID);
+            
             int maxWidth = 0, maxLength = 0;
 
             for (Seat seat : seats) {
@@ -125,7 +126,9 @@ public class BookingSeatServlet extends HttpServlet {
             request.setAttribute("canteenItems", canteenItems);
 
             // init session for order ticket
+            
             OrderTicket order = new OrderTicket();
+            
             order.setRoomName(room.getName());
             order.setRoomType(room.getType());
             order.setMovieName(movie.getTitle());
@@ -133,6 +136,7 @@ public class BookingSeatServlet extends HttpServlet {
             order.setDate(movieSlot.getFormattedDate());
             //
             HttpSession session = request.getSession();
+            
             session.setAttribute("order", order);
             //
         } catch (Exception ex) {
@@ -195,6 +199,7 @@ public class BookingSeatServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         OrderTicket order = (OrderTicket) session.getAttribute("order");
+    
         if (order == null) {
             order = new OrderTicket();
         }
@@ -205,8 +210,7 @@ public class BookingSeatServlet extends HttpServlet {
         order.setCanteenItemOrders(canteenOrders);
         order.setTotalPriceCanteen(totalCostCanteen);
         order.setTotalPriceTicket(totalCostTicket);
-        //
-        //boolean isBooked = bookingDAO.bookTicketMovieSlot(userID, movieSlotID, seatIDs, canteenOrders, response);
+       
 
         //
         response.sendRedirect(RouterURL.PAYMENT_VNPAY);

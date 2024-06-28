@@ -5,6 +5,7 @@
 package model.owner.dashboard;
 
 import java.util.List;
+import util.ChartUtil;
 
 /**
  *
@@ -22,13 +23,14 @@ public class ChartModel {
     private String type;
 
     public ChartModel() {
-
+        this.type = ChartUtil.TYPE_LINE;
     }
 
     public ChartModel(int size, List<String> lables, List<Double> data) {
         this.size = size;
         this.lables = lables;
         this.data = data;
+        this.type = ChartUtil.TYPE_LINE;
     }
 
     public ChartModel(int size, List<String> lables, List<Double> data, String lable, String type) {
@@ -93,6 +95,11 @@ public class ChartModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "ChartModel{" + "size=" + size + ", lables=" + lables + ", data=" + data + ", totalData=" + totalData + ", maxData=" + maxData + ", lable=" + lable + ", type=" + type + '}';
     }
 
 }

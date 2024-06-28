@@ -37,7 +37,8 @@ public class RouterURL {
     public static String VIEW_ORDER = "/movie/order/view";
 
     public static String OWNER_MOVIES_STATISTIC = "/movie/owner/dashboard/statistic/movies";
-    
-    public static String OWNER_CINEMAS_STATISTIC = "/movie/owner/dashboard/statistic/cinemas";
 
+    public static String OWNER_CINEMAS_STATISTIC = "/movie/owner/dashboard/statistic/cinemas";
+    
+    public static String DETAIL_MOVIE_PAGE = "/movie/HandleDisplayMovieInfo";
 }

@@ -54,7 +54,6 @@ public class Time {
         Time currentDateTime = new Time();
 
         // Print current date, month, year, hour, and minute
-       
-        System.out.println("Current Hour: " + currentDateTime.getHour() );
+        System.out.println("Current Hour: " + currentDateTime.getHour());
     }
 }

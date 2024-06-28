@@ -1,3 +1,4 @@
+<%@page import="java.util.Calendar"%>
 <%@page import="util.RouterURL"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -118,18 +119,48 @@
             }
         </style>
     </head>
+
+    <%
+
+        String title = (String) request.getAttribute("movieTitle");
+        String month = (String) request.getAttribute("month");
+        String year = (String) request.getAttribute("year");
+        Integer movieID = (Integer) request.getAttribute("movieID");
+
+        // Check if month is null or empty
+        if (month == null || month.isEmpty()) {
+            // Get current month (1-based index, January is 1)
+            Calendar now = Calendar.getInstance();
+            int currentMonth = now.get(Calendar.MONTH) + 1; // Adding 1 because Calendar.MONTH is zero-based
+            month = String.valueOf(currentMonth);
+        }
+
+// Check if year is null or empty
+        if (year == null || year.isEmpty()) {
+            // Get current year
+            Calendar now = Calendar.getInstance();
+            int currentYear = now.get(Calendar.YEAR);
+            year = String.valueOf(currentYear);
+        }
+
+    %>
+
     <body>
         <!-- Button to open the modal -->
         <!-- Button to open the modal -->
-        <button onclick="openMovieModal()"> <%= request.getAttribute("movieTitle")%> </button>
+        <button onclick="openMovieModal()"> <%= title%> </button>
         <div id="selected-movie"></div>
         <div>
             <label for="month-select">Select Month:</label>
-            <select id="month-select"></select>
+            <select  <% if (movieID == null) { %> 
+                disabled 
+                <% }%>  id="month-select" onchange="submitFormOnSelectChange()"></select>
         </div>
         <div>
             <label for="year-select">Select Year:</label>
-            <select id="year-select"></select>
+            <select <% if (movieID == null ) { %> 
+                disabled 
+                <% }%> id="year-select" onchange="submitFormOnSelectChange()"></select>
         </div>
         <!-- The Modal -->
         <div id="movieModal" class="container-modal-select">
@@ -141,18 +172,18 @@
                 <div class="modal-body-box-select">
                     <div class="movie-list">
                         <c:forEach var="movie" items="${movies}">
-                            <form class="movie-form" action="<%= RouterURL.OWNER_MOVIES_STATISTIC%>" method="POST">
+                            <form class="movie-form-${movie.movieID}" action="<%= RouterURL.OWNER_MOVIES_STATISTIC%>" method="POST">
 
                                 <input type="hidden" name="movieID" value="${movie.movieID}" />
                                 <input type="hidden" name="movieTitle" value="${movie.getTitle()}" />
                                 <input type="hidden" name="month" />
                                 <input type="hidden" name="year" />
 
-                                <button class="movie" type="submit" onclick="submitMovieForm('${movie.movieID}', '${movie.getTitle()}')">
+                                <div class="movie" type="button" onclick="submitMovieForm('${movie.movieID}')">
                                     <img src="${movie.imageURL}" alt="${movie.title}" width="50" height="75"/>
                                     <span>${movie.title}</span>
-                                </button>
-                                
+                                </div>
+
                             </form>
                         </c:forEach>
                     </div>
@@ -177,24 +208,38 @@
                 document.getElementById("movieModal").style.display = "none";
             }
 
-            function updateFormAndSubmit() {
-                var selectedMovie = document.querySelector('.movie.selected');
-                if (selectedMovie) {
-                    var movieID = selectedMovie.querySelector('input[name="movieID"]').value;
-                    var movieTitle = selectedMovie.querySelector('input[name="movieTitle"]').value;
-                    submitMovieForm(movieID, movieTitle);
+            function submitFormOnSelectChange() {
+                const movieID = <%= movieID%>;
+                
+                if (movieID === null) {
+                    alert("Choose One Movie!");
+                    return;
                 }
+
+                return submitMovieForm(movieID);
             }
 
-            function submitMovieForm(movieID, movieTitle) {
+            function submitMovieForm(movieID) {
+
                 var month = document.getElementById("month-select").value;
                 var year = document.getElementById("year-select").value;
 
-                var form = document.querySelector(`input[value="${movieID}"]`).closest("form");
+
+                // Get the form for the specified movieID
+                var form = document.querySelector(".movie-form-" + movieID);
+
+                // Set the month and year values in the form
                 form.querySelector('input[name="month"]').value = month;
                 form.querySelector('input[name="year"]').value = year;
 
+                console.log("Form Movie ID:", form.querySelector('input[name="movieID"]').value);
+                console.log("Form Movie Title:", form.querySelector('input[name="movieTitle"]').value);
+                console.log("Form Month:", form.querySelector('input[name="month"]').value);
+                console.log("Form Year:", form.querySelector('input[name="year"]').value);
+
+                // Submit the form
                 form.submit();
+
             }
 
             window.onclick = function (event) {
@@ -202,27 +247,29 @@
                 if (event.target == modal) {
                     closeMovieModal();
                 }
-            }
+            };
 
             function populateMonthDropdown() {
                 const monthSelect = document.getElementById("month-select");
                 const months = [
-                    {value: "01", name: "January"},
-                    {value: "02", name: "February"},
-                    {value: "03", name: "March"},
-                    {value: "04", name: "April"},
-                    {value: "05", name: "May"},
-                    {value: "06", name: "June"},
-                    {value: "07", name: "July"},
-                    {value: "08", name: "August"},
-                    {value: "09", name: "September"},
+                    {value: "1", name: "January"},
+                    {value: "2", name: "February"},
+                    {value: "3", name: "March"},
+                    {value: "4", name: "April"},
+                    {value: "5", name: "May"},
+                    {value: "6", name: "June"},
+                    {value: "7", name: "July"},
+                    {value: "8", name: "August"},
+                    {value: "9", name: "September"},
                     {value: "10", name: "October"},
                     {value: "11", name: "November"},
                     {value: "12", name: "December"}
                 ];
 
+                const currentMonth = new Date().getMonth() + 1;
+                const currentMonthValue = '<%= month%>';
                 monthSelect.innerHTML = months.map(month =>
-                    '<option value="' + month.value + '">' + month.name + '</option>'
+                    '<option value="' + month.value + '"' + (month.value === currentMonthValue ? ' selected' : '') + '>' + month.name + '</option>'
                 ).join('');
             }
 
@@ -231,8 +278,10 @@
                 const currentYear = new Date().getFullYear();
                 const years = Array.from({length: 3}, (_, i) => currentYear - i);
 
+                const currentYearSelect = <%= year %>;
+
                 yearSelect.innerHTML = years.map(year =>
-                    '<option value="' + year + '">' + year + '</option>'
+                    '<option value="' + year + '"' + (year === currentYearSelect.toString() ? ' selected' : '') + '>' + year + '</option>'
                 ).join('');
             }
             window.onload = () => {
