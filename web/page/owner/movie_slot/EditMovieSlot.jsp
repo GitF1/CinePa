@@ -1,8 +1,11 @@
 <%-- 
-    Document   : CreateMovieForm
-    Created on : Jun 6, 2024, 10:30:14 AM
+    Document   : EditMovieSlot
+    Created on : Jun 29, 2024, 2:36:49 PM
     Author     : duyqu
 --%>
+
+
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -13,7 +16,7 @@
     <head>
         <%@ page isELIgnored="false" %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Tạo suất phim</title>
+        <title>Chỉnh suất phim</title>
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -49,7 +52,20 @@
             <div class="row">
                 <div class="col-6">
                     <form  action="${pageContext.request.contextPath}/CreateMovieSlotFormInfoServlet" method="post" >
+                        <label for="movieSlotEdit" class="form-label"
+                               >ID</label
+                        >
+                        <input
+                            readonly
+                            type="number"
+                            class="form-control"
+                            id="movieSlotEdit"
+                            name="movieSlotEdit"
+                            placeholder=""
+                            required
+                            value="${movieSlotEdit}"
 
+                            />
                         <label for="cinema" class="form-label">Rạp</label>
                         <select required class="form-select" aria-label="" id="cinema" name="cinema" onchange="this.form.submit()">
                             <option value="0" selected disabled>Please select</option>
@@ -60,7 +76,7 @@
                         </select>
                         <script>
                             document.getElementById("cinema").value =<c:if test="${empty cinema}">
-                            
+
                             </c:if>
                             <c:if test="${not empty cinema}">
                             "${cinema}"
@@ -138,7 +154,7 @@
                             />
                         <br/>
                         <button type="submit" class="btn btn-danger" onclick="" formaction="${pageContext.request.contextPath}/CreateMovieSlotServlet">
-                            Tạo suất chiếu</button
+                            Chỉnh suất chiếu</button
                         >
                         <a class="btn btn-primary"  href="<%= request.getContextPath()%>/owner">Trở về trang chủ</a>
 
@@ -155,21 +171,7 @@
                                 <div id='calendar'></div>
                             </div>
                         </div>
-                        <table class="table" >
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Start</th>
-                                    <th scope="col">End</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableContent">
 
-
-                            </tbody>
-                        </table>
                     </form>
                 </div>
 
@@ -201,6 +203,7 @@
 
         <!--Calender js-->
         <script>
+
                             document.getElementById('date').valueAsDate = new Date();
                             currDate = document.getElementById('date').valueAsDate.getTime();
 
@@ -232,21 +235,33 @@
         </script>
         <!--Update-->
         <script>
+            function jsonCutByID(object) {
+                console.log("THEEDITID"+movieSlotEdit.value);
+                object=object.map((mSlot)=>{
+                    if(mSlot.id===Number(movieSlotEdit.value)){
+                        mSlot.title="EDITING";
+                        mSlot.color="rgb(204,204,0)";
+                        return mSlot;
+                    }else{
+                        return mSlot;
+                    }
+                })
+//                for(mSlot in object){
+//                    if(mSlot.id===Number(movieSlotEdit.value)){
+//                        mSlot.title="EDITING";
+//                        mSlot.color= "rgb(255,255,224)";
+//                    }
+//                }
+                
+//                object = object.filter(function (ms) {
+//                    return ms.id !== Number(movieSlotEdit.value);
+//                });
+                return object;
+            }
             const yourServletURL = "${pageContext.request.contextPath}/ScheduleServlet";
             console.log("dateobject");
             console.log(currDate);
-            function writeSlots(jsonObject) {
-                document.getElementById("tableContent").innerHTML = "";
-                jsonObject.forEach(function (a) {
 
-                    let tempString = "<tr><th scope=\"row\">" + a.id + "</th><td>" + a.title + "</td><td>" + (new Date(a.start)).toUTCString() + "</td><td>" + (new Date(a.end)).toUTCString() + "</td>";
-                    tempString += "<td><button formaction=\"CreateMovieSlotFormInfoServlet\" value=\"" + a.id + "\" name=\"movieSlotEdit\" type=\"submit\" class=\"btn btn-primary\">Chỉnh sửa</button>";
-                    tempString += "<button formaction=\"DeleteMovieSlotServlet\" value=\"" + a.id + "\" name=\"movieSlot\" type=\"submit\" class=\"btn btn-danger\">Xóa</button></td></tr>";
-                    document.getElementById("tableContent").innerHTML += tempString;
-
-                });
-
-            }
             function updateCalendarCall() {
                 currDate = document.getElementById('date').valueAsDate.getTime();
 //                post ajax
@@ -257,9 +272,8 @@
                         }, function (data, status) {
 //                    alert("Data: " + data + "\nStatus: " + status);
                     response = JSON.parse(data);
+                    response = jsonCutByID(response);
                     console.log(response);
-//                    console.log("IAM THE LIGHT")
-                    writeSlots(response);
                     calendar.removeAllEvents();
 
                     calendar.addEventSource(response);
@@ -316,7 +330,7 @@
                             }, function (data2, status2) {
 //                    alert("Data: " + data + "\nStatus: " + status);
                         response = JSON.parse(data2);
-                        writeSlots(response);
+                        response = jsonCutByID(response);
                         console.log(response);
 
                     });

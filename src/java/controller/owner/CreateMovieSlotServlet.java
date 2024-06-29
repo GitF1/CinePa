@@ -91,7 +91,21 @@ public class CreateMovieSlotServlet extends HttpServlet {
         System.out.println("datetime" + dateTime);
 // Check the result
         System.out.println("dateObject" + dateObject);
-        overlap = scheduleDAO.checkOverlap(
+        if (request.getParameter("movieSlotEdit") != null) {
+            overlap = scheduleDAO.checkOverlapExceptID(
+                Date.from(LocalDateTime.of(
+                        LocalDate.parse(request.getParameter("date")),
+                        LocalTime.parse(request.getParameter("startTime"))
+                ).atZone(ZoneId.systemDefault()).toInstant()),
+                Date.from(LocalDateTime.of(
+                        LocalDate.parse(request.getParameter("date")),
+                        LocalTime.parse(request.getParameter("endTime"))
+                ).atZone(ZoneId.systemDefault()).toInstant()),
+                Integer.parseInt(request.getParameter("room")),
+                Integer.parseInt(request.getParameter("movieSlotEdit")));
+
+        }else{
+            overlap = scheduleDAO.checkOverlap(
                 Date.from(LocalDateTime.of(
                         LocalDate.parse(request.getParameter("date")),
                         LocalTime.parse(request.getParameter("startTime"))
@@ -101,12 +115,34 @@ public class CreateMovieSlotServlet extends HttpServlet {
                         LocalTime.parse(request.getParameter("endTime"))
                 ).atZone(ZoneId.systemDefault()).toInstant()),
                 Integer.parseInt(request.getParameter("room")));
+        }
+        
+        
 
-        request.setAttribute("message", "SAMPLE ERROR MESSAGE" + (String) request.getParameter("cinema"));
+//        request.setAttribute("message", "SAMPLE ERROR MESSAGE" + (String) request.getParameter("cinema"));
 
         if (!overlap) {
             try {
-                scheduleDAO.insertMovieSlot(new MovieSlot(
+                if(request.getParameter("movieSlotEdit") != null){
+                    scheduleDAO.updateMovieSlot(new MovieSlot(
+                        Integer.parseInt(request.getParameter("movieSlotEdit")),
+                        Integer.parseInt(request.getParameter("room")),
+                        Integer.parseInt(request.getParameter("movie")),
+                        LocalDateTime.of(
+                                LocalDate.parse(request.getParameter("date")),
+                                LocalTime.parse(request.getParameter("startTime"))
+                        ),
+                        LocalDateTime.of(
+                                LocalDate.parse(request.getParameter("date")),
+                                LocalTime.parse(request.getParameter("endTime"))
+                        ),
+                        "TYPE",//TEMPLATE
+                        Float.parseFloat(request.getParameter("price")),
+                        0,//TEMPLATE
+                        "Scheduled"//TEMPLATE
+                ));
+                }else{
+                    scheduleDAO.insertMovieSlot(new MovieSlot(
                         Integer.parseInt(request.getParameter("cinema")),
                         Integer.parseInt(request.getParameter("room")),
                         Integer.parseInt(request.getParameter("movie")),
@@ -123,34 +159,20 @@ public class CreateMovieSlotServlet extends HttpServlet {
                         0,//TEMPLATE
                         "Scheduled"//TEMPLATE
                 ));
-                System.out.println(new MovieSlot(
-                        Integer.parseInt(request.getParameter("cinema")),
-                        Integer.parseInt(request.getParameter("room")),
-                        Integer.parseInt(request.getParameter("movie")),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("startTime"))
-                        ),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("endTime"))
-                        ),
-                        "TYPE",//TEMPLATE
-                        Float.parseFloat(request.getParameter("price")),
-                        0,//TEMPLATE
-                        "Scheduled"//TEMPLATE
-                ));
-            } catch (ParseException ex) {
+                }
+                
+                
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 request.setAttribute("message", ex.getMessage());
                 Logger.getLogger(CreateMovieSlotServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             response.setContentType("text/html;charset=UTF-8");
-        }else{
+        } else {
             request.setAttribute("message", "OVERLAP");
         }
-
-        request.getRequestDispatcher(route.CREATE_MOVIE_SLOT).forward(request, response);
+     
+        request.getRequestDispatcher("CreateMovieSlotFormInfoServlet").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

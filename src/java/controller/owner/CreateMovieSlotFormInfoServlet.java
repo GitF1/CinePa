@@ -53,9 +53,9 @@ public class CreateMovieSlotFormInfoServlet extends HttpServlet {
             Logger.getLogger(CreateMovieSlotFormInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            this.movieDAO=new MovieDAO(getServletContext());
+            this.movieDAO = new MovieDAO(getServletContext());
         } catch (Exception ex) {
-             System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
             Logger.getLogger(CreateMovieSlotFormInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -94,14 +94,19 @@ public class CreateMovieSlotFormInfoServlet extends HttpServlet {
                 request.setAttribute("rooms", rooms);
                 List<Movie> movies = movieDAO.getMoviesByCinemaId(Integer.parseInt(request.getParameter("cinema")));
                 request.setAttribute("movies", movies);
-                for(Movie m: movies){
+                for (Movie m : movies) {
                     System.out.println("movie");
                     System.out.println(m);
                 }
             }
         }
+        if (request.getParameter("movieSlotEdit") != null) {
+            request.setAttribute("movieSlotEdit", request.getParameter("movieSlotEdit"));
+            request.getRequestDispatcher(router.EDIT_MOVIE_SLOT).forward(request, response);
+        } else {
+            request.getRequestDispatcher(router.CREATE_MOVIE_SLOT).forward(request, response);
+        }
 
-        request.getRequestDispatcher(router.CREATE_MOVIE_SLOT).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

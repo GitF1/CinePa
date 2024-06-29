@@ -25,6 +25,7 @@ public class MovieSlot2 {//mainly to be parsed as json file
     private Date start;
     private Date end;
     private String color = "rgb(13,110,253)";
+    private int id = 1;
 
 //    Because localdatetime does not parse to json, do not question my decisions - DuyND
     public MovieSlot2(int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status) {
@@ -35,11 +36,19 @@ public class MovieSlot2 {//mainly to be parsed as json file
 
     }
 
+    public MovieSlot2(int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status, int id) {
+
+        this.title = String.valueOf(movieID);
+        this.start = Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant());
+        this.end = Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant());
+        this.id = id;
+    }
+
     public MovieSlot2() {
     }
 
     public MovieSlot2(MovieSlot ms) {
-
+        this.id=ms.getMovieSlotID();
         this.title = String.valueOf(ms.getMovieID());
         this.start = Date.from(ms.getStartTime().atZone(ZoneId.of("Etc/GMT0")).toInstant());
         this.end = Date.from(ms.getEndTime().atZone(ZoneId.of("Etc/GMT0")).toInstant());
@@ -69,8 +78,6 @@ public class MovieSlot2 {//mainly to be parsed as json file
         this.title = title;
     }
 
-   
-
     public Date getStart() {
         return start;
     }
@@ -97,12 +104,12 @@ public class MovieSlot2 {//mainly to be parsed as json file
 
         MovieSlot2 ms2 = new MovieSlot2(ms);
         System.out.println(ms2.toJson());
-        for(String s: ZoneId.getAvailableZoneIds()){
+        for (String s : ZoneId.getAvailableZoneIds()) {
             System.out.println(s);
             System.out.println(ZoneId.systemDefault());
             System.out.println("-");
             System.out.println(ZoneId.of("Etc/GMT0"));
         }
-                
+
     }
 }

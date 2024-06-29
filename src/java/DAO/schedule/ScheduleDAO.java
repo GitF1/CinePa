@@ -469,8 +469,6 @@ public class ScheduleDAO extends SQLServerConnect {
 //        // Retrieve list of movies by cinema ID from the database or another source
 //        return new ArrayList<>(); // Placeholder implementation
 //    }
-    
-    
     //Functions for crud movieslot - DuyND
     public boolean checkOverlap(Date start, Date end, int roomID) {
         boolean overlap = false;
@@ -496,9 +494,62 @@ public class ScheduleDAO extends SQLServerConnect {
         return overlap;
     }
 
+    public boolean checkOverlapExceptID(Date start, Date end, int roomID, int movieSlotID) {//exclude the inputted slot to check while editing - DuyND
+        boolean overlap = false;
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(start.getTime());
+        String sql = "select * from MovieSlot where ((?>MovieSlot.StartTime and ?<MovieSlot.EndTime) and Cast(? as date) = Cast(MovieSlot.StartTime as date) and MovieSlot.RoomID=? and MovieSlotID!=?)";
+        //in order: end start start room id
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            st.setTimestamp(1, new java.sql.Timestamp(end.getTime()));
+            st.setTimestamp(2, new java.sql.Timestamp(start.getTime()));
+            st.setTimestamp(3, new java.sql.Timestamp(start.getTime()));
+            st.setInt(4, roomID);
+            st.setInt(4, movieSlotID);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    overlap = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return overlap;
+    }
+public boolean updateMovieSlot(MovieSlot movieSlot) throws SQLException {
+        String sql = "UPDATE [MovieSlot] SET  RoomID=?, MovieID=?, StartTime=?, EndTime=?, Type=?, Price=?, Discount=?, status=? WHERE MovieSlotID=?";
+        //remove avatarlink, username, password, email, method only for update profile --DuyND
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+pstmt.setInt(1, movieSlot.getRoomID());
+            pstmt.setInt(2, movieSlot.getMovieID());
+            java.sql.Date startTime = new java.sql.Date((Date.from(movieSlot.getStartTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
+            java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
+            java.sql.Timestamp timestampStart = new java.sql.Timestamp(startTime.getTime());
+            java.sql.Timestamp timestampEnd = new java.sql.Timestamp(endTime.getTime());
+            pstmt.setTimestamp(3, timestampStart);
+            pstmt.setTimestamp(4, timestampEnd);
+            pstmt.setString(5, movieSlot.getType());
+            pstmt.setFloat(6, movieSlot.getPrice());
+            pstmt.setFloat(7, movieSlot.getDiscount());
+            pstmt.setString(8, movieSlot.getStatus());
+            pstmt.setInt(9,movieSlot.getMovieSlotID());
+         
+
+
+            int updated = pstmt.executeUpdate();
+            return updated > 0;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw e; // Rethrow SQLException for handling in the calling method
+        }
+    }
     public ArrayList<MovieSlot> getDateSchedule(Date date, int roomID) {
         ArrayList<MovieSlot> result = new ArrayList<>();
-        String sqlQuery = "select * from MovieSlot where (? = Cast(MovieSlot.StartTime as date)) and MovieSlot.RoomID=?";
+        String sqlQuery = "select * from MovieSlot where (? = Cast(MovieSlot.StartTime as date)) and MovieSlot.RoomID=?  order by StartTime";
         java.sql.Date insertDate = new java.sql.Date(date.getTime());
 
         try {
@@ -509,7 +560,7 @@ public class ScheduleDAO extends SQLServerConnect {
                 while (rs.next()) {
 //                    int movieSlotID, int roomID, int movieID, LocalDateTime startTime, LocalDateTime endTime, String type, float price, float discount, String status
                     result.add(new MovieSlot(
-                            1,//placeholder, will not be used
+                            rs.getInt("MovieSlotID"),//placeholder, will not be used
                             rs.getInt("RoomID"),
                             rs.getInt("MovieID"),
                             rs.getTimestamp("StartTime").toLocalDateTime(),
@@ -528,6 +579,7 @@ public class ScheduleDAO extends SQLServerConnect {
         }
         return result;
     }
+
     public void insertMovieSlot(MovieSlot movieSlot) throws ParseException {//insert movieslot - DuyND
         String sql = "INSERT INTO [dbo].[MovieSlot]\n"
                 + "           ([RoomID]\n"
@@ -543,10 +595,10 @@ public class ScheduleDAO extends SQLServerConnect {
         try {
 
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1,movieSlot.getRoomID());
+            st.setInt(1, movieSlot.getRoomID());
             st.setInt(2, movieSlot.getMovieID());
             java.sql.Date startTime = new java.sql.Date((Date.from(movieSlot.getStartTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
-            java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());            
+            java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
             java.sql.Timestamp timestampStart = new java.sql.Timestamp(startTime.getTime());
             java.sql.Timestamp timestampEnd = new java.sql.Timestamp(endTime.getTime());
             st.setTimestamp(3, timestampStart);
@@ -565,9 +617,21 @@ public class ScheduleDAO extends SQLServerConnect {
         }
 
     }
-    
-    
-    
+
+    public void deleteMovieSlotByID(int id) {
+        String sql = "DELETE FROM [dbo].[MovieSlot] WHERE MovieSlotID=?\n";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.execute();
+        } catch (SQLException e) {
+            // Properly handle the exception, log it, or rethrow as a custom exception
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Replace with appropriate logging in production code
+        }
+
+    }
+
     private void handleErrorGetDate(HttpServletRequest request) {
     }
 }
