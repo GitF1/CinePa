@@ -484,6 +484,7 @@ public class UserDAO extends SQLServerConnect {
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
         
         ResultSet rs = getResultSet(sqlQuery);
+        
         if (rs.next()) {
             return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }

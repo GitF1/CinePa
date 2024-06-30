@@ -105,14 +105,19 @@
                     {
                         title: "Movies ",
                         icon: "fas fa-columns",
-                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC %>",
+                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>",
                         badge: "NEW",
                         badgeClass: "badge-warning"
                     },
                     {
                         title: "Cinemas ",
                         icon: "fas fa-bars",
-                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC %>"
+                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC%>"
+                    },
+                    {
+                        title: "City Statistic ",
+                        icon: "fas fa-bars",
+                        url: "<%= RouterURL.OWNER_CITY_STATISTIC%>"
                     },
                     {
                         title: "Widget",
