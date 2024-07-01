@@ -85,7 +85,9 @@ public class CreateMovieSlotFormInfoServlet extends HttpServlet {
         request.setAttribute("cinemaChain", cinemaChain);
         int cinemaChainID = cinemaChain.getCinemaChainID();
         System.out.println("----------------------------ID:" + cinemaChainID);
-        List<Cinema> cinemas = cinemasDAO.getCinemasByCinemaChainID(cinemaChainID);
+        
+        List<Cinema> cinemas = cinemasDAO.getCinemasByCinemaChainID(cinemaChainID, 100, 0);
+        
         request.setAttribute("cinemas", cinemas);
 
         if (doPost) {
