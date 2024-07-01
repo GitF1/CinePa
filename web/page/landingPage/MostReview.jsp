@@ -69,14 +69,14 @@
                         <div class="card-body">
 
                             <!-- 1 user  -->
-                            <div class="card-review d-flex justify-content-start ">
+                            <div class="card-review d-flex  ">
                                 <!-- avatar :  -->
-                                <div class="card-review-avt col-4 rounded-circle mr-5"
+                                <div class="card-review-avt col-4 rounded-circle "
                                      style="width: 38px;height: 38px;  background-size: cover; background-image: url('${mostReview.avatarLink}');">
 
                                 </div>
                                 <!-- noi dung :  -->
-                                <div class="card-review-content col-8 ml-5" style="margin-left: 10px;">
+                                <div class="card-review-content col-10 " style="margin-left: 10px;">
                                     <strong>${mostReview.fullname}</strong>
                                     <p class="fw-lighter" style="font-size: 14px; height: 50px; overflow: auto;">${mostReview.synopsis}</p>
                                 </div>

@@ -105,12 +105,12 @@ public class RouterJSP {
 
     // URL JSP FILE FOR OWNER //
     public static String OWNER_COMFIRM_RESULT_PAGE = "/page/owner/confirm/ConfirmResult.jsp";
-
-    public static String OWNER_DASHBOARD_PAGE = "/page/owner/dashboard/Dashboard.jsp";
-
-    public static String OWNER_STATISTIC_MOVIE_PAGE = "/page/owner/dashboard/movie/MovieStatistic.jsp";
-
-    public static String OWNER_STATISTIC_CINEMA_PAGE = "/page/owner/dashboard/cinema/CinemaStatistic.jsp";
+    
+    public static String OWNER_DASHBOARD_PAGE ="/page/owner/dashboard/Dashboard.jsp";
+    
+    public static String OWNER_STATISTIC_MOVIE_PAGE ="/page/owner/dashboard/movie/MovieStatistic.jsp";
+    
+     public static String OWNER_STATISTIC_CINEMA_PAGE ="/page/owner/dashboard/cinema/CinemaStatistic.jsp";
 
     public static String FAVOURITE_MOVIE_PAGE = "/page/movie/favouriteMovies/FavouriteMovies.jsp";
 

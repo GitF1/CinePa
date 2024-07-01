@@ -86,7 +86,7 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
 
             if (userID == null || role == null || role != util.Role.OWNER) {
                 //response.sendRedirect(RouterURL.LOGIN);
-                userID = 10;
+                userID = 2;
             }
             Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
             if (cinemaChainID == null) {
