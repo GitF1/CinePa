@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import model.Movie;
 import model.User;
 import java.sql.ResultSet;
+
 /**
  *
  * @author ACER
@@ -23,7 +24,7 @@ public class MovieApprovalDAO extends MovieDAO {
     }
 
     public int requestMovie(int userID, Movie movie) throws ParseException {
-        String generatedColumns[] = { "RequestMovieID" };
+        String generatedColumns[] = {"RequestMovieID"};
         String sql = "INSERT INTO MovieApproval\n"
                 + "           ([UserID]\n"
                 + "           ,[Title]\n"
@@ -35,13 +36,14 @@ public class MovieApprovalDAO extends MovieDAO {
                 + "           ,[Year]\n"
                 + "           ,[Length]\n"
                 + "           ,[LinkTrailer]\n"
-                + "           ,[MovieStatus])\n"
-                + "     VALUES  (?,?,?,?,0,?,?,?,?,?,?)";
-        
+                + "           ,[MovieStatus]\n"
+                + "           ,[RequestStatus])\n"
+                + "     VALUES  (?,?,?,?,0,?,?,?,?,?,?,'PENDING')";
+
         try {
 
             PreparedStatement st = connection.prepareStatement(sql, generatedColumns);
-            
+
             st.setInt(1, userID);
             st.setString(2, movie.getTitle());
 
@@ -56,18 +58,18 @@ public class MovieApprovalDAO extends MovieDAO {
             st.setInt(8, movie.getLength());
             st.setString(9, movie.getTrailerLink());
             st.setString(10, movie.getStatus());
+            
 
             int affectedRows = st.executeUpdate();
-            if(affectedRows > 0) {
+            
+            if (affectedRows > 0) {
                 ResultSet rs = st.getGeneratedKeys();
                 int newRequestMovieID;
-                if(rs.next()) {
+                if (rs.next()) {
                     newRequestMovieID = rs.getInt(1);
                     return newRequestMovieID;
                 }
             }
-            
-
 
         } catch (SQLException e) {
             // Properly handle the exception, log it, or rethrow as a custom exception
@@ -75,7 +77,7 @@ public class MovieApprovalDAO extends MovieDAO {
         }
         return -1;
     }
-    
+
     public void insertMovieApprovalInGenre(int requestMovieID, String[] genres) {
         String sql = "INSERT INTO [dbo].[MovieApprovalInGenre]\n"
                 + "           ([RequestMovieID]\n"

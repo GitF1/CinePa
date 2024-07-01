@@ -34,6 +34,13 @@
                         <!--em không hiểu flow nên để tạm movie slot ở đây- DuyND-->
                         <a class="nav-link" href="<%= request.getContextPath()%>/CreateMovieSlotFormInfoServlet">Create Movie Slot</a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/page/owner/createMovie/CreateMovieRequest.jsp">Create Movie Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/owner/viewmovierequests">View Movie Request</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
