@@ -1,8 +1,3 @@
-<%-- 
-    Document   : CreateMovieForm
-    Created on : Jun 6, 2024, 10:30:14 AM
-    Author     : duyqu
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -24,7 +19,7 @@
      
 
         <div class="container">
-            <form action="${pageContext.request.contextPath}/CreateMovieServlet" method="post" enctype="multipart/form-data">
+            <form id="requestMovieForm" enctype="multipart/form-data">
 
             <label for="title" class="form-label">Tiêu đề</label>
 
@@ -119,9 +114,8 @@
                 <option value="Coming">Sắp chiếu</option>
             </select>
             <br/>
-            <button type="submit" class="btn btn-danger" onclick="">
-                Tạo phim</button
-            >
+            <button type="button" class="btn btn-danger" onclick="requestMovie();">
+                Gửi yêu cầu</button>
             </form>
         </div>
         <!--Popper-->
@@ -142,6 +136,7 @@
             integrity="sha384-ZvpUoO/+P0o2QE0Wea1Ygq6hEENenOPJo7FfHRVN9cAo50LjMOhpS7CbRBVxnlNv"
             crossorigin="anonymous"
         ></script>
+        <script src="javascript/style.js"></script>
 
 
         <!--JS-->
@@ -209,6 +204,16 @@
                 function removeInputGroup(num) {
                     var inputGroup = document.getElementById(`genre` + num);
                     inputGroup.remove();
+                }
+                
+                function requestMovie() {
+                    callServlet('requestMovieForm', '/movie/requestmovie', 'POST');
+                }
+                
+                function callServlet(id, url, methodType) {
+                    document.getElementById(id).action = url;
+                    document.getElementById(id).method = methodType;
+                    document.getElementById(id).submit();
                 }
         </script>
 

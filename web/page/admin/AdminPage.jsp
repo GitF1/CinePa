@@ -16,7 +16,47 @@
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <!-- link font-icon :   -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <style>
+        .notification-button {
+            border: none;
+            background-color: white;
+            position: relative;
+        }
 
+        .notification-popup {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 30px;
+            width: 300px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .notification-popup ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .notification-popup ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .notification-popup ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-item {
+            cursor: pointer;
+        }
+        </style>
     </head>
 
     <body>
@@ -132,7 +172,19 @@
                         <!-- div -->
                         <div class=" d-flex justify-content-evenly align-items-center " style="margin-left: auto; width: 30%; ">
                             <i class="fa fa-search" aria-hidden="true"></i>
-                            <i class="fa fa-bell" aria-hidden="true"></i>
+                            <button class="notification-button" onclick="toggleNotifications()">
+                                <i class="fa fa-bell" aria-hidden="true"></i>
+                            </button>
+                            <div class="notification-popup" id="notificationPopup">
+                                <ul>
+                                    <li class="notification-item">
+                                        <c:set var="noPendingRequests" value="${requestScope.noPendingRequests}"></c:set>
+                                        <form id="movieApprovalForm">
+                                            <button onclick="approveMovie()" style="border: none; background-color: white;">${noPendingRequests} chủ rạp gửi yêu cầu tạo phim</button>
+                                        </form>
+                                    </li>  
+                                </ul>
+                            </div>
                             <i class="fa fa-commenting-o" aria-hidden="true"></i>
                             <i class="fa fa-bars" aria-hidden="true"></i>
 
@@ -221,6 +273,33 @@
                                 }
                             },
                         });
+                        
+                        function toggleNotifications() {
+                            const popup = document.getElementById('notificationPopup');
+                            if (popup.style.display === 'block') {
+                                popup.style.display = 'none';
+                            } else {
+                                popup.style.display = 'block';
+                            }
+                        }
+                        
+                        function approveMovie() {
+                            callServlet('movieApprovalForm', '/movie/admin/approvemovie', 'GET');
+                        }
+
+                        // Close the notification popup when clicking outside
+                        window.onclick = function(event) {
+                            const popup = document.getElementById('notificationPopup');
+                            if (!event.target.closest('.notification-button') && !event.target.closest('.notification-popup') && popup.style.display === 'block') {
+                                popup.style.display = 'none';
+                            }
+                        };
+                        
+                        function callServlet(id, url, methodType) {
+                            document.getElementById(id).action = url;
+                            document.getElementById(id).method = methodType;
+                            document.getElementById(id).submit();
+                        }
 
                     </script>
                     <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
