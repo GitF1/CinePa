@@ -10,6 +10,18 @@
             .hide-if-null {
                 display: none; /* Ẩn phần tử khi dùng class này */
             }
+
+            .h1, h1 {
+                text-align: center;
+                padding-top: 20px;
+                padding-bottom: 10px;
+            }
+            p {
+                text-align: center;
+                margin-top: 0;
+                margin-bottom: 1rem;
+                font-weight: 200;
+            }
         </style>
     </head>
     <body>

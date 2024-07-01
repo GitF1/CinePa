@@ -7,48 +7,88 @@
     <title>Quản lý phim cho rạp chiếu</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #f0f2f5;
         }
         .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         h1, h2, h3 {
             text-align: center;
             color: #333;
+            margin: 20px 0;
         }
         form {
-            margin: 20px 0;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
         }
         select, input[type="submit"] {
             padding: 10px;
             margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 16px;
         }
         table, th, td {
             border: 1px solid #ddd;
         }
         th, td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #007bff;
+            color: #fff;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
         tr:hover {
             background-color: #f1f1f1;
+        }
+        .button-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button-delete:hover {
+            background-color: #c82333;
+        }
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+                gap: 5px;
+            }
+            select, input[type="submit"] {
+                width: 100%;
+                margin: 5px 0;
+            }
+            table, th, td {
+                font-size: 14px;
+                padding: 10px;
+            }
         }
     </style>
     <script>
@@ -109,7 +149,7 @@
                             <form action="deleteMovieCinema" method="post" style="display:inline;" onsubmit="confirmDelete(event)">
                                 <input type="hidden" name="cinemaID" value="${movieCinema.cinemaID}">
                                 <input type="hidden" name="movieID" value="${movieCinema.movieID}">
-                                <input type="submit" value="Delete">
+                                <input type="submit" value="Delete" class="button-delete">
                             </form>
                         </td>
                     </tr>
