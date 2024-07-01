@@ -20,12 +20,14 @@ import util.RouterJSP;
 public class DisplayAdminPageServlet extends HttpServlet {
 
     GraphDAO graphDAO;
+    AdminDAO adminDAO;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
             graphDAO = new GraphDAO(getServletContext());
+            adminDAO = new AdminDAO(getServletContext());
         } catch (Exception ex) {
             Logger.getLogger(DisplayAdminPageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,12 +65,15 @@ public class DisplayAdminPageServlet extends HttpServlet {
             // lay tong doanh thu :
             double doanhThu = totalAmountTicket + totalAmountCanteen;
             String formattedDoanhThu = String.format("%,.2f", doanhThu);
+            
+            int noPendingRequests = adminDAO.getNumberOfPendingRequests();
 
             // setAttribute :
             request.setAttribute("doanhThu", formattedDoanhThu);
             request.setAttribute("tongUser", tongUser);
             request.setAttribute("tongPhim", tongPhim);
             request.setAttribute("tongReview", tongReview);
+            request.setAttribute("noPendingRequests", noPendingRequests);
 
             //        processRequest(request, response);
             graphDAO.getTotalSalesValueLast7Days();

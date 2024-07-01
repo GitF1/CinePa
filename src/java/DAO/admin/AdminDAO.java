@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.User;
 import jakarta.servlet.ServletContext;
+import java.util.List;
+import model.Request;
+import java.sql.CallableStatement;
 
 public class AdminDAO extends SQLServerConnect {
 
@@ -243,5 +246,58 @@ public class AdminDAO extends SQLServerConnect {
 
         // Return 0 or handle appropriately if an error occurs
         return 0;
+    }   
+    
+    public ResultSet getResultSet(String sqlQuery) throws SQLException {
+        ResultSet rs = null;
+        try {
+            PreparedStatement per = connection.prepareStatement(sqlQuery);
+            rs = per.executeQuery();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return rs;
     }
+    
+    public int getNumberOfPendingRequests() throws SQLException {
+        String sqlQuery = "select count(*) as NoPendingRequests from MovieApproval\n" +
+                    "where RequestStatus = 'PENDING'";
+        ResultSet rs = getResultSet(sqlQuery);
+        while(rs.next()) {
+            return rs.getInt("NoPendingRequests");
+        }
+        return 0;
+    }
+    
+    public List<Request> queryAllPendingRequests() throws SQLException {
+        List<Request> requests = new ArrayList<>();
+        String sqlQuery = "select * from MovieApproval where RequestStatus = 'PENDING'";
+        ResultSet rs = getResultSet(sqlQuery);
+        while(rs.next()) {
+            List<String> genres = new ArrayList<>();
+            String sqlQueryGenres = "select * from MovieApprovalInGenre where RequestMovieID = " + rs.getInt("RequestMovieID");
+            ResultSet genresRs = getResultSet(sqlQueryGenres);
+            while(genresRs.next()) {
+                genres.add(genresRs.getString("Genre"));
+            }
+            Request request = new Request(rs.getInt("RequestMovieID"), rs.getInt("UserID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getString("Rating"), rs.getString("MovieStatus"), rs.getString("Country"), rs.getInt("Length"), rs.getString("LinkTrailer"), genres, "PENDING");
+            requests.add(request);
+        }
+        return requests;
+    }
+    
+    public void approveMovieRequest(int requestID) throws SQLException {
+        String sql = "{call InsertMovieFromApproval(?)}";
+        CallableStatement cs = connection.prepareCall(sql);
+        cs.setInt(1, requestID);
+        cs.execute();
+    }
+    
+    public void rejectMovieRequest(int requestID) throws SQLException {
+        String sql = "{call RejectMovieFromApproval(?)}";
+        CallableStatement cs = connection.prepareCall(sql);
+        cs.setInt(1, requestID);
+        cs.execute();
+    }
+    
 }

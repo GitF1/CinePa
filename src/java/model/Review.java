@@ -109,9 +109,5 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" + "reviewID=" + reviewID + ", userID=" + userID + ", movieID=" + movieID + ", rating=" + rating + ", timeCreated=" + timeCreated + ", content=" + content + ", userAvatarLink=" + userAvatarLink + ", username=" + username + '}';
-    }
-    
-    
+    }  
 }
-
-

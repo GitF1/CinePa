@@ -119,4 +119,10 @@ public class RouterJSP {
     public static String CREATE_MOVIE_SLOT="/page/owner/movie_slot/CreateMovieSlot.jsp";
     
     public static String EDIT_MOVIE_SLOT="/page/owner/movie_slot/EditMovieSlot.jsp";
+    
+    public static String OWNER_REQUEST_MOVIE = "/page/owner/createMovie/CreateMovieRequest.jsp";
+    
+    public static String ADMIN_PENDING_MOVIE_LIST = "/page/admin/PendingMovieList.jsp";
+    
+    public static String OWNER_VIEW_MOVIE_REQUEST = "/page/owner/viewMovieRequests/ViewRequests.jsp";
 }
