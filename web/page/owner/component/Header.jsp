@@ -36,6 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath()%>/owner/createCinemaChain">Create Cinema Chain</a>
                     </li>
+                    
                 </ul>
                 <!-- Add this part for logout functionality -->
                 <ul class="navbar-nav ml-auto">
