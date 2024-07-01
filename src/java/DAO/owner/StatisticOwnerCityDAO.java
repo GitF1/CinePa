@@ -24,11 +24,13 @@ public class StatisticOwnerCityDAO extends SQLServerConnect {
 
     public ArrayList<String> getProvinceByUserId(int id) {
         ArrayList<String> provinces = new ArrayList<>();
+
         String query = "SELECT DISTINCT c.Province "
                 + "FROM [User] u "
-                + "JOIN CinemaChain cc ON u.UserID = cc.CinemaChainID "
-                + "JOIN Cinema c ON cc.CinemaChainID = c.CinemaChainID "
-                + "WHERE u.UserID = ?";
+                + "JOIN ManagesChain MC ON u.UserID = MC.UserID "
+                + "JOIN CinemaChain CC ON MC.CinemaChainID = CC.CinemaChainID "
+                + "JOIN Cinema c ON CC.CinemaChainID = c.CinemaChainID "
+                + "WHERE u.UserID = ? ";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -48,19 +50,21 @@ public class StatisticOwnerCityDAO extends SQLServerConnect {
     public double getRevenueByDay(String day, String month, String year, String userId, String province) {
         System.out.println("thong tin truyen ham 2 : " + day + " " + month + " " + year + " " + userId + " " + province);
         double totalRevenue = 0.0;
+        
         String query = "SELECT SUM(ms.Price) AS TotalRevenue "
                 + "FROM [User] u "
-                + "JOIN CinemaChain cc ON u.UserID = cc.CinemaChainID "
+                + "JOIN ManagesChain MC ON MC.UserID = u.UserID "
+                + "JOIN CinemaChain cc ON MC.CinemaChainID = cc.CinemaChainID "
                 + "JOIN Cinema c ON cc.CinemaChainID = c.CinemaChainID "
                 + "JOIN Room r ON c.CinemaID = r.CinemaID "
                 + "JOIN MovieSlot ms ON r.RoomID = ms.RoomID "
                 + "JOIN Ticket t ON ms.MovieSlotID = t.MovieSlotID "
                 + "JOIN [Order] o ON t.OrderID = o.OrderID "
                 + "WHERE u.UserID = ? "
-                + "  AND DAY(o.TimeCreated) = ? "
-                + "  AND MONTH(o.TimeCreated) = ? "
-                + "  AND YEAR(o.TimeCreated) = ? "
-                + "  AND c.Province = ? "
+                + "AND DAY(o.TimeCreated) = ? "
+                + "AND MONTH(o.TimeCreated) = ? "
+                + "AND YEAR(o.TimeCreated) = ? "
+                + "AND c.Province = ? "
                 + "GROUP BY c.Province";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -80,12 +84,13 @@ public class StatisticOwnerCityDAO extends SQLServerConnect {
             }
 
         } catch (SQLException e) {
-            System.err.println("loi trong ham thu 2 : result la : "+totalRevenue);
-                   
+            System.err.println("loi trong ham thu 2 : result la : " + totalRevenue);
+
         }
 
         return totalRevenue;
     }
+
     public static List<String> getDayInMonth(String month, String year) {
         List<String> daysOfMonth = new ArrayList<>();
 

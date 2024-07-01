@@ -112,12 +112,12 @@
                     {
                         title: "Cinemas ",
                         icon: "fas fa-bars",
-                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC%>"
+                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC %>"
                     },
                     {
                         title: "City Statistic ",
                         icon: "fas fa-bars",
-                        url: "<%= RouterURL.OWNER_CITY_STATISTIC%>"
+                        url: "/movie/OwnerDashboardCityServlet"
                     },
                     {
                         title: "Widget",

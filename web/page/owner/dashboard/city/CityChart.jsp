@@ -122,7 +122,7 @@
 
                         <jsp:include page="../../../../components/chart/Chart.jsp" >
                             <jsp:param name="id" value="chartOrderTicketMovie"/>
-                            <jsp:param name="label" value="Ticket Sales"/>
+                            <jsp:param name="label" value="Revenue Sales"/>
                             <jsp:param name="type" value="line"/>
                             <jsp:param name="data" value="<%= new Gson().toJson(data) %>"/>
                             <jsp:param name="labels" value="<%= new Gson().toJson(labels) %>"/>
