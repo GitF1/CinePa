@@ -116,4 +116,6 @@ public class RouterJSP {
     public static String FAVOURITE_MOVIE_PAGE = "/page/movie/favouriteMovies/FavouriteMovies.jsp";
     
     public static String REVIEW_MOVIE_PAGE = "/page/movie/reviewMovie/ReviewMovie.jsp";
+    
+    public String TOP_MOVIES = "/page/movie/topMovies/TopMovie.jsp";
 }

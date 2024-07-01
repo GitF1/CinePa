@@ -716,5 +716,32 @@ public class MovieDAO extends SQLServerConnect {
         return role;
 
     }
+    // Add method to get top 10 highest rated movies
+public List<Movie> getTopRatedMovies() {
+    List<Movie> list = new ArrayList<>();
+    String sql = "SELECT TOP 12 * FROM Movie ORDER BY Rating DESC";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+            Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                    rs.getString("Title"),
+                    rs.getString("Synopsis"),
+                    rs.getString("DatePublished"),
+                    rs.getString("ImageURL"),
+                    rs.getDouble("Rating"),
+                    rs.getString("Status"),
+                    rs.getString("Country")
+            );
+            list.add(movie);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
 
 }
