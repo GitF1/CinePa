@@ -7,56 +7,56 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
-                background-color: #f8f9fa;
-                font-family: Arial, sans-serif;
+                background-color: #f0f2f5;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
             .container {
-                max-width: 800px;
+                max-width: 900px;
                 margin: auto;
                 padding: 20px;
             }
             .card {
                 border: none;
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                transition: all 0.3s ease;
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: box-shadow 0.3s ease;
             }
             .card:hover {
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             }
             .card-header, .card-footer {
-                background-color: #f8f9fa;
-                border-bottom: 1px solid #dee2e6;
-                border-radius: 10px 10px 0 0;
-                padding: 10px;
+                background-color: #fff;
+                border-bottom: 1px solid #e9ecef;
+                border-radius: 15px 15px 0 0;
+                padding: 15px;
             }
             .cinema-chain-name {
-                font-size: 1.5em;
+                font-size: 1.75em;
                 color: #343a40;
             }
             .img-item_theater {
-                width: 150px;
-                height: 150px;
+                width: 180px;
+                height: 180px;
                 border-radius: 50%;
-                border: 3px solid #ddd;
-                transition: all 0.3s ease;
+                border: 5px solid #dee2e6;
+                transition: transform 0.3s ease, opacity 0.3s ease;
             }
             .img-item_theater:hover {
-                opacity: 0.8;
+                opacity: 0.9;
                 transform: scale(1.05);
             }
             .card-body {
-                padding: 20px;
+                padding: 30px;
             }
             .card-footer {
-                background-color: #f8f9fa;
-                border-top: 1px solid #dee2e6;
-                border-radius: 0 0 10px 10px;
-                padding: 10px;
+                background-color: #fff;
+                border-top: 1px solid #e9ecef;
+                border-radius: 0 0 15px 15px;
+                padding: 15px;
             }
             .btn-primary, .btn-secondary, .btn-warning {
                 color: #fff;
-                border-radius: 5px;
+                border-radius: 8px;
             }
             .btn-primary {
                 background-color: #007bff;
@@ -84,9 +84,9 @@
             }
             .no-cinema {
                 text-align: center;
-                font-size: 1.2em;
+                font-size: 1.3em;
                 color: #6c757d;
-                margin-top: 20px;
+                margin-top: 30px;
             }
             .no-cinema a {
                 color: #007bff;
@@ -99,8 +99,10 @@
         </style>
     </head>
     <body>
+        <jsp:include page=".././component/Header.jsp"/>
+
         <div class="container">
-            <h1 class="text-center mb-4">Manage Your Cinema Chain</h1>
+            <h1 class="text-center mb-5">Manage Your Cinema Chain</h1>
             <c:choose>
                 <c:when test="${not empty cinemaChain}">
                     <div class="card text-center" data-toggle="tooltip" title="${cinemaChain.name}">
@@ -108,22 +110,19 @@
                             <h2 class="cinema-chain-name">${cinemaChain.name}</h2>
                         </div>
                         <div class="card-body">
-                            <img class="img-item_theater mb-3" src="${cinemaChain.avatar == null ? '/movie/assets/images/logo_default_theater.jpg' : cinemaChain.avatar}" alt="${cinemaChain.name}">
+                            <img class="img-item_theater mb-4" src="${cinemaChain.avatar == null ? '/movie/assets/images/logo_default_theater.jpg' : cinemaChain.avatar}" alt="${cinemaChain.name}">
                             <p>${cinemaChain.information}</p>
-                            <!-- Add more details if needed -->
                         </div>
                         <div class="card-footer">
-                            <div class="card-footer">
-                                <a href="${pageContext.request.contextPath}/owner/createCinema?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-primary">Create Cinema</a>
-                                <a href="${pageContext.request.contextPath}/owner/updateCinemaChain?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-warning">Update </a>
-                                <a href="${pageContext.request.contextPath}/owner/cinemas?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-secondary">View Cinemas</a>
-                            </div>
-
+                            <a href="${pageContext.request.contextPath}/owner/createCinema?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-primary mr-2">Create Cinema</a>
+                            <a href="${pageContext.request.contextPath}/owner/updateCinemaChain?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-warning mr-2">Update</a>
+                            <a href="${pageContext.request.contextPath}/owner/cinemas?cinemaChainID=${cinemaChain.cinemaChainID}" class="btn btn-secondary">View Cinemas</a>
                         </div>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div class="no-cinema">
+                        <p>No cinema chain found.</p>
                         <a href="<%= request.getContextPath()%>/owner">Back Home</a>
                     </div>
                 </c:otherwise>
@@ -138,5 +137,8 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
+
+        <jsp:include page="/page/home/Footer.jsp" />
+
     </body>
 </html>
