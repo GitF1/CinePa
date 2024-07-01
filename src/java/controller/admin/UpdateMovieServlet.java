@@ -121,6 +121,7 @@ public class UpdateMovieServlet extends HttpServlet {
 //        processRequest(request, response);
         ServletContext context = request.getServletContext();
         try {
+            
             MovieInfo mi = movieDAO.getMovieWithGenresByID(Integer.parseInt(request.getParameter("movieID")));
             request.setAttribute("mi", mi);
             Date date = mi.getDatePublished();

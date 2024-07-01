@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cinema;
-import model.CinemaChain;
 
 /**
  *
@@ -51,13 +50,22 @@ public class CinemasDAO extends SQLServerConnect {
         }
     }
 
-    public List<Cinema> getCinemasByCinemaChainID(int cinemaChainID) {
+    public List<Cinema> getCinemasByCinemaChainID(int cinemaChainID, Integer limit, Integer offset) {
+
+        if (limit == null || limit < 0) {
+            limit = 20;
+        }
+        if (offset == null || offset < 0) {
+            offset = 0;
+        }
         List<Cinema> cinemas = new ArrayList<>();
-        String sql = "SELECT * FROM Cinema WHERE CinemaChainID = ?";
+        String sql = "SELECT CC.Avatar, C.CinemaID, C.CinemaChainID, C.Address, C.Province, C.District, C.Commune FROM Cinema C JOIN CinemaChain CC ON CC.CinemaChainID = C.CinemaChainID WHERE C.CinemaChainID = ? ORDER BY CinemaID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, cinemaChainID);
+            st.setInt(2, offset);
+            st.setInt(3, limit);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Cinema cinema = new Cinema();

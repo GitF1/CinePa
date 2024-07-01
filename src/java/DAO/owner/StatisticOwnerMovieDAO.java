@@ -54,26 +54,36 @@ public class StatisticOwnerMovieDAO extends SQLServerConnect {
         return null;
     }
 
-    public List<Movie> getListMoviebyCinemaChainID(int cinemaChainID) {
+    public List<Movie> getListMoviebyCinemaChainID(int cinemaChainID, Integer limit, Integer offset) {
+        if (limit == null || limit < 0) {
+            limit = 20;
+        }
+        if (offset == null || offset < 0) {
+            offset = 0;
+        }
 
         String query = "SELECT DISTINCT\n"
                 + "    m.MovieID,\n"
                 + "    m.Title,\n"
-                + "	m.ImageURL\n"
+                + "    m.ImageURL\n"
                 + "FROM \n"
                 + "    Movie m\n"
                 + "    INNER JOIN MovieCinema mc ON m.MovieID = mc.MovieID\n"
                 + "    INNER JOIN Cinema c ON mc.CinemaID = c.CinemaID\n"
                 + "    INNER JOIN CinemaChain cc ON c.CinemaChainID = cc.CinemaChainID\n"
                 + "WHERE \n"
-                + "    cc.CinemaChainID = ?;";
+                + "    cc.CinemaChainID = ?\n"
+                + "ORDER BY m.MovieID\n" 
+                + "OFFSET ? ROWS\n"
+                + "FETCH NEXT ? ROWS ONLY;";
 
         List<Movie> movies = new ArrayList();
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, cinemaChainID);
-
+            stmt.setInt(2, offset);  // number of rows to skip
+            stmt.setInt(3, limit);   // number of rows to return
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {

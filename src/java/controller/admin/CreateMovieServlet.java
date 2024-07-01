@@ -6,6 +6,7 @@ package controller.admin;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import controller.notification.WebsocketServer;
 import controller.user.UpdateUserInfo;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.ServletConfig;
@@ -164,9 +165,20 @@ public class CreateMovieServlet extends HttpServlet {
                     Integer.parseInt(request.getParameter("duration")),
                     (String) request.getParameter("urlInput")
             );
-            out.println(newMovie);
+
+            // Insert the movie into the database
             movieDAO.insertMovie(newMovie);
+
+            // Insert the movie genres into the database
             movieDAO.insertMovieGenre(newMovie, request.getParameterValues("genres"));
+
+            // Send a notification to online users
+            String notificationMessage = "A new movie '" + newMovie.getTitle() + "' has been comming!";
+            
+            WebsocketServer.sendNotification(notificationMessage);
+
+            // Return success response
+            response.getWriter().write("Movie added successfully and notification sent.");
             request.getRequestDispatcher(route.ADMIN).forward(request, response);
         }
     }

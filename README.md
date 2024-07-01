@@ -28,3 +28,8 @@ httpmime-4.4.jar
 jsp-api-2.0.jar
 servlet-api-2.4.jar
 
+#Library for map and QRCode
+javas-3.5.3.jar
+json-20220320.jar
+core 3.5.3.jar
+

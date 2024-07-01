@@ -23,7 +23,10 @@ import java.util.Map;
 public class ChartUtil {
 
     private final Map<String, String> CHART_COLORS = new HashMap<>();
-
+    
+    public final static String TYPE_LINE = "line";
+    public final static String TYPE_BAR = "bar";
+    
     public ChartUtil() {
 
         CHART_COLORS.put("red", "rgb(255, 99, 132)");
@@ -163,14 +166,14 @@ public class ChartUtil {
     }
 
     public static List<Integer> getListDateInMonth(Integer month, Integer year) {
-        
+
         int dateOfMonth = getAmountDateOfMonth(month, year);
         List<Integer> listDateOfMonth = new ArrayList<>(dateOfMonth);
 
         for (int i = 1; i <= dateOfMonth; i++) {
             listDateOfMonth.add(i);
         }
-        
+
         return listDateOfMonth;
     }
 }

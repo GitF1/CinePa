@@ -120,7 +120,7 @@
             cursor: pointer;
         }
         #movieContainerForm{
-            max-height: 65vh;
+            max-height: 60vh;
             overflow: overlay;
         }
         #searchButton{
@@ -181,6 +181,7 @@
                 </ul>
 
                 <div>
+
                     <button id="searchButton" class="borderless-btn" onclick="showModal()">
                         <i class="fa-solid fa-magnifying-glass"></i> 
                     </button>
@@ -191,11 +192,13 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
+
                                         <form id="searchMovieForm" action="searchmovie" method="post">
                                             <div class="search-input-container">
                                                 <input type="search" id="movieNameInput" name="movieName" class="modal-title" placeholder="Search..." aria-label="Search" value="${movieName}"></input> 
                                         </div>
                                     </form>
+                                    <jsp:include page="../search/voice/Voice.jsp" />
                                     <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
                                 </div>
                                 <c:if test="${not empty movies}">
@@ -215,6 +218,7 @@
                                             <hr/>
                                         </c:forEach>
                                         <input type="hidden" id="movieIDInput" name="movieID"></input>
+
                                     </form>
                                 </c:if>
                                 <div class="modal-footer">
@@ -225,7 +229,9 @@
                     </div>
 
                 </div>                
-
+                <div class="notificatin-wrapper">
+                    <jsp:include  page="../notification/Notification.jsp" />
+                </div>
                 <ul class="navbar-nav ms-auto mb-2 me-lg-5">
                     <c:if test="${not empty sessionScope.username}">
                         <li class="nav-item dropdown">
@@ -250,6 +256,7 @@
                     </c:if>
                 </ul>
             </div>
+
         </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
