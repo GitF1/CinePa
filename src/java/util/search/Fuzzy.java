@@ -56,12 +56,13 @@ public class Fuzzy {
     public static List<String> suggest(String input, List<String> dictionary) {
         List<String> suggestions = new ArrayList<>();
 
-        int threshold = 10; // You can adjust this threshold
+        int threshold = 5; // You can adjust this threshold
 
         for (String word : dictionary) {
             int distance = LevenshteinDistance(input, word);
-            System.out.println("distance: " + distance);
+            //System.out.println("distance: " + distance);
             if (distance <= threshold) {
+                System.out.println("distance: " + distance);
                 suggestions.add(word);
             }
         }
@@ -73,7 +74,7 @@ public class Fuzzy {
 
         List<String> dictionary = SoundexVN.movieTitles;
 
-        String input = "lật mặt";
+        String input = "long rui";
 
         // Apply Soundex to the dictionary
         //Fuzzy search = new Fuzzy(soundexMap);

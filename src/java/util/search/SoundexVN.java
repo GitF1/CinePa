@@ -49,7 +49,7 @@ public class SoundexVN {
             "Vòng Eo 56", "Sứ Mệnh Trái Tim", "Trăng Nơi Đáy Giếng", "Tiên Nữ Không Kiêng Cữ", "Khi Con Là Nhà",
             "Ngốc Ơi Tuổi 17", "Lật Mặt 2: Phim Trường", "Quý Cô Thừa Kế", "Cậu Bé Rồng", "Ngôi Nhà Bươm Bướm",
             "Phía Cuối Cầu Vồng", "Ông Ngoại Tuổi 30", "Người Lạ Ơi", "Trăng Máu", "Thiên Thần Hộ Mệnh",
-            "Lật Mặt 3: Ba Chàng Khuyết", "Bầu Trời Trong Trẻo", "Căn Hộ 69", "Trăng Nơi Đáy Giếng", "Tình Khúc Bạch Dương", "Hành Động"
+            "Lật Mặt 3: Ba Chàng Khuyết", "Bầu Trời Trong Trẻo", "Căn Hộ 69", "Trăng Nơi Đáy Giếng", "Tình Khúc Bạch Dương", "Hành Động", "Micheal"
     ));
 
     private static final String[] VIETNAMESE_CHARACTERS = {
@@ -86,6 +86,7 @@ public class SoundexVN {
         char[] mapping = {'0', '1', '2', '3', '0', '1', '2', '0', '0', '2', '2', '4', '5', '5', '0', '1', '2', '6', '2', '3', '0', '1', '0', '2', '0', '2'};
 
         int soundexIndex = 1;
+
         char last = mapCharacter(normalized.charAt(0), mapping);
 
         for (int i = 1; i < normalized.length() && soundexIndex < 4; i++) {
@@ -171,7 +172,8 @@ public class SoundexVN {
 
         for (String candidate : candidates) {
             int distance = LevenshteinDistance(input, candidate);
-            System.out.println("distance: " + distance);
+            System.out.println("candidate: " + candidate + " distance: " + distance );
+
             if (distance <= threshold) {
                 suggestions.add(candidate);
             }
@@ -212,7 +214,7 @@ public class SoundexVN {
 
         System.out.println("Exiting the program. Goodbye!");
         scanner.close();
-        
+
         // Apply Soundex to the dictionary
 //        Map<String, List<String>> soundexMap = new HashMap<>();
 //

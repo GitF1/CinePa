@@ -66,9 +66,9 @@
             // Toggle notification list visibility
             notificationIcon.addEventListener('click', () => {
                 notificationList.style.display = notificationList.style.display === 'none' ? 'block' : 'none';
-                if (notificationList.style.display === 'none') {
-                    notificationCount.textContent = '0';
-                }
+//                if (notificationList.style.display === 'none') {
+//                    notificationCount.textContent = '0';
+//                }
             });
 
             // WebSocket setup
