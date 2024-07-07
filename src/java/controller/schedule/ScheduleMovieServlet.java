@@ -71,7 +71,6 @@ public class ScheduleMovieServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         try {
             scheduleDAO.handleDoGetComponentSchedule(request, response);
-
             request.getRequestDispatcher(route.SCHEDULE_MOIVE).forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ScheduleMovieServlet.class.getName()).log(Level.SEVERE, null, ex);

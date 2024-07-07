@@ -221,7 +221,7 @@ public class ScheduleDAO extends SQLServerConnect {
     }
 
     public List<MovieSchedule> getListMovie(int cinemaID, String date) {
-
+        System.out.println("cinemaID : " + cinemaID);
         List<MovieSchedule> movies = new ArrayList<>();
         String sql = "SELECT \n"
                 + "    m.MovieID,\n"
@@ -234,14 +234,16 @@ public class ScheduleDAO extends SQLServerConnect {
                 + "    mc.Status\n"
                 + "FROM \n"
                 + "    Movie m\n"
-                + "INNER JOIN \n"
+                + "JOIN \n"
                 + "    MovieCinema mc ON m.MovieID = mc.MovieID\n"
                 + "WHERE \n"
-                + "    mc.CinemaID = ? AND mc.Status = 'showing';";
+                + "    mc.CinemaID = ? AND mc.Status = 'SHOWING';";
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, cinemaID);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
+                    
                     MovieSchedule movie = new MovieSchedule();
                     movie.setMovieID(resultSet.getInt("movieID"));
                     movie.setTitle(resultSet.getString("title"));
@@ -252,7 +254,7 @@ public class ScheduleDAO extends SQLServerConnect {
 
                     // Get movie slots for this movie
                     int movieID = resultSet.getInt("movieID");
-                    List<MovieSlot> movieSlots = getAllMovieSlotsByMovieID(movieID, date);
+                    List<MovieSlot> movieSlots = getAllMovieSlotsByMovieID(cinemaID,movieID, date);
                     movie.setListMovieSlot(movieSlots);
                     if (!movieSlots.isEmpty()) {
                         movies.add(movie);
@@ -268,14 +270,25 @@ public class ScheduleDAO extends SQLServerConnect {
     }
 
     // Method to get all movie slots for a given movieID
-    public List<MovieSlot> getAllMovieSlotsByMovieID(int movieID, String date) {
+    public List<MovieSlot> getAllMovieSlotsByMovieID(int cinemaID, int movieID, String date) {
 
         List<MovieSlot> movieSlots = new ArrayList<>();
-        String sql = "SELECT * FROM MovieSlot WHERE movieID = ? AND Status ='SHOWING' AND CONVERT(DATE, startTime) = ?";
 
+        // SQL query to get movie slots for a specific movie, cinema, and date
+        String sql = "SELECT ms.MovieSlotID, ms.RoomID, ms.MovieID, ms.StartTime, ms.EndTime, ms.Type, ms.Price, ms.Discount, ms.Status AS MovieSlotStatus, "
+                + "r.Name AS RoomName, r.Type AS RoomType, r.Capacity, r.Status AS RoomStatus "
+                + "FROM MovieSlot ms "
+                + "JOIN Room r ON ms.RoomID = r.RoomID "
+                + "JOIN MovieCinema mc ON ms.MovieID = mc.MovieID AND mc.CinemaID = r.CinemaID "
+                + "WHERE ms.MovieID = ? "
+                + "AND mc.CinemaID = ? "
+                + "AND  CONVERT(DATE, startTime) = ?";
+        
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            
             preparedStatement.setInt(1, movieID);
-            preparedStatement.setString(2, date); // Assuming the date parameter is in 'yyyy-MM-dd' format
+            preparedStatement.setInt(2, cinemaID);
+            preparedStatement.setString(3, date); 
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -518,11 +531,12 @@ public class ScheduleDAO extends SQLServerConnect {
 
         return overlap;
     }
-public boolean updateMovieSlot(MovieSlot movieSlot) throws SQLException {
+
+    public boolean updateMovieSlot(MovieSlot movieSlot) throws SQLException {
         String sql = "UPDATE [MovieSlot] SET  RoomID=?, MovieID=?, StartTime=?, EndTime=?, Type=?, Price=?, Discount=?, status=? WHERE MovieSlotID=?";
         //remove avatarlink, username, password, email, method only for update profile --DuyND
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-pstmt.setInt(1, movieSlot.getRoomID());
+            pstmt.setInt(1, movieSlot.getRoomID());
             pstmt.setInt(2, movieSlot.getMovieID());
             java.sql.Date startTime = new java.sql.Date((Date.from(movieSlot.getStartTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
             java.sql.Date endTime = new java.sql.Date((Date.from(movieSlot.getEndTime().atZone(ZoneId.systemDefault()).toInstant())).getTime());
@@ -534,9 +548,7 @@ pstmt.setInt(1, movieSlot.getRoomID());
             pstmt.setFloat(6, movieSlot.getPrice());
             pstmt.setFloat(7, movieSlot.getDiscount());
             pstmt.setString(8, movieSlot.getStatus());
-            pstmt.setInt(9,movieSlot.getMovieSlotID());
-         
-
+            pstmt.setInt(9, movieSlot.getMovieSlotID());
 
             int updated = pstmt.executeUpdate();
             return updated > 0;
@@ -547,6 +559,7 @@ pstmt.setInt(1, movieSlot.getRoomID());
             throw e; // Rethrow SQLException for handling in the calling method
         }
     }
+
     public ArrayList<MovieSlot> getDateSchedule(Date date, int roomID) {
         ArrayList<MovieSlot> result = new ArrayList<>();
         String sqlQuery = "select * from MovieSlot where (? = Cast(MovieSlot.StartTime as date)) and MovieSlot.RoomID=?  order by StartTime";

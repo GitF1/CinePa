@@ -9,7 +9,7 @@
                 cursor: pointer;
                 color:#6ea9bf;
                 z-index:100;
-                
+
             }
             #notificationCount {
                 position: absolute;
@@ -37,8 +37,8 @@
                 overflow-x: hidden;
                 padding:10px;
                 border-radius: 10px;
-                
-                
+
+
             }
             .notification {
                 padding: 10px;
@@ -78,7 +78,7 @@
                 const data = JSON.parse(event.data);
                 notifications.push(data);
                 notificationCount.textContent = notifications.length;
-
+                notificationCount.style.display = 'block';
                 // Create a notification element
                 const notification = document.createElement("div");
                 notification.className = "notification";
@@ -106,9 +106,23 @@
                 notification.appendChild(image);
                 notification.appendChild(message);
                 notification.appendChild(link);
+                //
 
+
+
+                if (notificationList.childElementCount === 0) {
+                    notificationList.appendChild(wrapperDiv);
+                } else {
+                    notificationList.appendChild(notification);
+                    // Remove placeholder image if it exists
+                    const placeholder = document.querySelector('.imageNotFoundNotification');
+                    if (placeholder) {
+                        notificationList.removeChild(placeholder.parentElement); // Remove wrapperDiv
+                    }
+                }
+                //
                 // Append the notification to the notifications container
-                notificationList.appendChild(notification);
+
             };
 
             socket.onopen = function (event) {
@@ -122,6 +136,41 @@
             socket.onerror = function (error) {
                 console.log("WebSocket error: " + error.message);
             };
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                var notificationList = document.getElementById('notificationList');
+                var wrapperDiv = document.createElement("div");
+                var notificationImage = document.createElement('img');
+                notificationImage.className = "imageNotFoundNotification";
+                notificationImage.src = "/movie/assets/images/not-found-2.jpg";
+                notificationImage.alt = "No Notifications";
+                notificationImage.width = 200;
+                notificationImage.height = 200;
+                wrapperDiv.appendChild(notificationImage);
+                wrapperDiv.style.display = "flex";
+                wrapperDiv.style.justifyContent = "center";
+                wrapperDiv.style.alignItems = "center";
+                if (notificationList.childElementCount === 0) {
+                    notificationList.appendChild(wrapperDiv);
+                }
+            });
+
+            // Event listener for clicks outside the notificationList div
+            window.addEventListener('click', function (event) {
+                if (event.target !== notificationList && !notificationList.contains(event.target)) {
+                    notificationList.style.display === 'none';
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var notificationCount = document.getElementById('notificationCount');
+
+                // Check if notificationCount is '0', then hide it
+                if (notificationCount.innerHTML === '0') {
+                    notificationCount.style.display = 'none';
+                }
+            });
         </script>
     </body>
 </html>
