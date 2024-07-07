@@ -33,5 +33,5 @@ jobs:
           script: |
             cd /opt/tomcat/apache-tomcat-10.1.25/webapps/
             sudo rm -rf ROOT/
-            sudo cp ~/CinePa/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
+            sudo cp ~/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
             sudo systemctl restart tomcat
