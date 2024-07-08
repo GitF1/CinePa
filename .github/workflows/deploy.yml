@@ -25,13 +25,13 @@ jobs:
       # Step to set the libs.CopyLibs.classpath property
       - name: Set libs.CopyLibs.classpath
         run: |
-          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject-copylibstask.jar
+          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject.jar
         working-directory: /home/runner/work/CinePa/CinePa  # Set the correct working directory
 
       # Step to build the project using Ant with the server home directory specified
       - name: Build with Ant
         run: |
-          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject-copylibstask.jar
+          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject.jar
         working-directory: /home/runner/work/CinePa/CinePa  # Set the correct working directory
 
       # Step to deploy the built WAR file to an EC2 instance
