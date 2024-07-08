@@ -22,21 +22,14 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Install Ant
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ant
-
     - name: Build with Ant
-      run: ant clean compile -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
+      run: ant clean compile
 
     - name: Test with Ant
-      run: ant test -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
+      run: ant test
 
     - name: Package with Ant
-      run: | 
-        ant package -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject.jar -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
-        ant package -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
+      run: ant package
 
     
   deploy:
@@ -60,6 +53,6 @@ jobs:
       env:
         AWS_EC2_USER:  ${{ secrets.EC2_USER }}
         AWS_EC2_IP: ${{ secrets.EC2_HOST }}
-        TOMCAT_WEBAPPS_DIR: '/var/lib/tomcat10/webapps'
+        TOMCAT_WEBAPPS_DIR: '/opt/tomcat/apache-tomcat-10.1.25/webapps'
       run: |
-       scp -o StrictHostKeyChecking=no dist/MyApp.war $AWS_EC2_USER@$AWS_EC2_IP:$TOMCAT_WEBAPPS_DIR
+       scp -o StrictHostKeyChecking=no dist/CinePa.war $AWS_EC2_USER@$AWS_EC2_IP:$TOMCAT_WEBAPPS_DIR
