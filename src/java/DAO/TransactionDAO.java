@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DAO.owner;
+package DAO;
 
 import DB.SQLServerConnect;
 import jakarta.servlet.RequestDispatcher;
@@ -24,17 +24,52 @@ public class TransactionDAO extends SQLServerConnect {
         connect(context);
     }
 
+    public boolean addBalance(int userID, double amount) {
+        String selectBalanceSQL = "SELECT balance FROM Balances WHERE userID = ?";
+        String updateBalanceSQL = "UPDATE Balances SET balance = balance + ? WHERE userID = ?";
+        String insertBalanceSQL = "INSERT INTO Balances (userID, balance) VALUES (?, ?)";
+
+        try {
+            connection.setAutoCommit(false);
+
+            // Check if the user already has a balance record
+            PreparedStatement selectStmt = connection.prepareStatement(selectBalanceSQL);
+            selectStmt.setInt(1, userID);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                // If the user has a balance record, update it
+                PreparedStatement updateStmt = connection.prepareStatement(updateBalanceSQL);
+                updateStmt.setDouble(1, amount);
+                updateStmt.setInt(2, userID);
+                updateStmt.executeUpdate();
+            } else {
+                // If the user does not have a balance record, insert a new one
+                PreparedStatement insertStmt = connection.prepareStatement(insertBalanceSQL);
+                insertStmt.setInt(1, userID);
+                insertStmt.setDouble(2, amount);
+                insertStmt.executeUpdate();
+            }
+
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void handleWithdraw(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        
+
         int ownerId = Integer.parseInt(request.getParameter("ownerID"));
         double amount = Double.parseDouble(request.getParameter("amount"));
 
         try {
-            
+
             connection.setAutoCommit(false);
 
             PreparedStatement ps1 = connection.prepareStatement("SELECT balance FROM Balances WHERE owner_id = ?");
-            
+
             ps1.setInt(1, ownerId);
             ResultSet rs = ps1.executeQuery();
 
