@@ -36,7 +36,7 @@
 
             .modal-content-box-select {
                 background-color: #fefefe;
-                margin: 15% auto;
+                margin: 2% auto;
                 padding: 20px;
                 border: 1px solid #888;
                 width: 80%;
@@ -57,21 +57,29 @@
 
             .modal-body-box-select {
                 margin: 20px 0;
+                max-height: 60vh;
+                overflow-y: scroll;
             }
 
             .modal-footer-box-select {
                 display: flex;
                 flex-direction: row-reverse;
+
             }
 
             /* Specific Styles for Movie Selection */
             .cinema-list {
                 display: flex;
-                flex-wrap: wrap;
                 gap: 10px;
                 justify-content: center;
+                align-items: center;
+                flex-wrap: nowrap;
+                flex-direction: column;
             }
+            .cinema-form-item{
+                width: 80%;
 
+            }
             .cinema {
                 padding: 10px;
                 border: 1px solid #ddd;
@@ -117,6 +125,14 @@
                 cursor: pointer;
                 font-size: 16px;
             }
+            .img-select-cinema{
+                width: 60px;
+                height:
+                    60px;
+                border-radius: 10px;
+                box-shadow: 1px, 6px 3px 8px rgba(0,0,0,0,2);
+            }
+
         </style>
     </head>
 
@@ -125,18 +141,18 @@
         String month = (String) request.getAttribute("month");
         String year = (String) request.getAttribute("year");
         List<Integer> listCinemaID = (List<Integer>) request.getAttribute("listCinemaID");
-        
+
         // Check if month is null or empty
         if (month == null || month.isEmpty()) {
-          
+
             Calendar now = Calendar.getInstance();
-            int currentMonth = now.get(Calendar.MONTH) + 1; 
+            int currentMonth = now.get(Calendar.MONTH) + 1;
             month = String.valueOf(currentMonth);
         }
 
         // Check if year is null or empty
         if (year == null || year.isEmpty()) {
-          
+
             Calendar now = Calendar.getInstance();
             int currentYear = now.get(Calendar.YEAR);
             year = String.valueOf(currentYear);
@@ -147,44 +163,42 @@
     <body>
         <!-- Button to open the modal -->
         <!-- Button to open the modal -->
-        <button onclick="openMovieModal()"> Select Cinema </button>
-        <div id="selected-cinema"></div>
+        <div class="container mt-5">
+            <button class="btn btn-success" onclick="openMovieModal()">Select Cinema</button>
+            <div id="selected-cinema" class="mt-3"></div>
 
-        <form id="cinema-form" action="<%= RouterURL.OWNER_CINEMAS_STATISTIC%>" method="POST">
+            <form id="cinema-form" action="<%= RouterURL.OWNER_CINEMAS_STATISTIC%>" method="POST" class="mt-3">
+                <input type="hidden" name="month" id="month-select" />
+                <input type="hidden" name="year" id="year-select" />
+                <input type="hidden" name="selectedCinemaIDs" id="selected-cinema-ids">
+                <button class="btn btn-primary" type="submit">Analyze</button>
+            </form>
 
-            <input type="hidden" name="month"  id="month-select"/>
-            <input type="hidden" name="year" id="year-select" />
-            
-            <input type="hidden" name="selectedCinemaIDs" id="selected-cinema-ids">
+            <div class="form-group mt-3 w-25">
+                <label for="month-select-cinema">Select Month:</label>
+                <select class="custom-select" <% if (listCinemaID == null || listCinemaID.isEmpty()) { %> 
+                        disabled 
+                        <% } %> id="month-select-cinema" onchange="submitFormOnSelectChange()"></select>
+            </div>
 
-            <button type="submit">Analyze</button>
-
-        </form>
-        <div>
-            <label for="month-select-cinema">Select Month:</label>
-            <select  <% if ( listCinemaID == null || listCinemaID.isEmpty()) { %> 
-                disabled 
-                <% }%>  id="month-select-cinema" onchange="submitFormOnSelectChange()"></select>
+            <div class="form-group mt-3 w-25">
+                <label for="year-select-cinema">Select Year:</label>
+                <select class="custom-select" <% if (listCinemaID == null || listCinemaID.isEmpty()) { %> 
+                        disabled 
+                        <% }%> id="year-select-cinema" onchange="submitFormOnSelectChange()"></select>
+            </div>
         </div>
-
-        <div>
-            <label for="month-select-cinema">Select Year:</label>
-            <select <% if (listCinemaID == null || listCinemaID.isEmpty() ) { %> 
-                disabled 
-                <% }%> id="year-select-cinema" onchange="submitFormOnSelectChange()"></select>
-        </div>
-
         <!-- The Modal -->
         <div id="cinemaModal" class="container-modal-select">
             <div class="modal-content-box-select">
                 <div class="modal-header-box-select">
-                    <h2>Select a Cinema</h2>
+                    <h2 >Select a Cinema</h2>
                     <span class="close" onclick="closeMovieModal()"><i class="fa-solid fa-circle-xmark"></i></span>
                 </div>
-                <div class="modal-body-box-select">
+                <div class="modal-body-box-select ">
                     <div class="cinema-list">
                         <c:forEach var="cinema" items="${cinemas}">
-                            <form class="cinema-form-${cinema.cinemaID}" action="<%= RouterURL.OWNER_CINEMAS_STATISTIC%>" method="POST">
+                            <form class="cinema-form-item cinema-form-${cinema.cinemaID}" action="<%= RouterURL.OWNER_CINEMAS_STATISTIC%>" method="POST">
 
                                 <input type="hidden" name="cinemaID" value="${cinema.cinemaID}" />
 
@@ -193,7 +207,7 @@
                                 <input type="hidden" name="year" />
 
                                 <div class="cinema" type="button" onclick="toggleCinemaSelection('${cinema.cinemaID}', '${cinema.getAddress()}', '${cinema.getAvatar()}')">
-                                    <img src="${cinema.getAvatar()}" alt="${cinema.getAddress()}" width="50" height="75"/>
+                                    <img src="${cinema.getAvatar()}" alt="${cinema.getAddress()}" width="70" height="70"/>
                                     <span>${cinema.getAddress()}</span>
                                 </div>
 
@@ -232,19 +246,21 @@
                 closeMovieModal();
 
             }
-            
+
             function updateHiddenInputs() {
                 const selectedCinemaIDs = selectedCinemas.map(cinema => cinema.cinemaID).join(',');
                 document.getElementById('selected-cinema-ids').value = selectedCinemaIDs;
             }
             function displaySelectedCinemas() {
-                
+
                 const selectedCinemaDiv = document.getElementById('selected-cinema');
                 selectedCinemaDiv.innerHTML = '';
                 selectedCinemas.forEach(cinema => {
                     const cinemaElement = document.createElement('div');
+                    cinemaElement.style.marginBottom = "10px";
 
                     const imgElement = document.createElement('img');
+                    imgElement.className = "img-select-cinema";
                     imgElement.src = cinema.cinemaAvatar;
                     imgElement.alt = cinema.cinemaAddress;
                     imgElement.width = 50;
@@ -258,6 +274,7 @@
 
                     selectedCinemaDiv.appendChild(cinemaElement);
                 });
+                checkSelectedCinema();
             }
 
             function submitFormOnSelectChange() {
@@ -269,9 +286,6 @@
             }
 
             function submitMovieForm(cinemaID) {
-
-
-
 
                 // Get the form for the specified cinemaID
                 var form = document.querySelector(".cinema-form-" + cinemaID);
@@ -326,7 +340,7 @@
                 const currentYear = new Date().getFullYear();
                 const years = Array.from({length: 3}, (_, i) => currentYear - i);
 
-                const currentYearSelect = <%= year %>;
+                const currentYearSelect = <%= year%>;
 
                 yearSelect.innerHTML = years.map(year =>
                     '<option value="' + year + '"' + (year === currentYearSelect.toString() ? ' selected' : '') + '>' + year + '</option>'
@@ -336,6 +350,20 @@
                 populateMonthDropdown();
                 populateYearDropdown();
             };
+
+            function checkSelectedCinema() {
+                const selectedCinemaDiv = document.getElementById('selected-cinema');
+                const monthSelect = document.getElementById('month-select-cinema');
+                const yearSelect = document.getElementById('year-select-cinema');
+
+                if (selectedCinemaDiv.innerHTML.trim() !== '') {
+                    monthSelect.disabled = false;
+                    yearSelect.disabled = false;
+                } else {
+                    monthSelect.disabled = true;
+                    yearSelect.disabled = true;
+                }
+            }
         </script>
     </body>
 </html>

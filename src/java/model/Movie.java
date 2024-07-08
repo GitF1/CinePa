@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class Movie {
 
-    private int movieID;
-    private String title;
-    private String synopsis;
-    private String datePublished;
-    private String imageURL;
-    private double rating;
-    private String status;
-    private String country;
-    private int length ;//new var, set default to 0 -DuyND
-    private String trailerLink ;
-    private List<String> genres;
+    public int movieID;
+    public String title;
+    public String synopsis;
+    public String datePublished;
+    public String imageURL;
+    public double rating;
+    public String status;
+    public String country;
+    public int length ;//new var, set default to 0 -DuyND
+    public String trailerLink ;
+    public List<String> genres;
 
     public Movie() {
     }

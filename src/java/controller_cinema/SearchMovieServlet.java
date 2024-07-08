@@ -108,6 +108,11 @@ public class SearchMovieServlet extends HttpServlet {
 
             movies.addAll(moviesSearchByTitleMovie);
             movies.addAll(movieSearchByGenre);
+            if(movies.isEmpty()){
+               List<Movie> movieSearchAbbreviation = dao.searchMoviesByAbbreviationAndStatus(input);
+               movies.addAll(movieSearchAbbreviation);
+               
+            }
 
             request.setAttribute("movieName", input);
             request.setAttribute("movies", movies);

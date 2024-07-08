@@ -41,8 +41,10 @@ public class RouterURL {
     public static String OWNER_MOVIES_STATISTIC = "/movie/owner/dashboard/statistic/movies";
 
     public static String OWNER_CINEMAS_STATISTIC = "/movie/owner/dashboard/statistic/cinemas";
-
-    public static String OWNER_CITY_STATISTIC = "/movie/OwnerDashboardCityServlet" ; 
+    
+    public static String OWNER_DASHBOARD_PAGE = "/movie/owner/dashboard";
+    
+    public static String OWNER_CITY_STATISTIC = "/movie/OwnerDashboardCityServlet";
 
     public static String DETAIL_MOVIE_PAGE = "/movie/HandleDisplayMovieInfo";
 }
