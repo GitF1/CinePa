@@ -53,7 +53,7 @@
                                 <jsp:include page="../../../.././components/chart/ChartHiddenBG.jsp">
                                     <jsp:param name="id" value="visitsChart" />
                                     <jsp:param name="label" value="Visits" />
-                                    <jsp:param name="data" value="<%= new Gson().toJson(ChartUtil.numbers(12, 0, 1000, 0, 1))%>" />
+                                    <jsp:param name="data" value="<%= new Gson().toJson(ChartUtil.numbers(12, 0, 20, 0, 1))%>" />
                                     <jsp:param name="labels" value="<%= new Gson().toJson(ChartUtil.numbers(12, 1, 12, 0, 1))%>" />
                                     <jsp:param name="type" value="line" />
                                     <jsp:param name="bg-color" value="rgb(255, 255, 255)" />           
@@ -61,11 +61,11 @@
                             </div>
                             <div class="stats text-white">
                                 <div>
-                                    <h3>3562</h3>
+                                    <h3>42</h3>
                                     <p>Monthly Visits</p>
                                 </div>
                                 <div>
-                                    <h3>96</h3>
+                                    <h3>15</h3>
                                     <p>Today Visits</p>
                                 </div>
                             </div>
