@@ -28,13 +28,13 @@ jobs:
         sudo apt-get install -y ant
 
     - name: Build with Ant
-      run: ant clean compile
+      run: ant clean compile -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
 
     - name: Test with Ant
-      run: ant test
+      run: ant test -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
 
     - name: Package with Ant
-      run: ant package
+      run: ant package -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H your-ec2-ip >> ~/.ssh/known_hosts
+        ssh-keyscan -H 52.221.232.164 >> ~/.ssh/known_hosts
 
     - name: Deploy to AWS EC2
       env:
