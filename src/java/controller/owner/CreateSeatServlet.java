@@ -5,6 +5,7 @@
 package controller.owner;
 
 import DAO.UserDAO;
+import DAO.owner.OwnerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,7 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
 import util.RouterURL;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 /**
  *
  * @author PC
@@ -25,6 +28,7 @@ import util.RouterURL;
 public class CreateSeatServlet extends HttpServlet {
 
     UserDAO userDAO;
+    OwnerDAO ownerDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +42,12 @@ public class CreateSeatServlet extends HttpServlet {
     @Override
     public void init()
             throws ServletException {
+        try {
+            userDAO = new UserDAO(getServletContext());
+            ownerDAO = new OwnerDAO(getServletContext());
+        } catch (Exception ex) {
+            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         super.init();
 
     }
@@ -90,7 +100,27 @@ public class CreateSeatServlet extends HttpServlet {
         int length = Integer.parseInt(request.getParameter("length"));
         int width = Integer.parseInt(request.getParameter("width"));
         int roomID = Integer.parseInt(roomIDStr);
-       
+        
+        try {
+            //        String sql = "select count(*) as seats from Seat where roomID = " + roomID;
+//        int seats = 0;
+//        try {
+//            ResultSet countSeatsRS = userDAO.getResultSet(sql);
+//            if(countSeatsRS.next()) {
+//                seats = countSeatsRS.getInt("seats");
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+//        if(seats == 0) {
+        
+//        }
+
+        int rowsAffected = ownerDAO.deleteSeats(roomID);
+        } catch (SQLException ex) {
+            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         for (int x = 1; x <= width; ++x) {
             for (int y = 1; y <= length; ++y) {
@@ -100,12 +130,13 @@ public class CreateSeatServlet extends HttpServlet {
                 }
                 try {
                     userDAO = new UserDAO(request.getServletContext());
-                    userDAO.insertSeats(5, seatName, x, y);
+                    userDAO.insertSeats(roomID, seatName, x, y);
                 } catch (Exception ex) {
                     Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
+        request.getRequestDispatcher("/owner").forward(request, response);
     }
 
     /**

@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import DB.SQLServerConnect;
+import com.google.api.client.json.Json;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import controller.notification.WebsocketServer;
 import jakarta.servlet.ServletContext;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -20,11 +24,15 @@ import java.util.Map;
 import model.MovieInGenre;
 import model.MovieWithStatus;
 import model.Review;
-//import model.User;
+
 import model.movie.MovieInfo;
 import model.Movie;
 
 import jakarta.servlet.ServletContext;
+import service.NotificationService;
+import util.RouterURL;
+import java.util.logging.Level;
+import model.Room;
 
 /**
  *
@@ -137,13 +145,11 @@ public class MovieDAO extends SQLServerConnect {
             // Tạo một PreparedStatement từ kết nối và truy vấn SQL
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, movieID);
-
             // Thực thi truy vấn và lấy kết quả
             ResultSet resultSet = preparedStatement.executeQuery();
-
             // Lặp qua các kết quả và tạo đối tượng Review cho mỗi kết quả
             while (resultSet.next()) {
-                int reviewID = resultSet.getInt("ReviewID");
+//                int reviewID = 1; //resultSet.getInt("ReviewID"); please change again!
                 int userID = resultSet.getInt("UserID");
                 int rating = resultSet.getInt("Rating");
                 Date timeCreated = resultSet.getTimestamp("TimeCreated");
@@ -152,9 +158,10 @@ public class MovieDAO extends SQLServerConnect {
                 String username = resultSet.getString("Username");
 
                 // Tạo đối tượng Review và thêm vào danh sách
-                Review review = new Review(reviewID, userID, movieID, rating, timeCreated, content, userAvatarLink, username);
+                Review review = new Review(userID, movieID, rating, timeCreated, content, userAvatarLink, username);
                 reviews.add(review);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -667,11 +674,11 @@ public class MovieDAO extends SQLServerConnect {
 
     public void updateMovieByObject(MovieInfo movie, String status, String[] genres) throws SQLException {//update db movie
         String sql = "update Movie set "
-                + "Title = '" + movie.getTitle() + "',"
+                + "Title = N'" + movie.getTitle() + "',"
                 + "DatePublished = '" + new java.sql.Date(movie.getDatePublished().getTime()) + "',"
                 + "ImageURL = '" + movie.getImageURL() + "',"
-                + "Synopsis = '" + movie.getSynopsis() + "',"
-                + "Country = '" + movie.getCountry() + "',"
+                + "Synopsis = N'" + movie.getSynopsis() + "',"
+                + "Country = N'" + movie.getCountry() + "',"
                 + "Year = '" + movie.getYear() + "',"
                 + "Length = '" + movie.getLength() + "',"
                 + "LinkTrailer = '" + movie.getLinkTrailer() + "',"
@@ -679,6 +686,9 @@ public class MovieDAO extends SQLServerConnect {
                 + " where MovieID = '" + movie.getMovieID() + "'";
         Statement st = connection.createStatement();
         st.executeUpdate(sql);
+
+        NotificationService.sendNotification(movie.getTitle() + " đã cập nhật một số thông tin! bạn hãy ghé", movie.getImageURL(), RouterURL.DETAIL_MOVIE_PAGE + "?movieID=" + movie.getMovieID());
+
         sql = "UPDATE [dbo].[Movie] "
                 + "SET  "
                 + "Title=?,"
@@ -717,5 +727,107 @@ public class MovieDAO extends SQLServerConnect {
         return role;
 
     }
+    // Add method to get top 10 highest rated movies
+public List<Movie> getTopRatedMovies() {
+    List<Movie> list = new ArrayList<>();
+    String sql = "SELECT TOP 12 * FROM Movie ORDER BY Rating DESC";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
 
+        while (rs.next()) {
+            Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                    rs.getString("Title"),
+                    rs.getString("Synopsis"),
+                    rs.getString("DatePublished"),
+                    rs.getString("ImageURL"),
+                    rs.getDouble("Rating"),
+                    rs.getString("Status"),
+                    rs.getString("Country")
+            );
+            list.add(movie);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+
+    public String getTitleByID(int id) throws SQLException {
+
+        String title = "";
+        String sqlQuery = "SELECT Title FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    title = rs.getString("Title");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return title;
+
+    }
+    public int getLengthByID(int id) throws SQLException {
+
+        int length = 0;
+        String sqlQuery = "SELECT Length FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    length = rs.getInt("Length");
+                    System.out.println("dao function:"+length);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return length;
+
+    }
+    public List<Movie> getMoviesByCinemaId(int cinemaID) {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "select *from MovieCinema join Movie on MovieCinema.MovieID=Movie.MovieID where MovieCinema.CinemaID=?;";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cinemaID);
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()) {
+                    Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                            rs.getString("Title"),
+                            rs.getString("Synopsis"),
+                            rs.getDate("DatePublished").toString(),
+                            rs.getString("ImageURL"),
+                            rs.getDouble("Rating"),
+                            rs.getString("Status"),
+                            rs.getString("Country"),
+                            rs.getInt("Length"),
+                            rs.getString("LinkTrailer")
+                    );
+//                    int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink
+movies.add(movie);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return movies;
+    }
 }

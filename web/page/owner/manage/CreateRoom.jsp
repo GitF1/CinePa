@@ -4,33 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Room</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f8f9fa;
         }
+
         .container {
-            max-width: 600px; /* Độ rộng form được thay đổi */
-            border: 1px solid #ccc;
-            border-radius: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 20px;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            background-color: #4e2c72;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 20px;
+            text-align: center;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
         .form-group label {
             font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
         }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #4e2c72;
+            border-color: #4e2c72;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
         }
+
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #3a1d54;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -49,17 +100,17 @@
                 <input type="text" class="form-control" id="type" name="type" required>
             </div>
             <div class="form-group">
-                <label for="capacity">Capacity:</label>
-                <input type="number" class="form-control" id="capacity" name="capacity" required>
+                <!--<label for="capacity">Capacity:</label>-->
+                <input type="hidden" class="form-control" id="capacity" name="capacity" value="0" >
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="length">Length (in meters):</label>
-                    <input type="number" class="form-control" id="length" name="length" required>
+                    <!--<label for="length">Length (in meters):</label>-->
+                    <input type="hidden" class="form-control" id="length" name="length" value="0" >
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="width">Width (in meters):</label>
-                    <input type="number" class="form-control" id="width" name="width" required>
+                    <!--<label  for="width">Width (in meters):</label>-->
+                    <input type="hidden" class="form-control" id="width" name="width" value="0">
                 </div>
             </div>
             <div class="form-group">
@@ -69,7 +120,14 @@
                     <option value="Unavailable">Unavailable</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Create Room</button>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary btn-block">Create Room</button>
+                </div>
+                <div class="col-md-6">
+                    <a href="javascript:history.go(-1);" class="btn btn-cancel btn-block">Cancel</a>
+                </div>
+            </div>
         </form>
     </div>
 </body>

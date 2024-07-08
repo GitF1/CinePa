@@ -15,7 +15,6 @@
             footer {
                 background-color: #1c2331;
                 color: white;
-                padding: 60px 0;
             }
             /* Biểu tượng mạng xã hội */
             .social-icons a {

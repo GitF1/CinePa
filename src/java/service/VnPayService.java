@@ -122,7 +122,7 @@ public class VnPayService {
 
         String bankCode = req.getParameter("bankCode");
 
-        System.out.println("Order ID Payment: " + req.getParameter("orderID"));
+        System.out.println("Order ID Payment: " +OrderID);
         
         String vnp_TxnRef = String.valueOf(OrderID);
 

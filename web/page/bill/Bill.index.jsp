@@ -76,6 +76,9 @@
             }
             .order-history {
                 margin-top: 20px;
+                max-height: 70vh;
+                overflow-y: scroll;
+                width: 80vw;
             }
             .order-history table {
                 width: 100%;
@@ -97,6 +100,10 @@
                 display: block;
                 margin-top: 10px;
                 font-size: 14px;
+            }
+            .list-order__history_tr{
+                max-height: 50vh;
+                overflow-y: scroll;
             }
             .payment-method {
                 margin-top: 40px;
@@ -136,6 +143,9 @@
     </head>
 
     <body>
+        
+        <jsp:include page=".././landingPage/Header.jsp" />
+        
         <div class="container">
             <div class="content">
                 <div class="billing">
@@ -151,79 +161,83 @@
                                 <th>Thời gian kết thúc</th>
                                 <th></th>
                             </tr>
-                            <c:forEach var="order" items="${orders}">
-                                <tr>
-                                    <td>
-                                        <fmt:formatDate value="${order.timeCreated}" pattern="dd/MM/yyyy" />
-                                    </td>
-                                    <td><c:out value="${order.movieTitle}"/></td>
-                                    <td>
-                                        <fmt:formatDate value="${order.startTime}" pattern="HH:mm - dd/MM" />
-                                    </td>
-                                    <td>
-                                        <fmt:formatDate value="${order.endTime}" pattern="HH:mm - dd/MM" />
-                                    </td>
-                                    <td>
-                                        <form action="/movie/order/view" method="post">
-                                            <input type="hidden" name="orderID" value="${order.orderID}"/>
-                                            <input type="hidden" name="roomID" value="${order.roomID}"/>
-                                            <input type="hidden" name="movieSlotID" value="${order.movieSlotID}"/>
-                                            <input type="hidden" name="movieID" value="${order.movieID}"/>
-                                            <button type="submit" class="btn-view_detail">Chi tiết</button>
-                                        </form>
-                                            
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                        <a href="#" class="load-more">Thêm</a>
-                    </div>
-                    <div class="payment-method">
-                        <h3>Phương thức thanh toán</h3>
-                        <div class="card">
-                            <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR-635x496.png" alt="Visa">
-                            <p>VN Pay</p>
-                        </div>
+                            <div class="list-order__history_tr">
+                                <c:forEach var="order" items="${orders}">
+                                    <tr >
+                                        <td>
+                                            <fmt:formatDate value="${order.timeCreated}" pattern="dd/MM/yyyy" />
+                                        </td>
+                                        <td><c:out value="${order.movieTitle}"/></td>
+                                        <td>
+                                            <fmt:formatDate value="${order.startTime}" pattern="HH:mm - dd/MM" />
+                                        </td>
+                                        <td>
+                                            <fmt:formatDate value="${order.endTime}" pattern="HH:mm - dd/MM" />
+                                        </td>
+                                        <td>
+                                            <form action="/movie/order/view" method="post">
+                                                <input type="hidden" name="orderID" value="${order.orderID}"/>
+                                                <input type="hidden" name="roomID" value="${order.roomID}"/>
+                                                <input type="hidden" name="movieSlotID" value="${order.movieSlotID}"/>
+                                                <input type="hidden" name="movieID" value="${order.movieID}"/>
+                                                <button type="submit" class="btn-view_detail">Chi tiết</button>
+                                            </form>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                <div>
+
+
+                                    </table>
+                                    <a href="#" class="load-more">Thêm</a>
+                                </div>
+                                <div class="payment-method">
+                                    <h3>Phương thức thanh toán</h3>
+                                    <div class="card">
+                                        <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR-635x496.png" alt="Visa">
+                                        <p>VN Pay</p>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <c:if test="${viewDetail}">
-            <jsp:include page="BoxOrderDetail.jsp" />
-        </c:if>
-    </body>
-    <script>
+                <c:if test="${viewDetail}">
+                    <jsp:include page="BoxOrderDetail.jsp" />
+                </c:if>
+                </body>
+                <script>
 
-//        function handleOnViewDetailOrder(orderID, roomID, movieSlotID, movieID, url, method) {
-//
-//            // Example implementation for the handleOnViewDetailOrder function
-//            let params = new URLSearchParams();
-//
-//            params.append('orderID', orderID);
-//            params.append('movieSlotID', movieSlotID);
-//            params.append('movieID', movieID);
-//
-//            fetch(url, {
-//                method: method,
-//                headers: {
-//                    'Content-Type': 'application/x-www-form-urlencoded'
-//                },
-//                body: params.toString()
-//            })
-//                    .then(response => response.json())
-//                    .then(data => {
-//                        // Handle the response data
-//                        displayOrderDetails(data);
-//                    })
-//                    .catch(error => {
-//                        console.error('Error:', error);
-//
-//                    });
-//
-//
-//
-//
-//        }
+            //        function handleOnViewDetailOrder(orderID, roomID, movieSlotID, movieID, url, method) {
+            //
+            //            // Example implementation for the handleOnViewDetailOrder function
+            //            let params = new URLSearchParams();
+            //
+            //            params.append('orderID', orderID);
+            //            params.append('movieSlotID', movieSlotID);
+            //            params.append('movieID', movieID);
+            //
+            //            fetch(url, {
+            //                method: method,
+            //                headers: {
+            //                    'Content-Type': 'application/x-www-form-urlencoded'
+            //                },
+            //                body: params.toString()
+            //            })
+            //                    .then(response => response.json())
+            //                    .then(data => {
+            //                        // Handle the response data
+            //                        displayOrderDetails(data);
+            //                    })
+            //                    .catch(error => {
+            //                        console.error('Error:', error);
+            //
+            //                    });
+            //
+            //
+            //
+            //
+            //        }
 
-    </script>
-</html>
+                </script>
+                </html>

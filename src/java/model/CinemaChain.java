@@ -14,7 +14,16 @@ public class CinemaChain {
     private String name;
     private String information;
     private String avatar;
+    private String banner;
 
+    public CinemaChain(int cinemaChainID, String name, String information, String avatar, String banner) {
+        this.cinemaChainID = cinemaChainID;
+        this.name = name;
+        this.information = information;
+        this.avatar = avatar;
+        this.banner = banner;
+    }
+    
     public CinemaChain() {
     }
     
@@ -58,6 +67,15 @@ public class CinemaChain {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+    
 
     @Override
     public String toString() {

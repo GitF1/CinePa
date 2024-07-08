@@ -192,6 +192,7 @@ public class BookingTicketServlet extends HttpServlet {
         List<Integer> seatIDs = getListSeatIDs(request);
 //
         List<CanteenItemOrder> canteenOrders = getListCanteenOrder(request);
+        
         // handle paying before add into database
         // hanle add canteen, seat, ticket , order into database
       
@@ -208,7 +209,7 @@ public class BookingTicketServlet extends HttpServlet {
 //        } else {
 //            out.println(": \"booking fail!\"");
 //        }
-        out.close();
+      //  out.close();
     }
         private List<Integer> getListSeatIDs(HttpServletRequest request) {
         List<Integer> seatIDs = new ArrayList<>();

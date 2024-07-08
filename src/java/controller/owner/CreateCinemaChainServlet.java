@@ -6,35 +6,44 @@ package controller.owner;
 
 import DAO.CinemaChainDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.PrintWriter;
 import model.CinemaChain;
+import util.FileUploader;
 import util.RouterJSP;
+import util.RouterURL;
 
-/**
- *
- * @author VINHNQ
- */
 @WebServlet(name = "CreateCinemaChainServlet", urlPatterns = {"/owner/createCinemaChain"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 public class CreateCinemaChainServlet extends HttpServlet {
 
     private RouterJSP router = new RouterJSP();
     private CinemaChainDAO cinemaChainDAO;
+    private FileUploader fileUploader;
 
     @Override
     public void init() throws ServletException {
         try {
             super.init();
             this.cinemaChainDAO = new CinemaChainDAO(getServletContext());
+            this.fileUploader = new FileUploader();
         } catch (Exception ex) {
-            Logger.getLogger(CreateCinemaChainServlet.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServletException(ex);
         }
     }
 
@@ -67,58 +76,67 @@ public class CreateCinemaChainServlet extends HttpServlet {
         }
 
         CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-
         if (cinemaChain != null) {
-            request.setAttribute("error", "You have already created a CinemaChain.");
-            request.getRequestDispatcher(router.HOME_OWNER).forward(request, response);
+            request.setAttribute("error", "You already have a CinemaChain.");
+            response.sendRedirect(request.getContextPath() + "/owner");
         } else {
             request.getRequestDispatcher(router.CREATE_CINEMACHAIN).forward(request, response);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession session = request.getSession();
         Integer userID = (Integer) session.getAttribute("userID");
 
         if (userID == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(RouterURL.LOGIN);
             return;
         }
 
         String name = request.getParameter("name");
         String information = request.getParameter("information");
-        String avatar = request.getParameter("avatar");
 
-        CinemaChain existingChain = cinemaChainDAO.getCinemaChainByUserId(userID);
-        if (existingChain == null) {
-            CinemaChain cinemaChain = new CinemaChain();
-            cinemaChain.setName(name);
-            cinemaChain.setInformation(information);
-            cinemaChain.setAvatar(avatar);
-            cinemaChainDAO.createCinemaChain(cinemaChain, userID);
-
-            response.sendRedirect(request.getContextPath() + "/owner/homeOwner");
-        } else {
+        CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByUserId(userID);
+        
+        if (cinemaChain != null) {
             request.setAttribute("error", "You already have a CinemaChain.");
-            request.getRequestDispatcher(router.CREATE_CINEMACHAIN).forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/owner");
+            return;
         }
+
+        String avatarUrl = "";
+        String bannerUrl = "";
+
+        // Handle avatar upload
+        Part avatarPart = request.getPart("avatar");
+        if (avatarPart != null && avatarPart.getSize() > 0) {
+            File avatarFile = File.createTempFile("avatar_", "_" + avatarPart.getSubmittedFileName());
+            avatarPart.write(avatarFile.getAbsolutePath());
+            avatarUrl = fileUploader.uploadAndReturnUrl(avatarFile, "avatar_" + name, "cinema/avatar");
+        }
+
+        // Handle banner upload
+        Part bannerPart = request.getPart("banner");
+        if (bannerPart != null && bannerPart.getSize() > 0) {
+            File bannerFile = File.createTempFile("banner_", "_" + bannerPart.getSubmittedFileName());
+            bannerPart.write(bannerFile.getAbsolutePath());
+            bannerUrl = fileUploader.uploadAndReturnUrl(bannerFile, "banner_" + name, "cinema/banner");
+        }
+
+        cinemaChain = new CinemaChain();
+        cinemaChain.setName(name);
+        cinemaChain.setInformation(information);
+        cinemaChain.setAvatar(avatarUrl);
+        cinemaChain.setBanner(bannerUrl);
+
+        cinemaChainDAO.createCinemaChain(cinemaChain, userID);
+
+        response.sendRedirect(request.getContextPath() + "/owner");
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

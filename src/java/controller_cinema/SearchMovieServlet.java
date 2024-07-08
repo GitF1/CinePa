@@ -5,6 +5,7 @@
 package controller_cinema;
 
 import DAO.UserDAO;
+import DAO.search.SearchDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,12 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Movie;
 import util.RouterJSP;
-
 
 /**
  *
@@ -83,16 +84,37 @@ public class SearchMovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String movieName = request.getParameter("movieName").trim();
-        System.out.println("doPost - SearchMovieServlet - " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        System.out.println("movieName: " + movieName);
+        String movieName = request.getParameter("movieName");
+        String voiceStr = request.getParameter("searchInput");
+
+        System.out.println("voiceStr : " + voiceStr);
         try {
-            UserDAO ud = new UserDAO(request.getServletContext());
-            List<Movie> movies = ud.searchMovies(movieName);
 
-            System.out.println(movies);
+            String input = "";
+            if (movieName == null) {
+                input = voiceStr;
+            }
 
-            request.setAttribute("movieName", movieName);
+            if (voiceStr == null) {
+                input = movieName;
+            }
+
+            System.out.println("input searching : " + input);
+
+            SearchDAO dao = new SearchDAO(request.getServletContext());
+            List<Movie> movies = new ArrayList<>();
+            List<Movie> moviesSearchByTitleMovie = dao.searchMovies(input);
+            List<Movie> movieSearchByGenre = dao.searchMoviesByGenre(input);
+
+            movies.addAll(moviesSearchByTitleMovie);
+            movies.addAll(movieSearchByGenre);
+            if(movies.isEmpty()){
+               List<Movie> movieSearchAbbreviation = dao.searchMoviesByAbbreviationAndStatus(input);
+               movies.addAll(movieSearchAbbreviation);
+               
+            }
+
+            request.setAttribute("movieName", input);
             request.setAttribute("movies", movies);
             request.setAttribute("modalStatus", true);
 

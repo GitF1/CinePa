@@ -18,6 +18,16 @@ public class Review {
     
     public Review() {
     }
+    
+    public Review(int userID, int movieID, int rating, Date timeCreated, String content, String userAvatarLink, String username) {
+        this.userID = userID;
+        this.movieID = movieID;
+        this.rating = rating;
+        this.timeCreated = timeCreated;
+        this.content = content;
+        this.userAvatarLink = userAvatarLink;
+        this.username = username;
+    }
 
     public Review(int reviewID, int userID, int movieID, int rating, Date timeCreated, String content, String userAvatarLink, String username) {
         this.reviewID = reviewID;
@@ -95,6 +105,9 @@ public class Review {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" + "reviewID=" + reviewID + ", userID=" + userID + ", movieID=" + movieID + ", rating=" + rating + ", timeCreated=" + timeCreated + ", content=" + content + ", userAvatarLink=" + userAvatarLink + ", username=" + username + '}';
+    }  
 }
-
-

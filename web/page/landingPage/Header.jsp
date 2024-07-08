@@ -4,7 +4,9 @@
     Author     : duyqu
 --%>
 
+<%@page import="DAO.RegisterOwnerDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.ServletContext" %>
 
 <!--jstl import-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -18,6 +20,14 @@
 <!DOCTYPE html>
 
 <html>
+    <%
+        ServletContext context = application;
+         RegisterOwnerDAO registerOwnerDAO = new RegisterOwnerDAO(context) ; 
+        Integer id = (Integer) session.getAttribute("userID");
+        String status = registerOwnerDAO.checkRegisterOwner(String.valueOf(id));
+
+    %>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -120,14 +130,13 @@
             cursor: pointer;
         }
         #movieContainerForm{
-            max-height: 65vh;
+            max-height: 60vh;
             overflow: overlay;
         }
         #searchButton{
             margin-left:500px;
         }
         .icon-logo-btn{
-
             font-size: 2em;
         }
         .wrapper-navbar-header{
@@ -163,18 +172,21 @@
                         <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/movie/filter-movies">Phim chiếu</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/filter-movies">Phim chiếu</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/top-movies">Top Phim</a>
+                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Rạp chiếu
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <c:forEach  var="o" items="${cinemaNames}">
-                                <form action="<!--servlet here-->">
-
-                                    <li><input class="dropdown-item" type="submit" name="chain" value="<c:out value = "${o}"/>"></li>
-                                </form>
+                            <c:forEach var="cinema" items="${cinemaNames}">
+                                <li>
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/cinemaItem?cinemaName=${cinema}">${cinema}</a>
+                                </li>
                             </c:forEach>
 
                         </ul>
@@ -183,6 +195,7 @@
                 </ul>
 
                 <div>
+
                     <button id="searchButton" class="borderless-btn" onclick="showModal()">
                         <i class="fa-solid fa-magnifying-glass"></i> 
                     </button>
@@ -193,11 +206,13 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
+
                                         <form id="searchMovieForm" action="searchmovie" method="post">
                                             <div class="search-input-container">
                                                 <input type="search" id="movieNameInput" name="movieName" class="modal-title" placeholder="Search..." aria-label="Search" value="${movieName}"></input> 
                                         </div>
                                     </form>
+                                    <jsp:include page="../search/voice/Voice.jsp" />
                                     <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
                                 </div>
                                 <c:if test="${not empty movies}">
@@ -217,6 +232,7 @@
                                             <hr/>
                                         </c:forEach>
                                         <input type="hidden" id="movieIDInput" name="movieID"></input>
+
                                     </form>
                                 </c:if>
                                 <div class="modal-footer">
@@ -227,7 +243,9 @@
                     </div>
 
                 </div>                
-
+                <div class="notificatin-wrapper">
+                    <jsp:include  page="../notification/Notification.jsp" />
+                </div>
                 <ul class="navbar-nav ms-auto mb-2 me-lg-5">
                     <c:if test="${not empty sessionScope.username}">
                         <li class="nav-item dropdown">
@@ -237,6 +255,10 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/information">View Profile</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/order/view">View Ordered</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/CheckRegisterOwnerServlet">
+                                        <%= "Accept".equalsIgnoreCase(status) ? "View" : "Register Owner"%>
+                                    </a></li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Log Out</a></li>
                             </ul>
@@ -252,6 +274,7 @@
                     </c:if>
                 </ul>
             </div>
+
         </div>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

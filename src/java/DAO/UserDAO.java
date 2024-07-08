@@ -10,6 +10,7 @@ import jakarta.servlet.ServletContext;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.Normalizer;
 import model.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +32,7 @@ import model.Seat;
  * @author Admin
  */
 public class UserDAO extends SQLServerConnect {
-
+    
     public UserDAO(ServletContext context) throws Exception {
         super();
         connect(context);
@@ -169,6 +170,26 @@ public class UserDAO extends SQLServerConnect {
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                user = extractUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        }
+        return user;
+
+    }
+
+    public User getUserById(int id) throws Exception {
+
+        User user = null;
+
+        String sql = "SELECT * FROM [User] WHERE UserID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -349,24 +370,19 @@ public class UserDAO extends SQLServerConnect {
     }
 
     //Query cinema
-    //Search movies
-    public List<Movie> searchMovies(String input) throws SQLException {
-        List<Movie> movies = new ArrayList<>();
-        String sqlQuery = "select * from Movie where Title like N'%" + input + "%'\n"
-                + "and status = 'SHOWING'";
-        ResultSet rs = getResultSet(sqlQuery);
-        while (rs.next()) {
-            List<String> genres = new ArrayList<>();
-            String sqlQueryGenres = "select  Genre from Movie join MovieInGenre on Movie.MovieID = MovieInGenre.MovieID where Movie.MovieID = " + rs.getInt("MovieID");
-            ResultSet genresRs = getResultSet(sqlQueryGenres);
-            while (genresRs.next()) {
-                genres.add(genresRs.getString("Genre"));
-            }
-            Movie movie = new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Status"), rs.getString("Country"), genres);
-            movies.add(movie);
+    //Get genres from movieID
+    public List<String> getGenresFromMovieID(int movieID) throws SQLException {
+        List<String> genres = new ArrayList<>();
+        String sqlQueryGenres = "select  Genre from Movie join MovieInGenre on Movie.MovieID = MovieInGenre.MovieID where Movie.MovieID = " + movieID;
+        ResultSet genresRs = getResultSet(sqlQueryGenres);
+        while (genresRs.next()) {
+            genres.add(genresRs.getString("Genre"));
         }
-        return movies;
+        return genres;
     }
+
+    //Search movies
+   
 
     //Query seats from room
     public Map<Room, List<Seat>> querySeatsFromRoom(int roomID) throws SQLException {
@@ -403,7 +419,6 @@ public class UserDAO extends SQLServerConnect {
     }
 
     //Query seats from MovieSlot (list những ghế có trong room tại slot đó)
-    
     public List<Seat> querySeatsInRoom(int movieSlotID) throws SQLException {
         List<Seat> seats = new ArrayList<>();
         String sqlQuery = "select Seat.SeatID, Seat.RoomID, Seat.Name, CoordinateX, CoordinateY, \n"
@@ -419,7 +434,7 @@ public class UserDAO extends SQLServerConnect {
                 + "	where Ticket.Status = 'Booked' AND MovieSlot.MovieSlotID = " + movieSlotID + "\n"
                 + ") as BookedSeats on Seat.SeatID = BookedSeats.SeatID\n"
                 + "WHERE MovieSlotID=" + movieSlotID;
-        
+
         ResultSet rs = getResultSet(sqlQuery);
         while (rs.next()) {
             Seat seat = new Seat(rs.getInt("SeatID"), rs.getInt("RoomID"), rs.getString("Name"), rs.getInt("CoordinateX"), rs.getInt("CoordinateY"), rs.getString("Status"));
@@ -427,9 +442,8 @@ public class UserDAO extends SQLServerConnect {
         }
         return seats;
     }
-    
-    // Query seats
 
+    // Query seats
     // Query movie slot
     public MovieSlot queryMovieSlots(int movieSlotID) throws SQLException {
         String sqlQuery = "select * from MovieSlot where MovieSlot.MovieSlotID = " + movieSlotID;
@@ -448,10 +462,13 @@ public class UserDAO extends SQLServerConnect {
 
     // Query movie from movie-slot ID
     public Movie queryMovie(int movieSlotID) throws SQLException {
+       
         String sqlQuery = "select Movie.MovieID, Title, Synopsis, DatePublished, ImageURL, Rating, Country, Movie.Status from MovieSlot\n"
                 + "join Movie on MovieSlot.MovieID = Movie.MovieID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
+        
         ResultSet rs = getResultSet(sqlQuery);
+        
         if (rs.next()) {
             return new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Country"), rs.getString("Status"));
         }
@@ -461,10 +478,13 @@ public class UserDAO extends SQLServerConnect {
 
     // Query room from movie-slot ID
     public Room queryRoom(int movieSlotID) throws SQLException {
+        
         String sqlQuery = "select Room.RoomID, CinemaID, Room.Name, Capacity, Room.Status, Length, Width  from MovieSlot\n"
                 + "join Room on MovieSlot.RoomID = Room.RoomID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
+        
         ResultSet rs = getResultSet(sqlQuery);
+        
         if (rs.next()) {
             return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }

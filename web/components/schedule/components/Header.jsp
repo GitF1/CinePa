@@ -1,5 +1,5 @@
 <%@page import="model.schedule.DateInfo"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ page import="jakarta.servlet.ServletContext" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="jakarta.servlet.http.HttpServletRequest" %>
@@ -8,6 +8,7 @@
 <%@page import="DAO.schedule.ScheduleDAO"%>
 <%@ page import="java.util.*, java.time.*, java.time.format.*" %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -170,34 +171,32 @@
 
 
                 function fetchNearbyCity(lat, lon) {
-
+                    
+                    var button = document.getElementById('nearby-city-button');
+                    button.classList.add('loading');
+                    
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", "city/nearest", true);
                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                     xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var city = JSON.parse(xhr.responseText);
-                            console.log(city);
-                            displayNearestCity(city);
-                        }
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                                button.classList.remove('loading');
+
+                                if (xhr.status === 200) {
+                                    var city = JSON.parse(xhr.responseText);
+                                    fetchCityProvinceDetails(city.name);
+                                }
+                            }
+
+                        };
+
                     };
 
                     xhr.send("latitude=" + lat + "&longitude=" + lon);
                 }
 
 
-                function displayNearestCity(city) {
-                    var container = document.getElementById('city-nerest');
-                    container.innerHTML = '';
-
-                    var cityElement = document.createElement('div');
-                    cityElement.classList.add('city');
-                    cityElement.innerHTML = `
-                   <h3>${city.name}</h3>
-                  
-               `;
-                    container.appendChild(cityElement);
-                }
             });
         </script>
     </body>

@@ -67,7 +67,7 @@
                         <span class="icon">  <i class="fa-solid fa-caret-down"></i></span>
 
                     </div>
-                    <div class="location-button">
+                    <div id="nearby-city-button" class="location-button">
                         <span class="icon"><i class="fa-solid fa-location-crosshairs"></i></span>
                         <span>Gần bạn</span>
                     </div>
@@ -186,18 +186,7 @@
         document.getElementById("cityModal").style.display = "none";
     }
 
-    function selectCity(city) {
-        var selectedCityElement = document.getElementById("selected-city");
-        selectedCityElement.innerText = city;
 
-        var cities = document.getElementsByClassName("city");
-        for (var i = 0; i < cities.length; i++) {
-            cities[i].classList.remove("selected");
-        }
-
-        event.target.classList.add("selected");
-        closeModal();
-    }
 
     window.onclick = function (event) {
         var modal = document.getElementById("cityModal");
@@ -205,6 +194,7 @@
             closeModal();
         }
     }
+
     function forwardToServlet(movieSlotID) {
 
         const form = document.createElement('form');
@@ -224,8 +214,7 @@
 </script>   
 <script>
     function selectCity(city) {
-//        document.getElementById('selected-city').innerText = city;
-//        document.getElementById('cityModal').style.display = 'none';
+
         // Update the UI to reflect the selected city
         var selectedCityElement = document.getElementById("selected-city");
         selectedCityElement.innerText = city;
@@ -233,14 +222,25 @@
         // Remove the "selected" class from all city elements
         var cities = document.getElementsByClassName("city");
         for (var i = 0; i < cities.length; i++) {
-            cities[i].classList.remove("selected");
+
+
+            if (cities[i].innerText !== city) {
+                cities[i].classList.remove("selected");
+            } else {
+                cities[i].classList.add("selected");
+            }
+
         }
 
-        // Add the "selected" class to the clicked city element
-        event.target.classList.add("selected");
+        if (event && event?.target?.classList) {
+            // Add the "selected" class to the clicked city element
+            event.target.classList.add("selected");
+        }
+
 
         // Close the modal
         document.getElementById('cityModal').style.display = 'none';
+
         fetchData();
     }
 
@@ -367,7 +367,67 @@
         });
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
 
+        document.getElementById('nearby-city-button').addEventListener('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            console.log("lat", lat, " lon", lon);
+            fetchNearbyCity(lat, lon);
+        }
+
+
+        function fetchNearbyCity(lat, lon) {
+            var button = document.getElementById('nearby-city-button');
+            button.classList.add('loading');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "city/nearest", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    button.classList.remove('loading');
+
+                    if (xhr.status === 200) {
+                        var city = JSON.parse(xhr.responseText);
+                        console.log({city})
+                        if (city && city?.name) {
+                            selectCity(city.name);
+                        }
+                    }
+                }
+
+            };
+
+            xhr.send("latitude=" + lat + "&longitude=" + lon);
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+    });
 </script>
 
 </html>

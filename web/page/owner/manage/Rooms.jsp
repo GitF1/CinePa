@@ -39,8 +39,8 @@
                     <tr>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Capacity</th>
-                        <th>Size</th>
+                        <!--<th>Capacity</th>-->
+                        <!--<th>Size</th>-->
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -50,8 +50,8 @@
                         <tr>
                             <td>${room.name}</td>
                             <td>${room.type}</td>
-                            <td>${room.capacity}</td>
-                            <td>${room.length}m x ${room.width}m</td>
+<!--                            <td>${room.capacity}</td>
+                            <td>${room.length}m x ${room.width}m</td>-->
                             <td>${room.status}</td>
                             <td>
                                 <a href="updateRoom?roomID=${room.roomID}" class="btn btn-primary btn-sm">Update</a>
