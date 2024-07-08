@@ -51,4 +51,9 @@ public class OwnerDAO extends SQLServerConnect {
         }
         return requests;
     }
+    
+    public int deleteSeats(int roomID) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("delete from Seat where roomID = " + roomID);
+        return ps.executeUpdate();
+    }
 }
