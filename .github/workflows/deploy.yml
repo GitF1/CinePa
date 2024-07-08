@@ -1,4 +1,4 @@
-name: Pipline CI/CD
+name: Pipeline CI/CD
 
 on:
   push:
@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step to checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # Step to set up JDK 21.0.3
       - name: Set up JDK 21.0.3
         uses: actions/setup-java@v2
         with:
@@ -20,12 +22,19 @@ jobs:
           java-version: '21.0.3'
           architecture: 'x64'
 
-
-      - name: Build with Ant
+      # Step to set the libs.CopyLibs.classpath property
+      - name: Set libs.CopyLibs.classpath
         run: |
-          ant -f build.xml -Dj2ee.server.home=/opt/tomcat
+          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject-copylibstask.jar
         working-directory: /home/runner/work/CinePa/CinePa  # Set the correct working directory
 
+      # Step to build the project using Ant with the server home directory specified
+      - name: Build with Ant
+        run: |
+          ant -f build.xml -Dj2ee.server.home=/opt/tomcat -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject-copylibstask.jar
+        working-directory: /home/runner/work/CinePa/CinePa  # Set the correct working directory
+
+      # Step to deploy the built WAR file to an EC2 instance
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -35,5 +44,5 @@ jobs:
           script: |
             cd /opt/tomcat/apache-tomcat-10.1.25/webapps/
             sudo rm -rf ROOT/
-            sudo cp ~/CinePa/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
+            sudo cp ~/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
             sudo systemctl restart tomcat
