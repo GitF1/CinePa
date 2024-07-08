@@ -22,7 +22,7 @@ jobs:
 
 
       - name: Build with Ant
-        run: ant -f build.xml
+        run: ant -f build.xml -Dj2ee.server.home = /home/runner/work/CinePa/nbproject/build-impl.xml
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -33,5 +33,5 @@ jobs:
           script: |
             cd /opt/tomcat/apache-tomcat-10.1.25/webapps/
             sudo rm -rf ROOT/
-            sudo cp ~/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
+            sudo cp ~/CinePa/dist/CinePa.war ./ROOT.war  # Adjust path to your WAR file
             sudo systemctl restart tomcat
