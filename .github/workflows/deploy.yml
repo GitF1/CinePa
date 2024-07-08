@@ -35,8 +35,8 @@ jobs:
 
     - name: Package with Ant
       run: | 
+        ant package -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject.jar -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
         ant package -Dj2ee.server.home=/otp/tomcat10/apache-tomcat-10.1.25
-        ant package -Dlibs.CopyLibs.classpath=lib/org-netbeans-modules-java-j2seproject-copylibstask.jar -Dj2ee.server.home=/usr/share/tomcat9
 
     
   deploy:
