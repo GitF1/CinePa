@@ -23,15 +23,14 @@ jobs:
         distribution: 'temurin'
 
     - name: Build with Ant
-      run: ant clean compile
+      run: ant -Dj2ee.server.home=/opt/tomcat/apache-tomcat-10.1.25 clean compile
 
     - name: Test with Ant
-      run: ant test
+      run: ant -Dj2ee.server.home=/opt/tomcat/apache-tomcat-10.1.25
 
     - name: Package with Ant
-      run: ant package
+      run: ant -Dj2ee.server.home=/opt/tomcat/apache-tomcat-10.1.25
 
-    
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -39,7 +38,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      
+
     - name: Set up SSH
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_KEY }}
@@ -47,7 +46,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 52.221.232.164 >> ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to AWS EC2
       env:
@@ -55,4 +54,4 @@ jobs:
         AWS_EC2_IP: ${{ secrets.EC2_HOST }}
         TOMCAT_WEBAPPS_DIR: '/opt/tomcat/apache-tomcat-10.1.25/webapps'
       run: |
-       scp -o StrictHostKeyChecking=no dist/CinePa.war $AWS_EC2_USER@$AWS_EC2_IP:$TOMCAT_WEBAPPS_DIR
+        scp -o StrictHostKeyChecking=no dist/CinePa.war $AWS_EC2_USER@$AWS_EC2_IP:$TOMCAT_WEBAPPS_DIR
