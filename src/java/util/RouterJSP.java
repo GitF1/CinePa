@@ -104,6 +104,8 @@ public class RouterJSP {
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 
     // URL JSP FILE FOR OWNER //
+    public static String OWNER_COMFIRM_ORDER_PAGE = "/page/owner/confirm/ConfirmTicket.jsp";
+    
     public static String OWNER_COMFIRM_RESULT_PAGE = "/page/owner/confirm/ConfirmResult.jsp";
     
     public static String OWNER_DASHBOARD_PAGE ="/page/owner/dashboard/Dashboard.jsp";

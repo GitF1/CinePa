@@ -150,7 +150,7 @@ public class BookingDAO extends SQLServerConnect {
                 pstmt.setInt(3, seatID);
                 pstmt.executeUpdate();
             }
-            
+
             for (CanteenItemOrder item : canteenOrderItems) {
                 String insertTempCanteenItemsSQL = "INSERT INTO TempOrderCanteenItems (OrderID, CanteenItemID, Amount, Price) VALUES (?, ?, ?, ?)";
                 pstmt = connection.prepareStatement(insertTempCanteenItemsSQL);
@@ -182,7 +182,8 @@ public class BookingDAO extends SQLServerConnect {
         }
     }
 
-    public boolean confirmOrder(int orderID, String codeActive) {
+    public boolean confirmOrder(int orderID, String qrCodeUrl, String codeActive) {
+
         PreparedStatement pstmt = null;
 
         try {
@@ -190,11 +191,13 @@ public class BookingDAO extends SQLServerConnect {
             connection.setAutoCommit(false);
 
             // Update the order status to confirmed
-            String updateOrderSQL = "UPDATE [Order] SET Status = 'CONFIRMED', Code = ? WHERE OrderID = ?";
+            String updateOrderSQL = "UPDATE [Order] SET Status = 'CONFIRMED', Code = ? , QRCode = ? WHERE OrderID = ?";
             pstmt = connection.prepareStatement(updateOrderSQL);
 
             pstmt.setString(1, codeActive);
-            pstmt.setInt(2, orderID);
+            pstmt.setString(2, qrCodeUrl);
+            pstmt.setInt(3, orderID);
+
             pstmt.executeUpdate();
 
             // Retrieve temporary order details from the temporary tables

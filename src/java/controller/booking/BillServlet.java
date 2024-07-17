@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Cinema;
 import model.CinemaChain;
+import model.Order;
 import model.Seat;
 import model.booking.Bill;
 import model.booking.CanteenItemOrder;
@@ -91,17 +92,17 @@ public class BillServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
         Integer userID = (int) session.getAttribute("userID");
-        
+
         if (userID == null) {
             response.sendRedirect(RouterURL.LOGIN);
             return;
         }
-        
+
         List<Bill> orders = orderDAO.getListOrderTicket(userID);
-        
+
         request.setAttribute("orders", orders);
         request.setAttribute("viewDetail", false);
         request.getRequestDispatcher(RouterJSP.VIEW_ORDER).forward(request, response);
@@ -126,16 +127,20 @@ public class BillServlet extends HttpServlet {
             System.out.println("orderID" + orderID);
 
             System.out.println("movieID" + movieID);
+            
             if (orderID == null || movieID == null) {
                 System.err.println("null prameter");
                 return;
             }
+            
             List<Seat> seats = orderDAO.getSeatsByOrderID(Integer.parseInt(orderID));
             List<CanteenItemOrder> canteenItems = orderDAO.getCanteenItemsByOrderID(Integer.parseInt(orderID));
             System.out.println("canteen items: " + canteenItems);
             MovieInfo movieInfor = movieDAO.getMovieWithGenresByID(Integer.parseInt(movieID));
             int cinemaID = movieInfor.getCinemaID();
             Cinema cinema = cinemaDAO.getCinemaByID(cinemaID);
+
+            Order order = orderDAO.getOrder(Integer.parseInt(orderID));
 
             CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByID(cinema.getCinemaChainID());
 
@@ -146,6 +151,7 @@ public class BillServlet extends HttpServlet {
             request.setAttribute("movieInfor", movieInfor);
             request.setAttribute("cinema", cinema);
             request.setAttribute("cinemaChain", cinemaChain);
+            request.setAttribute("order", order);
 
             request.getRequestDispatcher("/page/bill/OrderDetail.jsp").forward(request, response);
 

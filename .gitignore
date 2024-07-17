@@ -3,6 +3,7 @@
 
 ### NetBeans ###
 =======
+nbproject
 nbproject/private/
 build/
 nbbuild/
@@ -12,7 +13,6 @@ nbactions.xml
 nb-configuration.xml
 .nb-gradle/
 web/WEB-INF/config/private/
-nbproject
 
 
 ### Java ###
