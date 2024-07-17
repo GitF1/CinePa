@@ -118,6 +118,7 @@ public class CreateSeatServlet extends HttpServlet {
 //        }
 
         int rowsAffected = ownerDAO.deleteSeats(roomID);
+        
         } catch (SQLException ex) {
             Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
