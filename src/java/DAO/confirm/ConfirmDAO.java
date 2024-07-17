@@ -14,7 +14,6 @@ import java.io.IOException;
 import service.EmailService;
 import java.sql.*;
 import util.Status;
-import util.Util;
 
 /**
  *
@@ -27,25 +26,18 @@ public class ConfirmDAO extends SQLServerConnect {
         connect(context);
     }
 
-    public boolean sendInFormationCofirm(HttpServletRequest request, HttpServletResponse response, Integer orderId, String code) throws IOException, ServletException {
+    public boolean sendInFormationCofirm(HttpServletRequest request, HttpServletResponse response, Integer orderId, String qrCodeUrl, String code) throws IOException, ServletException {
         HttpSession session = request.getSession();
         Integer userId = (int) session.getAttribute("userID");
         String email = (String) session.getAttribute("email");
 
         // Validate parameters
         if (orderId == null || userId == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing order-id or user-id");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User Forbbiden!");
             return false;
         }
 
-        // Construct the QR code data
-        String qrCodeText = "http://localhost:8080/movie/order/confirm?" + "orderID=" + orderId + "&userID=" + userId + "&code=" + code;
-        String fileName = "qrcode_" + orderId + "_" + userId;
-        String uploadFolder = "QRCode_F";
-
         try {
-            // Generate QR code, upload to cloud, and get URL
-            String qrCodeUrl = Util.generateQRCodeAndUpload(qrCodeText, fileName, uploadFolder);
 
             boolean isSuccess = new EmailService().sendEmailActiveOrder(email, code, qrCodeUrl);
             //
@@ -66,9 +58,9 @@ public class ConfirmDAO extends SQLServerConnect {
     }
 
     public boolean validateAndCheckInOrder(int orderID, int userID, String code) {
-        
-        String validateOrderSQL = "SELECT OrderID FROM [Order] WHERE OrderID = ? AND UserID = ? AND Code = ?";
-        String updateOrderStatusSQL = "UPDATE [Order] SET Status = ?, Code = 'NULL' WHERE OrderID = ?";
+
+        String validateOrderSQL = "SELECT OrderID FROM [Order] o WHERE OrderID = ? AND UserID = ? AND Code = ? AND o.Status = ?";
+        String updateOrderStatusSQL = "UPDATE [Order] SET Status = ? WHERE OrderID = ?";
 
         try (PreparedStatement validateStmt = connection.prepareStatement(validateOrderSQL); PreparedStatement updateStmt = connection.prepareStatement(updateOrderStatusSQL)) {
 
@@ -76,6 +68,7 @@ public class ConfirmDAO extends SQLServerConnect {
             validateStmt.setInt(1, orderID);
             validateStmt.setInt(2, userID);
             validateStmt.setString(3, code);
+            validateStmt.setString(4, Status.STATUS_ORDER_BOOKED);
 
             ResultSet rs = validateStmt.executeQuery();
 
@@ -89,6 +82,31 @@ public class ConfirmDAO extends SQLServerConnect {
                 // Return true if the update was successful
                 return rowsAffected > 0;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception or rethrow as needed
+        }
+        // Return false if the validation or update failed
+        return false;
+    }
+
+    public boolean isValidQRCodeOrder(int orderID, int userID, String code) {
+
+        String validateOrderSQL = "SELECT OrderID FROM [Order] o WHERE OrderID = ? AND UserID = ? AND Code = ? AND o.Status = ?";
+
+        try (PreparedStatement validateStmt = connection.prepareStatement(validateOrderSQL)) {
+
+            // Set parameters for validation query
+            validateStmt.setInt(1, orderID);
+            validateStmt.setInt(2, userID);
+            validateStmt.setString(3, code);
+            validateStmt.setString(4, Status.STATUS_ORDER_BOOKED);
+
+            try (ResultSet rs = validateStmt.executeQuery();) {
+                return rs.next(); // Returns true if a record is found, false otherwise
+            }
+            // Set parameters for update query
+
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception or rethrow as needed

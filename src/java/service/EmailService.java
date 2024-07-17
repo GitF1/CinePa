@@ -2,7 +2,6 @@ package service;
 
 import com.sun.mail.smtp.SMTPSendFailedException;
 import java.util.Properties;
-import java.util.Random;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;

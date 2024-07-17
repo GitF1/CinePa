@@ -243,7 +243,7 @@ public class ScheduleDAO extends SQLServerConnect {
             preparedStatement.setInt(1, cinemaID);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    
+
                     MovieSchedule movie = new MovieSchedule();
                     movie.setMovieID(resultSet.getInt("movieID"));
                     movie.setTitle(resultSet.getString("title"));
@@ -254,7 +254,7 @@ public class ScheduleDAO extends SQLServerConnect {
 
                     // Get movie slots for this movie
                     int movieID = resultSet.getInt("movieID");
-                    List<MovieSlot> movieSlots = getAllMovieSlotsByMovieID(cinemaID,movieID, date);
+                    List<MovieSlot> movieSlots = getAllMovieSlotsByMovieID(cinemaID, movieID, date);
                     movie.setListMovieSlot(movieSlots);
                     if (!movieSlots.isEmpty()) {
                         movies.add(movie);
@@ -282,25 +282,26 @@ public class ScheduleDAO extends SQLServerConnect {
                 + "JOIN MovieCinema mc ON ms.MovieID = mc.MovieID AND mc.CinemaID = r.CinemaID "
                 + "WHERE ms.MovieID = ? "
                 + "AND mc.CinemaID = ? "
-                + "AND  CONVERT(DATE, startTime) = ?";
-        
+                + "AND CONVERT(DATE, ms.StartTime) = ? "
+                + "AND ms.StartTime > DATEADD(MINUTE,10, GETDATE())";
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            
+
             preparedStatement.setInt(1, movieID);
             preparedStatement.setInt(2, cinemaID);
-            preparedStatement.setString(3, date); 
+            preparedStatement.setString(3, date);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     MovieSlot movieSlot = new MovieSlot();
-                    movieSlot.setMovieSlotID(resultSet.getInt("movieSlotID"));
-                    movieSlot.setRoomID(resultSet.getInt("roomID"));
-                    movieSlot.setMovieID(resultSet.getInt("movieID"));
-                    movieSlot.setStartTime(resultSet.getObject("startTime", LocalDateTime.class));
-                    movieSlot.setEndTime(resultSet.getObject("endTime", LocalDateTime.class));
-                    movieSlot.setType(resultSet.getString("type"));
-                    movieSlot.setPrice(resultSet.getFloat("price"));
-                    movieSlot.setDiscount(resultSet.getFloat("discount"));
+                    movieSlot.setMovieSlotID(resultSet.getInt("MovieSlotID"));
+                    movieSlot.setRoomID(resultSet.getInt("RoomID"));
+                    movieSlot.setMovieID(resultSet.getInt("MovieID"));
+                    movieSlot.setStartTime(resultSet.getObject("StartTime", LocalDateTime.class));
+                    movieSlot.setEndTime(resultSet.getObject("EndTime", LocalDateTime.class));
+                    movieSlot.setType(resultSet.getString("Type"));
+                    movieSlot.setPrice(resultSet.getFloat("Price"));
+                    movieSlot.setDiscount(resultSet.getFloat("Discount"));
                     movieSlots.add(movieSlot);
                 }
             }

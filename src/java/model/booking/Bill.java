@@ -20,6 +20,8 @@ public class Bill {
     String movieTitle;
     Timestamp startTime;
     Timestamp endTime;
+    String status;
+    
 
     public Bill() {
           
