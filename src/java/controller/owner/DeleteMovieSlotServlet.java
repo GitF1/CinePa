@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
@@ -50,7 +51,14 @@ public class DeleteMovieSlotServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        scheduleDAO.deleteMovieSlotByID(Integer.parseInt(request.getParameter("movieSlot")));
+        try {
+            //        scheduleDAO.deleteMovieSlotByID(Integer.parseInt(request.getParameter("movieSlot")));
+            scheduleDAO.deleteMovieSlotByIDThrowError(Integer.parseInt(request.getParameter("movieSlot")));
+            
+        } catch (SQLException ex) {
+            request.setAttribute("message", "Không thể xóa, đã có người đặt");
+            Logger.getLogger(DeleteMovieSlotServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         request.getRequestDispatcher("CreateMovieSlotFormInfoServlet").forward(request, response);
     }
 

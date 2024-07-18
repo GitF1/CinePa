@@ -646,6 +646,15 @@ public class ScheduleDAO extends SQLServerConnect {
 
     }
 
+    public void deleteMovieSlotByIDThrowError(int id) throws SQLException {
+        String sql = "DELETE FROM [dbo].[MovieSlot] WHERE MovieSlotID=?\n";
+
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, id);
+        st.execute();
+
+    }
+
     private void handleErrorGetDate(HttpServletRequest request) {
     }
 }
