@@ -36,7 +36,8 @@ public class MovieApprovalDAO extends MovieDAO {
                 + "           ,[Length]\n"
                 + "           ,[LinkTrailer]\n"
                 + "           ,[MovieStatus])\n"
-                + "     VALUES  (?,?,?,?,0,?,?,?,?,?,?)";
+                + "           ,[RequestStatus]\n"
+                + "     VALUES  (?,?,?,?,0,?,?,?,?,?,?, 'PENDING')";
         
         try {
 
