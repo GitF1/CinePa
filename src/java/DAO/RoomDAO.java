@@ -154,17 +154,14 @@ public class RoomDAO extends SQLServerConnect {
     }
 
     public void createRoom(Room room) {
-        String sql = "INSERT INTO Room (CinemaID, Name, Type, Capacity, Length, Width, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Room (CinemaID, Name, Type, Status) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, room.getCinemaID());
             st.setString(2, room.getName());
             st.setString(3, room.getType());
-            st.setInt(4, room.getCapacity());
-            st.setInt(5, room.getLength());
-            st.setInt(6, room.getWidth());
-            st.setString(7, room.getStatus());
+            st.setString(4, room.getStatus());
             st.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error creating room", e);
@@ -172,17 +169,14 @@ public class RoomDAO extends SQLServerConnect {
     }
 
     public void updateRoom(Room room) {
-        String sql = "UPDATE Room SET Name=?, Type=?, Capacity=?, Length=?, Width=?, Status=? WHERE RoomID=?";
+        String sql = "UPDATE Room SET Name=?, Type=?, Status=? WHERE RoomID=?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, room.getName());
             st.setString(2, room.getType());
-            st.setInt(3, room.getCapacity());
-            st.setInt(4, room.getLength());
-            st.setInt(5, room.getWidth());
-            st.setString(6, room.getStatus());
-            st.setInt(7, room.getRoomID());
+            st.setString(3, room.getStatus());
+            st.setInt(4, room.getRoomID());
             st.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating room", e);
@@ -200,7 +194,7 @@ public class RoomDAO extends SQLServerConnect {
             LOGGER.log(Level.SEVERE, "Error deleting room by ID", e);
         }
     }
-    
+
     public User getUserById(int userId) {
         User user = null;
         String sql = "SELECT * FROM [User] WHERE UserID = ?";
@@ -233,6 +227,8 @@ public class RoomDAO extends SQLServerConnect {
                 cinemaChain.setName(rs.getString("Name"));
                 cinemaChain.setInformation(rs.getString("Information"));
                 cinemaChain.setAvatar(rs.getString("Avatar"));
+                cinemaChain.setBanner(rs.getString("Banner"));
+
             }
         } catch (Exception e) {
             e.printStackTrace();

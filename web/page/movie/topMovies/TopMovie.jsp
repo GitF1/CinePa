@@ -17,91 +17,93 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 10px; /* Giảm khoảng cách giữa các mục */
+                gap: 10px; /* Reduce gap between items */
             }
 
-            .movie-item {
+            .movies-list .movie-item {
                 background-color: #2c2c2c;
                 border-radius: 10px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
                 overflow: hidden;
-                width: 22%; /* Giảm chiều rộng để làm mục nhỏ hơn */
+                width: 22%; /* Reduce width to make items smaller */
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 10px;
-                max-width: 300px; /* Đảm bảo không vượt quá chiều rộng tối đa */
+                max-width: 300px; /* Ensure maximum width is not exceeded */
+                position: relative;
             }
 
-            .movie-item .movie-content {
+            .movies-list .movie-item .movie-content {
                 display: flex;
                 flex-direction: column;
-                padding: 10px; /* Giảm padding để giảm kích thước */
+                padding: 10px; /* Reduce padding to reduce size */
                 width: 100%;
             }
 
-            .movie-item img {
-                width: 100%;
-                height: 180px; /* Đặt chiều cao cố định cho hình ảnh */
-                object-fit: cover; /* Đảm bảo hình ảnh vừa vặn trong khung */
+            .movies-list .movie-item img {
+                width: 300%;
+                height: 100%; /* Set a fixed height for the images */
+                object-fit: cover; /* Ensure images fit within the frame */
             }
 
-            .movie-details {
+            .movies-list .movie-item .movie-details {
                 display: flex;
                 flex-direction: column;
-                padding-top: 8px; /* Giảm padding */
+                padding-top: 8px; /* Reduce padding */
             }
 
-            .movie-details h2 {
+            .movies-list .movie-item .movie-details h2 {
                 margin: 0;
                 color: #fff;
-                font-size: 0.9em; /* Giảm kích thước font */
+                font-size: 0.9em; /* Reduce font size */
             }
 
-            .movie-details p {
+            .movies-list .movie-item .movie-details p {
                 margin: 4px 0;
                 color: #bbb;
-                font-size: 0.8em; /* Giảm kích thước font */
+                font-size: 0.8em; /* Reduce font size */
             }
 
-            .view-more {
+            .movies-list .movie-item .view-more {
                 margin-top: 8px;
                 text-decoration: none;
                 color: #ff6f61;
                 font-weight: bold;
-                font-size: 0.8em; /* Giảm kích thước font */
+                font-size: 0.8em; /* Reduce font size */
             }
 
-            .movie-item .rank {
+            .movies-list .movie-item .rank {
                 background-color: #ff6f61;
                 color: #fff;
-                font-size: 12px; /* Giảm kích thước font */
+                font-size: 12px; /* Reduce font size */
                 font-weight: bold;
-                padding: 5px; /* Giảm padding */
+                padding: 5px; /* Reduce padding */
                 text-align: center;
                 position: absolute;
                 top: 10px;
                 left: 10px;
                 border-radius: 50%;
-                width: 25px; /* Giảm kích thước width */
-                height: 25px; /* Giảm kích thước height */
+                width: 25px; /* Reduce width */
+                height: 25px; /* Reduce height */
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
-            .movie-item .movie-image {
+            .movies-list .movie-item .movie-image {
                 position: relative;
             }
 
-            .movie-item .movie-content img {
+            .movies-list .movie-item .movie-content img {
                 border-radius: 10px;
             }
+
         </style>
     </head>
     <body>
+        <jsp:include page="/page/landingPage/Header.jsp" />
         <jsp:include page="/page/landingPage/Banner.jsp" />
 
-        
         <h1>Top 12 Movies Popular</h1>
         <div class="movies-list">
             <c:forEach var="movie" items="${topMovies}" varStatus="status">
@@ -117,7 +119,6 @@
                             <p><strong>Rating:</strong> ${movie.rating} ⭐</p>
                             <p><strong>Published Date:</strong> ${movie.datePublished}</p>
                             <p><strong>Country:</strong> ${movie.country}</p>
-                            <!-- Nút "View More" với đường dẫn mới -->
                             <a href="${pageContext.request.contextPath}/HandleDisplayMovieInfo?movieID=${movie.movieID}" class="view-more">View More</a>
                         </div>
                     </div>
@@ -125,7 +126,6 @@
             </c:forEach>
         </div>
         
-                <jsp:include page="/page/home/Footer.jsp" />
-
+        <jsp:include page="/page/home/Footer.jsp" />
     </body>
 </html>

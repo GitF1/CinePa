@@ -24,6 +24,9 @@
                 border-style: none;
                 border-radius: 10px;
             }
+            .btn-back {
+                margin-bottom: 20px;
+            }
         </style>
         <script type="text/javascript">
             function doDelete(cinemaID) {
@@ -37,11 +40,14 @@
             function viewMovies(cinemaID) {
                 window.location.href = 'movieCinema?cinemaID=' + encodeURIComponent(cinemaID);
             }
+            function goBack() {
+                history.back();
+            }
         </script>
     </head>
     <body>
-        <h1 class="text-center mt-3">Cinemas</h1>
         <div class="container mt-4">
+            <h1 class="text-center mt-3">Cinemas</h1>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -80,6 +86,8 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <button onclick="goBack()" class="btn btn-secondary btn-back">Back Cinema Chain</button>
+
         </div>
     </body>
 </html>

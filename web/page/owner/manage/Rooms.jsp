@@ -23,6 +23,9 @@
                     window.location = "deleteRoom?roomID=" + roomID + "&cinemaID=<%= request.getParameter("cinemaID")%>";
                 }
             }
+            function goBack() {
+                history.back();
+            }
         </script>
     </head>
     <body>
@@ -32,6 +35,8 @@
                 <div class="col-md-6"></div>
                 <div class="col-md-6 text-right">
                     <a href="createRoom?cinemaID=<%= request.getParameter("cinemaID")%>" class="btn btn-success">Add Room</a>
+                                                <button onclick="goBack()" class="btn btn-secondary btn-back">Back Cinema </button>
+
                 </div>
             </div>
             <table class="table">
