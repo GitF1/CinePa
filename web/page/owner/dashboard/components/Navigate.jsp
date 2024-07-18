@@ -92,16 +92,16 @@
         <!-- Custom JS for dynamic navigation -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                
                 const navItems = [
                     {
                         title: "Dashboard",
-                         url: "<%= RouterURL.OWNER_DASHBOARD_PAGE %>",
+                         url: "<%= RouterURL.OWNER_DASHBOARD_PAGE %>"
 
                     },
                     {
                         title: "Movies ",
-                        
-                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>",
+                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>"
 
                     },
                     {
@@ -111,13 +111,12 @@
                     },
                     {
                         title: "City",
-                        
                         url: "/movie/OwnerDashboardCityServlet"
                     },
                     {
                         title: "Widget",
                         icon: "fas fa-cubes",
-                        url: "#",
+                        url: "/movie/owner/manage/finance",
                         badge: "Renevue",
                         badgeClass: "badge-danger"
                     }

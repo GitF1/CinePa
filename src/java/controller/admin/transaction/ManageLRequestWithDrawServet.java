@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.owner.dashboard;
+package controller.admin.transaction;
 
-import DAO.owner.StatisticOwnerDAO;
+import DAO.transaction.BalanceUpdater;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
@@ -22,18 +21,19 @@ import util.RouterURL;
  *
  * @author PC
  */
-@WebServlet(name = "OwnerDashBoardServlet", urlPatterns = {"/owner/dashboard"})
-public class OwnerDashBoardServlet extends HttpServlet {
+@WebServlet(name = "ManageLRequestWithDrawServet", urlPatterns = {"/admin/transaction/manage/withdraw"})
+public class ManageLRequestWithDrawServet extends HttpServlet {
 
-    StatisticOwnerDAO dao;
+    BalanceUpdater dao;
 
     @Override
     public void init() throws ServletException {
-        super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         try {
-            dao = new StatisticOwnerDAO(getServletContext());
+            dao = new BalanceUpdater(getServletContext());
+
+            super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         } catch (Exception ex) {
-            Logger.getLogger(OwnerDashBoardServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManageLRequestWithDrawServet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -50,7 +50,16 @@ public class OwnerDashBoardServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ManageLRequestWithDrawServet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ManageLRequestWithDrawServet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -66,31 +75,8 @@ public class OwnerDashBoardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getRequestDispatcher(RouterJSP.ADMIN_MANAGE_REQUEST_WITHDRAW).forward(request, response);
 
-        HttpSession session = request.getSession();
-
-        Integer userID = (Integer) session.getAttribute("userID");
-        String role = (String) session.getAttribute("role");
-        System.out.println("role" + role + "useriD" + userID);
-        if (userID == null || role == null || !role.equals(util.Role.OWNER)) {
-            response.sendRedirect(RouterURL.LOGIN);
-            return;
-        }
-        Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
-
-        if (cinemaChainID == null) {
-            response.sendRedirect(RouterURL.ERORPAGE);
-            return;
-        }
-
-        System.out.println("role " + role + " userID " + userID + " cinemaChainID" + cinemaChainID);
-        session.setAttribute("cinemaChainID", cinemaChainID);
-
-        double totalRevenue = dao.getTotalRevenueByChainID(cinemaChainID);
-
-        System.out.println("totalRevue: " + totalRevenue);
-
-        request.getRequestDispatcher(RouterJSP.OWNER_DASHBOARD_PAGE).forward(request, response);
     }
 
     /**
@@ -104,7 +90,32 @@ public class OwnerDashBoardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String userIDStr = (String) request.getParameter("userId");
+        String amountStr = (String) request.getParameter("amount");
+        String transationIDStr = (String) request.getParameter("transactionID");
+
+        Integer userID = null;
+        Double amount = null;
+        Integer transactionID = null;
+
+        try {
+            userID = Integer.valueOf(userIDStr);
+            amount = Double.valueOf(amountStr);
+            transactionID = Integer.valueOf(transationIDStr);
+
+        } catch (NumberFormatException e) {
+            response.sendRedirect(RouterURL.ERORPAGE);
+        }
+
+        if (userID == null || amount == null || transactionID == null || amount <= 0) {
+            response.sendRedirect(RouterURL.ERORPAGE);
+            return;
+        }
+        System.out.println("userID" + userID + "transationID" + transactionID);
+        
+        dao.withDrawing(transactionID, userID, amount, request, response);
+
     }
 
     /**

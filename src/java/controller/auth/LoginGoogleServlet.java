@@ -140,12 +140,13 @@ public class LoginGoogleServlet extends HttpServlet {
                     session.removeAttribute("redirectTo");
                     response.sendRedirect(redirectUrlWithParams.toString());
                 }
-               
+
             }
-            case "STAFF" ->
-                request.getRequestDispatcher(route.STAFF).forward(request, response);
+            case "OWNER" ->
+                response.sendRedirect(RouterURL.OWNER_DASHBOARD_PAGE);
             case "ADMIN" ->
-                request.getRequestDispatcher("/admin").forward(request, response);
+                response.sendRedirect(RouterURL.ADMIN_PAGE);
+           
         }
     }
 

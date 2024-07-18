@@ -40,7 +40,6 @@ public class ConfirmDAO extends SQLServerConnect {
         try {
 
             boolean isSuccess = new EmailService().sendEmailActiveOrder(email, code, qrCodeUrl);
-            //
 
             if (isSuccess) {
                 System.out.println("send confirm sucess! ");
@@ -105,14 +104,15 @@ public class ConfirmDAO extends SQLServerConnect {
             try (ResultSet rs = validateStmt.executeQuery();) {
                 return rs.next(); // Returns true if a record is found, false otherwise
             }
-            // Set parameters for update query
 
         } catch (SQLException e) {
+
             e.printStackTrace();
-            // Handle exception or rethrow as needed
+
+            return false;
+
         }
-        // Return false if the validation or update failed
-        return false;
+
     }
 
 }

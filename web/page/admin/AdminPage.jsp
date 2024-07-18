@@ -227,9 +227,10 @@
                     </div>
 
                     <!-- phan image them vo :  -->
-                    <div>
-                        <canvas id="weeklySalesChart"></canvas>
+                    <div>   
+                        <canvas id="weeklySalesChart" width="500px" height="200px"></canvas>
                     </div>
+                    
                     <script>
                         var dateArr = [];
                         var valueArr = [];
