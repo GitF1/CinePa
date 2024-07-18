@@ -63,7 +63,7 @@
                         legend: {
                             position: 'top',
                         },
-                        title: {
+                        title: {    
                             display: true,
                             text: 'Weekly Sales Line Chart'
                         }

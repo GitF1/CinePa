@@ -7,7 +7,13 @@ public class Order {
     private int userID;
     private LocalDateTime timeCreated;
     private String status;
+    private String QRCodeURL;
+    private String Code;
 
+    public Order() {
+    }
+    
+    
     public Order(int userID, LocalDateTime timeCreated, String status) {
         this.userID = userID;
         this.timeCreated = timeCreated;
@@ -37,5 +43,22 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getQRCodeURL() {
+        return QRCodeURL;
+    }
+
+    public void setQRCodeURL(String QRCodeURL) {
+        this.QRCodeURL = QRCodeURL;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String Code) {
+        this.Code = Code;
+    }
+    
 
 }
