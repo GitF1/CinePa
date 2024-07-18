@@ -7,12 +7,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Ticket Details</title>
-
         <link rel="stylesheet" href="/movie/page/bill/style/OrderDetail.css">
-
     </head>
     <body>
-         <jsp:include page=".././landingPage/Header.jsp" />
+        <jsp:include page=".././landingPage/Header.jsp" />
         <div class="container">
             <div class="header">
                 <h1>Ticket Details</h1>
@@ -53,6 +51,14 @@
                                 </div>
                             </div>
                         </c:forEach>
+                    </div>
+
+
+                </div>
+                <div class=" info-section mt-3">
+                    <h2>QRCode</h2>
+                    <div >
+                        <img src="${order.QRCodeURL}" alt='QR Code' style='height: 150px; width :150px'/>
                     </div>
                 </div>
 

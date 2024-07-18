@@ -70,4 +70,29 @@ public class MovieCinemaDAO extends SQLServerConnect{
             e.printStackTrace();
         }
     }
+    
+    public List<MovieCinema> getMoreMovies(int cinemaID, int lastMovieID) {
+        List<MovieCinema> movies = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM MovieCinema WHERE cinemaID = ? AND movieID > ? LIMIT 10";
+            try (            PreparedStatement ps = connection.prepareStatement(sql);
+) {
+                ps.setInt(1, cinemaID);
+                ps.setInt(2, lastMovieID);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        MovieCinema movie = new MovieCinema(
+                            rs.getInt("movieID"),
+                            rs.getInt("cinemaID"),
+                            rs.getString("status")
+                        );
+                        movies.add(movie);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return movies;
+    }
 }

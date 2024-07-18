@@ -24,6 +24,7 @@ import model.Cinema;
 import model.owner.dashboard.ChartModel;
 import util.ChartUtil;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -83,15 +84,18 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
             Integer userID = (Integer) session.getAttribute("userID");
             String role = (String) session.getAttribute("role");
             List<Cinema> listCinema = (List<Cinema>) session.getAttribute("listCinemaDashBoard");
+            System.out.println("userID" + userID + "role" + role);
+            
+//            if (userID == null || role == null || role != util.Role.OWNER) {
+//                response.sendRedirect(RouterURL.LOGIN);
+//
+//            }
 
-            if (userID == null || role == null || role != util.Role.OWNER) {
-                //response.sendRedirect(RouterURL.LOGIN);
-                userID = 10;
-            }
             Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
+
             if (cinemaChainID == null) {
-                //response.sendRedirect(RouterURL.ERORPAGE);
-                cinemaChainID = 1;
+                response.sendRedirect(RouterURL.ERORPAGE);
+
             }
             session.setAttribute("cinemaChainID", cinemaChainID);
 
@@ -111,13 +115,11 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
                         .collect(Collectors.toList());
             }
 
-           
-
             List<Cinema> cinemas = new ArrayList();
 
             if (listCinema == null || listCinema.isEmpty()) {
                 cinemas = daoCinema.getListCinemaByCinemaChain(cinemaChainID, 20, 0);
-                session.setAttribute("listMovieDashBoard", cinemas);
+                session.setAttribute("listCinemaDashBoard", cinemas);
             } else {
                 cinemas = listCinema;
             }
@@ -135,10 +137,6 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
             if (yearParam != null && !yearParam.isEmpty()) {
                 year = Integer.valueOf(yearParam);
             }
-//            List<Integer> listCinemaID = new ArrayList();
-//            listCinemaID.add(1);
-//            listCinemaID.add(2);
-//            listCinemaID.add(3);
 
             List<ChartModel> charts = daoCinema.getListRevenueOfCinemasSelect(cinemaChainID, cinemaIDList, month, year);
             System.out.println("list data" + charts.toString());

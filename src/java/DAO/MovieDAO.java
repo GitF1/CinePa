@@ -24,13 +24,15 @@ import java.util.Map;
 import model.MovieInGenre;
 import model.MovieWithStatus;
 import model.Review;
-//import model.User;
+
 import model.movie.MovieInfo;
 import model.Movie;
 
 import jakarta.servlet.ServletContext;
 import service.NotificationService;
 import util.RouterURL;
+import java.util.logging.Level;
+import model.Room;
 
 /**
  *
@@ -725,5 +727,107 @@ public class MovieDAO extends SQLServerConnect {
         return role;
 
     }
+    // Add method to get top 10 highest rated movies
+public List<Movie> getTopRatedMovies() {
+    List<Movie> list = new ArrayList<>();
+    String sql = "SELECT TOP 12 * FROM Movie ORDER BY Rating DESC";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        ResultSet rs = st.executeQuery();
 
+        while (rs.next()) {
+            Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                    rs.getString("Title"),
+                    rs.getString("Synopsis"),
+                    rs.getString("DatePublished"),
+                    rs.getString("ImageURL"),
+                    rs.getDouble("Rating"),
+                    rs.getString("Status"),
+                    rs.getString("Country")
+            );
+            list.add(movie);
+        }
+    } catch (SQLException e) {
+        System.out.println(e);
+    }
+    return list;
+}
+
+
+    public String getTitleByID(int id) throws SQLException {
+
+        String title = "";
+        String sqlQuery = "SELECT Title FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    title = rs.getString("Title");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return title;
+
+    }
+    public int getLengthByID(int id) throws SQLException {
+
+        int length = 0;
+        String sqlQuery = "SELECT Length FROM Movie WHERE MovieID=?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    length = rs.getInt("Length");
+                    System.out.println("dao function:"+length);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+        }
+        return length;
+
+    }
+    public List<Movie> getMoviesByCinemaId(int cinemaID) {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "select *from MovieCinema join Movie on MovieCinema.MovieID=Movie.MovieID where MovieCinema.CinemaID=?;";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, cinemaID);
+            try (ResultSet rs = st.executeQuery();) {
+                while (rs.next()) {
+                    Movie movie = new Movie(
+                    rs.getInt("MovieID"),
+                            rs.getString("Title"),
+                            rs.getString("Synopsis"),
+                            rs.getDate("DatePublished").toString(),
+                            rs.getString("ImageURL"),
+                            rs.getDouble("Rating"),
+                            rs.getString("Status"),
+                            rs.getString("Country"),
+                            rs.getInt("Length"),
+                            rs.getString("LinkTrailer")
+                    );
+//                    int movieID, String title, String synopsis, String datePublished, String imageURL, double rating, String status, String country, int length, String trailerLink
+movies.add(movie);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return movies;
+    }
 }

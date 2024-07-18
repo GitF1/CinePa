@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Select Movie</title>
+      
 
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <style>
@@ -174,7 +174,7 @@
                         <c:forEach var="movie" items="${movies}">
                             <form class="movie-form-${movie.movieID}" action="<%= RouterURL.OWNER_MOVIES_STATISTIC%>" method="POST">
 
-                                <input type="hidden" name="movieID" value="${movie.movieID}" />
+                                <input type="hidden" name="movieID" value="${movie.getMovieID()}" />
                                 <input type="hidden" name="movieTitle" value="${movie.getTitle()}" />
                                 <input type="hidden" name="month" />
                                 <input type="hidden" name="year" />

@@ -84,15 +84,15 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
             String role = (String) session.getAttribute("role");
             List<Movie> listMovie = (List<Movie>) session.getAttribute("listMovieDashBoard");
 
-            if (userID == null || role == null || role != util.Role.OWNER) {
-                //response.sendRedirect(RouterURL.LOGIN);
-                userID = 10;
-            }
+//            if (userID == null || role == null || role != util.Role.OWNER) {
+//                //response.sendRedirect(RouterURL.LOGIN);
+//                userID = 2;
+//            }
             Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
             if (cinemaChainID == null) {
-                //response.sendRedirect(RouterURL.ERORPAGE);
-                cinemaChainID = 1;
+                response.sendRedirect(RouterURL.ERORPAGE);
             }
+            
             session.setAttribute("cinemaChainID", cinemaChainID);
 
             String movieIDParam = request.getParameter("movieID");
@@ -104,6 +104,7 @@ public class OwnerStatisticMovieServlet extends HttpServlet {
             System.out.println("movieID" + movieIDParam + "month: " + monthParam + "year:" + yearParam);
             
             List<Movie> movies = new ArrayList<>();
+            
             if (listMovie == null || listMovie.isEmpty()) {
                 movies = daoMovie.getListMoviebyCinemaChainID(cinemaChainID, 20, 0);
                 session.setAttribute("listMovieDashBoard", movies);

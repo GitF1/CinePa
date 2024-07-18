@@ -18,19 +18,21 @@
     </head>
     <body>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+        <script src=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js "></script>
         <div>
             <canvas id="weeklySalesChart"></canvas>
         </div>
+
         <div>
             <canvas id="monthlySalesChart"></canvas>
         </div>
+        <div id='calendar'></div>
         <script>
 //            First Graph
             var dateArr = [];
             var valueArr = [];
             <c:forEach var="dataPoint" items='${requestScope["sales7Day"]}'>
-                
+
             dateArr.push(`<c:out value="${dataPoint.getDate()}"/>`);
             valueArr.push(<c:out value="${dataPoint.getValueSold()}"/>);
             </c:forEach>
@@ -156,51 +158,35 @@
             const ctx2 = document.getElementById('monthlySalesChart').getContext('2d');
             const myChart = new Chart(ctx2, config);
 
-//                process chart data
-//            valueArr2d.forEach(function (a, i) {
-//                lineChartData.datasets.push({
-//                    label: chains[i],
-//                    fillColor: 'rgba(220,220,220,0.2)',
-//                    strokeColor: 'rgba(220,220,220,1)',
-//                    pointColor: 'rgba(220,220,220,1)',
-//                    pointStrokeColor: '#fff',
-//                    pointHighlightFill: '#fff',
-//                    pointHighlightStroke:
-//                            'rgba(220,220,220,1)',
-//
-//                });
-//            });
-
-
-
-
-//            const ctx2 = document.getElementById('monthlySalesChart');
-//            chart = new Chart(ctx2, {
-//
-//                type: 'line',
-//                data: {
-//                    labels: dateMonthArr,
-//                    dataset: [
-//
-//                    ]
-//                },
-//                options: {
-//                    responsive: true,
-//                    plugins: {
-//                        legend: {
-//                            position: 'top',
-//                        },
-//                        title: {
-//                            display: true,
-//                            text: 'Monthly Sales Line Chart'
-//                        }
-//                    }
-//                },
-//            });
-//          
 
         </script>
-        
+        <!--Calender js-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    timeZone: 'UTC',
+                    initialView: 'timeGridFourDay',
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'timeGridDay,timeGridFourDay'
+                    },
+                    views: {
+                        timeGridFourDay: {
+                            type: 'timeGrid',
+                            duration: {days: 4},
+                            buttonText: '4 day'
+                        }
+                    },
+                    events: 'https://fullcalendar.io/api/demo-feeds/events.json'
+                });
+
+                calendar.render();
+            });
+        </script>
+
         <div>
             <canvas id="myChart"></canvas>
         </div>

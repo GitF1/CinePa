@@ -95,30 +95,30 @@
                 const navItems = [
                     {
                         title: "Dashboard",
-                        icon: "fas fa-home",
-                        children: [
-                            {title: "Default", url: "#"},
-                            {title: "CRM", url: "#"},
-                            {title: "Analytics", url: "#", badge: "NEW", badgeClass: "badge-info"}
-                        ]
+                         url: "<%= RouterURL.OWNER_DASHBOARD_PAGE %>",
+
                     },
                     {
                         title: "Movies ",
-                        icon: "fas fa-columns",
-                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC %>",
-                        badge: "NEW",
-                        badgeClass: "badge-warning"
+                        
+                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>",
+
                     },
                     {
                         title: "Cinemas ",
-                        icon: "fas fa-bars",
-                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC %>"
+                       
+                        url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC%>"
+                    },
+                    {
+                        title: "City",
+                        
+                        url: "/movie/OwnerDashboardCityServlet"
                     },
                     {
                         title: "Widget",
                         icon: "fas fa-cubes",
                         url: "#",
-                        badge: "100+",
+                        badge: "Renevue",
                         badgeClass: "badge-danger"
                     }
                 ];

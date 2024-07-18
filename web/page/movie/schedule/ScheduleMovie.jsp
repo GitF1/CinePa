@@ -222,10 +222,17 @@
         // Remove the "selected" class from all city elements
         var cities = document.getElementsByClassName("city");
         for (var i = 0; i < cities.length; i++) {
-            cities[i].classList.remove("selected");
+
+
+            if (cities[i].innerText !== city) {
+                cities[i].classList.remove("selected");
+            } else {
+                cities[i].classList.add("selected");
+            }
+
         }
 
-        if (event) {
+        if (event && event?.target?.classList) {
             // Add the "selected" class to the clicked city element
             event.target.classList.add("selected");
         }
@@ -387,11 +394,14 @@
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    button.classList.remove('loading'); 
+                    button.classList.remove('loading');
 
                     if (xhr.status === 200) {
                         var city = JSON.parse(xhr.responseText);
-                        selectCity(city.name);
+                        console.log({city})
+                        if (city && city?.name) {
+                            selectCity(city.name);
+                        }
                     }
                 }
 

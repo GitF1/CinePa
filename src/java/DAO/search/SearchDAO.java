@@ -221,6 +221,50 @@ public class SearchDAO extends SQLServerConnect {
         return matchedGenres;
     }
 
+    //
+    public List<Movie> searchMoviesByAbbreviationAndStatus(String abbreviation ) throws SQLException {
+        List<Movie> movies = new ArrayList<>();
+        String status = "Showing";
+        
+        // SQL query using the abbreviation function, status, and recent 3 months filter
+        String sql = "SELECT MovieID, Title, DatePublished, Rating, ImageURL, Synopsis, Country, Year, Length, LinkTrailer, Status "
+                + "FROM Movie "
+                + "WHERE dbo.GetTitleAbbreviation(Title) LIKE ? "
+                + "AND Status = ? ";
+//                + "AND DatePublished >= DATEADD(MONTH, -3, GETDATE())";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            // Set the parameters for the query
+            pstmt.setString(1, abbreviation.toUpperCase() + '%');
+            pstmt.setString(2, status);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                //
+                while (rs.next()) {
+
+                    List<String> genres = getGenresFromMovieID(rs.getInt("MovieID"));
+
+                    Movie movie = new Movie(
+                            rs.getInt("MovieID"),
+                            rs.getString("Title"),
+                            rs.getString("Synopsis"),
+                            rs.getString("DatePublished"),
+                            rs.getString("ImageURL"),
+                            rs.getFloat("Rating"),
+                            rs.getString("Status"),
+                            rs.getString("Country"),
+                            genres
+                    );
+
+                    movies.add(movie);
+                }
+
+            }
+        }
+        return movies;
+    }
+
     /// ALPHA VERSION SEARCHING WIHT FUZZY ALGORITHM 
     public List<Movie> searchMovieV2(String input) throws SQLException {
         List<Movie> movies = new ArrayList<>();

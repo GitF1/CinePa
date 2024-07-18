@@ -138,9 +138,9 @@
 
                     <!-- mot cai list ;  -->
                     <li class="text-white my-2 py-3 text-center">
-                        <a href="#" style="text-decoration: none;" class="text-white">
+                        <a href="/movie/GetWaitingServlet" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
-                            <span>Dashboard</span>
+                            <span>Duyệt chủ rạp </span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">

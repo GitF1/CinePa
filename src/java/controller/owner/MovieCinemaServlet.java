@@ -60,8 +60,8 @@ public class MovieCinemaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
-        List<Movie> movies = movieDAO.getAllMovie(); // Ensure this method returns all necessary details
+          int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        List<Movie> movies = movieDAO.getAllMovie();
         List<MovieCinema> movieCinemas = movieCinemaDAO.getMoviesByCinemaID(cinemaID);
 
         request.setAttribute("movies", movies);
@@ -73,11 +73,17 @@ public class MovieCinemaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
-        int movieID = Integer.parseInt(request.getParameter("movieID"));
+         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        String movieIDsParam = request.getParameter("movieIDs");
         String status = request.getParameter("status");
 
-        movieCinemaDAO.addMovieToCinema(movieID, cinemaID, status);
+        if (movieIDsParam != null && !movieIDsParam.isEmpty()) {
+            String[] movieIDs = movieIDsParam.split(",");
+            for (String movieID : movieIDs) {
+                int movieIDInt = Integer.parseInt(movieID);
+                movieCinemaDAO.addMovieToCinema(movieIDInt, cinemaID, status);
+            }
+        }
 
         response.sendRedirect("movieCinema?cinemaID=" + cinemaID);
     }
