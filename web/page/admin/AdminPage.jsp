@@ -302,10 +302,10 @@
                         }
 
                     </script>
-                    <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
+<!--                    <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
                     </div>
                     <div class="row " style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a1.png?raw=true'); height: 300px; background-size: contain;">
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

@@ -142,8 +142,9 @@ public class LoginGoogleServlet extends HttpServlet {
                 }
                
             }
-            case "STAFF" ->
-                request.getRequestDispatcher(route.STAFF).forward(request, response);
+            case "OWNER" ->
+//                request.getRequestDispatcher(route.STAFF).forward(request, response);
+                    response.sendRedirect(RouterURL.OWNER_PAGE);
             case "ADMIN" ->
                 request.getRequestDispatcher("/admin").forward(request, response);
         }
