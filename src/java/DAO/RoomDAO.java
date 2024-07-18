@@ -183,15 +183,52 @@ public class RoomDAO extends SQLServerConnect {
         }
     }
 
-    public void deleteRoomById(int roomId) {
-        String sql = "DELETE FROM Room WHERE RoomID = ?";
+    public boolean isRoomInUseByMovieSlot(int roomId) {
+        String sql = "SELECT COUNT(*) FROM MovieSlot WHERE RoomID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, roomId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking room usage in MovieSlot", e);
+        }
+        return false;
+    }
+
+    public void deleteRoomAndSeatsById(int roomId) {
+        String deleteSeatsSql = "DELETE FROM Seat WHERE RoomID = ?";
+        String deleteRoomSql = "DELETE FROM Room WHERE RoomID = ?";
 
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, roomId);
-            st.executeUpdate();
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement deleteSeatsStmt = connection.prepareStatement(deleteSeatsSql)) {
+                deleteSeatsStmt.setInt(1, roomId);
+                deleteSeatsStmt.executeUpdate();
+            }
+
+            try (PreparedStatement deleteRoomStmt = connection.prepareStatement(deleteRoomSql)) {
+                deleteRoomStmt.setInt(1, roomId);
+                deleteRoomStmt.executeUpdate();
+            }
+
+            connection.commit();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error deleting room by ID", e);
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                LOGGER.log(Level.SEVERE, "Error rolling back transaction", rollbackEx);
+            }
+            LOGGER.log(Level.SEVERE, "Error deleting room and seats by ID", e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException autoCommitEx) {
+                LOGGER.log(Level.SEVERE, "Error setting auto-commit to true", autoCommitEx);
+            }
         }
     }
 

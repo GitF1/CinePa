@@ -16,15 +16,28 @@
                 background-color: #246c9f;
                 border-color: #f8f9fa;
             }
+            .error-message {
+                color: red;
+                font-weight: bold;
+            }
         </style>
         <script type="text/javascript">
             function doDelete(roomID) {
                 if (confirm("Are you sure to delete this room with id: " + roomID + "?")) {
-                    window.location = "deleteRoom?roomID=" + roomID + "&cinemaID=<%= request.getParameter("cinemaID")%>";
+                    window.location = "deleteRoom?roomID=" + roomID + "&cinemaID=<%= request.getParameter("cinemaID") %>";
                 }
             }
+
             function goBack() {
                 history.back();
+            }
+
+            window.onload = function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const message = urlParams.get('message');
+                if (message) {
+                    alert(message);
+                }
             }
         </script>
     </head>
@@ -34,9 +47,8 @@
             <div class="row mb-3">
                 <div class="col-md-6"></div>
                 <div class="col-md-6 text-right">
-                    <a href="createRoom?cinemaID=<%= request.getParameter("cinemaID")%>" class="btn btn-success">Add Room</a>
-                                                <button onclick="goBack()" class="btn btn-secondary btn-back">Back Cinema </button>
-
+                    <a href="createRoom?cinemaID=<%= request.getParameter("cinemaID") %>" class="btn btn-success">Add Room</a>
+                    <button onclick="goBack()" class="btn btn-secondary btn-back">Back Cinema</button>
                 </div>
             </div>
             <table class="table">
@@ -55,7 +67,7 @@
                         <tr>
                             <td>${room.name}</td>
                             <td>${room.type}</td>
-<!--                            <td>${room.capacity}</td>
+                            <!--<td>${room.capacity}</td>
                             <td>${room.length}m x ${room.width}m</td>-->
                             <td>${room.status}</td>
                             <td>

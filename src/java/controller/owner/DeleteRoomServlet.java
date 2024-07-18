@@ -54,8 +54,21 @@ public class DeleteRoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int roomId = Integer.parseInt(request.getParameter("roomID"));
-        roomDAO.deleteRoomById(roomId);
-        response.sendRedirect("rooms?cinemaID=" + request.getParameter("cinemaID"));
+        String cinemaID = request.getParameter("cinemaID");
+
+        try {
+            String message;
+            if (roomDAO.isRoomInUseByMovieSlot(roomId)) {
+                message = "Cannot delete room as it is currently in use by a MovieSlot.";
+            } else {
+                roomDAO.deleteRoomAndSeatsById(roomId);
+                message = "Room deleted successfully.";
+            }
+            request.setAttribute("message", message);
+            response.sendRedirect("rooms?cinemaID=" + cinemaID + "&message=" + message);
+        } catch (Exception e) {
+            Logger.getLogger(DeleteRoomServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
  
