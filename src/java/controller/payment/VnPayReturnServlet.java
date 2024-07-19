@@ -108,13 +108,16 @@ public class VnPayReturnServlet extends HttpServlet {
                 String uploadFolder = "QRCode_F";
 
                 String qrCodeUrl = Util.generateQRCodeAndUpload(qrCodeText, fileName, uploadFolder);
-
+                System.out.println("qr code url"+ qrCodeUrl);
+                
                 boolean isOrderConfirmed = Retry.retryOperation(() -> bookingDAO.confirmOrder(orderID, qrCodeUrl, codeActive), 3);
-
+                System.out.println("order status"+ isOrderConfirmed);
+                
                 if (!isOrderConfirmed) {
                     session.removeAttribute("order");
                     return;
                 }
+                
                 System.out.println("Order confirmation result: " + isOrderConfirmed);
 
                 boolean isSend = Retry.retryOperation(() -> confirmDAO.sendInFormationCofirm(request, response, orderID, qrCodeUrl, codeActive), 3);
