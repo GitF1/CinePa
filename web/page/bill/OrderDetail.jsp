@@ -10,108 +10,123 @@
         <link rel="stylesheet" href="/movie/page/bill/style/OrderDetail.css">
 
         <style>
-    body {
-        background-color: #f2f2f2;
-        font-family: 'Arial', sans-serif;
-    }
-    .card {
-        max-width: 800px; /* Reduced width for a more compact look */
-        margin: auto;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .card-header {
-        background-color: #fccbe5 !important;
-        color: #fff;
-        text-align: center;
-        padding: 15px; /* Reduced padding */
-        border-radius: 10px 10px 0 0;
-    }
-    .card-body {
-        padding: 15px; /* Reduced padding */
-    }
-    .movie-info {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        padding: 10px; /* Reduced padding */
-        margin-bottom: 15px; /* Reduced margin */
-    }
-    .movie-info .row {
-        align-items: center;
-    }
-    .movie-info img {
-        max-height: 120px; /* Adjusted for a more compact look */
-        max-width: 120px;  /* Adjusted for a more compact look */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s ease;
-    }
-    .movie-info img:hover {
-        transform: scale(1.05);
-    }
-    .movie-info h4 {
-        margin: 5px 0; /* Reduced margin */
-        color: #333;
-        font-weight: 600;
-        font-size: 1rem; /* Adjusted font size */
-    }
-    .cinema-info {
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 10px; /* Reduced padding */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .cinema-info h4 {
-        margin: 5px 0; /* Reduced margin */
-        font-weight: bold;
-        color: #333;
-    }
-    .cinema-info .address {
-        white-space: nowrap; /* Prevents wrapping */
-        overflow: hidden;
-        text-overflow: ellipsis; /* Adds ellipsis if text is too long */
-    }
-    .seat {
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        padding: 8px; /* Reduced padding */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .no-canteen-items {
-        text-align: center;
-        font-style: italic;
-        color: #6c757d;
-    }
-    .qr-code {
-        height: 180px; /* Adjusted height */
-        width: 180px;  /* Adjusted width */
-    }
-    .item-details {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    .canteen-item img {
-        max-height: 80px; /* Adjusted size */
-        max-width: 80px;  /* Adjusted size */
-        border-radius: 10px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .canteen-item img:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-</style>
+            body {
+                background-color: #f2f2f2;
+                font-family: 'Arial', sans-serif;
+            }
+            .card {
+                max-width: 700px;
+                margin: auto;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            .card-header {
+                background-color: #eae9ea !important;
+                color: #fff;
+                text-align: center;
+                padding: 15px;
+                border-radius: 10px 10px 0 0;
+            }
+            .card-body {
+                padding: 15px;
+            }
+            .movie-info, .info-section {
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd; /* Add border */
+            }
+            .movie-info .row {
+                align-items: center;
+            }
+            .movie-info img {
+                max-height: 120px;
+                max-width: 120px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.2s ease;
+            }
+            .movie-info img:hover {
+                transform: scale(1.05);
+            }
+            .movie-info h4 {
+                margin: 5px 0;
+                color: #333;
+                font-weight: 600;
+                font-size: 1rem;
+            }
+            .cinema-info {
+                background-color: #fff;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .cinema-info h4 {
+                margin: 5px 0;
+                font-weight: bold;
+                color: #333;
+            }
+            .cinema-info .address {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .seat {
+                background-color: #f8f9fa;
+                border-radius: 5px;
+                padding: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 8px;
+                border: 1px solid #ddd; /* Add border */
+            }
+            .no-canteen-items {
+                text-align: center;
+                font-style: italic;
+                color: #6c757d;
+            }
+            .qr-code {
+                height: 180px;
+                width: 180px;
+            }
+            .item-details {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+            .canteen-item img {
+                max-height: 100px;
+                max-width: 100px;
+                border-radius: 20px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                border: 1px solid #ddd; /* Add border */
+                margin-left: 10px
+            }
+            .canteen-item img:hover {
+                transform: scale(1.1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
 
-
+            .row {
+                display: flex;
+                align-items: stretch; /* Ensure all items have the same height */
+            }
+            .col-md-6 {
+                display: flex;
+                flex-direction: column;
+            }
+            .info-section {
+                flex-grow: 1; /* Make the sections grow to fill available space */
+            }
+        </style>
     </head>
     <body>
         <jsp:include page=".././landingPage/Header.jsp" />
@@ -135,41 +150,44 @@
                         </div>
                     </div>
 
-
-                    <!-- Seats  -->
-                    <div class="info-section">
-                        <h2>Số ghế</h2>
-                        <div class="row justify-content-center">
-                            <c:forEach var="seat" items="${seats}">
-                                <div class="col-md-2 text-center mb-3">
-                                    <div class="seat">
-                                        ${seat.getName()} (Row: ${seat.getX()}, Seat: ${seat.getY()})
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-
-                    <!-- Canteen Items Section -->
-                    <div class="info-section">
-                        <h2>Thức ăn kèm</h2>
-                        <div class="row justify-content-center">
-                            <c:choose>
-                                <c:when test="${empty canteenItems}">
-                                    <div class="col-md-12 no-canteen-items">Không có thức ăn kèm</div>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach var="item" items="${canteenItems}">
-                                        <div class="col-md-3 text-center canteen-item mb-3">
-                                            <img src="${item.getImage()}" alt="${item.getName()}" class="img-fluid mb-2"/>
-                                            <div class="item-details">
-                                                <span class="item-name">${item.getName()}</span>
-                                                <span class="item-amount">x${item.getAmount()}</span>
-                                            </div>
+                    <div class="row">
+                        <!-- Seats Section -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h2>Số ghế</h2>
+                                <div>
+                                    <c:forEach var="seat" items="${seats}">
+                                        <div class="seat">
+                                            ${seat.getName()} (Row: ${seat.getX()}, Seat: ${seat.getY()})
                                         </div>
                                     </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Canteen Items Section -->
+                        <div class="col-md-6">
+                            <div class="info-section">
+                                <h2>Thức ăn kèm</h2>
+                                <div class="row justify-content-center">
+                                    <c:choose>
+                                        <c:when test="${empty canteenItems}">
+                                            <div class="col-md-12 no-canteen-items">Không có thức ăn kèm</div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="item" items="${canteenItems}">
+                                                <div class="col-md-6 text-center canteen-item mb-3">
+                                                    <img src="${item.getImage()}" alt="${item.getName()}" class="img-fluid mb-2"/>
+                                                    <div class="item-details">
+                                                        <span class="item-name">${item.getName()}</span>
+                                                        <span class="item-amount">x${item.getAmount()}</span>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
