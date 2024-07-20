@@ -479,14 +479,14 @@ public class UserDAO extends SQLServerConnect {
     // Query room from movie-slot ID
     public Room queryRoom(int movieSlotID) throws SQLException {
         
-        String sqlQuery = "select Room.RoomID, CinemaID, Room.Name, Capacity, Room.Status, Length, Width  from MovieSlot\n"
+        String sqlQuery = "select Room.RoomID, CinemaID, Room.Name, Capacity, Room.Status, Length, Width, Room.Type  from MovieSlot\n"
                 + "join Room on MovieSlot.RoomID = Room.RoomID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
         
         ResultSet rs = getResultSet(sqlQuery);
         
         if (rs.next()) {
-            return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), sqlQuery, rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
+            return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), rs.getString("Type"), rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }
         return null;
     }
@@ -503,5 +503,26 @@ public class UserDAO extends SQLServerConnect {
 
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
+    }
+    
+    public List<Seat> queryAllSeatsInRoom(int roomID) throws SQLException {
+        List<Seat> seats = new ArrayList<>();
+        String sql = "SELECT * FROM Seat WHERE RoomID = " + roomID;
+        ResultSet rs = getResultSet(sql);
+        while(rs.next()) {
+            Seat seat = new Seat(rs.getInt("SeatID"), rs.getInt("RoomID"), rs.getString("Name"), rs.getInt("CoordinateX"), rs.getInt("CoordinateY"), "Available");
+            seats.add(seat);
+        }
+        return seats;
+    }
+    
+    public Room queryRoomByRoomID(int roomID) throws SQLException {
+        String sql = "SELECT * FROM Room WHERE RoomID = " + roomID;
+        ResultSet rs = getResultSet(sql);
+        Room room = null;
+        while(rs.next()) {
+            room = new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), rs.getString("Type"), rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
+        }
+        return room;
     }
 }

@@ -71,12 +71,41 @@ public class CreateSeatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        System.out.println("Go doGet of CRUD Seat Servlet");
 
         String roomID = request.getParameter("roomID");
+        String referer = request.getHeader("Referer");
+        String isExistingSeatsStr = request.getParameter("isExistingSeats");
         request.setAttribute("roomID", roomID);
-        System.out.println("roomID" + roomID);
-
-        request.getRequestDispatcher(RouterJSP.ROOM_CREAT_SEAT).forward(request, response);
+        System.out.println("roomID = " + roomID);
+        System.out.println("isExistingSeatsStr = " + isExistingSeatsStr);
+        
+        Boolean isExistingSeats = null;
+        
+        System.out.println("Previous page URL: " + referer);
+        
+        try {
+            isExistingSeats = ownerDAO.isExistingSeats(Integer.parseInt(roomID));
+            System.out.println(request.getRequestURL().toString());
+            if(isExistingSeats) {
+            if(isExistingSeatsStr != null && isExistingSeatsStr.equals("true")) {
+                response.sendRedirect(referer);
+                return;
+            }
+                System.out.println("CinemaID = " + request.getParameter("cinemaID"));
+                String path = referer.substring(referer.indexOf("/owner"));
+                request.setAttribute("createSeatsMessage", "Đã có ghế ngồi trong phòng, không thể tạo mới!");
+//                System.out.println("path = " + path);
+//                System.out.println("Test = " + getServletContext().getRealPath("/"));
+//                request.getRequestDispatcher(path).forward(request, response);
+                response.sendRedirect(referer+"&isExistingSeats=" + "true");
+            }
+            else request.getRequestDispatcher(RouterJSP.ROOM_CREAT_SEAT).forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }
 
     /**
@@ -100,28 +129,6 @@ public class CreateSeatServlet extends HttpServlet {
         int length = Integer.parseInt(request.getParameter("length"));
         int width = Integer.parseInt(request.getParameter("width"));
         int roomID = Integer.parseInt(roomIDStr);
-        
-        try {
-            //        String sql = "select count(*) as seats from Seat where roomID = " + roomID;
-//        int seats = 0;
-//        try {
-//            ResultSet countSeatsRS = userDAO.getResultSet(sql);
-//            if(countSeatsRS.next()) {
-//                seats = countSeatsRS.getInt("seats");
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        
-//        if(seats == 0) {
-        
-//        }
-
-        int rowsAffected = ownerDAO.deleteSeats(roomID);
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(CreateSeatServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         for (int x = 1; x <= width; ++x) {
             for (int y = 1; y <= length; ++y) {
