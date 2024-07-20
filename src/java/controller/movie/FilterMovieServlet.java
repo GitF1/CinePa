@@ -100,7 +100,7 @@ public class FilterMovieServlet extends HttpServlet {
         Map<Integer, List<String>> movieGenresMap = movieDAO.getAllMovieGenres();
         Set<String> allGenres = movieDAO.getAllGenres();
         Set<String> allCountries = movieDAO.getAllCountries();
-        Set<Integer> allYears = movieDAO.getAllYears();
+        List<Integer> allYears = movieDAO.getAllYears().stream().sorted().collect(Collectors.toList());
 
         request.setAttribute("movies", moviesPage);
         request.setAttribute("movieGenresMap", movieGenresMap);
