@@ -20,6 +20,7 @@
             }
             .sidebar .nav-link {
                 color: #ffffff;
+                width : 190px ;
             }
             .sidebar .nav-link.active {
                 color: #FF6B6B;
@@ -96,17 +97,18 @@
                 const navItems = [
                     {
                         title: "Dashboard",
-                         url: "<%= RouterURL.OWNER_DASHBOARD_PAGE %>"
+                        url: "<%= RouterURL.OWNER_DASHBOARD_PAGE%>",
 
                     },
                     {
                         title: "Movies ",
-                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>"
+
+                        url: "<%= RouterURL.OWNER_MOVIES_STATISTIC%>",
 
                     },
                     {
                         title: "Cinemas ",
-                       
+
                         url: "<%= RouterURL.OWNER_CINEMAS_STATISTIC%>"
                     },
                     {
@@ -119,6 +121,22 @@
                         url: "/movie/owner/manage/finance",
                         badge: "Renevue",
                         badgeClass: "badge-danger"
+                    },
+                    {
+                        title: "Create cinema chain",
+                        url: "/movie/owner/createCinemaChain",
+                    },
+                    {
+                        title: "Create movie slot",
+                        url: "/movie/CreateMovieSlotFormInfoServlet",
+                    },
+                    {
+                        title: "Create movie request",
+                        url: "/movie/page/owner/createMovie/CreateMovieRequest.jsp",
+                    },
+                    {
+                        title: "View movie request",
+                        url: "/movie/owner/viewmovierequests",
                     }
                 ];
 

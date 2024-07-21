@@ -66,10 +66,10 @@
 
 
             <!-- row chinh :  -->
-            <div class="row justify-content-around">
+            <div class="row justify-content-end">
 
                 <!-- phan side bar :  -->
-                <ul class="col-md-2 " style="background-color: #4e73df; height: 100%; list-style-type: none;">
+                <ul class="col-md-2 " style="background-color: #4e73df; height: 100%; list-style-type: none; position: fixed ; left: 0">
                     <a href="#" class="d-flex justify-content-center align-items-center py-3">
                         <!-- icon :  -->
                         <div>
@@ -303,10 +303,6 @@
                         }
 
                     </script>
-                    <div class="row mb-5" style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a2.png?raw=true'); height: 300px; background-size: contain;">
-                    </div>
-                    <div class="row " style="background-image: url('https://github.com/vankhai-coder/Javascript-exercise-practice/blob/master/Hook/imageCinepa/a1.png?raw=true'); height: 300px; background-size: contain;">
-                    </div>
                 </div>
             </div>
         </div>
