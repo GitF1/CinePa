@@ -30,7 +30,7 @@ public class RouterURL {
 
     public static String ADMIN_PAGE = "/movie/admin";
 
-    public static String OWNER_PAGE = "/movie/owner/dashboard";
+    public static String OWNER_PAGE = "/movie/owner";
 
     public static String SEARCH_MOVIE = "/movie/searchmovie";
 
@@ -47,4 +47,6 @@ public class RouterURL {
     public static String OWNER_CITY_STATISTIC = "/movie/OwnerDashboardCityServlet";
 
     public static String DETAIL_MOVIE_PAGE = "/movie/HandleDisplayMovieInfo";
+    
+     public static String CREATE_CINEMA_CHAIN = "/movie/owner/createCinemaChain";
 }

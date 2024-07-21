@@ -100,20 +100,6 @@
                 <input type="text" class="form-control" id="type" name="type" required>
             </div>
             <div class="form-group">
-                <!--<label for="capacity">Capacity:</label>-->
-                <input type="hidden" class="form-control" id="capacity" name="capacity" value="0" >
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <!--<label for="length">Length (in meters):</label>-->
-                    <input type="hidden" class="form-control" id="length" name="length" value="0" >
-                </div>
-                <div class="form-group col-md-6">
-                    <!--<label  for="width">Width (in meters):</label>-->
-                    <input type="hidden" class="form-control" id="width" name="width" value="0">
-                </div>
-            </div>
-            <div class="form-group">
                 <label for="status">Status:</label>
                 <select class="form-control" id="status" name="status" required>
                     <option value="Available">Available</option>

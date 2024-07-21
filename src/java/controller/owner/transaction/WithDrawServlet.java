@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.transaction;
+package controller.owner.transaction;
 
-import DAO.owner.StatisticOwnerDAO;
+import DAO.transaction.BalanceUpdater;
 import DAO.transaction.TransactionDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,30 +18,26 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.RouterJSP;
-import util.RouterURL;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "ManageFinanceServlet", urlPatterns = {"/owner/manage/finance"})
-public class ManageFinanceServlet extends HttpServlet {
+@WebServlet(name = "WithDrawServlet", urlPatterns = {"/owner/transaction/withdraw"})
+public class WithDrawServlet extends HttpServlet {
 
-    TransactionDAO dao;
-    StatisticOwnerDAO daoStatis;
+    BalanceUpdater d;
+    TransactionDAO tsDAO;
 
     @Override
     public void init() throws ServletException {
         try {
-
-            dao = new TransactionDAO(getServletContext());
-            daoStatis = new StatisticOwnerDAO(getServletContext());
-
+            super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            d = new BalanceUpdater(getServletContext());
+            tsDAO = new TransactionDAO(getServletContext());
         } catch (Exception ex) {
-            Logger.getLogger(ManageFinanceServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WithDrawServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     /**
@@ -60,10 +57,10 @@ public class ManageFinanceServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManageFinanceServlet</title>");
+            out.println("<title>Servlet WithDrawServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManageFinanceServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet WithDrawServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -81,7 +78,7 @@ public class ManageFinanceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(RouterJSP.OWNER_BUDGET_PAGE).forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -95,6 +92,55 @@ public class ManageFinanceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        try {
+
+            Integer userID = (int) request.getSession().getAttribute("userID");
+            String role = (String) request.getSession().getAttribute("role");
+
+            if (userID == null || !util.Role.OWNER.equalsIgnoreCase(role)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permission to perform this action.");
+                return;
+            }
+            double balance = tsDAO.getBalance(userID);
+            double amount = Double.parseDouble(request.getParameter("amount"));
+
+            if (amount < 200000) {
+                request.setAttribute("message", "Minimum withdraw amount is 200,000.");
+                request.getRequestDispatcher(RouterJSP.OWNER_BUDGET_PAGE).forward(request, response);
+                return;
+            }
+            if (amount < 20000000) {
+                request.setAttribute("message", "Maximum withdraw amount is 20,000,000.");
+                request.getRequestDispatcher(RouterJSP.OWNER_BUDGET_PAGE).forward(request, response);
+                return;
+            }
+            if (balance < amount) {
+                request.setAttribute("message", "Balance Over!");
+                request.getRequestDispatcher(RouterJSP.OWNER_BUDGET_PAGE).forward(request, response);
+                return;
+            }
+            
+            try {
+
+                d.sendRequestWithDraw(userID, amount);
+                request.setAttribute("message", "Withdraw request submitted successfully.");
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                request.setAttribute("message", "Failed to submit withdraw request.");
+
+            }
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher(RouterJSP.OWNER_COMFIRM_RESULT_PAGE);
+            dispatcher.forward(request, response);
+
+        } catch (SQLException ex) {
+
+            Logger.getLogger(WithDrawServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
 
     }
 

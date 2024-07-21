@@ -154,6 +154,15 @@
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">
+                    
+                    
+                    <li class="text-white my-2 py-3 text-center">
+                        <a href="<%= request.getContextPath()%>/logout" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-tachometer" aria-hidden="true"></i>
+                            <span>Log out</span>
+                        </a>
+                    </li>
+                    <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
                 </ul>
 
@@ -227,9 +236,10 @@
                     </div>
 
                     <!-- phan image them vo :  -->
-                    <div>
-                        <canvas id="weeklySalesChart"></canvas>
+                    <div>   
+                        <canvas id="weeklySalesChart" width="500px" height="200px"></canvas>
                     </div>
+                    
                     <script>
                         var dateArr = [];
                         var valueArr = [];

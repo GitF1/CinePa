@@ -93,6 +93,7 @@
         <!-- Custom JS for dynamic navigation -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                
                 const navItems = [
                     {
                         title: "Dashboard",
@@ -112,20 +113,19 @@
                     },
                     {
                         title: "City",
-
                         url: "/movie/OwnerDashboardCityServlet"
                     },
                     {
                         title: "Widget",
                         icon: "fas fa-cubes",
-                        url: "#",
+                        url: "/movie/owner/manage/finance",
                         badge: "Renevue",
                         badgeClass: "badge-danger"
                     },
-                    {
-                        title: "Create cinema chain",
-                        url: "/movie/owner/createCinemaChain",
-                    },
+//                    {
+//                        title: "Create cinema chain",
+//                        url: "/movie/owner/createCinemaChain",
+//                    },
                     {
                         title: "Create movie slot",
                         url: "/movie/CreateMovieSlotFormInfoServlet",

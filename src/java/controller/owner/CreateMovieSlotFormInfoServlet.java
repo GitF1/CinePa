@@ -23,6 +23,7 @@ import model.CinemaChain;
 import model.Movie;
 import model.Room;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -79,15 +80,33 @@ public class CreateMovieSlotFormInfoServlet extends HttpServlet {
         HttpSession session = request.getSession();
 //        response.setContentType("text/html;charset=UTF-8");
         Integer userID = (Integer) session.getAttribute("userID");
+        
+        if (userID == null) {
+            response.sendRedirect(RouterURL.LOGIN);
+            return;
+        }
+        
         System.out.println("UserID:" + userID);
         CinemaChain cinemaChain = roomDAO.getCinemaChainByUserId(userID);
+
+        if (cinemaChain == null) {
+            response.sendRedirect(RouterURL.CREATE_CINEMA_CHAIN);
+            return;
+        }
+
         System.out.println(cinemaChain);
         request.setAttribute("cinemaChain", cinemaChain);
-        int cinemaChainID = cinemaChain.getCinemaChainID();
+        Integer cinemaChainID = cinemaChain.getCinemaChainID();
+
+        if (cinemaChainID == null) {
+            response.sendRedirect(RouterURL.CREATE_CINEMA_CHAIN);
+            return;
+        }
+
         System.out.println("----------------------------ID:" + cinemaChainID);
-        
+
         List<Cinema> cinemas = cinemasDAO.getCinemasByCinemaChainID(cinemaChainID, 100, 0);
-        
+
         request.setAttribute("cinemas", cinemas);
 
         if (doPost) {

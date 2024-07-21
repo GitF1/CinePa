@@ -6,6 +6,7 @@ package controller.payment;
 
 import DAO.booking.BookingDAO;
 import DAO.confirm.ConfirmDAO;
+import DAO.transaction.TransactionDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -29,6 +30,7 @@ public class VnPayReturnServlet extends HttpServlet {
 
     BookingDAO bookingDAO;
     ConfirmDAO confirmDAO;
+    TransactionDAO transactionDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,6 +38,7 @@ public class VnPayReturnServlet extends HttpServlet {
         try {
             bookingDAO = new BookingDAO(getServletContext());
             confirmDAO = new ConfirmDAO(getServletContext());
+            transactionDAO = new TransactionDAO(getServletContext());
         } catch (Exception ex) {
             Logger.getLogger(VnPayReturnServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +85,9 @@ public class VnPayReturnServlet extends HttpServlet {
 
         String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
         String vnp_TxnRef = request.getParameter("vnp_TxnRef");
+        String amount = request.getParameter("vnp_Amount");
+        System.out.println("amount" + amount);
+
         HttpSession session = request.getSession();
         Integer userId = (int) session.getAttribute("userID");
 
@@ -102,16 +108,25 @@ public class VnPayReturnServlet extends HttpServlet {
                 String uploadFolder = "QRCode_F";
 
                 String qrCodeUrl = Util.generateQRCodeAndUpload(qrCodeText, fileName, uploadFolder);
-
+                System.out.println("qr code url"+ qrCodeUrl);
+                
                 boolean isOrderConfirmed = Retry.retryOperation(() -> bookingDAO.confirmOrder(orderID, qrCodeUrl, codeActive), 3);
+                System.out.println("order status"+ isOrderConfirmed);
                 
                 if (!isOrderConfirmed) {
                     session.removeAttribute("order");
                     return;
                 }
+                
                 System.out.println("Order confirmation result: " + isOrderConfirmed);
 
                 boolean isSend = Retry.retryOperation(() -> confirmDAO.sendInFormationCofirm(request, response, orderID, qrCodeUrl, codeActive), 3);
+                
+                Double revenue = Double.parseDouble(amount);
+                
+                if (revenue != null && revenue > 0) {
+                    transactionDAO.updateBalances(orderID, revenue/100);
+                }
 
                 if (isOrderConfirmed) {
                     session.removeAttribute("order");

@@ -125,25 +125,25 @@ public class CinemaChainDAO extends SQLServerConnect {
     }
 
     public CinemaChain getCinemaChainByID(int cinemaChainID) {
-        CinemaChain cinemaChain = new CinemaChain();
-        String query = "SELECT CinemaChainID, Name, Information, Avatar FROM CinemaChain WHERE CinemaChainID = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, cinemaChainID);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                String name = rs.getString("Name");
-                String information = rs.getString("Information");
-                String avatar = rs.getString("Avatar");
-                String banner = rs.getString("Banner");
+    CinemaChain cinemaChain = null;
+    String query = "SELECT CinemaChainID, Name, Information, Avatar, Banner FROM CinemaChain WHERE CinemaChainID = ?";
+    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+        pstmt.setInt(1, cinemaChainID);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            String name = rs.getString("Name");
+            String information = rs.getString("Information");
+            String avatar = rs.getString("Avatar");
+            String banner = rs.getString("Banner");
 
-                cinemaChain = new CinemaChain(cinemaChainID, name, information, avatar);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            cinemaChain = new CinemaChain(cinemaChainID, name, information, avatar, banner);
         }
-        return cinemaChain;
-
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return cinemaChain;
+}
+
 
     public void updateCinemaChain(CinemaChain cinemaChain) {
         String sql = "UPDATE CinemaChain SET Name = ?, Information = ?, Avatar = ?, Banner = ? WHERE CinemaChainID = ?";

@@ -103,7 +103,7 @@ public class RoomDAO extends SQLServerConnect {
 
         return rooms;
     }
-
+    
     public List<CinemaChain> getAllCinemaChains() {
         List<CinemaChain> cinemaChains = new ArrayList<>();
         String sql = "SELECT * FROM CinemaChain";
@@ -154,17 +154,14 @@ public class RoomDAO extends SQLServerConnect {
     }
 
     public void createRoom(Room room) {
-        String sql = "INSERT INTO Room (CinemaID, Name, Type, Capacity, Length, Width, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Room (CinemaID, Name, Type, Status) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, room.getCinemaID());
             st.setString(2, room.getName());
             st.setString(3, room.getType());
-            st.setInt(4, room.getCapacity());
-            st.setInt(5, room.getLength());
-            st.setInt(6, room.getWidth());
-            st.setString(7, room.getStatus());
+            st.setString(4, room.getStatus());
             st.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error creating room", e);
@@ -172,35 +169,69 @@ public class RoomDAO extends SQLServerConnect {
     }
 
     public void updateRoom(Room room) {
-        String sql = "UPDATE Room SET Name=?, Type=?, Capacity=?, Length=?, Width=?, Status=? WHERE RoomID=?";
+        String sql = "UPDATE Room SET Name=?, Type=?, Status=? WHERE RoomID=?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, room.getName());
             st.setString(2, room.getType());
-            st.setInt(3, room.getCapacity());
-            st.setInt(4, room.getLength());
-            st.setInt(5, room.getWidth());
-            st.setString(6, room.getStatus());
-            st.setInt(7, room.getRoomID());
+            st.setString(3, room.getStatus());
+            st.setInt(4, room.getRoomID());
             st.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating room", e);
         }
     }
 
-    public void deleteRoomById(int roomId) {
-        String sql = "DELETE FROM Room WHERE RoomID = ?";
+    public boolean isRoomInUseByMovieSlot(int roomId) {
+        String sql = "SELECT COUNT(*) FROM MovieSlot WHERE RoomID = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, roomId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error checking room usage in MovieSlot", e);
+        }
+        return false;
+    }
+
+    public void deleteRoomAndSeatsById(int roomId) {
+        String deleteSeatsSql = "DELETE FROM Seat WHERE RoomID = ?";
+        String deleteRoomSql = "DELETE FROM Room WHERE RoomID = ?";
 
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, roomId);
-            st.executeUpdate();
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement deleteSeatsStmt = connection.prepareStatement(deleteSeatsSql)) {
+                deleteSeatsStmt.setInt(1, roomId);
+                deleteSeatsStmt.executeUpdate();
+            }
+
+            try (PreparedStatement deleteRoomStmt = connection.prepareStatement(deleteRoomSql)) {
+                deleteRoomStmt.setInt(1, roomId);
+                deleteRoomStmt.executeUpdate();
+            }
+
+            connection.commit();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error deleting room by ID", e);
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                LOGGER.log(Level.SEVERE, "Error rolling back transaction", rollbackEx);
+            }
+            LOGGER.log(Level.SEVERE, "Error deleting room and seats by ID", e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException autoCommitEx) {
+                LOGGER.log(Level.SEVERE, "Error setting auto-commit to true", autoCommitEx);
+            }
         }
     }
-    
+
     public User getUserById(int userId) {
         User user = null;
         String sql = "SELECT * FROM [User] WHERE UserID = ?";
@@ -233,11 +264,29 @@ public class RoomDAO extends SQLServerConnect {
                 cinemaChain.setName(rs.getString("Name"));
                 cinemaChain.setInformation(rs.getString("Information"));
                 cinemaChain.setAvatar(rs.getString("Avatar"));
+                cinemaChain.setBanner(rs.getString("Banner"));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return cinemaChain;
     }
+    public boolean checkIfEmpty(int roomID){
+        
+        String sql = "SELECT * FROM Seat WHERE RoomID = ?";
 
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, roomID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        }
+        return true;
+    }
+    
 }

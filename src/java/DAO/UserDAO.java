@@ -50,11 +50,13 @@ public class UserDAO extends SQLServerConnect {
     }
 
     public ResultSet checkLogin(String username_email, String password) throws SQLException {
+        
         String sqlQuery = "SELECT *\n"
                 + "FROM [User]\n"
                 + "WHERE (Username = '" + username_email + "' " + "OR Email = '" + username_email + "'" + ")\n"
                 + "AND Password = '" + password + "'\n"
                 + "AND Status = 1";
+        
         System.out.println(sqlQuery);
         ResultSet rs = getResultSet(sqlQuery);
         return rs;

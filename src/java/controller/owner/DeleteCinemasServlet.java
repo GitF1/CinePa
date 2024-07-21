@@ -64,15 +64,21 @@ public class DeleteCinemasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
+        int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
         int cinemaChainID = Integer.parseInt(request.getParameter("cinemaChainID"));
+        String message;
 
         try {
-            cinemasDAO.deleteCinemaAndRooms(cinemaID);
-            response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID);
+            if (cinemasDAO.isCinemaInUseByMovieSlot(cinemaID)) {
+                message = "Cannot delete cinema as it has associated MovieSlots.";
+            } else {
+                cinemasDAO.deleteCinemaAndRooms(cinemaID);
+                message = "Cinema deleted successfully.";
+            }
+            response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID + "&message=" + message);
         } catch (Exception ex) {
             Logger.getLogger(DeleteCinemasServlet.class.getName()).log(Level.SEVERE, "Error deleting cinema", ex);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error deleting cinema: " + ex.getMessage());
+            response.sendRedirect("cinemas?cinemaChainID=" + cinemaChainID + "&message=Error deleting cinema: " + ex.getMessage());
         }
 
     }

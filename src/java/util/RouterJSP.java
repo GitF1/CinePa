@@ -8,6 +8,7 @@ package util;
  *
  * @author Admin
  */
+
 public class RouterJSP {
 
     public static String LANDING_PAGE = "/page/landingPage/LandingPage.jsp";
@@ -105,26 +106,30 @@ public class RouterJSP {
 
     // URL JSP FILE FOR OWNER //
     public static String OWNER_COMFIRM_ORDER_PAGE = "/page/owner/confirm/ConfirmTicket.jsp";
-    
+
     public static String OWNER_COMFIRM_RESULT_PAGE = "/page/owner/confirm/ConfirmResult.jsp";
-    
-    public static String OWNER_DASHBOARD_PAGE ="/page/owner/dashboard/Dashboard.jsp";
-    
-    public static String OWNER_STATISTIC_MOVIE_PAGE ="/page/owner/dashboard/movie/MovieStatistic.jsp";
-    
-     public static String OWNER_STATISTIC_CINEMA_PAGE ="/page/owner/dashboard/cinema/CinemaStatistic.jsp";
+
+    public static String OWNER_DASHBOARD_PAGE = "/page/owner/dashboard/Dashboard.jsp";
+
+    public static String OWNER_STATISTIC_MOVIE_PAGE = "/page/owner/dashboard/movie/MovieStatistic.jsp";
+
+    public static String OWNER_STATISTIC_CINEMA_PAGE = "/page/owner/dashboard/cinema/CinemaStatistic.jsp";
+
+    public static String OWNER_BUDGET_PAGE = "/page/owner/transaction/Budget.jsp";
 
     public static String FAVOURITE_MOVIE_PAGE = "/page/movie/favouriteMovies/FavouriteMovies.jsp";
 
     public static String REVIEW_MOVIE_PAGE = "/page/movie/reviewMovie/ReviewMovie.jsp";
-    
-    public static String CREATE_MOVIE_SLOT="/page/owner/movie_slot/CreateMovieSlot.jsp";
-    
-    public static String EDIT_MOVIE_SLOT="/page/owner/movie_slot/EditMovieSlot.jsp";
-    
+
+    public static String CREATE_MOVIE_SLOT = "/page/owner/movie_slot/CreateMovieSlot.jsp";
+
+    public static String EDIT_MOVIE_SLOT = "/page/owner/movie_slot/EditMovieSlot.jsp";
+
     public static String OWNER_REQUEST_MOVIE = "/page/owner/createMovie/CreateMovieRequest.jsp";
-    
+
     public static String ADMIN_PENDING_MOVIE_LIST = "/page/admin/PendingMovieList.jsp";
+    
+    public static String ADMIN_MANAGE_REQUEST_WITHDRAW = "/page/admin/transaction/ListRequestWithDraw.jsp";
     
     public static String OWNER_VIEW_MOVIE_REQUEST = "/page/owner/viewMovieRequests/ViewRequests.jsp";
     

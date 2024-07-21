@@ -5,10 +5,6 @@
 package controller.schedule;
 
 import DAO.schedule.ScheduleDAO;
-import com.google.gson.Gson;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,30 +12,31 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import model.schedule.City;
+import model.Cinema;
+import model.schedule.Address;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "NearestCityServlet", urlPatterns = {"/city/nearest"})
-public class NearestCityServlet extends HttpServlet {
+@WebServlet(name = "NearestAddressServlet", urlPatterns = {"/cinema/nearest/address"})
+public class NearestAddressServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final String GEONAMES_USERNAME = "per03";
@@ -51,7 +48,7 @@ public class NearestCityServlet extends HttpServlet {
             dao = new ScheduleDAO(getServletContext());
             super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         } catch (Exception ex) {
-            Logger.getLogger(NearestCityServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NearestAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -66,18 +63,44 @@ public class NearestCityServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NearestCityServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NearestCityServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+//            double userLat = Double.parseDouble(request.getParameter("latitude"));
+//            double userLon = Double.parseDouble(request.getParameter("longitude"));
+
+            double userLat = 15.5728;
+            double userLon = 108.4709;
+
+            List<Address> listAddress = getAddressCinema();
+            List<Address> cinemaRs = new ArrayList<>();
+
+            for (Address address : listAddress) {
+
+                getCityCoordinates(address);
+
+                double lat = address.getLatitude();
+                double lon = address.getLongitude();
+
+                if (lat == 0 && lon == 0) {
+                    continue;
+                }
+
+                double distance = calculateDistance(userLat, userLon, lat, lon);
+
+                address.setDistance(distance);
+
+                cinemaRs.add(address);
+            }
+            Collections.sort(cinemaRs, new Comparator<Address>() {
+                @Override
+                public int compare(Address a1, Address a2) {
+                    return Double.compare(a1.getDistance(), a2.getDistance());
+                }
+            });
+
+            System.out.println("after calculate distance: " + cinemaRs);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NearestAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -93,45 +116,7 @@ public class NearestCityServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-        String city = request.getParameter("city");
-        String username = "per03"; // Replace with your GeoNames username
-
-        String urlStr = "http://api.geonames.org/searchJSON?q=" + city + "&country=VN&maxRows=1&username=" + username;
-        URL url = new URL(urlStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuilder result = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        rd.close();
-
-        // Parse JSON response
-        String[] coords = parseJSON(result.toString());
-        if (coords != null && coords.length == 2) {
-            response.getWriter().println("Latitude: " + coords[0] + "<br>");
-            response.getWriter().println("Longitude: " + coords[1]);
-        } else {
-            response.getWriter().println("Coordinates not found for the city: " + city);
-        }
-
-    }
-
-    private String[] parseJSON(String json) {
-        String[] coords = new String[2];
-        JSONObject jsonObject = new JSONObject(json);
-        JSONArray geonames = jsonObject.getJSONArray("geonames");
-        if (geonames.length() > 0) {
-            JSONObject firstResult = geonames.getJSONObject(0);
-            coords[0] = firstResult.getString("lat");
-            coords[1] = firstResult.getString("lng");
-            return coords;
-        }
-        return null;
+        processRequest(request, response);
     }
 
     /**
@@ -143,63 +128,63 @@ public class NearestCityServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+//            double userLat = Double.parseDouble(request.getParameter("latitude"));
+//            double userLon = Double.parseDouble(request.getParameter("longitude"));
 
-        double userLat = Double.parseDouble(request.getParameter("latitude"));
-        double userLon = Double.parseDouble(request.getParameter("longitude"));
+            double userLat = 15.5728;
+            double userLon = 108.4709;
 
-        List<City> cities = getListCities(request);
+            List<Address> listAddress = getAddressCinema();
+            List<Address> cinemaRs = new ArrayList<>();
 
-        City nearestCity = new City();
+            for (Address address : listAddress) {
 
-        double shortestDistance = Double.MAX_VALUE;
+                getCityCoordinates(address);
 
-        for (City city : cities) {
+                double lat = address.getLatitude();
+                double lon = address.getLongitude();
 
-            double cityLat = city.getLatitude();
-            double cityLon = city.getLongitude();
+                if (lat == 0 && lon == 0) {
+                    continue;
+                }
 
-            double distance = calculateDistance(userLat, userLon, cityLat, cityLon);
-            city.setDistance(distance);
+                double distance = calculateDistance(userLat, userLon, lat, lon);
 
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                nearestCity = city;
+                address.setDistance(distance);
+
+                cinemaRs.add(address);
             }
+            Collections.sort(cinemaRs, new Comparator<Address>() {
+                @Override
+                public int compare(Address a1, Address a2) {
+                    return Double.compare(a2.getDistance(), a1.getDistance());
+                }
+            });
+
+            System.out.println("after calculate distance: " + cinemaRs);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NearestAddressServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        nearestCity.setDistance(shortestDistance);
-
-        System.out.println("nearest city: " + nearestCity.getName() + "  ID:" + nearestCity.getId() + " distance: " + shortestDistance);
-
-        Gson gson = new Gson();
-        String json = gson.toJson(nearestCity);
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print(json);
-        out.flush();
     }
 
-    private List<City> getListCities(HttpServletRequest request) throws IOException {
+    private List<Address> getAddressCinema() throws SQLException {
 
-        List<City> cities = getCityNames(request);
-        for (City city : cities) {
-            getCityCoordinates(city);
-        }
-        return cities;
-    }
+        List<Cinema> cinemas = dao.getAllCinemas();
 
-    private List<City> getCityNames(HttpServletRequest request) {
+        List<Address> listAddress = new ArrayList<>();
 
-        List<String> citiesName = dao.getListCites();
+        for (int i = 0; i < cinemas.size(); i++) {
 
-        List<City> citiesProvinces = new ArrayList<>();
-
-        for (int i = 0; i < citiesName.size(); i++) {
-            citiesProvinces.add(new City(i, citiesName.get(i), 0, 0));
+            String address = cinemas.get(i).getCommune() + ", " + cinemas.get(i).getDistrict() + ", " + cinemas.get(i).getProvince();
+            System.out.println("address" + address);
+            listAddress.add(new Address(i, address, 0, 0));
         }
 
-        return citiesProvinces;
+        return listAddress;
     }
 
     private String normalize(String text) {
@@ -208,11 +193,11 @@ public class NearestCityServlet extends HttpServlet {
         return pattern.matcher(normalized).replaceAll("");
     }
 
-    private void getCityCoordinates(City city) throws IOException {
+    private void getCityCoordinates(Address address) throws IOException {
 
-        String sanitizedCityName = sanitizeCityName(city.getName());
+        String sanitizedName = sanitizeCityName(address.getName());
 
-        String urlString = String.format("http://api.geonames.org/searchJSON?q=%s&maxRows=1&country=VN&username=%s", sanitizedCityName, GEONAMES_USERNAME);
+        String urlString = String.format("http://api.geonames.org/searchJSON?q=%s&maxRows=1&country=VN&username=%s", sanitizedName, GEONAMES_USERNAME);
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -228,13 +213,15 @@ public class NearestCityServlet extends HttpServlet {
         JSONObject jsonObject = new JSONObject(jsonResult.toString());
 
         JSONArray jsonArray = jsonObject.getJSONArray("geonames");
-        JSONObject cityData = jsonArray.getJSONObject(0);
+        if (jsonArray.length() > 0) {
+            JSONObject res = jsonArray.getJSONObject(0);
 
-        double latitude = cityData.getDouble("lat");
-        double longitude = cityData.getDouble("lng");
+            double latitude = res.getDouble("lat");
+            double longitude = res.getDouble("lng");
 
-        city.setLatitude(latitude);
-        city.setLongitude(longitude);
+            address.setLatitude(latitude);
+            address.setLongitude(longitude);
+        }
 
     }
 

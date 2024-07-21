@@ -82,9 +82,9 @@ public class UpdateRoomServlet extends HttpServlet {
         // Update fields of Room object
         room.setName(request.getParameter("name"));
         room.setType(request.getParameter("type"));
-        room.setCapacity(Integer.parseInt(request.getParameter("capacity")));
-        room.setLength(Integer.parseInt(request.getParameter("length")));
-        room.setWidth(Integer.parseInt(request.getParameter("width")));
+//        room.setCapacity(Integer.parseInt(request.getParameter("capacity")));
+//        room.setLength(Integer.parseInt(request.getParameter("length")));
+//        room.setWidth(Integer.parseInt(request.getParameter("width")));
         room.setStatus(request.getParameter("status"));
 
         // Call updateRoom method of RoomDAO with the updated Room object

@@ -24,24 +24,41 @@
                 border-style: none;
                 border-radius: 10px;
             }
+            .btn-back {
+                margin-bottom: 20px;
+            }
         </style>
         <script type="text/javascript">
             function doDelete(cinemaID) {
                 if (confirm("Are you sure to delete this cinema with id: " + cinemaID + "?")) {
-                    window.location = "deleteCinema?cinemaID=" + cinemaID + "&cinemaChainID=<%= request.getParameter("cinemaChainID")%>";
+                    window.location = "deleteCinema?cinemaID=" + cinemaID + "&cinemaChainID=<%= request.getParameter("cinemaChainID") %>";
                 }
             }
+
             function onSelectCinema(cinemaID) {
                 window.location.href = 'rooms?cinemaID=' + encodeURIComponent(cinemaID);
             }
+
             function viewMovies(cinemaID) {
                 window.location.href = 'movieCinema?cinemaID=' + encodeURIComponent(cinemaID);
+            }
+
+            function goBack() {
+                history.back();
+            }
+
+            window.onload = function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const message = urlParams.get('message');
+                if (message) {
+                    alert(message);
+                }
             }
         </script>
     </head>
     <body>
-        <h1 class="text-center mt-3">Cinemas</h1>
         <div class="container mt-4">
+            <h1 class="text-center mt-3">Cinemas</h1>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -80,6 +97,7 @@
                     </c:forEach>
                 </tbody>
             </table>
+            <button onclick="goBack()" class="btn btn-secondary btn-back">Back Cinema Chain</button>
         </div>
     </body>
 </html>

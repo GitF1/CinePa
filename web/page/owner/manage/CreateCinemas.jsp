@@ -57,8 +57,7 @@
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%;
-            display: block;
+            display: inline-block;
             text-align: center;
             font-size: 16px;
             margin-top: 20px;
@@ -66,6 +65,24 @@
 
         .btn-primary:hover {
             background-color: #3a1d54;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -104,6 +121,7 @@
                 <input type="text" class="form-control" id="address" name="address" required>
             </div>
             <button type="submit" class="btn btn-primary">Create Cinema</button>
+            <a href="javascript:history.go(-1);" class="btn btn-cancel">Cancel</a>
         </form>
     </div>
 
