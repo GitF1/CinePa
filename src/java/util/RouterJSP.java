@@ -8,6 +8,7 @@ package util;
  *
  * @author Admin
  */
+
 public class RouterJSP {
 
     public static String LANDING_PAGE = "/page/landingPage/LandingPage.jsp";

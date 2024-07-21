@@ -122,10 +122,10 @@
                         badge: "Renevue",
                         badgeClass: "badge-danger"
                     },
-                    {
-                        title: "Create cinema chain",
-                        url: "/movie/owner/createCinemaChain",
-                    },
+//                    {
+//                        title: "Create cinema chain",
+//                        url: "/movie/owner/createCinemaChain",
+//                    },
                     {
                         title: "Create movie slot",
                         url: "/movie/CreateMovieSlotFormInfoServlet",

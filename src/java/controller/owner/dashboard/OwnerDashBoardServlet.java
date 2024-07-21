@@ -72,14 +72,16 @@ public class OwnerDashBoardServlet extends HttpServlet {
         Integer userID = (Integer) session.getAttribute("userID");
         String role = (String) session.getAttribute("role");
         System.out.println("role" + role + "useriD" + userID);
+        
         if (userID == null || role == null || !role.equals(util.Role.OWNER)) {
-            response.sendRedirect(RouterURL.LOGIN);
+            response.sendRedirect(RouterURL.CREATE_CINEMA_CHAIN);
             return;
         }
+        
         Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
 
         if (cinemaChainID == null) {
-            response.sendRedirect(RouterURL.ERORPAGE);
+            response.sendRedirect(RouterURL.OWNER_PAGE);
             return;
         }
 

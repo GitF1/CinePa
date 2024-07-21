@@ -34,6 +34,7 @@ public class RegisterOwnerDAO extends SQLServerConnect {
 
     public void addRegisterOwner(int userID) {
         String sql = "INSERT INTO RegisterOwner (UserID, Status) VALUES (?, ?)";
+       
         try (
                 PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userID);
@@ -96,7 +97,9 @@ public class RegisterOwnerDAO extends SQLServerConnect {
     }
 
     public void changeRoleToOwner(String id) {
+        
         String sql = "UPDATE [User] SET Role = 'OWNER' WHERE UserID = ?";
+        
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             // Thiết lập các tham số cho PreparedStatement
             statement.setString(1, id);
