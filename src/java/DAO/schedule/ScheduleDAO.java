@@ -52,13 +52,46 @@ public class ScheduleDAO extends SQLServerConnect {
 
     public List<String> getListCites() {
 
-        List<String> citiesProvinces = new ArrayList<>();
-        citiesProvinces.add("Hà Nội");
-        citiesProvinces.add("Đà Nẵng");
-        citiesProvinces.add("TP. Hồ Chí Minh ");
-        citiesProvinces.add("Hải Phòng");
+        List<String> provinces = new ArrayList<>();
+        String query = "SELECT DISTINCT Province FROM Cinema";
 
-        return citiesProvinces;
+        try (PreparedStatement stmt = connection.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                provinces.add(rs.getString("Province"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return provinces;
+    }
+
+    public List<Cinema> getAllCinemas() throws SQLException {
+        List<Cinema> cinemas = new ArrayList<>();
+
+        String sql = "SELECT c.CinemaID, c.CinemaChainID, c.Address, c.Province, c.District, c.Commune, cc.Avatar FROM Cinema c JOIN CinemaChain cc ON cc.CinemaChainID = c.CinemaChainID";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                int cinemaID = rs.getInt("CinemaID");
+                int cineChainID = rs.getInt("CinemaChainID");
+                String address = rs.getString("Address");
+                String province = rs.getString("Province");
+                String district = rs.getString("District");
+                String commune = rs.getString("Commune");
+                String avatar = rs.getString("Avatar");
+                Cinema cinema = new Cinema(cinemaID, cineChainID, address, province, district, commune, avatar);
+
+                cinemas.add(cinema);
+            }
+        }
+
+        return cinemas;
     }
 
     public List<CinemaChain> getListCinemaChain(int limit, int offset) throws SQLException {
