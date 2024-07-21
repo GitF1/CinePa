@@ -87,10 +87,10 @@
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <h6>Liên hệ</h6>
                             <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #7c4dff; height: 2px;">
-                            <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                            <p><i class="fas fa-home me-3"></i>Khu Đô Thị FPT Đà Nẵng, P. Hòa Hải, Q.Ngũ Hành Sơn, TP Đà Nẵng</p>
                             <p><i class="fas fa-envelope me-3"></i> cinepa.org@gmail.com</p>
-                            <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                            <p><i class="fas fa-phone me-3"></i> + 0865842453</p>
+                            <p><i class="fas fa-print me-3"></i> + 0865842453</p>
                         </div>
                         <!-- Cột grid -->
                     </div>
@@ -100,7 +100,7 @@
             <!-- Bản quyền -->
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
                 © 2020 Bản quyền:
-                <a class="text-white" href="https://mdbootstrap.com/">CinePA.com</a>
+                <a class="text-white" href="#">CinePA.com</a>
             </div>
         </footer>
         <!-- Footer -->

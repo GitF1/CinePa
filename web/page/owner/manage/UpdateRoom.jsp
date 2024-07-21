@@ -91,6 +91,7 @@
         <form action="updateRoom" method="post">
             <input type="hidden" name="roomID" value="${room.roomID}">
             <input type="hidden" name="cinemaID" value="${room.cinemaID}">
+            
             <div class="form-group">
                 <label>Name:</label>
                 <input type="text" class="form-control" name="name" value="${room.name}" required>
@@ -98,18 +99,6 @@
             <div class="form-group">
                 <label>Type:</label>
                 <input type="text" class="form-control" name="type" value="${room.type}" required>
-            </div>
-            <div class="form-group">
-                <label>Capacity:</label>
-                <input type="number" class="form-control" name="capacity" value="${room.capacity}" required>
-            </div>
-            <div class="form-group">
-                <label>Length:</label>
-                <input type="number" class="form-control" name="length" value="${room.length}" required>
-            </div>
-            <div class="form-group">
-                <label>Width:</label>
-                <input type="number" class="form-control" name="width" value="${room.width}" required>
             </div>
             <div class="form-group">
                 <label>Status:</label>

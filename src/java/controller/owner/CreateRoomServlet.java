@@ -70,18 +70,18 @@ public class CreateRoomServlet extends HttpServlet {
         int cinemaID = Integer.parseInt(request.getParameter("cinemaID"));
         String name = request.getParameter("name");
         String type = request.getParameter("type");
-        int capacity = Integer.parseInt(request.getParameter("capacity"));
-        int length = Integer.parseInt(request.getParameter("length"));
-        int width = Integer.parseInt(request.getParameter("width"));
+//        int capacity = Integer.parseInt(request.getParameter("capacity"));
+//        int length = Integer.parseInt(request.getParameter("length"));
+//        int width = Integer.parseInt(request.getParameter("width"));
         String status = request.getParameter("status");
 
         Room room = new Room();
         room.setCinemaID(cinemaID);
         room.setName(name);
         room.setType(type);
-        room.setCapacity(capacity);
-        room.setLength(length);
-        room.setWidth(width);
+//        room.setCapacity(capacity);
+//        room.setLength(length);
+//        room.setWidth(width);
         room.setStatus(status);
 
         roomDAO.createRoom(room);

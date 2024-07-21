@@ -122,7 +122,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="no-cinema">
-                        <p>No cinema chain found.</p>
+                        <p>Trở về trang chủ</p>
                         <a href="<%= request.getContextPath()%>/owner">Back Home</a>
                     </div>
                 </c:otherwise>
