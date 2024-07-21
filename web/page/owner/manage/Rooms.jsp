@@ -26,6 +26,7 @@
         </script>
     </head>
     <body>
+        
         <h1 class="text-center mt-3">Rooms</h1>
         <div class="container mt-4">
             <div class="row mb-3">
@@ -56,12 +57,30 @@
                             <td>
                                 <a href="updateRoom?roomID=${room.roomID}" class="btn btn-primary btn-sm">Update</a>
                                 <a href="#" onclick="doDelete('${room.roomID}')" class="btn btn-danger btn-sm">Delete</a>
-                                <a href="/movie/owner/room/seat/create?roomID=${room.roomID}" class="btn btn-success btn-sm">Create</a>
+                                <c:if test="${param.isExistingSeats == 'true'}">
+                                    <a href="/movie/owner/room/seat/create?roomID=${room.roomID}&isExistingSeats=true" class="btn btn-success btn-sm">Add Seats</a>
+                                </c:if>
+                                <c:if test="${!(param.isExistingSeats == 'true')}">
+                                    <a href="/movie/owner/room/seat/create?roomID=${room.roomID}" class="btn btn-success btn-sm">Add Seats</a>
+                                </c:if>
+                                <a href="/movie/owner/viewseats?roomID=${room.roomID}" class="btn btn-secondary btn-sm">View Seats</a>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </div>
+        <input type="hidden" id="isExistingSeats" value="<%= request.getParameter("isExistingSeats")%>"/>
     </body>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            if(document.getElementById('isExistingSeats').value === 'true') {
+                setTimeout(() =>  alert("Bạn không thể tạo mới phòng đã có ghế sẵn"), 300);
+        }
+});
+        
+        
+
+    </script>
 </html>

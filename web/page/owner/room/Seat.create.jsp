@@ -82,10 +82,33 @@
         <form class="container-body_seat__create" id="addSeatsForm">
             <input type="hidden" id="roomID" name="roomID" value="${roomID}"/>
             <div id="seatsContainer"></div>
+            
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận lưu ghế</h5>
+                            <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div>Bạn có chắc chắn muốn lưu sơ đồ ghế ngồi đã chọn? </div>
+                            <div style="color: red">(Một khi đã lưu, không thể thay đổi)</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning" onclick="save()">Lưu</button>
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script>
         // khoảng cách mặt định ban đầu giữa khung chứa rạp phim 
         const marginWidth = 50;
@@ -431,6 +454,7 @@
             });
 
             const saveSeatsButton = document.createElement('button');
+            saveSeatsButton.type = 'button';
             saveSeatsButton.id = 'saveSeatsButton';
             createMyElement(saveSeatsButton, 'seat', numberOfSeatCoordinateX + 1, numberOfSeatCoordinateY + 1, '');
             const createIcon = document.createElement('i');
@@ -438,31 +462,7 @@
             createIcon.style.fontSize = "x-large";
             saveSeatsButton.appendChild(createIcon);
             saveSeatsButton.onclick = function () {
-                const lengthInput = document.createElement('input');
-                const widthInput = document.createElement('input');
-                lengthInput.name = 'length';
-                lengthInput.value = numberOfSeatCoordinateY;
-                widthInput.name = 'width';
-                widthInput.value = numberOfSeatCoordinateX;
-                lengthInput.type = 'hidden';
-                widthInput.type = 'hidden';
-                container.appendChild(lengthInput);
-                container.appendChild(widthInput);
-
-                for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
-                    for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
-                        const seat = document.getElementById("seat_" + x + "_" + y);
-                        if (isDisabled(seat))
-                            continue;
-                        const seatInput = document.createElement('input');
-                        seatInput.name = seat.id;
-                        seatInput.value = seat.innerHTML;
-                        seatInput.type = 'hidden';
-                        container.appendChild(seatInput);
-                    }
-                }
-                callServlet('addSeatsForm', '/movie/owner/room/seat/create', 'POST');
-
+                showModal();
             };
 
             const deleteSelectedSeatsButton = document.createElement('button');
@@ -786,6 +786,41 @@
                 alert('Ctrl + Shift + s was pressed');
                 event.preventDefault();
             }
+        }
+        
+        function showModal() {
+            $('#myModal').modal('show');
+        }
+        
+        function closeModal() {
+            $('#myModal').modal('hide');
+        }
+        
+        function save() {
+            const lengthInput = document.createElement('input');
+            const widthInput = document.createElement('input');
+            lengthInput.name = 'length';
+            lengthInput.value = numberOfSeatCoordinateY;
+            widthInput.name = 'width';
+            widthInput.value = numberOfSeatCoordinateX;
+            lengthInput.type = 'hidden';
+            widthInput.type = 'hidden';
+            container.appendChild(lengthInput);
+            container.appendChild(widthInput);
+
+            for (let x = 1; x <= numberOfSeatCoordinateX; ++x) {
+                for (let y = 1; y <= numberOfSeatCoordinateY; ++y) {
+                    const seat = document.getElementById("seat_" + x + "_" + y);
+                    if (isDisabled(seat))
+                        continue;
+                    const seatInput = document.createElement('input');
+                    seatInput.name = seat.id;
+                    seatInput.value = seat.innerHTML;
+                    seatInput.type = 'hidden';
+                    container.appendChild(seatInput);
+                }
+            }
+            callServlet('addSeatsForm', '/movie/owner/room/seat/create', 'POST');
         }
 
         document.addEventListener('keydown', handleKeyboardShortcuts);

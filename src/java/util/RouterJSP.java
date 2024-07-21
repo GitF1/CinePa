@@ -133,4 +133,7 @@ public class RouterJSP {
     public static String OWNER_VIEW_MOVIE_REQUEST = "/page/owner/viewMovieRequests/ViewRequests.jsp";
     
     public String TOP_MOVIES = "/page/movie/topMovies/TopMovie.jsp";
+    
+    public static String VIEW_SEATS = "/page/cinema_room/ViewSeats.jsp";
+
 }
