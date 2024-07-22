@@ -103,7 +103,7 @@ public class VnPayReturnServlet extends HttpServlet {
                 String codeActive = Util.generateActivationCodeOrder();
 
                 // Construct the QR code data
-                String qrCodeText = "http://localhost:8080/movie/order/confirm?" + "orderID=" + orderID + "&userID=" + userId + "&code=" + codeActive;
+                String qrCodeText = "https://cinepa.shop/movie/order/confirm?" + "orderID=" + orderID + "&userID=" + userId + "&code=" + codeActive;
                 String fileName = "qrcode_" + orderID + "_" + userId;
                 String uploadFolder = "QRCode_F";
 
