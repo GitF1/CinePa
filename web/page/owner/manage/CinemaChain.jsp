@@ -123,7 +123,7 @@
                 <c:otherwise>
                     <div class="no-cinema">
                         <p>Trở về trang chủ</p>
-                        <a href="<%= request.getContextPath()%>/owner">Back Home</a>
+                        <a href="<%= request.getContextPath()%>/owner/dashboard">Back Home</a>
                     </div>
                 </c:otherwise>
             </c:choose>

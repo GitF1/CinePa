@@ -116,6 +116,7 @@
             <br/>
             <button type="button" class="btn btn-danger" onclick="requestMovie();">
                 Gửi yêu cầu</button>
+            <a class="btn btn-primary"  href="<%= request.getContextPath()%>/owner/dashboard">Trở về trang chủ</a>
             </form>
         </div>
         <!--Popper-->

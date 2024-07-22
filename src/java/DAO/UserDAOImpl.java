@@ -133,8 +133,9 @@ public class UserDAOImpl extends SQLServerConnect {
                 + "           ,[Password]\n"
                 + "           ,[Code]\n"
                 + "           ,[Status]\n"
-                + "           ,[Role])\n"
-                + "     VALUES  (?,?,?,?,?,?,?)";
+                + "           ,[Role]\n"
+                + "           ,[isBanned])"
+                + "     VALUES  (?,?,?,?,?,?,?,?)";
         // Use try-with-resources for automatic resource management
         try {
 
@@ -147,6 +148,7 @@ public class UserDAOImpl extends SQLServerConnect {
             st.setString(5, user.getCode());
             st.setInt(6, user.getStatus());
             st.setString(7, user.getRole());
+            st.setInt(8, 0);
 
             st.executeUpdate();
 
