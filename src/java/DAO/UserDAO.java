@@ -101,7 +101,7 @@ public class UserDAO extends SQLServerConnect {
     public String getUserRole(String username_email) throws SQLException {
 
         String role = "";
-        String sqlQuery = "SELECT Role FROM [User] WHERE (Username = ? OR Email = ?) AND Status = 1";
+        String sqlQuery = "SELECT Role FROM [User] WHERE (Username = ? OR Email = ?) AND Status = 1 AND IsBanned != 1";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
 
