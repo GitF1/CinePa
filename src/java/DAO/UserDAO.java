@@ -32,7 +32,7 @@ import model.Seat;
  * @author Admin
  */
 public class UserDAO extends SQLServerConnect {
-    
+
     public UserDAO(ServletContext context) throws Exception {
         super();
         connect(context);
@@ -50,13 +50,13 @@ public class UserDAO extends SQLServerConnect {
     }
 
     public ResultSet checkLogin(String username_email, String password) throws SQLException {
-        
+
         String sqlQuery = "SELECT *\n"
                 + "FROM [User]\n"
                 + "WHERE (Username = '" + username_email + "' " + "OR Email = '" + username_email + "'" + ")\n"
                 + "AND Password = '" + password + "'\n"
                 + "AND Status = 1";
-        
+
         System.out.println(sqlQuery);
         ResultSet rs = getResultSet(sqlQuery);
         return rs;
@@ -95,6 +95,27 @@ public class UserDAO extends SQLServerConnect {
             return rs.getString("Code");
         }
         return null;
+    }
+
+    //
+    public boolean isBannedUser(String username_email) throws SQLException {
+
+        String sqlQuery = "SELECT Role FROM [User] WHERE (Username = ? OR Email = ?) AND Status = 1 AND isBanned = 1";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sqlQuery)) {
+
+            pstmt.setString(1, username_email);
+            pstmt.setString(2, username_email);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in real scenarios
+            return false;
+        }
+
     }
 
     //DuyND-Get Role By email or username
@@ -384,8 +405,6 @@ public class UserDAO extends SQLServerConnect {
     }
 
     //Search movies
-   
-
     //Query seats from room
     public Map<Room, List<Seat>> querySeatsFromRoom(int roomID) throws SQLException {
         List<Seat> seats = new ArrayList<>();
@@ -464,13 +483,13 @@ public class UserDAO extends SQLServerConnect {
 
     // Query movie from movie-slot ID
     public Movie queryMovie(int movieSlotID) throws SQLException {
-       
+
         String sqlQuery = "select Movie.MovieID, Title, Synopsis, DatePublished, ImageURL, Rating, Country, Movie.Status from MovieSlot\n"
                 + "join Movie on MovieSlot.MovieID = Movie.MovieID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
-        
+
         ResultSet rs = getResultSet(sqlQuery);
-        
+
         if (rs.next()) {
             return new Movie(rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Synopsis"), rs.getString("DatePublished"), rs.getString("ImageURL"), rs.getFloat("Rating"), rs.getString("Country"), rs.getString("Status"));
         }
@@ -480,13 +499,13 @@ public class UserDAO extends SQLServerConnect {
 
     // Query room from movie-slot ID
     public Room queryRoom(int movieSlotID) throws SQLException {
-        
+
         String sqlQuery = "select Room.RoomID, CinemaID, Room.Name, Capacity, Room.Status, Length, Width, Room.Type  from MovieSlot\n"
                 + "join Room on MovieSlot.RoomID = Room.RoomID\n"
                 + "where MovieSlot.MovieSlotID = " + movieSlotID;
-        
+
         ResultSet rs = getResultSet(sqlQuery);
-        
+
         if (rs.next()) {
             return new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), rs.getString("Type"), rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }
@@ -506,23 +525,23 @@ public class UserDAO extends SQLServerConnect {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
-    
+
     public List<Seat> queryAllSeatsInRoom(int roomID) throws SQLException {
         List<Seat> seats = new ArrayList<>();
         String sql = "SELECT * FROM Seat WHERE RoomID = " + roomID;
         ResultSet rs = getResultSet(sql);
-        while(rs.next()) {
+        while (rs.next()) {
             Seat seat = new Seat(rs.getInt("SeatID"), rs.getInt("RoomID"), rs.getString("Name"), rs.getInt("CoordinateX"), rs.getInt("CoordinateY"), "Available");
             seats.add(seat);
         }
         return seats;
     }
-    
+
     public Room queryRoomByRoomID(int roomID) throws SQLException {
         String sql = "SELECT * FROM Room WHERE RoomID = " + roomID;
         ResultSet rs = getResultSet(sql);
         Room room = null;
-        while(rs.next()) {
+        while (rs.next()) {
             room = new Room(rs.getInt("RoomID"), rs.getInt("CinemaID"), rs.getString("Name"), rs.getString("Type"), rs.getInt("Capacity"), rs.getInt("Length"), rs.getInt("Width"), rs.getString("Status"));
         }
         return room;

@@ -12,8 +12,8 @@ public class Status {
 
     public final static String STATUS_ORDER_PENDING = "PENDING";
     public final static String STATUS_ORDER_BOOKED = "CONFIRMED";
-    public final static String STATUS_ORDER_CHECKED_IN = "CHEKED-IN";
-    public final static String STATUS_TICKET_CHECKED_IN = "CHEKED-IN";
+    public final static String STATUS_ORDER_CHECKED_IN = "CHECKED-IN";
+    public final static String STATUS_TICKET_CHECKED_IN = "CHECKED-IN";
     public final static String STATUS_TICKET_BOOKED = "BOOKED";
     
 }

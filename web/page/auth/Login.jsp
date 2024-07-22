@@ -91,7 +91,7 @@
 
 
                             <c:if test="${not empty ok && !ok}">
-                                <p class="small fw-bold mt-2 pt-1 mb-0" style="color: red">Wrong username (or email) or password!</p>
+                                <p class="small fw-bold mt-2 pt-1 mb-0" style="color: red">${requestScope.message}</p>
                             </c:if>
 
                             <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/movie/register"

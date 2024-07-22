@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,6 +25,7 @@ import util.RouterJSP;
 import util.RouterURL;
 import java.sql.ResultSet;
 import java.util.Enumeration;
+import util.auth.AuthUtil;
 
 /**
  *
@@ -74,7 +77,17 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(route.LOGIN).forward(request, response);
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        boolean isLoggin = AuthUtil.authenticated(request, response);
+
+        if (isLoggin) {
+            response.sendRedirect(RouterURL.HOMEPAGE);
+        } else {
+            request.getRequestDispatcher(route.LOGIN).forward(request, response);
+
+        }
     }
 
     /**
@@ -89,8 +102,13 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
         String username_email = request.getParameter("username-email");
         String password = request.getParameter("password");
+
         if (username_email == null || password == null) {
             request.setAttribute("ok", "bạn chưa nhâp tên đăng nhập hoặc password");
             request.getRequestDispatcher(route.LOGIN).forward(request, response);
@@ -103,6 +121,8 @@ public class LoginServlet extends HttpServlet {
         String role = "";
         ResultSet rs;
 
+        String message;
+
         try {
             rs = userDAO.checkLogin(username_email, hash);
             ok = rs.next();
@@ -112,6 +132,15 @@ public class LoginServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (ok) {
+
+            try {
+                if (userDAO.isBannedUser(username_email)) {
+                    request.setAttribute("ok", false);
+                    request.setAttribute("message", "Tài khoản đã bị khóa");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             try {
                 user = userDAO.getUser(username_email);
@@ -139,49 +168,56 @@ public class LoginServlet extends HttpServlet {
                 case "USER" -> {
                     //TEMP CODE FOR GETTING CHAINS & Username
 
-//                    ArrayList<String> cinemaNames = null;
-//                    try {
-//                        CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
-//                        cinemaNames = cc.getCinemaChainList();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    session.setAttribute("chains", cinemaNames);
-//                    // Retrieve the originally requested URL
-//                    String redirectTo = (String) session.getAttribute("redirectTo");
-//                    System.out.println("redirect to: " + redirectTo);
-//
-//                    if (redirectTo == null) {
-//                        response.sendRedirect(RouterURL.HOMEPAGE);
-//                    } else {
-//                        // Reconstruct the URL with stored parameters
-//                        StringBuilder redirectUrlWithParams = new StringBuilder(redirectTo);
-//                        boolean firstParam = true;
-//                        Enumeration<String> attributeNames = session.getAttributeNames();
-//
-//                        while (attributeNames.hasMoreElements()) {
-//                            String attributeName = attributeNames.nextElement();
-//                            if (attributeName.startsWith("param_")) {
-//                                String paramName = attributeName.substring(6);
-//                                String paramValue = (String) session.getAttribute(attributeName);
-//
-//                                if (firstParam) {
-//                                    redirectUrlWithParams.append("?");
-//                                    firstParam = false;
-//                                } else {
-//                                    redirectUrlWithParams.append("&");
-//                                }
-//
-//                                redirectUrlWithParams.append(paramName).append("=").append(paramValue);
-//                                session.removeAttribute(attributeName);
-//                            }
-//                        }
-//
-//                        session.removeAttribute("redirectTo");
-//                        response.sendRedirect(redirectUrlWithParams.toString());
-                    // }
-                    response.sendRedirect(RouterURL.HOMEPAGE);
+                    ArrayList<String> cinemaNames = null;
+                    try {
+                        CinemaChainDAO cc = new CinemaChainDAO(request.getServletContext());
+                        cinemaNames = cc.getCinemaChainList();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    session.setAttribute("chains", cinemaNames);
+                    // Retrieve the originally requested URL
+                    String redirectTo = (String) session.getAttribute("redirectTo");
+                    System.out.println("redirect to: " + redirectTo);
+
+                    if (redirectTo == null) {
+                        response.sendRedirect(RouterURL.HOMEPAGE);
+                    } else {
+                        StringBuilder redirectUrlWithParams = new StringBuilder(redirectTo);
+                        boolean firstParam = true;
+                        Enumeration<String> attributeNames = session.getAttributeNames();
+
+                        while (attributeNames.hasMoreElements()) {
+                            String attributeName = attributeNames.nextElement();
+                            if (attributeName.startsWith("param_")) {
+                                String paramName = attributeName.substring(6);
+                                String paramValue = (String) session.getAttribute(attributeName);
+
+                                if (firstParam) {
+                                    redirectUrlWithParams.append("?");
+                                    firstParam = false;
+                                } else {
+                                    redirectUrlWithParams.append("&");
+                                }
+
+                                try {
+                                    String encodedParamName = URLEncoder.encode(paramName, "UTF-8");
+                                    String encodedParamValue = URLEncoder.encode(paramValue, "UTF-8");
+                                    redirectUrlWithParams.append(encodedParamName).append("=")
+                                            .append(encodedParamValue);
+                                } catch (UnsupportedEncodingException e) {
+                                    // Handle encoding exception
+                                    e.printStackTrace();
+                                }
+
+                                session.removeAttribute(attributeName);
+                            }
+                        }
+
+                        session.removeAttribute("redirectTo");
+                        response.sendRedirect(redirectUrlWithParams.toString());
+                    }
 
                 }
                 case "OWNER" ->
@@ -192,6 +228,7 @@ public class LoginServlet extends HttpServlet {
 
         } else {
             request.setAttribute("ok", ok);
+            request.setAttribute("message", "Tên tài khoản hoặc mật khẩu sai");
             request.getRequestDispatcher(RouterJSP.LOGIN).forward(request, response);
         }
     }

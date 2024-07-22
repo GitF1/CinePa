@@ -101,6 +101,8 @@ public class RouterJSP {
     public static String DISPLAY_CINEMAS = "/page/cinema/DisplayCinemas.jsp";
 
     public static String SEARCH_MOVIE = "/page/search/SearchMovie.jsp";
+    
+    public static String ORDER_DETAIL_PAGE ="/page/bill/OrderDetail.jsp";
 
     public static String ADMIN_PAGE = "/page/admin/AdminPage.jsp";
 

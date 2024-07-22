@@ -107,7 +107,7 @@
                 text-transform: uppercase;
                 transition: background-color 0.3s ease, transform 0.2s ease;
             }
-            
+
             @media only screen and (max-width: 1024px) {
                 .seatButton {
                     width: 25px;
@@ -118,7 +118,8 @@
 
         </style>
     </head>
-    <body>
+       <body>
+
 
         <form id="bookingSeatForm">
             <div id="container">
@@ -191,7 +192,7 @@
 
         const sizeX = Math.floor((9 * window.innerWidth / 10) / 40);
         const sizeY = Math.floor((9 * window.innerHeight / 10) / 40);
-        
+
         const roomWidth = ${requestScope.maxWidth}, roomLength = ${requestScope.maxLength};
         const initX = Math.floor((sizeX - roomLength) / 2);
         const initY = 0;
@@ -211,14 +212,14 @@
         const finalPrice = price - (price * discount / 100);
 
         <c:forEach var="seat" items="${seats}">
-            seatID = ${seat.getSeatID()};
-            backgroundColor = "${seat.getStatus() == 'Available' ? availableSeatColor : bookedSeatColor}";
-            cursor = "${seat.getStatus() == 'Available' ? 'pointer' : 'not-allowed'}";
-            console.log("background-color: " + backgroundColor + ";");
-            document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getY()} + initY - 1) * distance + "px);"
-                                                                    + "left: calc(5vw + " + (${seat.getX()} + initX - 1) * distance + "px);";
-            document.getElementById("seatButton_" + seatID).style.backgroundColor = backgroundColor;  
-            document.getElementById("seatButton_" + seatID).style.cursor = cursor;                                             
+        seatID = ${seat.getSeatID()};
+        backgroundColor = "${seat.getStatus() == 'Available' ? availableSeatColor : bookedSeatColor}";
+        cursor = "${seat.getStatus() == 'Available' ? 'pointer' : 'not-allowed'}";
+        console.log("background-color: " + backgroundColor + ";");
+        document.getElementById("seatButton_" + seatID).style = "top: calc(5vh + " + (${seat.getY()} + initY - 1) * distance + "px);"
+                + "left: calc(5vw + " + (${seat.getX()} + initX - 1) * distance + "px);";
+        document.getElementById("seatButton_" + seatID).style.backgroundColor = backgroundColor;
+        document.getElementById("seatButton_" + seatID).style.cursor = cursor;
         </c:forEach>
 
         function selectSeat(seatID, seatName) {
@@ -233,9 +234,9 @@
                 seatName
             };
             selectedSeats = [...selectedSeats, newSelectedSeat];
-            
-            for(let i = 1; i <= 8; ++i) {
-                if(document.getElementById("selectedSeat" + i).value === "") {
+
+            for (let i = 1; i <= 8; ++i) {
+                if (document.getElementById("selectedSeat" + i).value === "") {
                     document.getElementById("selectedSeat" + i).value = seatID;
                     break;
                 }
@@ -265,9 +266,11 @@
             document.getElementById("totalPriceTicket").value = totalPrice;
         }
         function compareSeatByName(seat1, seat2) {
-            if (seat1.seatName.length !== seat2.seatName.length) return seat1.seatName.length - seat2.seatName.length;
+            if (seat1.seatName.length !== seat2.seatName.length)
+                return seat1.seatName.length - seat2.seatName.length;
             for (let i = 0; i < seat1.seatName.length; ++i) {
-                if (seat1.seatName[i] !== seat2.seatName[i]) return seat1.seatName[i] - seat2.seatName[i];
+                if (seat1.seatName[i] !== seat2.seatName[i])
+                    return seat1.seatName[i] - seat2.seatName[i];
             }
             return 0;
         }
@@ -306,7 +309,7 @@
             }
             return true;
         }
-        
+
         function toggleComboBox() {
             if (!purchaseTickets())
                 return;

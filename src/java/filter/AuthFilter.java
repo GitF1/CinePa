@@ -19,8 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.RouterJSP;
-import util.RouterURL;
 
 /**
  *
@@ -71,7 +72,9 @@ public class AuthFilter implements Filter {
         if (debug) {
             log("AuthFilter:DoAfterProcessing");
         }
-
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
         // Write code here to process the request and/or response after
         // the rest of the filter chain is invoked.
         // For example, a logging filter might log the attributes on the
@@ -104,81 +107,121 @@ public class AuthFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
 
-        if (debug) {
-            log("AuthFilter:doFilter()");
-        }
+        try {
 
-        doBeforeProcessing(request, response);
+            if (debug) {
+                log("AuthFilter:doFilter()");
+            }
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String url = httpRequest.getServletPath();
-        HttpSession session = httpRequest.getSession();
+            doBeforeProcessing(request, response);
 
-        String username = (String) session.getAttribute("username");
-        String role = (String) session.getAttribute("role");
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            String url = httpRequest.getServletPath();
+            HttpSession session = httpRequest.getSession();
+            String loginURI = httpRequest.getContextPath() + "/login";
 
-        if (role == null) {
-            UserDAO userDAO;
-            try {
+            String username = (String) session.getAttribute("username");
+
+            String role = (String) session.getAttribute("role");
+
+            if (role == null) {
+                UserDAO userDAO;
                 userDAO = new UserDAO(httpRequest.getServletContext());
                 role = userDAO.getUserRole(username);
-            } catch (Exception ex) {
+            }
+
+            if (username != null && role != null) {
+
+                boolean isBanned = new UserDAO(httpRequest.getServletContext()).isBannedUser(username);
+
+                if (isBanned) {
+                    request.setAttribute("ok", false);
+                    request.setAttribute("message", "Tài Khoản này đã bị ban");
+                    request.getRequestDispatcher(RouterJSP.LOGIN).forward(request, response);
+                    session.invalidate();
+                    return;
+                }
 
             }
-        }
-        
-        session = httpRequest.getSession(true);
-        String urlStore = (String) httpRequest.getRequestURI();
-        if (!urlStore.equals(RouterURL.LOGIN) && !url.contains("/LoginGoogleServlet") && !url.contains("/notifications")) {
 
-            session.setAttribute("redirectTo", urlStore);
-            // Store all request parameters in the session
-            Enumeration<String> parameterNames = httpRequest.getParameterNames();
-            while (parameterNames.hasMoreElements()) {
-                String paramName = parameterNames.nextElement();
-                String paramValue = httpRequest.getParameter(paramName);
-                session.setAttribute("param_" + paramName, paramValue);
+            session = httpRequest.getSession(true);
+            String urlStore = httpRequest.getRequestURI();
+            System.out.println("url  " + urlStore);
+            if (urlStore.contains("/movie") && !isExcluded(urlStore)) {
+
+                System.out.println("url store: " + urlStore);
+
+                session.setAttribute("redirectTo", urlStore);
+
+                // Store all request parameters in the session
+                Enumeration<String> parameterNames = httpRequest.getParameterNames();
+                while (parameterNames.hasMoreElements()) {
+                    String paramName = parameterNames.nextElement();
+                    String paramValue = httpRequest.getParameter(paramName);
+                    session.setAttribute("param_" + paramName, paramValue);
+                }
+
             }
-        }
-
-        String loginURI = httpRequest.getContextPath() + "/login";
-        //Có thể phải coi lại đề phòng lỗi url
-        if (url.contains("/admin") && (!role.equals("ADMIN"))) {
-            httpResponse.sendRedirect(loginURI);
-        }
-        if (url.contains("/user") && (!role.equals("USER"))) {
-            httpResponse.sendRedirect(loginURI);
-        }
-        if (url.contains("/owner") && (!role.equals("OWNER"))) {
-            httpResponse.sendRedirect(loginURI);
-        }
-
-        Throwable problem = null;
-
-        try {
-            chain.doFilter(request, response);
-        } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
-        }
-
-        doAfterProcessing(request, response);
-
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
-        if (problem != null) {
-            if (problem instanceof ServletException) {
-                throw (ServletException) problem;
+            //Có thể phải coi lại đề phòng lỗi url
+            if (url.contains("/admin") && (!role.equals("ADMIN"))) {
+                httpResponse.sendRedirect(loginURI);
             }
-            if (problem instanceof IOException) {
-                throw (IOException) problem;
+            if (url.contains("/user") && (!role.equals("USER"))) {
+                httpResponse.sendRedirect(loginURI);
             }
-            sendProcessingError(problem, response);
+            if (url.contains("/owner") && (!role.equals("OWNER"))) {
+                httpResponse.sendRedirect(loginURI);
+            }
+
+            Throwable problem = null;
+
+            try {
+                chain.doFilter(request, response);
+            } catch (Throwable t) {
+                // If an exception is thrown somewhere down the filter chain,
+                // we still want to execute our after processing, and then
+                // rethrow the problem after that.
+                problem = t;
+                t.printStackTrace();
+            }
+
+            doAfterProcessing(request, response);
+
+            // If there was a problem, we want to rethrow it if it is
+            // a known type, otherwise log it.
+            if (problem != null) {
+                if (problem instanceof ServletException) {
+                    throw (ServletException) problem;
+                }
+                if (problem instanceof IOException) {
+                    throw (IOException) problem;
+                }
+                sendProcessingError(problem, response);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AuthFilter.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private boolean isExcluded(String url) {
+        return url.contains("login")
+                || url.contains("logout")
+                || url.contains("register")
+                || url.contains("LoginGoogleServlet")
+                || url.contains("notifications")
+                || url.contains(".css")
+                || url.contains(".js")
+                || url.contains(".png")
+                || url.contains(".jpg")
+                || url.contains(".jpeg")
+                || url.contains(".gif")
+                || url.contains(".svg")
+                || url.contains(".woff")
+                || url.contains(".woff2")
+                || url.contains(".ttf")
+                || url.contains("styles")
+                || url.contains("assets");
     }
 
     /**

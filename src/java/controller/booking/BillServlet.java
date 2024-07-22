@@ -28,6 +28,7 @@ import model.booking.CanteenItemOrder;
 import model.movie.MovieInfo;
 import util.RouterJSP;
 import util.RouterURL;
+import util.auth.AuthUtil;
 
 /**
  *
@@ -94,7 +95,7 @@ public class BillServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        Integer userID = (int) session.getAttribute("userID");
+        Integer userID = (Integer) session.getAttribute("userID");
 
         if (userID == null) {
             response.sendRedirect(RouterURL.LOGIN);
@@ -127,12 +128,14 @@ public class BillServlet extends HttpServlet {
             System.out.println("orderID" + orderID);
 
             System.out.println("movieID" + movieID);
-            
+
             if (orderID == null || movieID == null) {
                 System.err.println("null prameter");
                 return;
             }
             
+           
+
             List<Seat> seats = orderDAO.getSeatsByOrderID(Integer.parseInt(orderID));
             List<CanteenItemOrder> canteenItems = orderDAO.getCanteenItemsByOrderID(Integer.parseInt(orderID));
             System.out.println("canteen items: " + canteenItems);
@@ -143,7 +146,7 @@ public class BillServlet extends HttpServlet {
             Order order = orderDAO.getOrder(Integer.parseInt(orderID));
 
             CinemaChain cinemaChain = cinemaChainDAO.getCinemaChainByID(cinema.getCinemaChainID());
-
+            System.out.println("order" + order);
             System.out.println("seats" + seats);
 
             request.setAttribute("canteenItems", canteenItems);
@@ -153,7 +156,7 @@ public class BillServlet extends HttpServlet {
             request.setAttribute("cinemaChain", cinemaChain);
             request.setAttribute("order", order);
 
-            request.getRequestDispatcher("/page/bill/OrderDetail.jsp").forward(request, response);
+            request.getRequestDispatcher(RouterJSP.ORDER_DETAIL_PAGE).forward(request, response);
 
         } catch (Exception ex) {
             Logger.getLogger(BillServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -23,7 +23,7 @@ public class ReviewMovieDAO extends UserDAO {
         String sqlQuery = "select distinct MovieSlot.MovieID from [Order]\n" +
                             "join Ticket on [Order].OrderID = Ticket.OrderID\n" +
                             "join MovieSlot on Ticket.MovieSlotID = MovieSlot.MovieSlotID\n" +
-                            "where [Order].UserID = ? and MovieSlot.MovieID = ? and Ticket.Status = 'CHECKED-IN'";
+                            "where [Order].UserID = ? and MovieSlot.MovieID = ? and [Order].Status = 'CHECKED-IN'";
         PreparedStatement ps = connection.prepareStatement(sqlQuery); 
         ps.setInt(1, userID);
         ps.setInt(2, movieID);

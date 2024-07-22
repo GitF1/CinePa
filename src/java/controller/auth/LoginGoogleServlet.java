@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -62,7 +64,10 @@ public class LoginGoogleServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
 //        System.out.println("LoginGoogle");
         String code = request.getParameter("code");
         String accessToken = getToken(code);
@@ -114,7 +119,6 @@ public class LoginGoogleServlet extends HttpServlet {
                 if (redirectTo == null) {
                     response.sendRedirect(RouterURL.HOMEPAGE);
                 } else {
-                    // Reconstruct the URL with stored parameters
                     StringBuilder redirectUrlWithParams = new StringBuilder(redirectTo);
                     boolean firstParam = true;
                     Enumeration<String> attributeNames = session.getAttributeNames();
@@ -132,7 +136,15 @@ public class LoginGoogleServlet extends HttpServlet {
                                 redirectUrlWithParams.append("&");
                             }
 
-                            redirectUrlWithParams.append(paramName).append("=").append(paramValue);
+                            try {
+                                redirectUrlWithParams.append(URLEncoder.encode(paramName, "UTF-8"))
+                                        .append("=")
+                                        .append(URLEncoder.encode(paramValue, "UTF-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                // Handle encoding exception
+                                e.printStackTrace();
+                            }
+
                             session.removeAttribute(attributeName);
                         }
                     }
@@ -140,11 +152,11 @@ public class LoginGoogleServlet extends HttpServlet {
                     session.removeAttribute("redirectTo");
                     response.sendRedirect(redirectUrlWithParams.toString());
                 }
-               
+
             }
             case "OWNER" ->
 //                request.getRequestDispatcher(route.STAFF).forward(request, response);
-                    response.sendRedirect(RouterURL.OWNER_DASHBOARD_PAGE);
+                response.sendRedirect(RouterURL.OWNER_DASHBOARD_PAGE);
             case "ADMIN" ->
                 response.sendRedirect(RouterURL.ADMIN_PAGE);
 
@@ -161,9 +173,9 @@ public class LoginGoogleServlet extends HttpServlet {
                         .add("redirect_uri", GoogleOAuthConstants.GOOGLE_REDIRECT_URI).add("code", code)
                         .add("grant_type", GoogleOAuthConstants.GOOGLE_GRANT_TYPE).build())
                 .execute().returnContent().asString();
-        
+
         System.out.println("Response: " + response);
-        
+
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
         String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
         return accessToken;

@@ -59,6 +59,11 @@ public class Order {
     public void setCode(String Code) {
         this.Code = Code;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "userID=" + userID + ", timeCreated=" + timeCreated + ", status=" + status + ", QRCodeURL=" + QRCodeURL + ", Code=" + Code + '}';
+    }
     
 
 }

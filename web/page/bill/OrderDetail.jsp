@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -126,6 +127,16 @@
             .info-section {
                 flex-grow: 1; /* Make the sections grow to fill available space */
             }
+            .order-confirm{
+                position: absolute;
+                top: 15%;
+
+            }
+            .order-confirm img {
+                height: 500px;
+                width: 90%;
+            }
+            
         </style>
     </head>
     <body>
@@ -197,6 +208,12 @@
                         <img src="${order.QRCodeURL}" alt="QR Code" class="img-fluid qr-code"/>
                         <h4 class="mt-3">Đưa mã này cho nhân viên soát vé để nhận vé vào rạp</h4>
                     </div>
+                    <c:if test="${order.status == 'CHECKED-IN'}">
+                        <div class="order-confirm">
+                            <img src="https://static.vecteezy.com/system/resources/previews/021/433/008/original/confirmed-rubber-stamp-free-png.png" />
+                        </div>
+                    </c:if>
+
                 </div>
             </div>
         </div>
