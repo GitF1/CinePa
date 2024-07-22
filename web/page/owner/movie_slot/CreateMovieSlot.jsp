@@ -140,7 +140,7 @@
                         <button type="submit" class="btn btn-danger" onclick="" formaction="${pageContext.request.contextPath}/CreateMovieSlotServlet">
                             Tạo suất chiếu</button
                         >
-                        <a class="btn btn-primary"  href="<%= request.getContextPath()%>/owner">Trở về trang chủ</a>
+                        <a class="btn btn-primary"  href="<%= request.getContextPath()%>/owner/dashboard">Trở về trang chủ</a>
 
                     </form>
                 </div>

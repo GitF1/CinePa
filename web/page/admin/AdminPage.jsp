@@ -126,12 +126,12 @@
                     <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
                     <!-- mot cai list ;  -->
-                    <li class="text-white my-2 py-3 text-center">
+<!--                    <li class="text-white my-2 py-3 text-center">
                         <a href="OverviewGraphServlet" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
                             <span>overview</span>
                         </a>
-                    </li>
+                    </li>-->
                     <hr class="my-0  py-0 text-white">
                     <!-- end list :  -->
 
@@ -151,6 +151,15 @@
                         <a href="#" style="text-decoration: none;" class="text-white">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <hr class="my-0  py-0 text-white">
+                    
+                    
+                    <li class="text-white my-2 py-3 text-center">
+                        <a href="<%= request.getContextPath()%>/logout" style="text-decoration: none;" class="text-white">
+                            <i class="fa fa-tachometer" aria-hidden="true"></i>
+                            <span>Log out</span>
                         </a>
                     </li>
                     <hr class="my-0  py-0 text-white">

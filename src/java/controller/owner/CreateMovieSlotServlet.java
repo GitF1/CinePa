@@ -4,6 +4,7 @@
  */
 package controller.owner;
 
+import DAO.RoomDAO;
 import DAO.schedule.ScheduleDAO;
 import jakarta.servlet.ServletConfig;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class CreateMovieSlotServlet extends HttpServlet {
 
     RouterJSP route = new RouterJSP();
     ScheduleDAO scheduleDAO;
+    RoomDAO roomDAO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,6 +51,7 @@ public class CreateMovieSlotServlet extends HttpServlet {
         super.init(config); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         try {
             scheduleDAO = new ScheduleDAO(getServletContext());
+            roomDAO = new RoomDAO(getServletContext());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(CreateMovieSlotServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,75 +96,73 @@ public class CreateMovieSlotServlet extends HttpServlet {
         System.out.println("dateObject" + dateObject);
         if (request.getParameter("movieSlotEdit") != null) {
             overlap = scheduleDAO.checkOverlapExceptID(
-                Date.from(LocalDateTime.of(
-                        LocalDate.parse(request.getParameter("date")),
-                        LocalTime.parse(request.getParameter("startTime"))
-                ).atZone(ZoneId.systemDefault()).toInstant()),
-                Date.from(LocalDateTime.of(
-                        LocalDate.parse(request.getParameter("date")),
-                        LocalTime.parse(request.getParameter("endTime"))
-                ).atZone(ZoneId.systemDefault()).toInstant()),
-                Integer.parseInt(request.getParameter("room")),
-                Integer.parseInt(request.getParameter("movieSlotEdit")));
+                    Date.from(LocalDateTime.of(
+                            LocalDate.parse(request.getParameter("date")),
+                            LocalTime.parse(request.getParameter("startTime"))
+                    ).atZone(ZoneId.systemDefault()).toInstant()),
+                    Date.from(LocalDateTime.of(
+                            LocalDate.parse(request.getParameter("date")),
+                            LocalTime.parse(request.getParameter("endTime"))
+                    ).atZone(ZoneId.systemDefault()).toInstant()),
+                    Integer.parseInt(request.getParameter("room")),
+                    Integer.parseInt(request.getParameter("movieSlotEdit")));
 
-        }else{
+        } else {
             overlap = scheduleDAO.checkOverlap(
-                Date.from(LocalDateTime.of(
-                        LocalDate.parse(request.getParameter("date")),
-                        LocalTime.parse(request.getParameter("startTime"))
-                ).atZone(ZoneId.systemDefault()).toInstant()),
-                Date.from(LocalDateTime.of(
-                        LocalDate.parse(request.getParameter("date")),
-                        LocalTime.parse(request.getParameter("endTime"))
-                ).atZone(ZoneId.systemDefault()).toInstant()),
-                Integer.parseInt(request.getParameter("room")));
+                    Date.from(LocalDateTime.of(
+                            LocalDate.parse(request.getParameter("date")),
+                            LocalTime.parse(request.getParameter("startTime"))
+                    ).atZone(ZoneId.systemDefault()).toInstant()),
+                    Date.from(LocalDateTime.of(
+                            LocalDate.parse(request.getParameter("date")),
+                            LocalTime.parse(request.getParameter("endTime"))
+                    ).atZone(ZoneId.systemDefault()).toInstant()),
+                    Integer.parseInt(request.getParameter("room")));
         }
-        
-        
 
 //        request.setAttribute("message", "SAMPLE ERROR MESSAGE" + (String) request.getParameter("cinema"));
-
-        if (!overlap) {
+        if (roomDAO.checkIfEmpty(Integer.parseInt(request.getParameter("room")))) {
+            request.setAttribute("message", "Phòng chưa có dữ liệu ghế");
+        } else if (!overlap) {
             try {
-                if(request.getParameter("movieSlotEdit") != null){
+                if (request.getParameter("movieSlotEdit") != null) {
                     scheduleDAO.updateMovieSlot(new MovieSlot(
-                        Integer.parseInt(request.getParameter("movieSlotEdit")),
-                        Integer.parseInt(request.getParameter("room")),
-                        Integer.parseInt(request.getParameter("movie")),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("startTime"))
-                        ),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("endTime"))
-                        ),
-                        "TYPE",//TEMPLATE
-                        Float.parseFloat(request.getParameter("price")),
-                        0,//TEMPLATE
-                        "Scheduled"//TEMPLATE
-                ));
-                }else{
+                            Integer.parseInt(request.getParameter("movieSlotEdit")),
+                            Integer.parseInt(request.getParameter("room")),
+                            Integer.parseInt(request.getParameter("movie")),
+                            LocalDateTime.of(
+                                    LocalDate.parse(request.getParameter("date")),
+                                    LocalTime.parse(request.getParameter("startTime"))
+                            ),
+                            LocalDateTime.of(
+                                    LocalDate.parse(request.getParameter("date")),
+                                    LocalTime.parse(request.getParameter("endTime"))
+                            ),
+                            "TYPE",//TEMPLATE
+                            Float.parseFloat(request.getParameter("price")),
+                            0,//TEMPLATE
+                            "Scheduled"//TEMPLATE
+                    ));
+                } else {
                     scheduleDAO.insertMovieSlot(new MovieSlot(
-                        Integer.parseInt(request.getParameter("cinema")),
-                        Integer.parseInt(request.getParameter("room")),
-                        Integer.parseInt(request.getParameter("movie")),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("startTime"))
-                        ),
-                        LocalDateTime.of(
-                                LocalDate.parse(request.getParameter("date")),
-                                LocalTime.parse(request.getParameter("endTime"))
-                        ),
-                        "TYPE",//TEMPLATE
-                        Float.parseFloat(request.getParameter("price")),
-                        0,//TEMPLATE
-                        "Scheduled"//TEMPLATE
-                ));
+                            Integer.parseInt(request.getParameter("cinema")),
+                            Integer.parseInt(request.getParameter("room")),
+                            Integer.parseInt(request.getParameter("movie")),
+                            LocalDateTime.of(
+                                    LocalDate.parse(request.getParameter("date")),
+                                    LocalTime.parse(request.getParameter("startTime"))
+                            ),
+                            LocalDateTime.of(
+                                    LocalDate.parse(request.getParameter("date")),
+                                    LocalTime.parse(request.getParameter("endTime"))
+                            ),
+                            "TYPE",//TEMPLATE
+                            Float.parseFloat(request.getParameter("price")),
+                            0,//TEMPLATE
+                            "Scheduled"//TEMPLATE
+                    ));
                 }
-                
-                
+
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 request.setAttribute("message", ex.getMessage());
@@ -171,7 +172,7 @@ public class CreateMovieSlotServlet extends HttpServlet {
         } else {
             request.setAttribute("message", "OVERLAP");
         }
-     
+
         request.getRequestDispatcher("CreateMovieSlotFormInfoServlet").forward(request, response);
     }
 

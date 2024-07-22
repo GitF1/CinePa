@@ -103,7 +103,7 @@ public class RoomDAO extends SQLServerConnect {
 
         return rooms;
     }
-
+    
     public List<CinemaChain> getAllCinemaChains() {
         List<CinemaChain> cinemaChains = new ArrayList<>();
         String sql = "SELECT * FROM CinemaChain";
@@ -272,5 +272,21 @@ public class RoomDAO extends SQLServerConnect {
         }
         return cinemaChain;
     }
+    public boolean checkIfEmpty(int roomID){
+        
+        String sql = "SELECT * FROM Seat WHERE RoomID = ?";
 
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, roomID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error: " + e.getMessage());
+        }
+        return true;
+    }
+    
 }

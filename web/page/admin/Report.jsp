@@ -14,11 +14,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <title>Report</title>
     </head>
     <body>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js "></script>
+
+        <a href="${pageContext.request.contextPath}/admin" class="btn btn-secondary">
+            <span>Return</span>
+        </a>
+
         <div>
             <canvas id="weeklySalesChart"></canvas>
         </div>
@@ -26,7 +33,7 @@
         <div>
             <canvas id="monthlySalesChart"></canvas>
         </div>
-        <div id='calendar'></div>
+        <!--<div id='calendar'></div>-->
         <script>
 //            First Graph
             var dateArr = [];
