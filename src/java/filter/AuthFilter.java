@@ -127,6 +127,7 @@ public class AuthFilter implements Filter {
 
             }
         }
+        
         session = httpRequest.getSession(true);
         String urlStore = (String) httpRequest.getRequestURI();
         if (!urlStore.equals(RouterURL.LOGIN) && !url.contains("/LoginGoogleServlet") && !url.contains("/notifications")) {
