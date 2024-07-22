@@ -122,8 +122,8 @@ public class VnPayService {
 
         String bankCode = req.getParameter("bankCode");
 
-        System.out.println("Order ID Payment: " +OrderID);
-        
+        System.out.println("Order ID Payment: " + OrderID);
+
         String vnp_TxnRef = String.valueOf(OrderID);
 
         String vnp_IpAddr = VnPayConfig.getIpAddress(req);
@@ -161,10 +161,13 @@ public class VnPayService {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-
-        cld.add(Calendar.MINUTE, 15);
+        
+        System.out.println("cld" + cld.getTime() + " " + cld.getTimeZone());
+        cld.add(Calendar.MINUTE, 60*24);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        System.out.println("cld" + cld.getTime() + " " + cld.getTimeZone());
 
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
