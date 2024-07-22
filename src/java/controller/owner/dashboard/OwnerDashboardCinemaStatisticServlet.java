@@ -85,12 +85,11 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
             String role = (String) session.getAttribute("role");
             List<Cinema> listCinema = (List<Cinema>) session.getAttribute("listCinemaDashBoard");
             System.out.println("userID" + userID + "role" + role);
-            
-//            if (userID == null || role == null || role != util.Role.OWNER) {
-//                response.sendRedirect(RouterURL.LOGIN);
-//
-//            }
 
+//            if (userID == null || role == null || !role.equals(util.Role.OWNER)) {
+//                response.sendRedirect(RouterURL.LOGIN);
+//                return;
+//            }
             Integer cinemaChainID = dao.getCinemaChainOfUser(userID);
 
             if (cinemaChainID == null) {
@@ -128,6 +127,8 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
 
             String monthParam = request.getParameter("month");
             String yearParam = request.getParameter("year");
+            System.out.println("month" + monthParam + "  year:" + yearParam);
+
             Integer month = null;
             Integer year = null;
 
@@ -139,11 +140,12 @@ public class OwnerDashboardCinemaStatisticServlet extends HttpServlet {
             }
 
             List<ChartModel> charts = daoCinema.getListRevenueOfCinemasSelect(cinemaChainID, cinemaIDList, month, year);
+
             System.out.println("list data" + charts.toString());
             List<Integer> labels = ChartUtil.getListDateInMonth(month, year);
 
-            request.setAttribute("month", month);
-            request.setAttribute("year", year);
+            request.setAttribute("month",  monthParam);
+            request.setAttribute("year",  yearParam);
             request.setAttribute("labels", labels);
             request.setAttribute("cinemas", cinemas);
             request.setAttribute("listCombineChart", charts);

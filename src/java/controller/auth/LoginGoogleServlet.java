@@ -82,8 +82,11 @@ public class LoginGoogleServlet extends HttpServlet {
             user = userDAO.getUser(username_email);
 
             if (user == null) {
-                request.setAttribute("ok", "Tài khoản google chưa đăng ký");
+                
+                request.setAttribute("ok", false);
+                request.setAttribute("message", "Tài khoản google chưa đăng ký");
                 request.getRequestDispatcher(route.LOGIN).forward(request, response);
+                
                 return;
             }
 

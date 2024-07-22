@@ -397,9 +397,11 @@
                                 <c:if test="${review.userID == userID && review.movieID == movie.movieID}">
                                     <input type="hidden" id="haveCommented"/>
                                     <div class="user-info">
+                                        
                                         <div class="avatar">
-                                            <img src="https://st.depositphotos.com/2001755/3622/i/450/depositphotos_36220949-stock-photo-beautiful-landscape.jpg" alt="Your Avatar">
+                                             <img src="${user.avatarLink}" alt="Your Avatar"/>
                                         </div>
+                                        
                                         <div class="user-name" style="color: red">Tôi</div>
                                     </div>
                                     <div id="movie-rating-div" style="margin-top: 10px; margin-left: 6px;">
@@ -420,7 +422,7 @@
                                 <c:if test="${!(review.userID == userID && review.movieID == movie.movieID)}">
                                     <div class="user-info">
                                         <div class="avatar">
-                                            <img src="https://st.depositphotos.com/2001755/3622/i/450/depositphotos_36220949-stock-photo-beautiful-landscape.jpg" alt="Your Avatar">
+                                            <img src="${user.avatarLink}" alt="Your Avatar"/>
                                         </div>
                                         <div class="user-name">${user.fullName}</div>
                                     </div>

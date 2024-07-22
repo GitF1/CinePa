@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import util.RouterJSP;
+import util.RouterURL;
 
 /**
  *
@@ -24,10 +25,8 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         session.invalidate();
-
         // quay ve trang chu : 
-        request.getRequestDispatcher(route.USER).forward(request, response);
-//        request.getRequestDispatcher("index.html").forward(request, response);
+        response.sendRedirect(RouterURL.HOMEPAGE);
 
     }
 

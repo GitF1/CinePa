@@ -169,7 +169,7 @@
                                 <div>
                                     <c:forEach var="seat" items="${seats}">
                                         <div class="seat">
-                                            ${seat.getName()} (Row: ${seat.getX()}, Seat: ${seat.getY()})
+                                            ${seat.getName()} (Hàng số: ${seat.getY()}, Ghế số: ${seat.getX()})
                                         </div>
                                     </c:forEach>
                                 </div>

@@ -175,18 +175,19 @@
             </form>
 
             <div class="form-group mt-3 w-25">
-                <label for="month-select-cinema">Select Month:</label>
+                <label for="month-select-cinema">Select Month: </label>
                 <select class="custom-select" <% if (listCinemaID == null || listCinemaID.isEmpty()) { %> 
                         disabled 
-                        <% } %> id="month-select-cinema" onchange="submitFormOnSelectChange()"></select>
+                        <% } %> id="month-select-cinema" onchange="updateMonth()"></select>
             </div>
 
             <div class="form-group mt-3 w-25">
-                <label for="year-select-cinema">Select Year:</label>
+                <label for="year-select-cinema">Select Year: </label>
                 <select class="custom-select" <% if (listCinemaID == null || listCinemaID.isEmpty()) { %> 
                         disabled 
-                        <% }%> id="year-select-cinema" onchange="submitFormOnSelectChange()"></select>
+                        <% }%> id="year-select-cinema" onchange="updateYear()"></select>
             </div>
+
         </div>
         <!-- The Modal -->
         <div id="cinemaModal" class="container-modal-select">
@@ -201,10 +202,8 @@
                             <form class="cinema-form-item cinema-form-${cinema.cinemaID}" action="<%= RouterURL.OWNER_CINEMAS_STATISTIC%>" method="POST">
 
                                 <input type="hidden" name="cinemaID" value="${cinema.cinemaID}" />
-
                                 <input type="hidden" name="cinemaTitle" value="${cinema.getAddress()}" />
-                                <input type="hidden" name="month" />
-                                <input type="hidden" name="year" />
+
 
                                 <div class="cinema" type="button" onclick="toggleCinemaSelection('${cinema.cinemaID}', '${cinema.getAddress()}', '${cinema.getAvatar()}')">
                                     <img src="${cinema.getAvatar()}" alt="${cinema.getAddress()}" width="70" height="70"/>
@@ -364,6 +363,20 @@
                     yearSelect.disabled = true;
                 }
             }
+
+            function updateMonth() {
+                var monthSelect = document.getElementById('month-select-cinema');
+                var monthInput = document.getElementById('month-select');
+                monthInput.value = monthSelect.value;
+            }
+
+            function updateYear() {
+                var yearSelect = document.getElementById('year-select-cinema');
+                var yearInput = document.getElementById('year-select');
+                yearInput.value = yearSelect.value;
+            }
+
+
         </script>
     </body>
 </html>

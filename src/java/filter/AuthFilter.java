@@ -148,6 +148,7 @@ public class AuthFilter implements Filter {
             session = httpRequest.getSession(true);
             String urlStore = httpRequest.getRequestURI();
             System.out.println("url  " + urlStore);
+
             if (urlStore.contains("/movie") && !isExcluded(urlStore)) {
 
                 System.out.println("url store: " + urlStore);
@@ -163,6 +164,7 @@ public class AuthFilter implements Filter {
                 }
 
             }
+
             //Có thể phải coi lại đề phòng lỗi url
             if (url.contains("/admin") && (!role.equals("ADMIN"))) {
                 httpResponse.sendRedirect(loginURI);
@@ -210,6 +212,7 @@ public class AuthFilter implements Filter {
                 || url.contains("register")
                 || url.contains("LoginGoogleServlet")
                 || url.contains("notifications")
+                || url.contains("forgetpassword")
                 || url.contains(".css")
                 || url.contains(".js")
                 || url.contains(".png")
