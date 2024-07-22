@@ -169,7 +169,7 @@
                         <a class="icon-logo-btn nav-link active" aria-current="page" href="/movie"> <img class="icon-logo_header" src="https://res.cloudinary.com/dsvllb1am/image/upload/v1718269790/sgvvasrlc3tisefkq92j.png"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/movie/schedule">Lịch chiếu</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/schedule">Lịch chiếu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/filter-movies">Phim chiếu</a>

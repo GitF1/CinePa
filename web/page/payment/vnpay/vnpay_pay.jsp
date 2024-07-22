@@ -90,7 +90,7 @@
                         <label for="language">Tiếng anh</label><br>
 
                     </div>
-                    <button type="submit" class="btn btn-default" href>Thanh toán</button>
+                    <button type="submit" class="btn btn-default" >Thanh toán</button>
                 </form>
             </div>
             <p>

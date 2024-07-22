@@ -47,7 +47,7 @@
                          class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form action="/movie/login" method="post">
+                    <form action="login" method="post">
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="text" id="form3Example3" class="form-control form-control-lg" name="username-email"
@@ -70,7 +70,7 @@
                                     Remember me
                                 </label>
                             </div>
-                            <a href="/movie/forgetpassword" class="text-body">Forgot password?</a>
+                            <a href="forgetpassword" class="text-body">Forgot password?</a>
                         </div>
 
                         <div class="text-center text-lg-start mt-4 pt-2">
@@ -81,7 +81,8 @@
                             <!--add google login - duynd-->
                             <div>
                                 <a class="btn mt-3 btn-outline-primary btn-lg"
-                                   href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/movie/LoginGoogleServlet&response_type=code&client_id=873935314523-gmuli7ipaik12iv4l4rpj2hr6o2jnoke.apps.googleusercontent.com&approval_prompt=force">
+                                   
+                                   href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=https://cinepa.shop/movie/LoginGoogleServlet&response_type=code&client_id=873935314523-2mdsfkjrj6asqdm2tdbmo1bve68n5um9.apps.googleusercontent.com&approval_prompt=force">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" style="width: 20px; height: 20px; margin-right: 10px;">
 
                                     Sign in with Google

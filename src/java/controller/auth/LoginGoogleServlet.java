@@ -152,6 +152,8 @@ public class LoginGoogleServlet extends HttpServlet {
     }
 
     public static String getToken(String code) throws ClientProtocolException, IOException {
+
+        System.out.println("Requesting token with code: " + code);
         // call api to get token
         String response = Request.Post(GoogleOAuthConstants.GOOGLE_LINK_GET_TOKEN)//create post request to google link
                 .bodyForm(Form.form().add("client_id", GoogleOAuthConstants.GOOGLE_CLIENT_ID)
@@ -159,7 +161,9 @@ public class LoginGoogleServlet extends HttpServlet {
                         .add("redirect_uri", GoogleOAuthConstants.GOOGLE_REDIRECT_URI).add("code", code)
                         .add("grant_type", GoogleOAuthConstants.GOOGLE_GRANT_TYPE).build())
                 .execute().returnContent().asString();
-
+        
+        System.out.println("Response: " + response);
+        
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
         String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
         return accessToken;

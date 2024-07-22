@@ -72,7 +72,7 @@
             });
 
             // WebSocket setup
-            const socket = new WebSocket("ws://localhost:8080/movie/notifications");
+            const socket = new WebSocket("ws://https://cinepa.shop/movie/notifications");
 
             socket.onmessage = function (event) {
                 const data = JSON.parse(event.data);
